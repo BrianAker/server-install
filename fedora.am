@@ -1,0 +1,116 @@
+# vim:ft=automake
+
+fedora: prep essential memcached gearman drizzle time restart-update post security
+
+centos: prep essential memcached gearman drizzle time security update post
+
+wordpress: prep essential security restart-update update restart-update 
+	sudo yum install -y httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
+	sudo yum install -y crypto-utils
+	genkey blog.tangent.org
+
+wordpressdb:
+	yum install mysql mysql-server
+	systemctl enable mysqld.service
+	systemctl start mysqld.service
+	systemctl enable httpd.service
+	systemctl start httpd.service
+	yum install vsftpd
+	systemctl enable vsftpd.service
+	systemctl start vsftpd.service
+	yum install system-config-firewall
+	system-config-firewall
+	echo "create database wordpress;"  | mysql
+	echo "grant all privileges on wordpress.* to wordpress identified by 'wordpress';" | mysql
+	echo "grant all privileges on wordpress.* to wordpress@localhost identified by 'wordpress';" | mysql
+	echo "grant all privileges on wordpress.* to wordpress@'%' identified by 'wordpress';" | mysql
+	echo "flush privileges;" | mysql
+	chown -R apache.apache /usr/share/wordpress/
+	adduser wordpressftp
+	usermod -G apache wordpressftp
+
+prep:
+	sudo yum update -y
+	sudo yum upgrade -y
+	sudo yum install -y curl
+	sudo yum install -y hg
+	sudo yum install -y bzr
+	sudo yum install -y git
+	sudo yum install -y yum-plugin-ps yum-plugin-remove-with-leaves
+
+# Keep yum updated
+update:
+	sudo yum install -y yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
+	sudo chkconfig yum-cron on
+	sudo /etc/init.d/yum-cron start
+	sudo /etc/init.d/iptables restart
+
+restart-update: update
+	sudo yum install -y yum-updatesd.noarch
+	sudo systemctl enable yum-updatesd.service
+	sudo systemctl restart yum-updatesd.service
+
+compiler:
+	sudo yum install -y gcc gcc-c++
+	sudo yum install -y make
+	sudo yum install -y bison
+	sudo yum install -y flex
+	sudo yum install -y autoconf
+	sudo yum install -y libtool
+
+#Basic build tools
+essential:
+	sudo yum install -y yum-plugin-auto-update-debug-info
+	sudo yum install -y cppcheck-debuginfo cppcheck
+	sudo yum install -y gettext intltool libaio-dev libpcre3-dev libreadline-dev
+	sudo yum install -y valgrind
+	sudo yum install -y gdb
+	sudo yum install -y lcov
+	sudo yum install -y doxygen
+	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
+	sudo yum install -y xorg-x11-server-Xvfb 
+	sudo yum install -y java-1.6.0-openjdk
+
+# Memcached
+memcached: compiler
+	sudo yum install -y memcached
+	sudo yum install -y libevent libevent-devel
+	sudo yum install -y uuidd libuuid libuuid-devel
+	sudo yum install -y cyrus-sasl-devel
+
+# Gearman
+gearman: compiler
+	sudo yum install -y memcached
+	sudo yum install -y libevent libevent-devel
+	sudo yum install -y uuidd libuuid libuuid-devel
+	sudo yum install -y boost boost-devel
+	sudo yum install -y libcurl-dev libcurl curl
+
+# Drizzle
+drizzle: compiler
+	sudo yum install -y cmake
+	sudo yum install -y uuidd libuuid libuuid-devel
+	sudo yum install -y protobuf protobuf-compiler protobuf-devel
+	sudo yum install -y boost boost-devel
+	sudo yum install -y libcurl-dev libcurl curl
+	sudo yum install -y gperf
+	sudo yum install -y zlib-devel
+	sudo yum install -y pcre pcre-devel
+	sudo yum install -y readline-devel readline
+	sudo yum install -y pam-devel
+	sudo yum install -y libcurl-devel
+	sudo yum install -y libgcrypt-devel
+
+# Set time
+time:
+	sudo yum install -y ntpdate
+	sudo ntpdate time.apple.com
+
+docs:
+	sudo yum install -y python-sphinx
+
+post:
+
+security:
+	sudo yum install -y denyhosts
+	sudo yum install -y fail2ban

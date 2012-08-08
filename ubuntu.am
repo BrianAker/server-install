@@ -1,0 +1,90 @@
+# vim:ft=automake
+
+ubuntu: prep essential memcached gearman drizzle jenkins-slave time update post
+
+prep:
+	sudo apt-get --purge -y remove byobu
+	sudo apt-get install --yes curl
+	sudo apt-get update --yes
+	sudo apt-get upgrade --yes
+	sudo apt-get update --yes
+	sudo apt-get upgrade --yes
+
+essential: compiler
+	sudo apt-get install --yes build-essential
+	sudo apt-get install --yes bzr 
+	sudo apt-get install --yes git-core
+	sudo apt-get install --yes mercurial 
+	sudo apt-get install --yes valgrind
+	sudo apt-get install --yes gdb
+	sudo apt-get install --yes lcov
+	sudo apt-get install --yes cppcheck 
+	sudo apt-get install --yes devscripts 
+	sudo apt-get install --yes cmake
+
+# Jenkins install, we don't actually use this, we let Jenkins install its own.
+jenkins-slave:
+	sudo apt-get install --yes default-jdk default-jre default-jre-headless
+
+compiler:
+	sudo apt-get install --yes gcc
+	sudo apt-get install --yes autoconf
+	sudo apt-get install --yes bison
+	sudo apt-get install --yes flex
+	sudo apt-get install --yes libtool
+	sudo apt-get install --yes make
+
+# Memcached
+memcached: compiler
+	sudo apt-get install --yes libevent-dev 
+	sudo apt-get install --yes memcached
+	sudo apt-get install --yes uuid-dev
+
+# Gearman
+gearman: compiler
+	sudo apt-get install --yes libboost-all-dev
+	sudo apt-get install --yes libcurl4-openssl-dev curl
+	sudo apt-get install --yes libevent-dev
+	sudo apt-get install --yes memcached
+	sudo apt-get install --yes uuid-dev
+	sudo apt-get install --yes devscripts
+	sudo apt-get install --yes libsqlite3-dev
+	sudo apt-get install --yes libmysqlclient-dev
+	sudo apt-get install --yes maven2
+
+# Drizzle
+drizzle: compiler
+	sudo apt-get install --yes gperf
+	sudo apt-get install --yes intltool
+	sudo apt-get install --yes libboost-all-dev
+	sudo apt-get install --yes libcloog-ppl0 
+	sudo apt-get install --yes libcurl4-openssl-dev
+	sudo apt-get install --yes libevent-dev
+	sudo apt-get install --yes libpam0g-dev
+	sudo apt-get install --yes libpcre3-dev
+	sudo apt-get install --yes libpcre3-dev
+	sudo apt-get install --yes libprotobuf-dev protobuf-compiler
+	sudo apt-get install --yes libprotobuf-dev protobuf-compiler
+	sudo apt-get install --yes libreadline-dev
+	sudo apt-get install --yes uuid-dev
+	sudo apt-get install --yes zlib1g-dev
+
+# Update automatically
+update:
+	sudo apt-get install --yes unattended-upgrades
+
+time:
+	sudo apt-get install --yes ntpdate
+	#sudo ntpdate time.apple.com
+
+post:
+	sudo apt-get autoremove --yes
+
+docs:
+	sudo apt-get install --yes python-sphinx
+
+jenkins-server:
+	wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+	sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+	sudo apt-get update --yes
+	sudo apt-get install --yes jenkins
