@@ -74,6 +74,7 @@ update:
 	sudo apt-get install --yes unattended-upgrades
 
 time:
+	sudo apt-get install --yes ntp
 	sudo apt-get install --yes ntpdate
 	#sudo ntpdate time.apple.com
 
