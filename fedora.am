@@ -69,7 +69,7 @@ essential:
 	sudo yum install -y doxygen
 	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
 	sudo yum install -y xorg-x11-server-Xvfb 
-	sudo yum install -y java-1.6.0-openjdk
+	sudo yum install -y java dejavu-fonts-common dejavu-sans-fonts
 
 # Memcached
 memcached: compiler
