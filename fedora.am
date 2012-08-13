@@ -1,5 +1,11 @@
 # vim:ft=automake
 
+bootstrap: 
+	sudo yum install -y git
+	sudo yum install -y make
+	@git clone https://github.com/BrianAker/server-install.git
+	cd server-install && make -f fedora.am centos
+
 fedora: prep essential memcached gearman drizzle time restart-update post security
 
 centos: prep essential memcached gearman drizzle time security update post
