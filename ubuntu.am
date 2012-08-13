@@ -33,6 +33,7 @@ compiler:
 	sudo apt-get install --yes flex
 	sudo apt-get install --yes libtool
 	sudo apt-get install --yes make
+	sudo apt-get install --yes clang
 
 # Memcached
 memcached: compiler
