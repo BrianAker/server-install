@@ -1,0 +1,41 @@
+# vim:ft=automake
+
+all: /usr/local/bin/brew /usr/local/bin/glibtool /usr/local/bin/autoconf /usr/local/bin/automake /usr/local/bin/bison /usr/local/bin/pcretest /usr/local/bin/sphinx-build
+
+tap: /usr/local/Library/Taps
+
+/usr/local/Library/Taps:
+	brew tap homebrew/dupes
+
+/usr/local/bin/brew:
+	@echo "Go install homebrew"
+
+/usr/local/bin/bzr:
+	/usr/local/bin/brew install bzr
+
+/usr/local/bin/protoc:
+	/usr/local/bin/brew install protobuf
+
+/usr/local/include/boost:
+	/usr/local/bin/brew install boost
+
+/usr/local/include/event.h:
+	/usr/local/bin/brew install libevent
+
+/usr/local/bin/glibtool:
+	/usr/local/bin/brew install libtool
+
+/usr/local/bin/autoconf:
+	/usr/local/bin/brew install autoconf
+
+/usr/local/bin/automake:
+	/usr/local/bin/brew install automake
+
+/usr/local/bin/sphinx-build:
+	sudo easy_install sphinx
+
+/usr/local/bin/pcretest:
+	/usr/local/bin/brew install pcre
+
+/usr/local/bin/bison: tap
+	/usr/local/bin/brew install homebrew/dupes/bison
