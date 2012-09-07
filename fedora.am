@@ -59,7 +59,7 @@ compiler:
 	sudo yum install -y libtool
 
 #Basic build tools
-essential:
+essential: docs
 	sudo yum install -y yum-plugin-auto-update-debug-info
 	sudo yum install -y cppcheck-debuginfo cppcheck
 	sudo yum install -y gettext intltool libaio-dev libpcre3-dev libreadline-dev
