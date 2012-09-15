@@ -1,6 +1,6 @@
 # vim:ft=automake
 
-all: brew glibtool autoconf automake pcretest libevent boost sphinx-build bzr boost protoc
+all: brew glibtool autoconf automake pcretest libevent boost sphinx-build bazaar boost protoc mercurial
 
 tap: /usr/local/Library/Taps
 /usr/local/Library/Taps:
@@ -10,13 +10,17 @@ brew: /usr/local/bin/brew
 /usr/local/bin/brew:
 	@echo "Go install homebrew"
 
-bzr: /usr/local/bin/bzr
+bazaar: /usr/local/bin/bzr
 /usr/local/bin/bzr:
-	/usr/local/bin/brew install bzr
+	/usr/local/bin/brew install bazaar
 
 protoc: /usr/local/bin/protoc
 /usr/local/bin/protoc:
 	/usr/local/bin/brew install protobuf
+
+mercurial: /usr/local/bin/hg
+/usr/local/bin/hg:
+	/usr/local/bin/brew install mercurial
 
 boost: /usr/local/include/boost
 /usr/local/include/boost:
