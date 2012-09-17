@@ -12,10 +12,4 @@ fi
 
 git clone https://github.com/BrianAker/server-install.git
 
-if [ -f "/etc/debconf.conf"  ]; then
-  make -f server-install/ubuntu.am
-elif [ -f "/etc/redhat-release"  ]; then
-  make -f server-install/fedora.am
-elif [ -d "/etc/mach_init.d"  ]; then
-  make -f server-install/osx.am
-fi
+(cd server-install && make)
