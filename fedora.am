@@ -74,6 +74,7 @@ essential: docs
 # Memcached
 memcached: compiler
 	sudo yum install -y memcached
+	sudo yum install -y doxygen
 	sudo yum install -y libevent libevent-devel
 	sudo yum install -y uuidd libuuid libuuid-devel
 	sudo yum install -y cyrus-sasl-devel

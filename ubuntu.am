@@ -40,6 +40,7 @@ memcached: compiler
 	sudo apt-get install --yes libevent-dev 
 	sudo apt-get install --yes memcached
 	sudo apt-get install --yes uuid-dev
+	sudo apt-get install --yes doxygen
 
 # Gearman
 gearman: compiler

@@ -1,6 +1,6 @@
 # vim:ft=automake
 
-all: brew glibtool autoconf automake pcretest libevent boost sphinx-build bazaar boost protoc mercurial
+all: brew glibtool autoconf automake pcretest libevent boost sphinx-build bazaar boost protoc mercurial doxygen
 
 tap: /usr/local/Library/Taps
 /usr/local/Library/Taps:
@@ -37,6 +37,10 @@ glibtool: /usr/local/bin/glibtool
 autoconf: /usr/local/bin/autoconf
 /usr/local/bin/autoconf:
 	/usr/local/bin/brew install autoconf
+
+doxygen: /usr/local/bin/doxygen
+/usr/local/bin/doxygen:
+	/usr/local/bin/brew install doxygen
 
 automake: /usr/local/bin/automake
 /usr/local/bin/automake:
