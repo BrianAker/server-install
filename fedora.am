@@ -8,6 +8,7 @@ fedora-spefic:
 	sudo yum install -y cppcheck-debuginfo cppcheck
 	sudo yum install -y lcov
 	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
+	sudo yum install -y protobuf protobuf-compiler protobuf-devel
 
 wordpress: prep essential security restart-update update restart-update 
 	sudo yum install -y httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
@@ -93,7 +94,6 @@ gearman: compiler
 drizzle: compiler
 	sudo yum install -y cmake
 	sudo yum install -y uuidd libuuid libuuid-devel
-	sudo yum install -y protobuf protobuf-compiler protobuf-devel
 	sudo yum install -y boost boost-devel
 	sudo yum install -y libcurl-dev libcurl curl
 	sudo yum install -y gperf
