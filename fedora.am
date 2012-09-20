@@ -6,6 +6,7 @@ centos: prep essential memcached gearman drizzle time security update post
 
 fedora-spefic:
 	sudo yum install -y cppcheck-debuginfo cppcheck
+	sudo yum install -y lcov
 
 wordpress: prep essential security restart-update update restart-update 
 	sudo yum install -y httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
@@ -67,7 +68,6 @@ essential: docs
 	sudo yum install -y gettext intltool libaio-dev libpcre3-dev libreadline-dev
 	sudo yum install -y valgrind
 	sudo yum install -y gdb
-	sudo yum install -y lcov
 	sudo yum install -y doxygen
 	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
 	sudo yum install -y xorg-x11-server-Xvfb 
