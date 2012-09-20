@@ -4,7 +4,7 @@ fedora: prep essential memcached gearman drizzle time restart-update post securi
 
 centos: prep essential memcached gearman drizzle time security update post
 
-fedora-spefic:
+fedora-spefic: fedora-security
 	sudo yum install -y cppcheck-debuginfo cppcheck
 	sudo yum install -y lcov
 	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
@@ -115,5 +115,7 @@ docs:
 post:
 
 security:
+
+fedora-security:
 	sudo yum install -y denyhosts
 	sudo yum install -y fail2ban
