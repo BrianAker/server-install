@@ -1,8 +1,11 @@
 # vim:ft=automake
 
-fedora: prep essential memcached gearman drizzle time restart-update post security
+fedora: prep essential memcached gearman drizzle time restart-update post security fedora-spefic
 
 centos: prep essential memcached gearman drizzle time security update post
+
+fedora-spefic:
+	sudo yum install -y cppcheck-debuginfo cppcheck
 
 wordpress: prep essential security restart-update update restart-update 
 	sudo yum install -y httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
@@ -61,7 +64,6 @@ compiler:
 #Basic build tools
 essential: docs
 	sudo yum install -y yum-plugin-auto-update-debug-info
-	sudo yum install -y cppcheck-debuginfo cppcheck
 	sudo yum install -y gettext intltool libaio-dev libpcre3-dev libreadline-dev
 	sudo yum install -y valgrind
 	sudo yum install -y gdb
