@@ -1,52 +1,51 @@
 # vim:ft=automake
 
-all: brew autoconf automake pcretest libevent boost sphinx-build bazaar boost protoc mercurial doxygen
+all: autoconf automake pcretest libevent boost sphinx-build bazaar boost protoc mercurial doxygen
 
-fresh: glibtool all
+fresh: brew glibtool all
 
 tap: /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	brew tap homebrew/dupes
 
-brew: /usr/local/bin/brew
-/usr/local/bin/brew:
+brew:
 	@echo "Go install homebrew"
 
 bazaar: /usr/local/bin/bzr
 /usr/local/bin/bzr:
-	/usr/local/bin/brew install bazaar
+	brew install bazaar
 
 protoc: /usr/local/bin/protoc
 /usr/local/bin/protoc:
-	/usr/local/bin/brew install protobuf
+	brew install protobuf
 
 mercurial: /usr/local/bin/hg
 /usr/local/bin/hg:
-	/usr/local/bin/brew install mercurial
+	brew install mercurial
 
 boost: /usr/local/include/boost
 /usr/local/include/boost:
-	/usr/local/bin/brew install boost
+	brew install boost
 
 libevent: /usr/local/include/event.h
 /usr/local/include/event.h:
-	/usr/local/bin/brew install libevent
+	brew install libevent
 
 glibtool: /usr/local/bin/glibtool
 /usr/local/bin/glibtool:
-	/usr/local/bin/brew install libtool
+	brew install libtool
 
 autoconf: /usr/local/bin/autoconf
 /usr/local/bin/autoconf:
-	/usr/local/bin/brew install autoconf
+	brew install autoconf
 
 doxygen: /usr/local/bin/doxygen
 /usr/local/bin/doxygen:
-	/usr/local/bin/brew install doxygen
+	brew install doxygen
 
 automake: /usr/local/bin/automake
 /usr/local/bin/automake:
-	/usr/local/bin/brew install automake
+	brew install automake
 
 sphinx-build: /usr/local/bin/sphinx-build
 /usr/local/bin/sphinx-build:
@@ -54,8 +53,8 @@ sphinx-build: /usr/local/bin/sphinx-build
 
 pcretest: /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
-	/usr/local/bin/brew install pcre
+	brew install pcre
 
 bison: /usr/local/bin/bison
 /usr/local/bin/bison: tap
-	/usr/local/bin/brew install homebrew/dupes/bison
+	brew install homebrew/dupes/bison
