@@ -81,6 +81,7 @@ memcached: compiler
 	sudo yum install -y libevent libevent-devel
 	sudo yum install -y uuidd libuuid libuuid-devel
 	sudo yum install -y cyrus-sasl-devel
+	sudo yum install -y openssl openssl-devel
 
 # Gearman
 gearman: compiler

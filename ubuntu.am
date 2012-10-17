@@ -73,7 +73,9 @@ drizzle: compiler
 
 # Update automatically
 update:
+	sudo apt-get install cron-apt
 	sudo apt-get install --yes unattended-upgrades
+	sudo dpkg-reconfigure -plow unattended-upgrades
 
 time:
 	sudo apt-get install --yes ntp
