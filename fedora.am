@@ -113,6 +113,21 @@ time:
 docs:
 	sudo yum install -y python-sphinx
 
+mingw:
+	sudo yum install -y mingw32-boost
+	sudo yum install -y mingw32-filesystem
+	sudo yum install -y mingw32-binutils
+	sudo yum install -y mingw32-zlib
+	sudo yum install -y mingw32-headers
+	sudo yum install -y mingw32-cpp
+	sudo yum install -y mingw32-bzip2
+	sudo yum install -y mingw32-crt
+	sudo yum install -y mingw32-gcc-c++
+	sudo yum install -y mingw-filesystem-base
+	sudo yum install -y mingw-binutils-generic
+	sudo yum install -y mingw32-gcc
+	sudo yum install -y mingw32-pthreads
+
 post:
 
 security:
