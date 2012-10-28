@@ -13,6 +13,7 @@ fi
 # If the fedora.am file is around we know then that we are in the repository
 if [ -f 'fedora.am' ]; then
   git pull
+  make
 elif [ -d 'server-install' ]; then
   (cd server-install && git pull && make)
 else
