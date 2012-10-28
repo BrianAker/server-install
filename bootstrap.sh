@@ -10,6 +10,12 @@ elif [ -d "/etc/mach_init.d"  ]; then
 #  ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)
 fi
 
-git clone https://github.com/BrianAker/server-install.git
-
-(cd server-install && make)
+# If the fedora.am file is around we know then that we are in the repository
+if [ -f 'fedora.am' ]; then
+  git pull
+elif [ -d 'server-install' ]; then
+  (cd server-install && git pull && make)
+else
+  git clone https://github.com/BrianAker/server-install.git
+  (cd server-install && make)
+fi
