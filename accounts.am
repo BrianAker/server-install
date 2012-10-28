@@ -1,0 +1,164 @@
+# vim:ft=automake
+#
+
+/etc/sudoers.d/:
+	sudo mkdir -p -m 0750 /etc/sudoers.d/
+
+#Add Brian
+brian: /etc/sudoers.d/
+	sudo useradd --shell=/bin/bash brian
+	sudo mkdir -p -m 0700  ~brian/.ssh
+	sudo touch ~brian/.ssh/authorized_keys2
+	sudo curl -a --output ~brian/.ssh/authorized_keys2 https://launchpad.net/%7Ebrianaker/+sshkeys 
+	sudo chmod 600 ~brian/.ssh/authorized_keys2
+	sudo chown -R brian.brian ~brian/
+	touch /tmp/brian
+	echo "brian    ALL = NOPASSWD: ALL" >> /tmp/brian
+	sudo chown root.root /tmp/brian
+	sudo chmod 0440 /tmp/brian
+	sudo mv /tmp/brian /etc/sudoers.d/brian
+	#usermod -G wheel brian
+
+#Add Yazz
+yazz: /etc/sudoers.d/
+	sudo useradd --shell=/bin/bash yazz
+	sudo mkdir -p -m 0700  ~yazz/.ssh
+	sudo touch ~yazz/.ssh/authorized_keys2
+	sudo curl -a --output ~yazz/.ssh/authorized_keys2 https://launchpad.net/%7Eentropyworks/+sshkeys 
+	sudo chmod 600 ~yazz/.ssh/authorized_keys2
+	sudo chown -R yazz.yazz ~yazz/
+	touch /tmp/yazz
+	echo "yazz    ALL = NOPASSWD: ALL" >> /tmp/yazz
+	sudo chown root.root /tmp/yazz
+	sudo chmod 0440 /tmp/yazz
+	sudo mv /tmp/yazz /etc/sudoers.d/yazz
+	#usermod -G wheel yazz
+
+#Add Kent
+kent: /etc/sudoers.d/
+	sudo useradd --shell=/bin/bash kent
+	sudo mkdir -p -m 0700  ~kent/.ssh
+	sudo touch ~kent/.ssh/authorized_keys2
+	sudo curl -a --output ~kent/.ssh/authorized_keys2 https://launchpad.net/%7Ekent/+sshkeys 
+	sudo chmod 600 ~kent/.ssh/authorized_keys2
+	sudo chown -R kent.kent ~kent/
+
+linuxjedi:
+	sudo useradd --shell=/bin/bash linuxjedi
+	sudo mkdir -p -m 0700  ~linuxjedi/.ssh
+	sudo touch ~linuxjedi/.ssh/authorized_keys2
+	sudo curl -a --output ~linuxjedi/.ssh/authorized_keys2 https://launchpad.net/%7Elinuxjedi/+sshkeys
+	sudo chmod 600 ~linuxjedi/.ssh/authorized_keys2
+	sudo chown -R linuxjedi.linuxjedi ~linuxjedi/
+	touch /tmp/linuxjedi
+	echo "linuxjedi    ALL = NOPASSWD: ALL" >> /tmp/linuxjedi
+	sudo chown root.root /tmp/linuxjedi
+	sudo chmod 0440 /tmp/linuxjedi
+	sudo mv /tmp/linuxjedi /etc/sudoers.d/linuxjedi
+	#usermod -G wheel linuxjedi
+
+pcrews:
+	sudo useradd --shell=/bin/bash pcrews
+	sudo mkdir -p -m 0700  ~pcrews/.ssh
+	sudo touch ~pcrews/.ssh/authorized_keys2
+	sudo curl -a --output ~pcrews/.ssh/authorized_keys2 https://launchpad.net/%7Epatrick-crews/+sshkeys
+	sudo chmod 600 ~pcrews/.ssh/authorized_keys2
+	sudo chown -R pcrews.pcrews ~pcrews/
+	touch /tmp/pcrews
+	echo "pcrews    ALL = NOPASSWD: ALL" >> /tmp/pcrews
+	sudo chown root.root /tmp/pcrews
+	sudo chmod 0440 /tmp/pcrews
+	sudo mv /tmp/pcrews /etc/sudoers.d/pcrews
+	#usermod -G wheel pcrews
+
+hingo:
+	sudo useradd --shell=/bin/bash hingo
+	sudo mkdir -p -m 0700  ~hingo/.ssh
+	sudo touch ~hingo/.ssh/authorized_keys2
+	sudo curl -a --output ~hingo/.ssh/authorized_keys2 https://launchpad.net/~hingo/+sshkeys
+	sudo chmod 600 ~hingo/.ssh/authorized_keys2
+	sudo chown -R hingo.hingo ~hingo/
+	touch /tmp/hingo
+	echo "hingo    ALL = NOPASSWD: ALL" >> /tmp/hingo
+	sudo chown root.root /tmp/hingo
+	sudo chmod 0440 /tmp/hingo
+	sudo mv /tmp/hingo /etc/sudoers.d/hingo
+	#usermod -G wheel hingo
+
+#Add Mark
+mark:
+	sudo useradd --shell=/bin/bash fallenpegasus
+	sudo mkdir -p -m 0700  ~fallenpegasus/.ssh
+	sudo touch ~fallenpegasus/.ssh/authorized_keys2
+	sudo curl -a --output ~fallenpegasus/.ssh/authorized_keys2 https://launchpad.net/%7Efallenpegasus/+sshkeys 
+	sudo chmod 600 ~fallenpegasus/.ssh/authorized_keys2
+	sudo chown -R fallenpegasus.fallenpegasus ~fallenpegasus/
+	touch /tmp/fallenpegasus
+	echo "fallenpegasus    ALL = NOPASSWD: ALL" >> /tmp/fallenpegasus
+	sudo chown root.root /tmp/fallenpegasus
+	sudo chmod 0440 /tmp/fallenpegasus
+	sudo mv /tmp/fallenpegasus /etc/sudoers.d/fallenpegasus
+	#usermod -G wheel mark
+
+#Add DrizzleCI/Jenkins
+drizzleci: jenkins-account jenkins-account-setup drizzle-keys jenkins-fix-permissions jenkins-sudo
+
+tangentci: jenkins-account jenkins-account-setup tangent-keys jenkins-fix-permissions jenkins-sudo
+
+wordpress: brian secure-host
+
+
+jenkins-account:
+	sudo groupadd --gid 800 jenkins
+	sudo useradd --shell=/bin/bash --uid 800 --gid 800 jenkins
+
+jenkins-account-setup: 
+	sudo mkdir -p -m 0700  ~jenkins/.ssh
+	sudo mkdir -p -m 0755  ~jenkins/workspace
+	sudo bzr init-repo ~jenkins/workspace
+	sudo touch ~jenkins/.ssh/authorized_keys2
+	sudo chmod 600 ~jenkins/.ssh/authorized_keys2
+	sudo curl --append --output ~jenkins/.ssh/drizzle_authorized_keys2 https://launchpad.net/~ci-o/+sshkeys
+	sudo curl --append --output ~jenkins/.ssh/tangent_authorized_keys2 https://launchpad.net/~d-ci/+sshkeys
+
+drizzle-keys:
+	sudo sh -c "cat ~jenkins/.ssh/drizzle_authorized_keys2 >> ~jenkins/.ssh/authorized_keys2"
+	sudo sh -c "echo \"\" >> ~jenkins/.ssh/authorized_keys2"
+	sudo sh -c "cat ~jenkins/.ssh/tangent_authorized_keys2 >> ~jenkins/.ssh/authorized_keys2"
+	sudo sh -c "echo \"\" >> ~jenkins/.ssh/authorized_keys2"
+
+tangent-keys:
+	sudo sh -c "cat ~jenkins/.ssh/tangent_authorized_keys2 >> ~jenkins/.ssh/authorized_keys2"
+
+jenkins-fix-permissions:
+	sudo chown -R jenkins.jenkins ~jenkins/
+
+jenkins-sudo:
+	touch /tmp/jenkins
+	echo "jenkins    ALL = NOPASSWD: ALL" >> /tmp/jenkins
+	sudo chown root.root /tmp/jenkins
+	sudo chmod 0440 /tmp/jenkins
+	sudo mv /tmp/jenkins /etc/sudoers.d/jenkins
+	usermod -G wheel jenkins
+
+# Shutdown password authentication 
+sudoers-inc:
+	touch /tmp/sudo-include
+	echo "#includedir /etc/sudoers.d" >> /tmp/sudo-include
+	sudo sh -c "cat /tmp/sudo-include  >> /etc/sudoers"
+	sudo visudo -q -c -f /etc/sudoers
+	rm /tmp/sudo-include
+secure:
+	sudo sed -i -e's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+	sudo sed -i -e's/#PasswordAuthentication no/PasswordAuthentication no/' /etc/ssh/sshd_config
+	sudo sed -i -e's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+	sudo sed -i -e's/#PermitRootLogin no/PermitRootLogin no/' /etc/ssh/sshd_config
+	sudo sed -i -e's/PermitEmptyPasswords yes/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+	sudo sed -i -e's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+	sudo sed -i -e's/PubkeyAuthentication no/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+	sudo sed -i -e's/#PubkeyAuthentication yes/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
+	sudo restart ssh
+
+secure-host: secure sudoers-inc
+	sudo sh -c "echo sshd:216.39.139.192,174.143.244.111,98.129.238.122,174.143.242.18 >> /etc/hosts.allow"
+	sudo sh -c "echo ALL:ALL >> /etc/hosts.deny"
