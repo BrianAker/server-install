@@ -127,6 +127,7 @@ mingw:
 	sudo yum install -y mingw-binutils-generic
 	sudo yum install -y mingw32-gcc
 	sudo yum install -y mingw32-pthreads
+	sudo yum install -y mingw32-glib-networking
 
 post:
 
