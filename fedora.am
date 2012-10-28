@@ -65,14 +65,18 @@ compiler:
 	sudo yum install -y libtool
 
 #Basic build tools
-essential: docs
+essential: docs java
 	sudo yum install -y yum-plugin-auto-update-debug-info
 	sudo yum install -y gettext intltool libaio-dev libpcre3-dev libreadline-dev
 	sudo yum install -y valgrind
 	sudo yum install -y gdb
 	sudo yum install -y doxygen
 	sudo yum install -y xorg-x11-server-Xvfb 
-	sudo yum install -y java dejavu-fonts-common dejavu-sans-fonts
+	sudo yum install -y vim indent
+
+java:
+	sudo yum install -y java-1.7.0-openjdk-devel java-1.7.0-openjdk
+	sudo yum install -u dejavu-fonts-common dejavu-sans-fonts
 
 # Memcached
 memcached: compiler
