@@ -1,10 +1,16 @@
 # vim:ft=automake
+#
 
-fedora: prep essential memcached gearman drizzle time restart-update post security fedora-spefic
+default: all
+
+all: prep essential memcached gearman drizzle time restart-update post security fedora-spefic update
+ifeq ($(DISTRIBUTION),fedora)
+      $(MAKE) updatesd
+endif
 
 centos: prep essential memcached gearman drizzle time security update post
 
-fedora-spefic: fedora-security
+fedora-spefic: fedora-security updatesd
 	sudo yum install -y cppcheck-debuginfo cppcheck
 	sudo yum install -y lcov
 	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
@@ -51,7 +57,7 @@ update:
 	sudo /etc/init.d/yum-cron start
 	sudo /etc/init.d/iptables restart
 
-restart-update: update
+updatesd:
 	sudo yum install -y yum-updatesd.noarch
 	sudo systemctl enable yum-updatesd.service
 	sudo systemctl restart yum-updatesd.service
