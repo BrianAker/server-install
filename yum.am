@@ -3,20 +3,14 @@
 
 default: all
 
-all: prep essential memcached gearman drizzle time restart-update post security fedora-spefic update
+all: prep essential memcached gearman drizzle time post security fedora-spefic update
 ifeq ($(DISTRIBUTION),fedora)
-      $(MAKE) updatesd
+      $(MAKE) fedora-spefic
 endif
 
-centos: prep essential memcached gearman drizzle time security update post
-
 fedora-spefic: fedora-security updatesd
-	sudo yum install -y cppcheck-debuginfo cppcheck
-	sudo yum install -y lcov
-	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
-	sudo yum install -y protobuf protobuf-compiler protobuf-devel
 
-wordpress: prep essential security restart-update update restart-update 
+wordpress: prep essential security yum-cron
 	sudo yum install -y httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
 	sudo yum install -y crypto-utils
 	genkey blog.tangent.org
@@ -51,18 +45,17 @@ prep:
 	sudo yum install -y yum-plugin-ps yum-plugin-remove-with-leaves
 
 # Keep yum updated
-update:
+yum-cron:
 	sudo yum install -y yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
 	sudo chkconfig yum-cron on
-	sudo /etc/init.d/yum-cron start
-	sudo /etc/init.d/iptables restart
+	sudo service yum-cron restart
 
 updatesd:
 	sudo yum install -y yum-updatesd.noarch
 	sudo systemctl enable yum-updatesd.service
 	sudo systemctl restart yum-updatesd.service
 
-compiler:
+compiler: mingw
 	sudo yum install -y gcc gcc-c++
 	sudo yum install -y make
 	sudo yum install -y bison
@@ -79,40 +72,44 @@ essential: docs java
 	sudo yum install -y doxygen
 	sudo yum install -y xorg-x11-server-Xvfb 
 	sudo yum install -y vim indent
+	sudo yum install -y cppcheck-debuginfo cppcheck
+	sudo yum install -y lcov
+	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
+	sudo yum install -y protobuf protobuf-compiler protobuf-devel
 
 java:
 	sudo yum install -y java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	sudo yum install -y dejavu-fonts-common dejavu-sans-fonts
 
+libuuid:
+	sudo yum install -y libuuid libuuid-devel
+
+curl:
+	sudo yum install -y libcurl-devel libcurl curl
+
 # Memcached
-memcached: compiler
+memcached: compiler libuuid
 	sudo yum install -y memcached
 	sudo yum install -y doxygen
 	sudo yum install -y libevent libevent-devel
-	sudo yum install -y uuidd libuuid libuuid-devel
 	sudo yum install -y cyrus-sasl-devel
 	sudo yum install -y openssl openssl-devel
 
 # Gearman
-gearman: compiler
+gearman: compiler libuuid curl
 	sudo yum install -y memcached
 	sudo yum install -y libevent libevent-devel
-	sudo yum install -y uuidd libuuid libuuid-devel
+	sudo yum install -y libuuid libuuid-devel
 	sudo yum install -y boost boost-devel
-	sudo yum install -y libcurl-dev libcurl curl
 
 # Drizzle
-drizzle: compiler
-	sudo yum install -y cmake
-	sudo yum install -y uuidd libuuid libuuid-devel
+drizzle: compiler libuuid curl
 	sudo yum install -y boost boost-devel
-	sudo yum install -y libcurl-dev libcurl curl
 	sudo yum install -y gperf
 	sudo yum install -y zlib-devel
 	sudo yum install -y pcre pcre-devel
 	sudo yum install -y readline-devel readline
 	sudo yum install -y pam-devel
-	sudo yum install -y libcurl-devel
 	sudo yum install -y libgcrypt-devel
 
 # Set time
@@ -141,7 +138,10 @@ mingw:
 
 post:
 
-security:
+restart-iptables:
+	sudo service iptables restart
+
+security: restart-iptables
 
 fedora-security:
 	sudo yum install -y denyhosts

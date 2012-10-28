@@ -6,12 +6,14 @@ elif [ -f "/etc/debconf.conf"  ]; then
   sudo apt-get update
   sudo apt-get install -y git make
 elif [ -d "/etc/mach_init.d"  ]; then
-  echo "Install homebrew"
-#  ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)
+  if [ ! -f /usr/local/bin/brew ]; then
+    echo "Install homebrew"
+    `ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
+  fi
 fi
 
 # If the fedora.am file is around we know then that we are in the repository
-if [ -f 'fedora.am' ]; then
+if [ -f 'yum.am' ]; then
   git pull
   make
 elif [ -d 'server-install' ]; then
