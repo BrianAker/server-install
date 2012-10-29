@@ -144,8 +144,8 @@ jenkins-sudo:
 	  sudo chown root.root /tmp/jenkins; \
 	  sudo chmod 0440 /tmp/jenkins; \
 	  sudo mv /tmp/jenkins /etc/sudoers.d/jenkins; \
-	  usermod -G wheel jenkins; \
 	fi
+	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
 
 # Shutdown password authentication 
 sudoers-inc:
