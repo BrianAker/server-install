@@ -1,5 +1,9 @@
 # vim:ft=automake
 
+default: 
+	$(MAKE) base_install
+	$(MAKE) -f accounts.am tangentci
+
 base_install:
 	@if test -f /etc/debconf.conf; then \
 	  	$(MAKE) -f ubuntu.am; \
@@ -14,7 +18,3 @@ base_install:
 	  elif test -d /etc/mach_init.d; then \
 	  	$(MAKE) -f osx.am; \
 	  fi
-
-default: 
-	$(MAKE) base_install
-	$(MAKE) -f accounts.am tangentci

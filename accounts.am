@@ -111,15 +111,15 @@ wordpress: brian secure-host
 
 
 jenkins-account:
-	if [ ! -d /home/jenkins ]; then
+	if [ ! -d /home/jenkins ]; then \
 	  sudo groupadd --gid 800 jenkins; \
 	  sudo useradd --shell=/bin/bash --uid 800 --gid 800 jenkins; \
 	fi
 
 jenkins-account-setup: 
-	sudo mkdir -p -m 0700  ~jenkins/.ssh
-	sudo mkdir -p -m 0755  ~jenkins/workspace
-	sudo bzr init-repo ~jenkins/workspace
+	if [ ! -d ~jenkins/.ssh ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
+	if [ ! -d ~jenkins/workspace ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
+	if [ ! -d /home/jenkins/workspace/.bzr ]; then sudo bzr init-repo ~jenkins/workspace; fi
 	sudo touch ~jenkins/.ssh/authorized_keys2
 	sudo chmod 600 ~jenkins/.ssh/authorized_keys2
 	sudo curl --append --output ~jenkins/.ssh/drizzle_authorized_keys2 https://launchpad.net/~ci-o/+sshkeys
@@ -138,7 +138,7 @@ jenkins-fix-permissions:
 	sudo chown -R jenkins.jenkins ~jenkins/
 
 jenkins-sudo:
-	if [ ! test -f /etc/sudoers.d/jenkins ]; then \
+	if [ ! -f /etc/sudoers.d/jenkins ]; then \
 	  touch /tmp/jenkins; \
 	  echo "jenkins    ALL = NOPASSWD: ALL" >> /tmp/jenkins; \
 	  sudo chown root.root /tmp/jenkins; \
