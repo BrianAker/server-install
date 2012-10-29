@@ -22,6 +22,9 @@ essential: compiler docs
 	sudo apt-get install --yes devscripts 
 	sudo apt-get install --yes cmake
 
+java:
+	sudo apt-get intall --yes openjdk-6-jdk openjdk-6-jre-headless
+
 # Jenkins install, we don't actually use this, we let Jenkins install its own.
 jenkins-slave:
 	sudo apt-get install --yes default-jdk default-jre default-jre-headless
