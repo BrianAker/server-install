@@ -2,7 +2,9 @@
 #
 
 /etc/sudoers.d/:
-	sudo mkdir -p -m 0750 /etc/sudoers.d/
+	if [ ! -d /etc/sudoers.d ]; then
+		sudo mkdir -p -m 0750 /etc/sudoers.d/
+	fi
 
 #Add Brian
 brian: /etc/sudoers.d/
@@ -109,8 +111,10 @@ wordpress: brian secure-host
 
 
 jenkins-account:
-	sudo groupadd --gid 800 jenkins
-	sudo useradd --shell=/bin/bash --uid 800 --gid 800 jenkins
+	if [ ! -d /home/jenkins ]; then
+	  sudo groupadd --gid 800 jenkins; \
+	  sudo useradd --shell=/bin/bash --uid 800 --gid 800 jenkins; \
+	fi
 
 jenkins-account-setup: 
 	sudo mkdir -p -m 0700  ~jenkins/.ssh
@@ -134,12 +138,14 @@ jenkins-fix-permissions:
 	sudo chown -R jenkins.jenkins ~jenkins/
 
 jenkins-sudo:
-	touch /tmp/jenkins
-	echo "jenkins    ALL = NOPASSWD: ALL" >> /tmp/jenkins
-	sudo chown root.root /tmp/jenkins
-	sudo chmod 0440 /tmp/jenkins
-	sudo mv /tmp/jenkins /etc/sudoers.d/jenkins
-	usermod -G wheel jenkins
+	if [ ! test -f /etc/sudoers.d/jenkins ]; then \
+	  touch /tmp/jenkins; \
+	  echo "jenkins    ALL = NOPASSWD: ALL" >> /tmp/jenkins; \
+	  sudo chown root.root /tmp/jenkins; \
+	  sudo chmod 0440 /tmp/jenkins; \
+	  sudo mv /tmp/jenkins /etc/sudoers.d/jenkins; \
+	  usermod -G wheel jenkins; \
+	fi
 
 # Shutdown password authentication 
 sudoers-inc:

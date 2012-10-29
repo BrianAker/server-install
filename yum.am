@@ -3,14 +3,9 @@
 
 default: all
 
-all: prep essential memcached gearman drizzle time post security fedora-spefic update
-ifeq ($(DISTRIBUTION),fedora)
-      $(MAKE) fedora-spefic
-endif
+all: prep essential memcached gearman drizzle time post security
 
-fedora-spefic: fedora-security updatesd
-
-wordpress: prep essential security yum-cron
+wordpress: prep essential security
 	sudo yum install -y httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
 	sudo yum install -y crypto-utils
 	genkey blog.tangent.org
@@ -51,9 +46,11 @@ yum-cron:
 	sudo service yum-cron restart
 
 updatesd:
+ifeq ($(DISTRIBUTION),fedora)
 	sudo yum install -y yum-updatesd.noarch
 	sudo systemctl enable yum-updatesd.service
 	sudo systemctl restart yum-updatesd.service
+endif
 
 compiler: mingw
 	sudo yum install -y gcc gcc-c++
@@ -66,16 +63,19 @@ compiler: mingw
 #Basic build tools
 essential: docs java
 	sudo yum install -y yum-plugin-auto-update-debug-info
-	sudo yum install -y gettext intltool libaio-dev libpcre3-dev libreadline-dev
+	sudo yum install -y gettext intltool
 	sudo yum install -y valgrind
 	sudo yum install -y gdb
 	sudo yum install -y doxygen
 	sudo yum install -y xorg-x11-server-Xvfb 
 	sudo yum install -y vim indent
+ifeq ($(DISTRIBUTION),fedora)
 	sudo yum install -y cppcheck-debuginfo cppcheck
 	sudo yum install -y lcov
 	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
+	sudo yum install -y libaio-dev libpcre3-dev libreadline-dev
 	sudo yum install -y protobuf protobuf-compiler protobuf-devel
+endif
 
 java:
 	sudo yum install -y java-1.7.0-openjdk-devel java-1.7.0-openjdk
@@ -125,24 +125,26 @@ mingw:
 	sudo yum install -y mingw32-filesystem
 	sudo yum install -y mingw32-binutils
 	sudo yum install -y mingw32-zlib
-	sudo yum install -y mingw32-headers
 	sudo yum install -y mingw32-cpp
 	sudo yum install -y mingw32-bzip2
-	sudo yum install -y mingw32-crt
 	sudo yum install -y mingw32-gcc-c++
-	sudo yum install -y mingw-filesystem-base
-	sudo yum install -y mingw-binutils-generic
 	sudo yum install -y mingw32-gcc
 	sudo yum install -y mingw32-pthreads
+ifeq ($(DISTRIBUTION),fedora)
+	sudo yum install -y mingw32-crt
+	sudo yum install -y mingw32-headers
+	sudo yum install -y mingw-filesystem-base
+	sudo yum install -y mingw-binutils-generic
 	sudo yum install -y mingw32-glib-networking
+endif
 
 post:
 
 restart-iptables:
 	sudo service iptables restart
 
-security: restart-iptables
-
-fedora-security:
+security: restart-iptables yum-cron
+ifeq ($(DISTRIBUTION),fedora)
 	sudo yum install -y denyhosts
 	sudo yum install -y fail2ban
+endif
