@@ -154,7 +154,7 @@ jenkins-sudo:
 # Shutdown password authentication 
 sudoers-inc:
 	touch /tmp/sudo-include
-	echo "includedir /etc/sudoers.d" >> /tmp/sudo-include
+	echo "#includedir /etc/sudoers.d" > /tmp/sudo-include
 	sudo sh -c "cat /tmp/sudo-include  >> /etc/sudoers"
 	sudo visudo -q -c -f /etc/sudoers
 	rm /tmp/sudo-include
