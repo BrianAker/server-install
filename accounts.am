@@ -116,7 +116,10 @@ jenkins-account:
 	  sudo useradd --shell=/bin/bash --uid 800 --gid 800 jenkins; \
 	fi
 
-jenkins-account-setup: 
+/usr/bin/bzr:
+	sudo apt-get install --yes bzr
+
+jenkins-account-setup: /usr/bin/bzr
 	if [ ! -d ~jenkins/.ssh ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
 	if [ ! -d ~jenkins/workspace ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
 	if [ ! -d /home/jenkins/workspace/.bzr ]; then sudo bzr init-repo ~jenkins/workspace; fi
@@ -146,6 +149,7 @@ jenkins-sudo:
 	  sudo mv /tmp/jenkins /etc/sudoers.d/jenkins; \
 	fi
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
+	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 
 # Shutdown password authentication 
 sudoers-inc:

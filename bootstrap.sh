@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function init()
+function install_git_make()
 {
   if [ -f "/etc/redhat-release"  ]; then
     sudo yum install -y git make
@@ -29,6 +29,10 @@ function run_server_install()
   fi
 }
 
+function init()
+{
+  install_git_make
+  run_server_install
+}
 init
-run_server_install
-
+echo "Completed"
