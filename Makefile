@@ -7,7 +7,7 @@ default:
 
 base_install:
 	@if test -f /etc/debconf.conf; then \
-	  	$(MAKE) -f ubuntu.am; \
+	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am; \
 	  elif [ -f '/etc/SuSE-release' ]; then  \
 	  	echo "Suse is not currently supported"; \
 	  elif [ -f '/etc/fedora-release' ]; then  \
