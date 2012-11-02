@@ -87,6 +87,7 @@ time:
 
 post:
 	sudo apt-get autoremove --yes
+	sudo reboot
 
 docs:
 	sudo apt-get install --yes python-sphinx
