@@ -170,5 +170,5 @@ secure:
 	sudo restart ssh
 
 secure-host: secure sudoers-inc
-	sudo sh -c "echo sshd:216.39.139.192,174.143.244.111,98.129.238.122,174.143.242.18 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:216.39.139.192,216.39.139.194,216.39.139.195,174.143.244.111,98.129.238.122,174.143.242.18 >> /etc/hosts.allow"
 	sudo sh -c "echo ALL:ALL >> /etc/hosts.deny"
