@@ -1,0 +1,11 @@
+# vim:ft=automake
+#
+
+default: all
+
+all:
+
+bazaar: /usr/bin/bzr
+/usr/local/bin/bzr:
+	pkg_add -F -r bazaar
+
