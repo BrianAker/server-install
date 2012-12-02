@@ -164,9 +164,10 @@ sudoers-inc:
 	sudo sh -c "cat /tmp/sudo-include  >> /etc/sudoers"
 	sudo visudo -q -c -f /etc/sudoers
 	rm /tmp/sudo-include
+
 secure: secure-fix
 	if [ -x /usr/bin/systemctl ]; then \
-	  systemctl start sshd.service; \
+	  sudo systemctl start sshd.service; \
 	elif [ -x /sbin/restart ]; then \
 	  sudo restart ssh; \
 	fi
