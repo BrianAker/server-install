@@ -164,7 +164,14 @@ sudoers-inc:
 	sudo sh -c "cat /tmp/sudo-include  >> /etc/sudoers"
 	sudo visudo -q -c -f /etc/sudoers
 	rm /tmp/sudo-include
-secure:
+secure: secure-fix
+	if [ -x /usr/bin/systemctl ]; then \
+	  systemctl start sshd.service; \
+	elif [ -x /sbin/restart ]; then \
+	  sudo restart ssh; \
+	fi
+
+secure-fix:
 	sudo sed -i -e's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 	sudo sed -i -e's/#PasswordAuthentication no/PasswordAuthentication no/' /etc/ssh/sshd_config
 	sudo sed -i -e's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
@@ -173,11 +180,6 @@ secure:
 	sudo sed -i -e's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
 	sudo sed -i -e's/PubkeyAuthentication no/PubkeyAuthentication yes/' /etc/ssh/sshd_config
 	sudo sed -i -e's/#PubkeyAuthentication yes/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
-	if [ -x /usr/bin/systemctl ]; then \
-	  systemctl start sshd.service; \
-	elif [ -x /sbin/restart ]; then \
-	  sudo restart ssh; \
-	fi
 
 secure-host: secure sudoers-inc
 	sudo sh -c "echo sshd:216.39.139.192,216.39.139.194,216.39.139.195,174.143.244.111,98.129.238.122,174.143.242.18 >> /etc/hosts.allow"
