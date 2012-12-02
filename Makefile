@@ -17,6 +17,8 @@ base_install:
 	  	DISTRIBUTION=centos $(MAKE) -f yum.am; \
 	  elif test -f /etc/redhat-release; then \
 	  	DISTRIBUTION=rhel $(MAKE) -f yum.am; \
+	  elif test -x /usr/sbin/pkg_add; then \
+	  	DISTRIBUTION=freebsd9 $(MAKE) -f freebsd.am; \
 	  elif test -d /etc/mach_init.d; then \
 	  	$(MAKE) -f osx.am; \
 	  fi

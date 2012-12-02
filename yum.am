@@ -1,13 +1,15 @@
 # vim:ft=automake
 #
 
+YUM:= sudo yum install -y
+
 default: all
 
 all: prep essential memcached gearman drizzle time post security
 
 wordpress: prep essential security
-	sudo yum install -y httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
-	sudo yum install -y crypto-utils
+	-$(YUM) httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
+	-$(YUM) crypto-utils
 	genkey blog.tangent.org
 
 wordpressdb:
@@ -33,21 +35,21 @@ wordpressdb:
 prep:
 	sudo yum update -y
 	sudo yum upgrade -y
-	sudo yum install -y curl
-	sudo yum install -y hg
-	sudo yum install -y bzr
-	sudo yum install -y git
-	sudo yum install -y yum-plugin-ps yum-plugin-remove-with-leaves
+	-$(YUM) curl
+	-$(YUM) hg
+	-$(YUM) bzr
+	-$(YUM) git
+	-$(YUM) yum-plugin-ps yum-plugin-remove-with-leaves
 
 # Keep yum updated
 yum-cron:
-	sudo yum install -y yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
+	-$(YUM) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
 	sudo chkconfig yum-cron on
 	sudo service yum-cron restart
 
 updatesd:
 ifeq ($(DISTRIBUTION),fedora)
-	sudo yum install -y yum-updatesd.noarch
+	-$(YUM) yum-updatesd.noarch
 	sudo systemctl enable yum-updatesd.service
 	sudo systemctl restart yum-updatesd.service
 	sudo sed -i -e's/do_update = no/do_update = yes/' /etc/yum/yum-updatesd.conf
@@ -57,89 +59,90 @@ ifeq ($(DISTRIBUTION),fedora)
 endif
 
 compiler: mingw
-	sudo yum install -y gcc gcc-c++
-	sudo yum install -y make
-	sudo yum install -y bison
-	sudo yum install -y flex
-	sudo yum install -y autoconf
-	sudo yum install -y libtool
+	-$(YUM) gcc gcc-c++
+	-$(YUM) make
+	-$(YUM) bison
+	-$(YUM) flex
+	-$(YUM) autoconf
+	-$(YUM) libtool
 
 #Basic build tools
 essential: docs java
-	sudo yum install -y yum-plugin-auto-update-debug-info
-	sudo yum install -y gettext intltool
-	sudo yum install -y valgrind
-	sudo yum install -y gdb
-	sudo yum install -y doxygen
-	sudo yum install -y xorg-x11-server-Xvfb 
-	sudo yum install -y vim indent
+	-$(YUM) yum-plugin-auto-update-debug-info
+	-$(YUM) gettext intltool
+	-$(YUM) valgrind
+	-$(YUM) gdb
+	-$(YUM) doxygen
+	-$(YUM) xorg-x11-server-Xvfb 
+	-$(YUM) vim indent
 ifeq ($(DISTRIBUTION),fedora)
-	sudo yum install -y cppcheck-debuginfo cppcheck
-	sudo yum install -y lcov
-	sudo yum install -y clang-devel clang-analyzer llvm-devel llvm-libs llvm
-	sudo yum install -y libaio-dev libpcre3-dev libreadline-dev
-	sudo yum install -y protobuf protobuf-compiler protobuf-devel
+	-$(YUM) cppcheck-debuginfo cppcheck
+	-$(YUM) lcov
+	-$(YUM) clang-devel clang-analyzer llvm-devel llvm-libs llvm
+	-$(YUM) libaio-dev libpcre3-dev libreadline-dev
+	-$(YUM) protobuf protobuf-compiler protobuf-devel
 endif
 
 java:
-	sudo yum install -y java-1.7.0-openjdk-devel java-1.7.0-openjdk
-	sudo yum install -y dejavu-fonts-common dejavu-sans-fonts
+	-$(YUM) java-1.7.0-openjdk-devel java-1.7.0-openjdk
+	-$(YUM) dejavu-fonts-common dejavu-sans-fonts
 
 libuuid:
-	sudo yum install -y libuuid libuuid-devel
+	-$(YUM) libuuid libuuid-devel
 
 curl:
-	sudo yum install -y libcurl-devel libcurl curl
+	-$(YUM) libcurl-devel libcurl curl
 
 # Memcached
 memcached: compiler libuuid
-	sudo yum install -y memcached
-	sudo yum install -y doxygen
-	sudo yum install -y libevent libevent-devel
-	sudo yum install -y cyrus-sasl-devel
-	sudo yum install -y openssl openssl-devel
+	-$(YUM) memcached
+	-$(YUM) doxygen
+	-$(YUM) libevent libevent-devel
+	-$(YUM) cyrus-sasl-devel
+	-$(YUM) openssl openssl-devel
 
 # Gearman
 gearman: compiler libuuid curl
-	sudo yum install -y memcached
-	sudo yum install -y libevent libevent-devel
-	sudo yum install -y libuuid libuuid-devel
-	sudo yum install -y boost boost-devel
+	-$(YUM) memcached
+	-$(YUM) libevent libevent-devel
+	-$(YUM) libuuid libuuid-devel
+	-$(YUM) boost boost-devel
 
 # Drizzle
 drizzle: compiler libuuid curl
-	sudo yum install -y boost boost-devel
-	sudo yum install -y gperf
-	sudo yum install -y zlib-devel
-	sudo yum install -y pcre pcre-devel
-	sudo yum install -y readline-devel readline
-	sudo yum install -y pam-devel
-	sudo yum install -y libgcrypt-devel
+	-$(YUM) boost boost-devel
+	-$(YUM) gperf
+	-$(YUM) zlib-devel
+	-$(YUM) pcre pcre-devel
+	-$(YUM) readline-devel readline
+	-$(YUM) pam-devel
+	-$(YUM) libgcrypt-devel
 
 # Set time
 time:
-	sudo yum install -y ntpdate
+	-$(YUM) ntpdate
+	-$(YUM) ntp
 	sudo ntpdate time.apple.com
 
 docs:
-	sudo yum install -y python-sphinx
+	-$(YUM) python-sphinx
 
 mingw:
-	sudo yum install -y mingw32-boost
-	sudo yum install -y mingw32-filesystem
-	sudo yum install -y mingw32-binutils
-	sudo yum install -y mingw32-zlib
-	sudo yum install -y mingw32-cpp
-	sudo yum install -y mingw32-bzip2
-	sudo yum install -y mingw32-gcc-c++
-	sudo yum install -y mingw32-gcc
-	sudo yum install -y mingw32-pthreads
+	-$(YUM) mingw32-boost
+	-$(YUM) mingw32-filesystem
+	-$(YUM) mingw32-binutils
+	-$(YUM) mingw32-zlib
+	-$(YUM) mingw32-cpp
+	-$(YUM) mingw32-bzip2
+	-$(YUM) mingw32-gcc-c++
+	-$(YUM) mingw32-gcc
+	-$(YUM) mingw32-pthreads
 ifeq ($(DISTRIBUTION),fedora)
-	sudo yum install -y mingw32-crt
-	sudo yum install -y mingw32-headers
-	sudo yum install -y mingw-filesystem-base
-	sudo yum install -y mingw-binutils-generic
-	sudo yum install -y mingw32-glib-networking
+	-$(YUM) mingw32-crt
+	-$(YUM) mingw32-headers
+	-$(YUM) mingw-filesystem-base
+	-$(YUM) mingw-binutils-generic
+	-$(YUM) mingw32-glib-networking
 endif
 
 post:
@@ -149,6 +152,6 @@ restart-iptables:
 
 security: restart-iptables yum-cron
 ifeq ($(DISTRIBUTION),fedora)
-	sudo yum install -y denyhosts
-	sudo yum install -y fail2ban
+	-$(YUM) denyhosts
+	-$(YUM) fail2ban
 endif

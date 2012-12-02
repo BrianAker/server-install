@@ -4,6 +4,8 @@ function install_git_make()
 {
   if [ -f "/etc/redhat-release"  ]; then
     sudo yum install -y git make
+  elif [ -f "/etc/regdomain.xml"  ]; then
+    pkg_add -F -r bash git gmake
   elif [ -f "/etc/debconf.conf"  ]; then
     sudo apt-get update -y
     sudo apt-get install -y git-core make

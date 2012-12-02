@@ -12,7 +12,9 @@ brian: /etc/sudoers.d/
 	sudo mkdir -p -m 0700  ~brian/.ssh
 	sudo touch ~brian/.ssh/authorized_keys2
 	sudo curl -a --output ~brian/.ssh/authorized_keys2 https://launchpad.net/%7Ebrianaker/+sshkeys 
+	sudo cp ~brian/.ssh/authorized_keys2 ~brian/.ssh/authorized_keys
 	sudo chmod 600 ~brian/.ssh/authorized_keys2
+	sudo chmod 600 ~brian/.ssh/authorized_keys
 	sudo chown -R brian.brian ~brian/
 	touch /tmp/brian
 	echo "brian    ALL = NOPASSWD: ALL" >> /tmp/brian
@@ -103,9 +105,9 @@ mark:
 	#usermod -G wheel mark
 
 #Add DrizzleCI/Jenkins
-drizzleci: jenkins-account jenkins-account-setup drizzle-keys jenkins-fix-permissions jenkins-sudo
+drizzleci: jenkins-account jenkins-account-setup drizzle-keys jenkins-sync-authorized-keys jenkins-fix-permissions jenkins-sudo
 
-tangentci: jenkins-account jenkins-account-setup tangent-keys jenkins-fix-permissions jenkins-sudo
+tangentci: jenkins-account jenkins-account-setup tangent-keys jenkins-sync-authorized-keys jenkins-fix-permissions jenkins-sudo
 
 wordpress: brian secure-host
 
@@ -140,6 +142,10 @@ tangent-keys:
 jenkins-fix-permissions:
 	sudo chown -R jenkins.jenkins ~jenkins/
 
+jenkins-sync-authorized-keys:
+	sudo cp ~jenkins/.ssh/authorized_keys2 ~jenkins/.ssh/authorized_keys
+	sudo chmod 600 ~jenkins/.ssh/authorized_keys
+
 jenkins-sudo:
 	if [ ! -f /etc/sudoers.d/jenkins ]; then \
 	  touch /tmp/jenkins; \
@@ -167,7 +173,11 @@ secure:
 	sudo sed -i -e's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
 	sudo sed -i -e's/PubkeyAuthentication no/PubkeyAuthentication yes/' /etc/ssh/sshd_config
 	sudo sed -i -e's/#PubkeyAuthentication yes/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
-	sudo restart ssh
+	if [ -x /usr/bin/systemctl ]; then \
+	  systemctl start sshd.service; \
+	elif [ -x /sbin/restart ]; then \
+	  sudo restart ssh; \
+	fi
 
 secure-host: secure sudoers-inc
 	sudo sh -c "echo sshd:216.39.139.192,216.39.139.194,216.39.139.195,174.143.244.111,98.129.238.122,174.143.242.18 >> /etc/hosts.allow"
