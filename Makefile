@@ -24,5 +24,5 @@ base_install:
 	  fi
 
 install:
-	scp bootstrap.sh root@"$$INSTALL_SERVER":~/
-	ssh -t root@"$$INSTALL_SERVER" ./bootstrap.sh
+	scp bootstrap.sh "$$INSTALL_SERVER":~/
+	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
