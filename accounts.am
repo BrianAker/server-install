@@ -181,6 +181,7 @@ secure-fix:
 	sudo sed -i -e's/#PermitEmptyPasswords no/PermitEmptyPasswords no/' /etc/ssh/sshd_config
 	sudo sed -i -e's/PubkeyAuthentication no/PubkeyAuthentication yes/' /etc/ssh/sshd_config
 	sudo sed -i -e's/#PubkeyAuthentication yes/PermitEmptyPasswords yes/' /etc/ssh/sshd_config
+	sudo sed -i -e's/#LogLevel INFO/LogLevel INFO/' /etc/ssh/sshd_config
 
 secure-host: secure sudoers-inc
 	sudo sh -c "echo sshd:216.39.139.192,216.39.139.194,216.39.139.195,174.143.244.111,98.129.238.122,174.143.242.18 >> /etc/hosts.allow"
