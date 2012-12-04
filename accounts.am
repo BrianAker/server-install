@@ -167,7 +167,11 @@ sudoers-inc:
 
 secure: secure-fix
 	if [ -x /usr/bin/systemctl ]; then \
-	  sudo systemctl restart sshd.service; \
+	  sudo /usr/bin/systemctl restart sshd.service; \
+	elif [ -x /bin/systemctl ]; then \
+	  sudo /bin/systemctl restart sshd.service; \
+	elif [ -x /sbin/service ]; then \
+	  sudo /sbin/service sshd restart ; \
 	elif [ -x /sbin/restart ]; then \
 	  sudo restart ssh; \
 	fi
