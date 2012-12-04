@@ -44,8 +44,13 @@ prep:
 # Keep yum updated
 yum-cron:
 	-$(YUM) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
-	sudo chkconfig yum-cron on
-	sudo service yum-cron restart
+	@if test -x /bin/systemctl; then \
+	  sudo systemctl enable yum-cron.service ; \
+	  sudo systemctl start yum-cron.service ; \
+	  if test -x /usr/sbin/chkconfig; then \
+	  sudo chkconfig yum-cron on ; \
+	  sudo service yum-cron restart ; \
+	  fi
 
 updatesd:
 ifeq ($(DISTRIBUTION),fedora)
@@ -246,7 +251,9 @@ post:
 restart-iptables:
 	sudo service iptables restart
 
-security: restart-iptables yum-cron
+security: yum-cron fedora-security
+
+fedora-security:
 ifeq ($(DISTRIBUTION),fedora)
 	-$(YUM) denyhosts
 	-$(YUM) fail2ban

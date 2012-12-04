@@ -22,3 +22,7 @@ base_install:
 	  elif test -d /etc/mach_init.d; then \
 	  	$(MAKE) -f osx.am; \
 	  fi
+
+install:
+	scp bootstrap.sh root@"$$INSTALL_SERVER":~/
+	ssh root@"$$INSTALL_SERVER" ./bootstrap.sh
