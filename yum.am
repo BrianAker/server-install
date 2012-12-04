@@ -47,8 +47,11 @@ yum-cron:
 	@if test -x /bin/systemctl; then \
 	  sudo systemctl enable yum-cron.service ; \
 	  sudo systemctl start yum-cron.service ; \
-	  if test -x /usr/sbin/chkconfig; then \
-	  sudo chkconfig yum-cron on ; \
+	  elif test -x /usr/sbin/chkconfig; then \
+	  sudo /usr/sbin/chkconfig yum-cron on ; \
+	  sudo service yum-cron restart ; \
+	  elif test -x /sbin/chkconfig; then \
+	  sudo /sbin/chkconfig yum-cron on ; \
 	  sudo service yum-cron restart ; \
 	  fi
 
