@@ -25,4 +25,4 @@ base_install:
 
 install:
 	scp bootstrap.sh root@"$$INSTALL_SERVER":~/
-	ssh root@"$$INSTALL_SERVER" ./bootstrap.sh
+	ssh -t root@"$$INSTALL_SERVER" ./bootstrap.sh
