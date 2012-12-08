@@ -1,0 +1,12 @@
+# vim:ft=automake
+
+YUM:= sudo yum install -y
+
+jenkins:
+	sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+	sudo curl --output /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+	-$(YUM) jenkins
+	-$(YUM) maven
+	-$(YUM) xorg-x11-server-Xvfb 
+	sudo systemctl enable jenkins.service
+	sudo systemctl start jenkins.service

@@ -32,13 +32,22 @@ wordpressdb:
 	adduser wordpressftp
 	usermod -G apache wordpressftp
 
-prep:
+curl:
+	-$(YUM) curl
+
+hg:
+	-$(YUM) hg
+
+bzr: /usr/bin/bzr
+/usr/bin/bzr:
+	-$(YUM) bzr
+
+git:
+	-$(YUM) git
+
+prep: curl hg bzr git
 	sudo yum update -y
 	sudo yum upgrade -y
-	-$(YUM) curl
-	-$(YUM) hg
-	-$(YUM) bzr
-	-$(YUM) git
 	-$(YUM) yum-plugin-ps yum-plugin-remove-with-leaves
 
 # Keep yum updated
