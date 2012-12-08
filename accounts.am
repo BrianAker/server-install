@@ -1,43 +1,21 @@
 # vim:ft=automake
 #
 
-/etc/sudoers.d/:
-	if [ ! -d /etc/sudoers.d ]; then
-		sudo mkdir -p -m 0750 /etc/sudoers.d/
-	fi
-
 #Add Brian
-brian: /etc/sudoers.d/
-	sudo useradd --shell=/bin/bash brian
-	sudo mkdir -p -m 0700  ~brian/.ssh
-	sudo touch ~brian/.ssh/authorized_keys2
-	sudo curl -a --output ~brian/.ssh/authorized_keys2 https://launchpad.net/%7Ebrianaker/+sshkeys 
-	sudo cp ~brian/.ssh/authorized_keys2 ~brian/.ssh/authorized_keys
-	sudo chmod 600 ~brian/.ssh/authorized_keys2
-	sudo chmod 600 ~brian/.ssh/authorized_keys
-	sudo chown -R brian.brian ~brian/
-	touch /tmp/brian
-	echo "brian    ALL = NOPASSWD: ALL" >> /tmp/brian
-	sudo chown root.root /tmp/brian
-	sudo chmod 0440 /tmp/brian
-	sudo mv /tmp/brian /etc/sudoers.d/brian
-	#usermod -G wheel brian
+brian: 
+	$(MAKE) -f useradd.am CREATE_USER=brian CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Ebrianaker/+sshkeys
 
-#Add Yazz
-yazz: /etc/sudoers.d/
-	sudo useradd --shell=/bin/bash yazz
-	sudo mkdir -p -m 0700  ~yazz/.ssh
-	sudo touch ~yazz/.ssh/authorized_keys2
-	sudo curl -a --output ~yazz/.ssh/authorized_keys2 https://launchpad.net/%7Eentropyworks/+sshkeys 
-	sudo chmod 600 ~yazz/.ssh/authorized_keys2
-	sudo chown -R yazz.yazz ~yazz/
-	touch /tmp/yazz
-	echo "yazz    ALL = NOPASSWD: ALL" >> /tmp/yazz
-	sudo chown root.root /tmp/yazz
-	sudo chmod 0440 /tmp/yazz
-	sudo mv /tmp/yazz /etc/sudoers.d/yazz
-	#usermod -G wheel yazz
+yazz: 
+	$(MAKE) -f useradd.am CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7EEentropyworks/+sshkeys
 
+linuxjedi: 
+	$(MAKE) -f useradd.am CREATE_USER=linuxjedi CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Elinuxjedi/+sshkeys
+
+pcrews: 
+	$(MAKE) -f useradd.am CREATE_USER=pcrews CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Epatrick-crews/+sshkeys
+
+mark: 
+	$(MAKE) -f useradd.am CREATE_USER=mark CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Efallenpegasus/+sshkeys
 #Add Kent
 kent: /etc/sudoers.d/
 	sudo useradd --shell=/bin/bash kent
@@ -46,34 +24,6 @@ kent: /etc/sudoers.d/
 	sudo curl -a --output ~kent/.ssh/authorized_keys2 https://launchpad.net/%7Ekent/+sshkeys 
 	sudo chmod 600 ~kent/.ssh/authorized_keys2
 	sudo chown -R kent.kent ~kent/
-
-linuxjedi:
-	sudo useradd --shell=/bin/bash linuxjedi
-	sudo mkdir -p -m 0700  ~linuxjedi/.ssh
-	sudo touch ~linuxjedi/.ssh/authorized_keys2
-	sudo curl -a --output ~linuxjedi/.ssh/authorized_keys2 https://launchpad.net/%7Elinuxjedi/+sshkeys
-	sudo chmod 600 ~linuxjedi/.ssh/authorized_keys2
-	sudo chown -R linuxjedi.linuxjedi ~linuxjedi/
-	touch /tmp/linuxjedi
-	echo "linuxjedi    ALL = NOPASSWD: ALL" >> /tmp/linuxjedi
-	sudo chown root.root /tmp/linuxjedi
-	sudo chmod 0440 /tmp/linuxjedi
-	sudo mv /tmp/linuxjedi /etc/sudoers.d/linuxjedi
-	#usermod -G wheel linuxjedi
-
-pcrews:
-	sudo useradd --shell=/bin/bash pcrews
-	sudo mkdir -p -m 0700  ~pcrews/.ssh
-	sudo touch ~pcrews/.ssh/authorized_keys2
-	sudo curl -a --output ~pcrews/.ssh/authorized_keys2 https://launchpad.net/%7Epatrick-crews/+sshkeys
-	sudo chmod 600 ~pcrews/.ssh/authorized_keys2
-	sudo chown -R pcrews.pcrews ~pcrews/
-	touch /tmp/pcrews
-	echo "pcrews    ALL = NOPASSWD: ALL" >> /tmp/pcrews
-	sudo chown root.root /tmp/pcrews
-	sudo chmod 0440 /tmp/pcrews
-	sudo mv /tmp/pcrews /etc/sudoers.d/pcrews
-	#usermod -G wheel pcrews
 
 hingo:
 	sudo useradd --shell=/bin/bash hingo
@@ -89,20 +39,6 @@ hingo:
 	sudo mv /tmp/hingo /etc/sudoers.d/hingo
 	#usermod -G wheel hingo
 
-#Add Mark
-mark:
-	sudo useradd --shell=/bin/bash fallenpegasus
-	sudo mkdir -p -m 0700  ~fallenpegasus/.ssh
-	sudo touch ~fallenpegasus/.ssh/authorized_keys2
-	sudo curl -a --output ~fallenpegasus/.ssh/authorized_keys2 https://launchpad.net/%7Efallenpegasus/+sshkeys 
-	sudo chmod 600 ~fallenpegasus/.ssh/authorized_keys2
-	sudo chown -R fallenpegasus.fallenpegasus ~fallenpegasus/
-	touch /tmp/fallenpegasus
-	echo "fallenpegasus    ALL = NOPASSWD: ALL" >> /tmp/fallenpegasus
-	sudo chown root.root /tmp/fallenpegasus
-	sudo chmod 0440 /tmp/fallenpegasus
-	sudo mv /tmp/fallenpegasus /etc/sudoers.d/fallenpegasus
-	#usermod -G wheel mark
 
 #Add DrizzleCI/Jenkins
 drizzleci: jenkins-account jenkins-account-setup drizzle-keys jenkins-sync-authorized-keys jenkins-fix-permissions jenkins-sudo
@@ -119,7 +55,11 @@ jenkins-account:
 	fi
 
 /usr/bin/bzr:
-	sudo apt-get install --yes bzr
+	if [ -x /usr/bin/apt-get ]; then \
+	  sudo apt-get install --yes bzr; \
+	if [ -x /usr/bin/yum ]; then \
+	  sudo yum install -y bzr; \
+	fi
 
 jenkins-account-setup: /usr/bin/bzr
 	if [ ! -d ~jenkins/.ssh ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi

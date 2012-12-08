@@ -1,0 +1,25 @@
+# vim:ft=automake
+
+user: /etc/sudoers.d/
+	sudo useradd --shell=/bin/bash $(CREATE_USER)
+	sudo mkdir -p -m 0700  ~$(CREATE_USER)/.ssh
+	sudo touch ~$(CREATE_USER)/.ssh/authorized_keys2
+	sudo curl -a --output ~$(CREATE_USER)/.ssh/authorized_keys2 https://launchpad.net/%7Ebrianaker/+sshkeys 
+	sudo cp ~$(CREATE_USER)/.ssh/authorized_keys2 ~$(CREATE_USER)/.ssh/authorized_keys
+	sudo chmod 600 ~$(CREATE_USER)/.ssh/authorized_keys2
+	sudo chmod 600 ~$(CREATE_USER)/.ssh/authorized_keys
+	sudo chown -R $(CREATE_USER).$(CREATE_USER) ~$(CREATE_USER)/
+	touch /tmp/$(CREATE_USER)
+	echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
+	sudo chown root.root /tmp/$(CREATE_USER)
+	sudo chmod 0440 /tmp/$(CREATE_USER)
+	sudo mv /tmp/$(CREATE_USER) /etc/sudoers.d/$(CREATE_USER)
+	if [ -x /usr/sbin/usermod ]; then 
+		usermod -G sudo $(CREATE_USER)
+	fi
+
+/etc/sudoers.d/:
+	if [ ! -d /etc/sudoers.d ]; then
+		sudo mkdir -p -m 0750 /etc/sudoers.d/
+	fi
+

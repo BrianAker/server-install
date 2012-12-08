@@ -1,26 +1,40 @@
 # vim:ft=automake
 #
 
-YUM:= sudo yum install -y
+PKG_INSTALLER:= sudo yum install -y
+PKG_UPDATE:= sudo yum update -y
+PKG_UPGRADE:= sudo yum upgrade -y
 
-default: all
+.PHONY: all
+all: | prep essential rpmbuild memcached gearman drizzle time post security
 
-all: prep essential rpmbuild memcached gearman drizzle time post security
+.PHONY: pkg_update
+pkg_update:
+	$(PKG_UPDATE)
+	$(PKG_UPGRADE)
 
-wordpress: prep essential security
-	-$(YUM) httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
-	-$(YUM) crypto-utils
-	genkey blog.tangent.org
-
-wordpressdb:
-	yum install mysql mysql-server
+.PHONY: mysql
+mysql:
+	$(PKG_INSTALLER) $@ $@-server
 	systemctl enable mysqld.service
 	systemctl start mysqld.service
-	systemctl enable httpd.service
-	systemctl start httpd.service
-	yum install vsftpd
-	systemctl enable vsftpd.service
-	systemctl start vsftpd.service
+
+DAEMONS:= memcached httpd vsftpd
+.PHONY: $(DAEMONS)
+
+$(DAEMONS):
+	-$(PKG_INSTALLER) $@
+	systemctl enable $@.service
+	systemctl start $@.service
+
+.PHONY: wordpress
+wordpress: | prep essential security httpd
+	-$(PKG_INSTALLER) wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
+	-$(PKG_INSTALLER) crypto-utils
+	genkey blog.tangent.org
+
+.PHONY: wordpressdb
+wordpressdb: mysql vsftpd
 	yum install system-config-firewall
 	system-config-firewall
 	echo "create database wordpress;"  | mysql
@@ -32,27 +46,18 @@ wordpressdb:
 	adduser wordpressftp
 	usermod -G apache wordpressftp
 
-curl:
-	-$(YUM) curl
+PREP:= /usr/bin/curl /usr/bin/hg /usr/bin/bzr /usr/bin/git
+$(PREP): 
+	-$(PKG_INSTALLER) $(@F)
 
-hg:
-	-$(YUM) hg
-
-bzr: /usr/bin/bzr
-/usr/bin/bzr:
-	-$(YUM) bzr
-
-git:
-	-$(YUM) git
-
-prep: curl hg bzr git
-	sudo yum update -y
-	sudo yum upgrade -y
-	-$(YUM) yum-plugin-ps yum-plugin-remove-with-leaves
+.PHONY: prep
+prep: | $(PREP) pkg_update
+	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
 
 # Keep yum updated
+.PHONY: yum-cron
 yum-cron:
-	-$(YUM) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
+	-$(PKG_INSTALLER) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
 	@if test -x /bin/systemctl; then \
 	  sudo systemctl enable yum-cron.service ; \
 	  sudo systemctl start yum-cron.service ; \
@@ -64,9 +69,10 @@ yum-cron:
 	  sudo service yum-cron restart ; \
 	  fi
 
+.PHONY: updatesd
 updatesd:
 ifeq ($(DISTRIBUTION),fedora)
-	-$(YUM) yum-updatesd.noarch
+	-$(PKG_INSTALLER) yum-updatesd.noarch
 	sudo systemctl enable yum-updatesd.service
 	sudo systemctl restart yum-updatesd.service
 	sudo sed -i -e's/do_update = no/do_update = yes/' /etc/yum/yum-updatesd.conf
@@ -75,98 +81,110 @@ ifeq ($(DISTRIBUTION),fedora)
 	sudo service yum-updatesd restart
 endif
 
-compiler: mingw
-	-$(YUM) gcc gcc-c++
-	-$(YUM) make
-	-$(YUM) bison
-	-$(YUM) flex
-	-$(YUM) autoconf
-	-$(YUM) libtool
+COMPILER:= /usr/bin/gcc /usr/bin/g++ /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool
+$(COMPILER): 
+	-$(PKG_INSTALLER) $(@F)
+
+.PHONY: compiler
+compiler: $(COMPILER) mingw
 
 #Basic build tools
-essential: docs java
-	-$(YUM) yum-plugin-auto-update-debug-info
-	-$(YUM) gettext intltool
-	-$(YUM) valgrind
-	-$(YUM) gdb
-	-$(YUM) doxygen
-	-$(YUM) xorg-x11-server-Xvfb 
-	-$(YUM) vim indent
-	-$(YUM) man
+.PHONY: essential
+essential: docs /usr/bin/java
+	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
+	-$(PKG_INSTALLER) gettext intltool
+	$(PKG_INSTALLER) valgrind
+	$(PKG_INSTALLER) gdb
+	-$(PKG_INSTALLER) doxygen
+	-$(PKG_INSTALLER) xorg-x11-server-Xvfb 
+	$(PKG_INSTALLER) vim indent
+	$(PKG_INSTALLER) man
+	-$(PKG_INSTALLER) libaio-dev libpcre3-dev libreadline-dev
 ifeq ($(DISTRIBUTION),fedora)
-	-$(YUM) cppcheck-debuginfo cppcheck
-	-$(YUM) lcov
-	-$(YUM) clang-devel clang-analyzer llvm-devel llvm-libs llvm
-	-$(YUM) libaio-dev libpcre3-dev libreadline-dev
-	-$(YUM) protobuf protobuf-compiler protobuf-devel
+	-$(PKG_INSTALLER) cppcheck-debuginfo cppcheck
+	-$(PKG_INSTALLER) lcov
+	-$(PKG_INSTALLER) clang-devel clang-analyzer llvm-devel llvm-libs llvm
+	-$(PKG_INSTALLER) protobuf protobuf-compiler protobuf-devel
 endif
 
-java:
-	-$(YUM) java-1.7.0-openjdk-devel java-1.7.0-openjdk
-	-$(YUM) dejavu-fonts-common dejavu-sans-fonts
+/usr/bin/java:
+	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
+	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
 
-libuuid:
-	-$(YUM) libuuid libuuid-devel
+LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl libaio
 
-curl:
-	-$(YUM) libcurl-devel libcurl curl
+libraries: | $(LIBRARIES)
+$(LIBRARIES):
+	-$(PKG_INSTALLER) $@ $@-devel
 
 # Memcached
-memcached: compiler libuuid
-	-$(YUM) memcached
-	-$(YUM) doxygen
-	-$(YUM) libevent libevent-devel
-	-$(YUM) cyrus-sasl-devel
-	-$(YUM) openssl openssl-devel
+.PHONY: memcached-dev
+memcached-dev: compiler libraries
+	-$(PKG_INSTALLER) memcached
+	-$(PKG_INSTALLER) doxygen
+	-$(PKG_INSTALLER) cyrus-sasl-devel
 
 # Gearman
-gearman: compiler libuuid curl
-	-$(YUM) memcached
-	-$(YUM) libevent libevent-devel
-	-$(YUM) libuuid libuuid-devel
-	-$(YUM) boost boost-devel
+.PHONY: gearman
+gearman: compiler memcached libraries
 
 # Drizzle
-drizzle: compiler libuuid curl
-	-$(YUM) boost boost-devel
-	-$(YUM) gperf
-	-$(YUM) zlib-devel
-	-$(YUM) pcre pcre-devel
-	-$(YUM) readline-devel readline
-	-$(YUM) pam-devel
-	-$(YUM) libgcrypt-devel
+.PHONY: drizzle
+drizzle: libraries
+	-$(PKG_INSTALLER) gperf
 
 # Set time
+.PHONY: time
 time:
-	-$(YUM) ntpdate
-	-$(YUM) ntp
+	-$(PKG_INSTALLER) ntpdate
+	-$(PKG_INSTALLER) ntp
 	sudo ntpdate time.apple.com
 
+.PHONY: docs
 docs:
-	-$(YUM) python-sphinx
+	-$(PKG_INSTALLER) python-sphinx
 
-rpmbuild:
-	-$(YUM) rpm-build
+/usr/bin/rpmbuild:
+	-$(PKG_INSTALLER) rpm-build
+.PHONY: rpmbuild
+rpmbuild: /usr/bin/rpmbuild
 ifeq ($(DISTRIBUTION),fedora)
-	-$(YUM) auto-buildrequires
+	-$(PKG_INSTALLER) auto-buildrequires
 endif
 
-openstack:
-	sudo curl http://repos.fedorapeople.org/repos/openstack/openstack-folsom/fedora-openstack-folsom.repo -o /etc/yum.repos.d/fedora-openstack-folsom.repo
-	-$(YUM) openstack-dashboard openstack-glance openstack-keystone openstack-swift openstack-nova-api openstack-utils python-novaclient python-nova-adminclient
-	-$(YUM) mysql-server mysql
-	-$(YUM) qpid-cpp-server qpid-cpp-server-devel python-qpid-qmf
-	-$(YUM) libvirt-daemon-config-network libvirt-daemon-config-nwfilter
-	-$(YUM) openstack-cinder python-cinderclient python-cinder
-	-$(YUM) openstack-nova-objectstore.noarch
-	-$(YUM) openstack-nova-network openstack-nova-scheduler openstack-nova-cert openstack-nova-compute
-	-$(YUM) update -y
-	-sudo systemctl enable mysqld.service
-	-sudo systemctl start mysqld.service
+/usr/sbin/qpidd: /usr/bin/qpid-python-test
+	-$(PKG_INSTALLER) qpid-cpp-server
+
+/usr/bin/qpid-python-test: 
+	-$(PKG_INSTALLER) python-qpid-qmf
+
+.PHONY: qpid
+qpid: /usr/sbin/qpidd /usr/bin/qpid-python-test
 	-sudo systemctl start qpidd.service
 	-sudo systemctl enable qpidd.service
-	-sudo systemctl start libvirtd.service
+
+.PHONY: libvirt
+libvirt:
+	-$(PKG_INSTALLER) libvirt-daemon-config-network libvirt-daemon-config-nwfilter
 	-sudo systemctl enable libvirtd.service
+	-sudo systemctl start libvirtd.service
+
+REQUIRED_OPENSTACK_SERVICES:= mysql httpd qpid libvirt
+
+.PHONY: openstack
+openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-install
+
+.PHONY: openstack-repo
+openstack-repo: /usr/bin/curl
+	sudo curl http://repos.fedorapeople.org/repos/openstack/openstack-folsom/fedora-openstack-folsom.repo -o /etc/yum.repos.d/fedora-openstack-folsom.repo
+
+OPENSTACK_NOVA:= openstack-nova-objectstore.noarch openstack-nova-network openstack-nova-scheduler openstack-nova-cert openstack-nova-compute openstack-nova-api python-novaclient python-nova-adminclient
+OPENSTACK_CINDER:= openstack-cinder python-cinderclient python-cinder
+OPENSTACK_MISC: openstack-dashboard openstack-glance openstack-keystone openstack-swift openstack-utils 
+
+.PHONY: openstack-prep
+openstack-prep:
+	-$(PKG_INSTALLER) $(OPENSTACK_NOVA) $(OPENSTACK_CINDER) $(OPENSTACK_MISC)
 	sudo openstack-db --service nova --init
 	sudo nova-manage db sync
 	sudo openstack-db --service glance --init
@@ -177,7 +195,11 @@ openstack:
 	sudo truncate --size=20G /var/lib/cinder/cinder-volumes.img
 	sudo losetup --show -f /var/lib/cinder/cinder-volumes.img
 
-openstack-cinder:
+.PHONY: openstack-install
+openstack-install: | openstack-prep openstack-cinder openstack-nova openstack-keystone openstack-nova-use-keystone openstack-glance-use-keystone openstack-nova-network openstack-add-glance-image
+
+.PHONY: openstack-cinder
+openstack-cinder: /usr/bin/curl
 	sudo mkdir -p /var/lib/cinder
 	sudo truncate --size=20G /var/lib/cinder/cinder-volumes.img
 	sudo losetup --show -f /var/lib/cinder/cinder-volumes.img
@@ -199,11 +221,13 @@ openstack-cinder:
 	sudo systemctl start openstack-cinder-volume.service
 	sudo systemctl enable openstack-cinder-volume.service
 
+.PHONY: openstack-nova
 openstack-nova:
 	for svc in api objectstore compute network scheduler cert; do sudo systemctl start openstack-nova-$svc.service; done
 	for svc in api objectstore compute network scheduler cert; do sudo systemctl enable openstack-nova-$svc.service; done
 
-openstack-keystone:
+.PHONY: openstack-keystone
+openstack-keystone: openssl
 	sudo openstack-db --service keystone --init
 	cat > keystonerc << _EOF
 	export ADMIN_TOKEN=$(openssl rand -hex 10)
@@ -220,6 +244,7 @@ openstack-keystone:
 	sudo ADMIN_PASSWORD=$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
 	keystone user-list
 
+.PHONY: openstack-nova-use-keystone
 openstack-nova-use-keystone:
 	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_tenant_name service
 	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_user nova
@@ -227,6 +252,7 @@ openstack-nova-use-keystone:
 	sudo openstack-config --set /etc/nova/nova.conf DEFAULT auth_strategy keystone
 	for svc in api compute; do sudo systemctl restart openstack-nova-$svc.service; done
 
+.PHONY: openstack-glance-use-keystone
 openstack-glance-use-keystone:
 	sudo openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
 	sudo openstack-config --set /etc/glance/glance-registry.conf paste_deploy flavor keystone
@@ -238,46 +264,58 @@ openstack-glance-use-keystone:
 	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_password servicepass
 	for svc in api registry; do sudo systemctl restart openstack-glance-$svc.service; done
 
+.PHONY: openstack-nova-network
 openstack-nova-network:
 	sudo nova-manage network create demonet 10.0.0.0/24 1 256 --bridge=demonetbr0
 
-openstack-add-glance-image:
-	glance add name=f16-jeos is_public=true disk_format=qcow2 container_format=bare \
-	  copy_from=http://berrange.fedorapeople.org/images/2012-02-29/f16-x86_64-openstack-sda.qcow2
+/tmp/f16-x86_64-openstack-sda.qcow2: /usr/bin/curl
+	curl -o /tmp/f16-x86_64-openstack-sda.qcow2 http://berrange.fedorapeople.org/images/2012-02-29/f16-x86_64-openstack-sda.qcow2
+
+.PHONY: openstack-add-glance-image
+openstack-add-glance-image: /tmp/f16-x86_64-openstack-sda.qcow2
+	glance add name=f16-jeos is_public=true disk_format=qcow2 container_format=bare < /tmp/f16-x86_64-openstack-sda.qcow2
 
 
+.PHONY: mingw
 mingw:
-	-$(YUM) mingw32-boost
-	-$(YUM) mingw32-filesystem
-	-$(YUM) mingw32-binutils
-	-$(YUM) mingw32-zlib
-	-$(YUM) mingw32-cpp
-	-$(YUM) mingw32-bzip2
-	-$(YUM) mingw32-gcc-c++
-	-$(YUM) mingw32-gcc
-	-$(YUM) mingw32-pthreads
+	-$(PKG_INSTALLER) mingw32-boost
+	-$(PKG_INSTALLER) mingw32-filesystem
+	-$(PKG_INSTALLER) mingw32-binutils
+	-$(PKG_INSTALLER) mingw32-zlib
+	-$(PKG_INSTALLER) mingw32-cpp
+	-$(PKG_INSTALLER) mingw32-bzip2
+	-$(PKG_INSTALLER) mingw32-gcc-c++
+	-$(PKG_INSTALLER) mingw32-gcc
+	-$(PKG_INSTALLER) mingw32-pthreads
 ifeq ($(DISTRIBUTION),fedora)
-	-$(YUM) mingw32-crt
-	-$(YUM) mingw32-headers
-	-$(YUM) mingw-filesystem-base
-	-$(YUM) mingw-binutils-generic
-	-$(YUM) mingw32-glib-networking
+	-$(PKG_INSTALLER) mingw32-crt
+	-$(PKG_INSTALLER) mingw32-headers
+	-$(PKG_INSTALLER) mingw-filesystem-base
+	-$(PKG_INSTALLER) mingw-binutils-generic
+	-$(PKG_INSTALLER) mingw32-glib-networking
 endif
 
+.PHONY: smtp
 smtp:
-	-$(YUM) sendmail sendmail-cf
+	-$(PKG_INSTALLER) sendmail sendmail-cf
 	-sudo systemctl enable sendmail.service
 	-sudo systemctl restart sendmail.service
 
+.PHONY: post
 post:
 
+.PHONY: restart-iptables
 restart-iptables:
 	sudo service iptables restart
 
+.PHONY: security
 security: yum-cron fedora-security
 
+.PHONY: fedora-security
 fedora-security:
 ifeq ($(DISTRIBUTION),fedora)
-	-$(YUM) denyhosts
-	-$(YUM) fail2ban
+	-$(PKG_INSTALLER) denyhosts
+	-$(PKG_INSTALLER) fail2ban
 endif
+
+.DEFAULT_GOAL:= all
