@@ -46,6 +46,7 @@ memcached: compiler
 	$(APTGET) memcached
 	$(APTGET) uuid-dev
 	$(APTGET) doxygen
+	$(APTGET) libsasl2-dev
 
 # Gearman
 gearman: compiler

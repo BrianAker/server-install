@@ -5,7 +5,7 @@ YUM:= sudo yum install -y
 
 default: all
 
-all: prep essential memcached gearman drizzle time post security
+all: prep essential rpmbuild memcached gearman drizzle time post security
 
 wordpress: prep essential security
 	-$(YUM) httpd wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
@@ -136,6 +136,12 @@ time:
 docs:
 	-$(YUM) python-sphinx
 
+rpmbuild:
+	-$(YUM) rpm-build
+ifeq ($(DISTRIBUTION),fedora)
+	-$(YUM) auto-buildrequires
+endif
+
 openstack:
 	sudo curl http://repos.fedorapeople.org/repos/openstack/openstack-folsom/fedora-openstack-folsom.repo -o /etc/yum.repos.d/fedora-openstack-folsom.repo
 	-$(YUM) openstack-dashboard openstack-glance openstack-keystone openstack-swift openstack-nova-api openstack-utils python-novaclient python-nova-adminclient
@@ -248,6 +254,11 @@ ifeq ($(DISTRIBUTION),fedora)
 	-$(YUM) mingw-binutils-generic
 	-$(YUM) mingw32-glib-networking
 endif
+
+smtp:
+	-$(YUM) sendmail sendmail-cf
+	-sudo systemctl enable sendmail.service
+	-sudo systemctl restart sendmail.service
 
 post:
 
