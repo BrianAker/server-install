@@ -4,7 +4,7 @@ user: /etc/sudoers.d/
 	sudo useradd --shell=/bin/bash $(CREATE_USER)
 	sudo mkdir -p -m 0700  ~$(CREATE_USER)/.ssh
 	sudo touch ~$(CREATE_USER)/.ssh/authorized_keys2
-	sudo curl -a --output ~$(CREATE_USER)/.ssh/authorized_keys2 https://launchpad.net/%7Ebrianaker/+sshkeys 
+	sudo curl -a --output ~$(CREATE_USER)/.ssh/authorized_keys2 $(CREATE_USER_SSH_KEY_URL)
 	sudo cp ~$(CREATE_USER)/.ssh/authorized_keys2 ~$(CREATE_USER)/.ssh/authorized_keys
 	sudo chmod 600 ~$(CREATE_USER)/.ssh/authorized_keys2
 	sudo chmod 600 ~$(CREATE_USER)/.ssh/authorized_keys
