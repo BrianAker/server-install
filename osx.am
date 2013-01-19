@@ -1,51 +1,74 @@
 # vim:ft=automake
 
-all: autoconf automake pcretest libevent boost sphinx-build bazaar boost protoc mercurial doxygen
+include projects.am
+
+PKG_INSTALLER:= brew install
+PKG_UPDATE:= 
+PKG_UPGRADE:= 
+
+build_essential: autoconf automake pcretest sphinx-build bazaar protoc mercurial doxygen
+
+libraries: libevent boost
 
 fresh: brew glibtool all
+
+time:
+
+security:
+
+post:
 
 tap: /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	brew tap homebrew/dupes
 
-brew:
-	@echo "Go install homebrew"
+prep: /usr/local/bin/brew
+/usr/local/bin/brew:
+	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
 
 bazaar: /usr/local/bin/bzr
 /usr/local/bin/bzr:
-	brew install bazaar
+	$(PKG_INSTALLER) bazaar
 
 protoc: /usr/local/bin/protoc
 /usr/local/bin/protoc:
-	brew install protobuf
+	$(PKG_INSTALLER) protobuf
 
 mercurial: /usr/local/bin/hg
 /usr/local/bin/hg:
-	brew install mercurial
+	$(PKG_INSTALLER) mercurial
 
 boost: /usr/local/include/boost
 /usr/local/include/boost:
-	brew install boost
+	$(PKG_INSTALLER) boost
+
+mysqld: /usr/local//bin/mysqld
+/usr/local//bin/mysqld:
+	$(PKG_INSTALLER) mysql
+
+memcached: /usr/local/bin/memcached
+/usr/local/bin/memcached:
+	$(PKG_INSTALLER) memcached
 
 libevent: /usr/local/include/event.h
 /usr/local/include/event.h:
-	brew install libevent
+	$(PKG_INSTALLER) libevent
 
 glibtool: /usr/local/bin/glibtool
 /usr/local/bin/glibtool:
-	brew install libtool
+	$(PKG_INSTALLER) libtool
 
 autoconf: /usr/local/bin/autoconf
 /usr/local/bin/autoconf:
-	brew install autoconf
+	$(PKG_INSTALLER) autoconf
 
 doxygen: /usr/local/bin/doxygen
 /usr/local/bin/doxygen:
-	brew install doxygen
+	$(PKG_INSTALLER) doxygen
 
 automake: /usr/local/bin/automake
 /usr/local/bin/automake:
-	brew install automake
+	$(PKG_INSTALLER) automake
 
 sphinx-build: /usr/local/bin/sphinx-build
 /usr/local/bin/sphinx-build:
@@ -53,8 +76,8 @@ sphinx-build: /usr/local/bin/sphinx-build
 
 pcretest: /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
-	brew install pcre
+	$(PKG_INSTALLER) pcre
 
 bison: /usr/local/bin/bison
 /usr/local/bin/bison: tap
-	brew install homebrew/dupes/bison
+	$(PKG_INSTALLER) homebrew/dupes/bison

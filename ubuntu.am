@@ -1,91 +1,89 @@
 # vim:ft=automake
 
+include projects.am
+
 PKG_INSTALLER:= sudo apt-get install --yes
 PKG_UPDATE:= sudo apt-get update --yes
 PKG_UPGRADE:= sudo apt-get upgrade --yes
 
 PKG_INSTALLER:= sudo apt-get install --yes
 
-ubuntu: prep essential memcached gearman drizzle jenkins-slave time update post
+.PHONY: prep
+prep: | $(PREP) pkg_update
+	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
+	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
 
-prep:
+.PHONY: pkg_update
+pkg_update:
 	sudo apt-get --purge -y remove byobu
-	$(PKG_INSTALLER) curl
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
-essential: compiler docs
+DAEMONS:= memcached apache2 vsftpd
+.PHONY: $(DAEMONS)
+$(DAEMONS):
+	-$(PKG_INSTALLER) $@
+
+$(PREP): 
+	-$(PKG_INSTALLER) $(@F)
+
+COMPILER:= /usr/bin/gcc /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool /usr/bin/g++
+$(COMPILER): 
+	$(PKG_INSTALLER) $(@F)
+
+.PHONY: compiler
+compiler: $(COMPILER) mingw clang-bundle protobuf-bundle
+
+$(DEV_TOOLS_REQUIRED): 
+	$(PKG_INSTALLER) $(@F)
+
+DEV_TOOLS_EXTRA:= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/cmake
+$(DEV_TOOLS_EXTRA):
+	$(PKG_INSTALLER) $(@F)
+
+.PHONY: python-sphinx
+python-sphinx: /usr/bin/sphinx-build
+/usr/bin/sphinx-build:
+	$(PKG_INSTALLER) python-sphinx
+
+.PHONY: mercurial
+mercurial: /usr/bin/hg
+/usr/bin/hg:
+	$(PKG_INSTALLER) mercurial
+
+#Basic build tools
+.PHONY: build_essential
+build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx mercurial
 	$(PKG_INSTALLER) build-essential
-	$(PKG_INSTALLER) bzr 
 	$(PKG_INSTALLER) git-core
-	$(PKG_INSTALLER) mercurial 
-	$(PKG_INSTALLER) valgrind
-	$(PKG_INSTALLER) gdb
-	$(PKG_INSTALLER) lcov
-	$(PKG_INSTALLER) cppcheck 
-	$(PKG_INSTALLER) devscripts 
-	$(PKG_INSTALLER) cmake
+	$(PKG_INSTALLER) devscripts
+
+.PHONY: mingw
+	$(PKG_INSTALLER) .*mingw-w64*
 
 mysqld:
 	$(PKG_INSTALLER) mysql-server
 
-libdrizzle-requires: mysqld
-	$(PKG_INSTALLER) libglib2.0-0 libglib2.0-dev
-
-java:
-	$(PKG_INSTALLER) openjdk-6-jdk openjdk-6-jre-headless
-
 # Jenkins install, we don't actually use this, we let Jenkins install its own.
 jenkins-slave:
 	$(PKG_INSTALLER) default-jdk default-jre default-jre-headless
+	$(PKG_INSTALLER) maven
 
-compiler:
-	$(PKG_INSTALLER) gcc
-	$(PKG_INSTALLER) autoconf
-	$(PKG_INSTALLER) bison
-	$(PKG_INSTALLER) flex
-	$(PKG_INSTALLER) libtool
-	$(PKG_INSTALLER) make
-	$(PKG_INSTALLER) clang
+LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid
 
-# Memcached
-memcached: compiler
-	$(PKG_INSTALLER) libevent-dev 
-	$(PKG_INSTALLER) memcached
-	$(PKG_INSTALLER) uuid-dev
-	$(PKG_INSTALLER) doxygen
-	$(PKG_INSTALLER) libsasl2-dev
+libraries: | $(LIBRARIES)
+$(LIBRARIES):
+	-$(PKG_INSTALLER) $@ $@-dev
 
-# Gearman
-gearman: compiler
-	$(PKG_INSTALLER) libboost-all-dev
-	$(PKG_INSTALLER) libcurl4-openssl-dev curl
-	$(PKG_INSTALLER) libevent-dev
-	$(PKG_INSTALLER) memcached
-	$(PKG_INSTALLER) uuid-dev
-	$(PKG_INSTALLER) devscripts
-	$(PKG_INSTALLER) libsqlite3-dev
-	$(PKG_INSTALLER) libmysqlclient-dev
-	$(PKG_INSTALLER) maven2
+CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
+.PHONY: clang-bundle
+clang-bundle: $(CLANG)
+$(CLANG):
+	-$(PKG_INSTALLER) $(@F)
 
-# Drizzle
-drizzle: compiler
-	$(PKG_INSTALLER) gperf
-	$(PKG_INSTALLER) intltool
-	$(PKG_INSTALLER) libboost-all-dev
-	$(PKG_INSTALLER) libcloog-ppl0 
-	$(PKG_INSTALLER) libcurl4-openssl-dev
-	$(PKG_INSTALLER) libevent-dev
-	$(PKG_INSTALLER) libpam0g-dev
-	$(PKG_INSTALLER) libpcre3-dev
-	$(PKG_INSTALLER) libpcre3-dev
-	$(PKG_INSTALLER) libprotobuf-dev protobuf-compiler
-	$(PKG_INSTALLER) libprotobuf-dev protobuf-compiler
-	$(PKG_INSTALLER) libreadline-dev
-	$(PKG_INSTALLER) uuid-dev
-	$(PKG_INSTALLER) zlib1g-dev
+PROTOBUF:= libprotobuf-dev protobuf-compiler
 
 # Update automatically
 update:
@@ -94,19 +92,20 @@ update:
 	$(PKG_INSTALLER) unattended-upgrades
 	sudo dpkg-reconfigure -plow unattended-upgrades
 
+.PHONY: time
 time:
-	$(PKG_INSTALLER) ntp
-	$(PKG_INSTALLER) ntpdate
-	#sudo ntpdate time.apple.com
+	-$(PKG_INSTALLER) ntp ntpdate
+	sudo ntpdate time.apple.com
 
 post:
 	sudo apt-get autoremove --yes
-
-docs:
-	$(PKG_INSTALLER) python-sphinx
 
 jenkins-server:
 	wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
 	sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
 	$(PKG_UPDATE)
 	$(PKG_INSTALLER) jenkins
+
+security:
+	-$(PKG_INSTALLER) denyhosts
+	-$(PKG_INSTALLER) fail2ban

@@ -54,14 +54,7 @@ jenkins-account:
 	  sudo useradd --shell=/bin/bash --uid 800 --gid 800 jenkins; \
 	fi
 
-/usr/bin/bzr:
-	if [ -x /usr/bin/apt-get ]; then \
-	  sudo apt-get install --yes bzr; \
-	if [ -x /usr/bin/yum ]; then \
-	  sudo yum install -y bzr; \
-	fi
-
-jenkins-account-setup: /usr/bin/bzr
+jenkins-account-setup:
 	if [ ! -d ~jenkins/.ssh ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
 	if [ ! -d ~jenkins/workspace ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
 	if [ ! -d /home/jenkins/workspace/.bzr ]; then sudo bzr init-repo ~jenkins/workspace; fi

@@ -1,12 +1,11 @@
 # vim:ft=automake
 #
 
+include projects.am
+
 PKG_INSTALLER:= sudo yum install -y
 PKG_UPDATE:= sudo yum update -y
 PKG_UPGRADE:= sudo yum upgrade -y
-
-.PHONY: all
-all: | prep essential rpmbuild memcached gearman drizzle time post security
 
 .PHONY: pkg_update
 pkg_update:
@@ -14,45 +13,29 @@ pkg_update:
 	$(PKG_UPGRADE)
 
 .PHONY: mysqld
-mysqld:
+mysqld: /usr/libexec/mysqld /var/run/mysqld
+
+/usr/libexec/mysqld:
 	$(PKG_INSTALLER) $@ $@-server
+
+/var/run/mysqld:
 	systemctl enable mysqld.service
 	systemctl start mysqld.service
 
 DAEMONS:= memcached httpd vsftpd
 .PHONY: $(DAEMONS)
-
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
 	systemctl enable $@.service
 	systemctl start $@.service
 
-.PHONY: wordpress
-wordpress: | prep essential security httpd
-	-$(PKG_INSTALLER) wordpress mod_ssl wordpress-plugin-bad-behavior wordpress-plugin-defaults
-	-$(PKG_INSTALLER) crypto-utils
-	genkey blog.tangent.org
-
-.PHONY: wordpressdb
-wordpressdb: mysqld vsftpd
-	yum install system-config-firewall
-	system-config-firewall
-	echo "create database wordpress;"  | mysql
-	echo "grant all privileges on wordpress.* to wordpress identified by 'wordpress';" | mysql
-	echo "grant all privileges on wordpress.* to wordpress@localhost identified by 'wordpress';" | mysql
-	echo "grant all privileges on wordpress.* to wordpress@'%' identified by 'wordpress';" | mysql
-	echo "flush privileges;" | mysql
-	chown -R apache.apache /usr/share/wordpress/
-	adduser wordpressftp
-	usermod -G apache wordpressftp
-
-PREP:= /usr/bin/curl /usr/bin/hg /usr/bin/bzr /usr/bin/git
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
 
 .PHONY: prep
 prep: | $(PREP) pkg_update
 	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
+	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
 
 # Keep yum updated
 .PHONY: yum-cron
@@ -83,61 +66,49 @@ endif
 
 COMPILER:= /usr/bin/gcc /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool
 $(COMPILER): 
-	-$(PKG_INSTALLER) $(@F)
+	$(PKG_INSTALLER) $(@F)
 
+.PHONY: g++
+g++: /usr/bin/g++
 /usr/bin/g++: 
-	-$(PKG_INSTALLER) gcc-c++
+	$(PKG_INSTALLER) gcc-c++
 
 .PHONY: compiler
-compiler: $(COMPILER) mingw /usr/bin/g++
+compiler: $(COMPILER) mingw-bundle g++ clang-bundle protobuf-bundle
+
+$(DEV_TOOLS_REQUIRED): 
+	$(PKG_INSTALLER) $(@F)
+
+DEV_TOOLS_EXTRA:= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/hg /usr/bin/cmake
+$(DEV_TOOLS_EXTRA):
+	-$(PKG_INSTALLER) $(@F)
+
+.PHONY: jenkins-slave
+jenkins-slave: /usr/bin/java
+
+.PHONY: python-sphinx
+python-sphinx: /usr/bin/sphinx-build
+/usr/bin/sphinx-build:
+	$(PKG_INSTALLER) $(@F)
 
 #Basic build tools
-.PHONY: essential
-essential: docs /usr/bin/java
-	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
-	-$(PKG_INSTALLER) gettext intltool
-	$(PKG_INSTALLER) valgrind
-	$(PKG_INSTALLER) gdb
-	-$(PKG_INSTALLER) doxygen
-	-$(PKG_INSTALLER) xorg-x11-server-Xvfb 
-	$(PKG_INSTALLER) vim indent
-	$(PKG_INSTALLER) man
-	-$(PKG_INSTALLER) libaio-dev libpcre3-dev libreadline-dev
-ifeq ($(DISTRIBUTION),fedora)
-	-$(PKG_INSTALLER) cppcheck-debuginfo cppcheck
-	-$(PKG_INSTALLER) lcov
-	-$(PKG_INSTALLER) clang-devel clang-analyzer llvm-devel llvm-libs llvm
-	-$(PKG_INSTALLER) protobuf protobuf-compiler protobuf-devel
-endif
+.PHONY: build_essential
+build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx /usr/bin/rpmbuild
+	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
 
-libdrizzle-requires: mysqld
-	$(PKG_INSTALLER) glib2-devel
+CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
+
+PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 
 /usr/bin/java:
 	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
 
-LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl libaio
+LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl libaio cyrus-sasl
 
 libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	-$(PKG_INSTALLER) $@ $@-devel
-
-# Memcached
-.PHONY: memcached-dev
-memcached-dev: compiler libraries
-	-$(PKG_INSTALLER) memcached
-	-$(PKG_INSTALLER) doxygen
-	-$(PKG_INSTALLER) cyrus-sasl-devel
-
-# Gearman
-.PHONY: gearman
-gearman: compiler memcached libraries mysqld
-
-# Drizzle
-.PHONY: drizzle
-drizzle: libraries
-	-$(PKG_INSTALLER) gperf
 
 # Set time
 .PHONY: time
@@ -146,17 +117,8 @@ time:
 	-$(PKG_INSTALLER) ntp
 	sudo ntpdate time.apple.com
 
-.PHONY: docs
-docs:
-	-$(PKG_INSTALLER) python-sphinx
-
 /usr/bin/rpmbuild:
 	-$(PKG_INSTALLER) rpm-build
-.PHONY: rpmbuild
-rpmbuild: /usr/bin/rpmbuild
-ifeq ($(DISTRIBUTION),fedora)
-	-$(PKG_INSTALLER) auto-buildrequires
-endif
 
 /usr/sbin/qpidd: /usr/bin/qpid-python-test
 	-$(PKG_INSTALLER) qpid-cpp-server
@@ -175,115 +137,9 @@ libvirt:
 	-sudo systemctl enable libvirtd.service
 	-sudo systemctl start libvirtd.service
 
-REQUIRED_OPENSTACK_SERVICES:= mysqld httpd qpid libvirt
 
-.PHONY: openstack
-openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-install
-
-.PHONY: openstack-repo
-openstack-repo: /usr/bin/curl
-	sudo curl http://repos.fedorapeople.org/repos/openstack/openstack-folsom/fedora-openstack-folsom.repo -o /etc/yum.repos.d/fedora-openstack-folsom.repo
-
-OPENSTACK_NOVA:= openstack-nova-objectstore.noarch openstack-nova-network openstack-nova-scheduler openstack-nova-cert openstack-nova-compute openstack-nova-api python-novaclient python-nova-adminclient
-OPENSTACK_CINDER:= openstack-cinder python-cinderclient python-cinder
-OPENSTACK_MISC: openstack-dashboard openstack-glance openstack-keystone openstack-swift openstack-utils 
-
-.PHONY: openstack-prep
-openstack-prep:
-	-$(PKG_INSTALLER) $(OPENSTACK_NOVA) $(OPENSTACK_CINDER) $(OPENSTACK_MISC)
-	sudo openstack-db --service nova --init
-	sudo nova-manage db sync
-	sudo openstack-db --service glance --init
-	sudo openstack-db --service cinder --init
-	for svc in api registry; do sudo systemctl start openstack-glance-$svc.service; done
-	for svc in api registry; do sudo systemctl enable openstack-glance-$svc.service; done
-	sudo mkdir -p /var/lib/cinder
-	sudo truncate --size=20G /var/lib/cinder/cinder-volumes.img
-	sudo losetup --show -f /var/lib/cinder/cinder-volumes.img
-
-.PHONY: openstack-install
-openstack-install: | openstack-prep openstack-cinder openstack-nova openstack-keystone openstack-nova-use-keystone openstack-glance-use-keystone openstack-nova-network openstack-add-glance-image
-
-.PHONY: openstack-cinder
-openstack-cinder: /usr/bin/curl
-	sudo mkdir -p /var/lib/cinder
-	sudo truncate --size=20G /var/lib/cinder/cinder-volumes.img
-	sudo losetup --show -f /var/lib/cinder/cinder-volumes.img
-	CINDER_VOL_DEVICE=$(losetup -a | grep "/var/lib/cinder/cinder-volumes.img" | cut -d':' -f1)
-	sudo vgcreate cinder-volumes $CINDER_VOL_DEVICE
-	LOOP_EXEC_DIR=/usr/libexec/cinder
-	LOOP_SVC=cinder-demo-disk-image.service
-	LOOP_EXEC=voladm
-	GH_SYSD_BASE_URL=https://raw.github.com/openstack-fedora/openstack-configuration/master
-	GH_SYSD_LOOP_SVC_URL=$GH_SYSD_BASE_URL/systemd/$LOOP_SVC
-	GH_SYSD_LOOP_EXEC_URL=$GH_SYSD_BASE_URL/bin/$LOOP_EXEC
-	mkdir -p $LOOP_EXEC_DIR
-	curl $GH_SYSD_LOOP_SVC_URL -o /usr/lib/systemd/system/$LOOP_SVC
-	curl $GH_SYSD_LOOP_EXEC_URL -o $LOOP_EXEC_DIR/$LOOP_EXEC
-	chmod -R a+rx $LOOP_EXEC_DIR
-	systemctl start $LOOP_SVC && systemctl enable $LOOP_SVC
-	CINDER_VOL_DEVICE=/dev/loop0
-	vgcreate cinder-volumes $CINDER_VOL_DEVICE
-	sudo systemctl start openstack-cinder-volume.service
-	sudo systemctl enable openstack-cinder-volume.service
-
-.PHONY: openstack-nova
-openstack-nova:
-	for svc in api objectstore compute network scheduler cert; do sudo systemctl start openstack-nova-$svc.service; done
-	for svc in api objectstore compute network scheduler cert; do sudo systemctl enable openstack-nova-$svc.service; done
-
-.PHONY: openstack-keystone
-openstack-keystone: openssl
-	sudo openstack-db --service keystone --init
-	cat > keystonerc << _EOF
-	export ADMIN_TOKEN=$(openssl rand -hex 10)
-	export OS_USERNAME=admin
-	export OS_PASSWORD=verybadpass
-	export OS_TENANT_NAME=admin
-	export OS_AUTH_URL=http://127.0.0.1:5000/v2.0/
-	export SERVICE_ENDPOINT=http://127.0.0.1:35357/v2.0/
-	export SERVICE_TOKEN=\$ADMIN_TOKEN
-	_EOF
-	. ./keystonerc
-	sudo openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
-	sudo systemctl start openstack-keystone.service && sudo systemctl enable openstack-keystone.service
-	sudo ADMIN_PASSWORD=$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
-	keystone user-list
-
-.PHONY: openstack-nova-use-keystone
-openstack-nova-use-keystone:
-	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_tenant_name service
-	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_user nova
-	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_password servicepass
-	sudo openstack-config --set /etc/nova/nova.conf DEFAULT auth_strategy keystone
-	for svc in api compute; do sudo systemctl restart openstack-nova-$svc.service; done
-
-.PHONY: openstack-glance-use-keystone
-openstack-glance-use-keystone:
-	sudo openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
-	sudo openstack-config --set /etc/glance/glance-registry.conf paste_deploy flavor keystone
-	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_tenant_name service
-	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_user glance
-	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_password servicepass
-	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_tenant_name service
-	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_user glance
-	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_password servicepass
-	for svc in api registry; do sudo systemctl restart openstack-glance-$svc.service; done
-
-.PHONY: openstack-nova-network
-openstack-nova-network:
-	sudo nova-manage network create demonet 10.0.0.0/24 1 256 --bridge=demonetbr0
-
-/tmp/f16-x86_64-openstack-sda.qcow2: /usr/bin/curl
-	curl -o /tmp/f16-x86_64-openstack-sda.qcow2 http://berrange.fedorapeople.org/images/2012-02-29/f16-x86_64-openstack-sda.qcow2
-
-.PHONY: openstack-add-glance-image
-openstack-add-glance-image: /tmp/f16-x86_64-openstack-sda.qcow2
-	glance add name=f16-jeos is_public=true disk_format=qcow2 container_format=bare < /tmp/f16-x86_64-openstack-sda.qcow2
-
-
-.PHONY: mingw
-mingw:
+.PHONY: mingw-bundle
+mingw-bundle:
 	-$(PKG_INSTALLER) mingw64-boost
 	-$(PKG_INSTALLER) mingw64-filesystem
 	-$(PKG_INSTALLER) mingw64-binutils
@@ -319,14 +175,7 @@ restart-iptables:
 	sudo service iptables restart
 
 .PHONY: security
-security: yum-cron fedora-security
+security: yum-cron
 	-$(PKG_INSTALLER) etckeeper
-
-.PHONY: fedora-security
-fedora-security:
-ifeq ($(DISTRIBUTION),fedora)
 	-$(PKG_INSTALLER) denyhosts
 	-$(PKG_INSTALLER) fail2ban
-endif
-
-.DEFAULT_GOAL:= all
