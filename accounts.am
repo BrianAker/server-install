@@ -67,7 +67,7 @@ jenkins-account-setup: /usr/bin/bzr
 	if [ ! -d /home/jenkins/workspace/.bzr ]; then sudo bzr init-repo ~jenkins/workspace; fi
 	sudo touch ~jenkins/.ssh/authorized_keys2
 	sudo chmod 600 ~jenkins/.ssh/authorized_keys2
-	sudo curl --append --output ~jenkins/.ssh/drizzle_authorized_keys2 https://launchpad.net/~ci-o/+sshkeys
+	sudo curl --append --output ~jenkins/.ssh/drizzle_authorized_keys2 https://launchpad.net/~drizzle-continuous-integration/+sshkeys
 	sudo curl --append --output ~jenkins/.ssh/tangent_authorized_keys2 https://launchpad.net/~d-ci/+sshkeys
 
 drizzle-keys:
@@ -128,8 +128,24 @@ secure-fix:
 	sudo sed -i -e's/#LogLevel INFO/LogLevel INFO/' /etc/ssh/sshd_config
 
 tcp-wrappers:
-	sudo sh -c "echo sshd:216.39.139.192,216.39.139.194,216.39.139.195,174.143.244.111,98.129.238.122,174.143.242.18 >> /etc/hosts.allow"
 	sudo sh -c "echo sshd:50.197.78.110 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:166.78.10.183 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:174.143.242.18 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:174.143.244.111 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:216.39.139.192 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:216.39.139.193 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:216.39.139.194 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:216.39.139.195 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:50.197.78.105 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:50.197.78.106 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:50.197.78.107 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:50.197.78.108 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:50.197.78.109 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:50.197.78.110 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:50.197.78.110 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:98.129.238.122 >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:gorf.tangent.org >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:jump.tangent.org >> /etc/hosts.allow"
 	sudo sh -c "echo ALL:ALL >> /etc/hosts.deny"
 
 secure-host: secure sudoers-inc tcp-wrappers

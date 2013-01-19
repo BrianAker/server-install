@@ -13,8 +13,8 @@ pkg_update:
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
-.PHONY: mysql
-mysql:
+.PHONY: mysqld
+mysqld:
 	$(PKG_INSTALLER) $@ $@-server
 	systemctl enable mysqld.service
 	systemctl start mysqld.service
@@ -34,7 +34,7 @@ wordpress: | prep essential security httpd
 	genkey blog.tangent.org
 
 .PHONY: wordpressdb
-wordpressdb: mysql vsftpd
+wordpressdb: mysqld vsftpd
 	yum install system-config-firewall
 	system-config-firewall
 	echo "create database wordpress;"  | mysql
@@ -81,12 +81,15 @@ ifeq ($(DISTRIBUTION),fedora)
 	sudo service yum-updatesd restart
 endif
 
-COMPILER:= /usr/bin/gcc /usr/bin/g++ /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool
+COMPILER:= /usr/bin/gcc /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool
 $(COMPILER): 
 	-$(PKG_INSTALLER) $(@F)
 
+/usr/bin/g++: 
+	-$(PKG_INSTALLER) gcc-c++
+
 .PHONY: compiler
-compiler: $(COMPILER) mingw
+compiler: $(COMPILER) mingw /usr/bin/g++
 
 #Basic build tools
 .PHONY: essential
@@ -107,6 +110,9 @@ ifeq ($(DISTRIBUTION),fedora)
 	-$(PKG_INSTALLER) protobuf protobuf-compiler protobuf-devel
 endif
 
+libdrizzle-requires: mysqld
+	$(PKG_INSTALLER) glib2-devel
+
 /usr/bin/java:
 	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
@@ -126,7 +132,7 @@ memcached-dev: compiler libraries
 
 # Gearman
 .PHONY: gearman
-gearman: compiler memcached libraries
+gearman: compiler memcached libraries mysqld
 
 # Drizzle
 .PHONY: drizzle
@@ -169,7 +175,7 @@ libvirt:
 	-sudo systemctl enable libvirtd.service
 	-sudo systemctl start libvirtd.service
 
-REQUIRED_OPENSTACK_SERVICES:= mysql httpd qpid libvirt
+REQUIRED_OPENSTACK_SERVICES:= mysqld httpd qpid libvirt
 
 .PHONY: openstack
 openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-install
@@ -278,21 +284,25 @@ openstack-add-glance-image: /tmp/f16-x86_64-openstack-sda.qcow2
 
 .PHONY: mingw
 mingw:
-	-$(PKG_INSTALLER) mingw32-boost
-	-$(PKG_INSTALLER) mingw32-filesystem
-	-$(PKG_INSTALLER) mingw32-binutils
-	-$(PKG_INSTALLER) mingw32-zlib
-	-$(PKG_INSTALLER) mingw32-cpp
-	-$(PKG_INSTALLER) mingw32-bzip2
-	-$(PKG_INSTALLER) mingw32-gcc-c++
-	-$(PKG_INSTALLER) mingw32-gcc
-	-$(PKG_INSTALLER) mingw32-pthreads
+	-$(PKG_INSTALLER) mingw64-boost
+	-$(PKG_INSTALLER) mingw64-filesystem
+	-$(PKG_INSTALLER) mingw64-binutils
+	-$(PKG_INSTALLER) mingw64-zlib
+	-$(PKG_INSTALLER) mingw64-cpp
+	-$(PKG_INSTALLER) mingw64-bzip2
+	-$(PKG_INSTALLER) mingw64-gcc-c++
+	-$(PKG_INSTALLER) mingw64-gcc
+	-$(PKG_INSTALLER) mingw64-pthreads
+	-$(PKG_INSTALLER) mingw64-zlib-static
 ifeq ($(DISTRIBUTION),fedora)
-	-$(PKG_INSTALLER) mingw32-crt
-	-$(PKG_INSTALLER) mingw32-headers
+	-$(PKG_INSTALLER) mingw64-crt
+	-$(PKG_INSTALLER) mingw64-headers
 	-$(PKG_INSTALLER) mingw-filesystem-base
 	-$(PKG_INSTALLER) mingw-binutils-generic
-	-$(PKG_INSTALLER) mingw32-glib-networking
+	-$(PKG_INSTALLER) mingw64-glib-networking
+	-$(PKG_INSTALLER) mingw32-nsiswrapper
+	-$(PKG_INSTALLER) wine
+	-$(PKG_INSTALLER) mingw32-gcc
 endif
 
 .PHONY: smtp
@@ -310,6 +320,7 @@ restart-iptables:
 
 .PHONY: security
 security: yum-cron fedora-security
+	-$(PKG_INSTALLER) etckeeper
 
 .PHONY: fedora-security
 fedora-security:

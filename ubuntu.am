@@ -1,101 +1,112 @@
 # vim:ft=automake
 
-APTGET:= sudo apt-get install --yes
+PKG_INSTALLER:= sudo apt-get install --yes
+PKG_UPDATE:= sudo apt-get update --yes
+PKG_UPGRADE:= sudo apt-get upgrade --yes
+
+PKG_INSTALLER:= sudo apt-get install --yes
 
 ubuntu: prep essential memcached gearman drizzle jenkins-slave time update post
 
 prep:
 	sudo apt-get --purge -y remove byobu
-	$(APTGET) curl
-	sudo apt-get update --yes
-	sudo apt-get upgrade --yes
-	sudo apt-get update --yes
-	sudo apt-get upgrade --yes
+	$(PKG_INSTALLER) curl
+	$(PKG_UPDATE)
+	$(PKG_UPGRADE)
+	$(PKG_UPDATE)
+	$(PKG_UPGRADE)
 
 essential: compiler docs
-	$(APTGET) build-essential
-	$(APTGET) bzr 
-	$(APTGET) git-core
-	$(APTGET) mercurial 
-	$(APTGET) valgrind
-	$(APTGET) gdb
-	$(APTGET) lcov
-	$(APTGET) cppcheck 
-	$(APTGET) devscripts 
-	$(APTGET) cmake
+	$(PKG_INSTALLER) build-essential
+	$(PKG_INSTALLER) bzr 
+	$(PKG_INSTALLER) git-core
+	$(PKG_INSTALLER) mercurial 
+	$(PKG_INSTALLER) valgrind
+	$(PKG_INSTALLER) gdb
+	$(PKG_INSTALLER) lcov
+	$(PKG_INSTALLER) cppcheck 
+	$(PKG_INSTALLER) devscripts 
+	$(PKG_INSTALLER) cmake
+
+mysqld:
+	$(PKG_INSTALLER) mysql-server
+
+libdrizzle-requires: mysqld
+	$(PKG_INSTALLER) libglib2.0-0 libglib2.0-dev
 
 java:
-	sudo apt-get intall --yes openjdk-6-jdk openjdk-6-jre-headless
+	$(PKG_INSTALLER) openjdk-6-jdk openjdk-6-jre-headless
 
 # Jenkins install, we don't actually use this, we let Jenkins install its own.
 jenkins-slave:
-	$(APTGET) default-jdk default-jre default-jre-headless
+	$(PKG_INSTALLER) default-jdk default-jre default-jre-headless
 
 compiler:
-	$(APTGET) gcc
-	$(APTGET) autoconf
-	$(APTGET) bison
-	$(APTGET) flex
-	$(APTGET) libtool
-	$(APTGET) make
-	$(APTGET) clang
+	$(PKG_INSTALLER) gcc
+	$(PKG_INSTALLER) autoconf
+	$(PKG_INSTALLER) bison
+	$(PKG_INSTALLER) flex
+	$(PKG_INSTALLER) libtool
+	$(PKG_INSTALLER) make
+	$(PKG_INSTALLER) clang
 
 # Memcached
 memcached: compiler
-	$(APTGET) libevent-dev 
-	$(APTGET) memcached
-	$(APTGET) uuid-dev
-	$(APTGET) doxygen
-	$(APTGET) libsasl2-dev
+	$(PKG_INSTALLER) libevent-dev 
+	$(PKG_INSTALLER) memcached
+	$(PKG_INSTALLER) uuid-dev
+	$(PKG_INSTALLER) doxygen
+	$(PKG_INSTALLER) libsasl2-dev
 
 # Gearman
 gearman: compiler
-	$(APTGET) libboost-all-dev
-	$(APTGET) libcurl4-openssl-dev curl
-	$(APTGET) libevent-dev
-	$(APTGET) memcached
-	$(APTGET) uuid-dev
-	$(APTGET) devscripts
-	$(APTGET) libsqlite3-dev
-	$(APTGET) libmysqlclient-dev
-	$(APTGET) maven2
+	$(PKG_INSTALLER) libboost-all-dev
+	$(PKG_INSTALLER) libcurl4-openssl-dev curl
+	$(PKG_INSTALLER) libevent-dev
+	$(PKG_INSTALLER) memcached
+	$(PKG_INSTALLER) uuid-dev
+	$(PKG_INSTALLER) devscripts
+	$(PKG_INSTALLER) libsqlite3-dev
+	$(PKG_INSTALLER) libmysqlclient-dev
+	$(PKG_INSTALLER) maven2
 
 # Drizzle
 drizzle: compiler
-	$(APTGET) gperf
-	$(APTGET) intltool
-	$(APTGET) libboost-all-dev
-	$(APTGET) libcloog-ppl0 
-	$(APTGET) libcurl4-openssl-dev
-	$(APTGET) libevent-dev
-	$(APTGET) libpam0g-dev
-	$(APTGET) libpcre3-dev
-	$(APTGET) libpcre3-dev
-	$(APTGET) libprotobuf-dev protobuf-compiler
-	$(APTGET) libprotobuf-dev protobuf-compiler
-	$(APTGET) libreadline-dev
-	$(APTGET) uuid-dev
-	$(APTGET) zlib1g-dev
+	$(PKG_INSTALLER) gperf
+	$(PKG_INSTALLER) intltool
+	$(PKG_INSTALLER) libboost-all-dev
+	$(PKG_INSTALLER) libcloog-ppl0 
+	$(PKG_INSTALLER) libcurl4-openssl-dev
+	$(PKG_INSTALLER) libevent-dev
+	$(PKG_INSTALLER) libpam0g-dev
+	$(PKG_INSTALLER) libpcre3-dev
+	$(PKG_INSTALLER) libpcre3-dev
+	$(PKG_INSTALLER) libprotobuf-dev protobuf-compiler
+	$(PKG_INSTALLER) libprotobuf-dev protobuf-compiler
+	$(PKG_INSTALLER) libreadline-dev
+	$(PKG_INSTALLER) uuid-dev
+	$(PKG_INSTALLER) zlib1g-dev
 
 # Update automatically
 update:
-	$(APTGET) cron-apt
-	$(APTGET) unattended-upgrades
+	$(PKG_INSTALLER) update-manager-core
+	$(PKG_INSTALLER) cron-apt
+	$(PKG_INSTALLER) unattended-upgrades
 	sudo dpkg-reconfigure -plow unattended-upgrades
 
 time:
-	$(APTGET) ntp
-	$(APTGET) ntpdate
+	$(PKG_INSTALLER) ntp
+	$(PKG_INSTALLER) ntpdate
 	#sudo ntpdate time.apple.com
 
 post:
 	sudo apt-get autoremove --yes
 
 docs:
-	$(APTGET) python-sphinx
+	$(PKG_INSTALLER) python-sphinx
 
 jenkins-server:
 	wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
 	sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
-	sudo apt-get update --yes
-	$(APTGET) jenkins
+	$(PKG_UPDATE)
+	$(PKG_INSTALLER) jenkins
