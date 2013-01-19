@@ -70,6 +70,10 @@ automake: /usr/local/bin/automake
 /usr/local/bin/automake:
 	$(PKG_INSTALLER) automake
 
+rcs: /usr/local/bin/ident
+/usr/local/bin/ident:
+	touch /usr/local/bin/ident
+
 sphinx-build: /usr/local/bin/sphinx-build
 /usr/local/bin/sphinx-build:
 	sudo easy_install sphinx

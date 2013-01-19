@@ -39,7 +39,6 @@ compiler: $(COMPILER) mingw clang-bundle protobuf-bundle
 $(DEV_TOOLS_REQUIRED): 
 	$(PKG_INSTALLER) $(@F)
 
-DEV_TOOLS_EXTRA:= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/cmake
 $(DEV_TOOLS_EXTRA):
 	$(PKG_INSTALLER) $(@F)
 

@@ -12,6 +12,8 @@ PREP:= /usr/bin/curl /usr/bin/git
 
 DEV_TOOLS_REQUIRED:= /usr/bin/valgrind /usr/bin/gdb /usr/bin/vim /usr/bin/man /usr/bin/gettext /usr/bin/intltool /usr/bin/bzr
 
+DEV_TOOLS_EXTRA:= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/cmake rcs mercurial
+
 .PHONY: build_essential libraries memcached mysqld
 
 # Memcached or libmemcached
