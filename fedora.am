@@ -16,7 +16,7 @@ pkg_update:
 mysqld: /usr/libexec/mysqld /var/run/mysqld
 
 /usr/libexec/mysqld:
-	$(PKG_INSTALLER) $@ $@-server
+	$(PKG_INSTALLER) $(@F)-server
 
 /var/run/mysqld:
 	systemctl enable mysqld.service
