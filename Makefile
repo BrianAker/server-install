@@ -12,11 +12,11 @@ base_install:
 	  elif [ -f '/etc/SuSE-release' ]; then  \
 	  	echo "Suse is not currently supported"; \
 	  elif [ -f '/etc/fedora-release' ]; then  \
-	  	DISTRIBUTION=fedora $(MAKE) -f yum.am; \
+	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am; \
 	  elif [ -f '/etc/centos-release' ]; then  \
-	  	DISTRIBUTION=centos $(MAKE) -f yum.am; \
+	  	DISTRIBUTION=centos $(MAKE) -f rhel.am; \
 	  elif test -f /etc/redhat-release; then \
-	  	DISTRIBUTION=rhel $(MAKE) -f yum.am; \
+	  	DISTRIBUTION=rhel $(MAKE) -f rhel.am; \
 	  elif test -x /usr/sbin/pkg_add; then \
 	  	DISTRIBUTION=freebsd9 $(MAKE) -f freebsd.am; \
 	  elif test -d /etc/mach_init.d; then \
