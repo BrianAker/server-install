@@ -10,8 +10,7 @@ PKG_INSTALLER:= sudo apt-get install --yes
 
 .PHONY: prep
 prep: | $(PREP) pkg_update
-	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
-	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
+	-$(PKG_INSTALLER) python-software-properties
 
 .PHONY: pkg_update
 pkg_update:
@@ -58,6 +57,7 @@ build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
+	$(PKG_INSTALLER) ssh-import-id
 
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*

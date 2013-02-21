@@ -1,14 +1,8 @@
 # vim:ft=automake
 
 user: /etc/sudoers.d/
-	sudo useradd --shell=/bin/bash $(CREATE_USER)
-	sudo mkdir -p -m 0700  ~$(CREATE_USER)/.ssh
-	sudo touch ~$(CREATE_USER)/.ssh/authorized_keys2
-	sudo curl -a --output ~$(CREATE_USER)/.ssh/authorized_keys2 $(CREATE_USER_SSH_KEY_URL)
-	sudo cp ~$(CREATE_USER)/.ssh/authorized_keys2 ~$(CREATE_USER)/.ssh/authorized_keys
-	sudo chmod 600 ~$(CREATE_USER)/.ssh/authorized_keys2
-	sudo chmod 600 ~$(CREATE_USER)/.ssh/authorized_keys
-	sudo chown -R $(CREATE_USER).$(CREATE_USER) ~$(CREATE_USER)/
+	sudo useradd --shell=/bin/bash -m $(CREATE_USER)
+	sudo -i -u $(CREATE_USER) ssh-import-id $(CREATE_USER_SSH_KEY_URL)
 	touch /tmp/$(CREATE_USER)
 	echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
 	sudo chown root.root /tmp/$(CREATE_USER)

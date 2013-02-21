@@ -3,7 +3,7 @@
 
 #Add Brian
 brian: 
-	$(MAKE) -f useradd.am CREATE_USER=brian CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Ebrianaker/+sshkeys
+	$(MAKE) -f useradd.am CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker
 
 yazz: 
 	$(MAKE) -f useradd.am CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7EEentropyworks/+sshkeys
