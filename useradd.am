@@ -1,19 +1,40 @@
 # vim:ft=automake
+#
+CREATE_USER :=
+OBJDIR := /etc/sudoers.d
+USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
+USERMOD := /usr/sbin/usermod
+USERADD := /usr/sbin/useradd
 
-user: /etc/sudoers.d/
-	sudo useradd --shell=/bin/bash -m $(CREATE_USER)
+user: | useradd import_ssh_keys sudo-priv
+
+useradd:
+ifdef CREATE_USER
+ifneq ($(USER_EXISTS),0)
+ifeq ($(wildcard USERADD),)
+	@sudo su - root $(USERADD) --shell=/bin/bash -m $(CREATE_USER)
+endif
+endif
+endif
+
+import_ssh_keys: | useradd
+ifdef CREATE_USER
 	sudo -i -u $(CREATE_USER) ssh-import-id $(CREATE_USER_SSH_KEY_URL)
+endif
+
+sudo-priv: | $(OBJDIR)
+ifdef CREATE_USER
 	touch /tmp/$(CREATE_USER)
 	echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
 	sudo chown root.root /tmp/$(CREATE_USER)
 	sudo chmod 0440 /tmp/$(CREATE_USER)
 	sudo mv /tmp/$(CREATE_USER) /etc/sudoers.d/$(CREATE_USER)
-	if [ -x /usr/sbin/usermod ]; then 
-		usermod -G sudo $(CREATE_USER)
-	fi
+ifeq ($(wildcard USERMOD),)
+	$(USERMOD) -G sudo $(CREATE_USER)
+endif
+endif
 
-/etc/sudoers.d/:
-	if [ ! -d /etc/sudoers.d ]; then
-		sudo mkdir -p -m 0750 /etc/sudoers.d/
-	fi
-
+$(OBJDIR):
+ifdef CREATE_USER
+	sudo mkdir -p -m 0750 $(OBJDIR)
+endif
