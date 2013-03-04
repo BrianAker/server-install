@@ -1,0 +1,16 @@
+# vim:ft=automake
+#
+
+all: bind-packages
+	sudo /usr/libexec/setup-named-chroot.sh /var/named/chroot on
+	sudo systemctl stop named.service
+	sudo systemctl disable named.service 
+	sudo systemctl start named-chroot.service 
+	sudo systemctl enable named-chroot.service
+
+
+
+bind-packages:
+	sudo yum install -y bind checkdns bind-chroot
+  
+
