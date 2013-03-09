@@ -97,13 +97,12 @@ jenkins-slave: /usr/bin/java
 .PHONY: python-sphinx
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
-	$(PKG_INSTALLER) python-sphinx
+	$(PKG_INSTALLER) $(@F)
 
 #Basic build tools
 .PHONY: build_essential
 build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx /usr/bin/rpmbuild
 	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
-	-sudo easy_install ssh-import-id
 
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 
@@ -184,12 +183,9 @@ smtp:
 .PHONY: post
 post:
 
-.PHONY: restart-iptables
-restart-iptables:
-	sudo service iptables restart
-
 .PHONY: security
 security: yum-cron
+	sudo sed -i -e's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 	-$(PKG_INSTALLER) etckeeper
 	-$(PKG_INSTALLER) denyhosts
 	-$(PKG_INSTALLER) fail2ban

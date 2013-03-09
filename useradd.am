@@ -13,6 +13,7 @@ ifdef CREATE_USER
 ifneq ($(USER_EXISTS),0)
 ifeq ($(wildcard USERADD),)
 	@sudo su - root $(USERADD) --shell=/bin/bash -m $(CREATE_USER)
+	@sudo -u $(CREATE_USER) ssh-keygen -t rsa -N "" -f ~$(CREATE_USER)/.ssh/id_rsa -q
 endif
 endif
 endif

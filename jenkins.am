@@ -2,7 +2,9 @@
 
 YUM:= sudo yum install -y
 
-jenkins:
+jenkins-server: | /sbin/pound /usr/lib/jenkins/jenkins.war
+
+/usr/lib/jenkins/jenkins.war:
 	sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 	sudo curl --output /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
 	-$(YUM) jenkins
@@ -10,3 +12,10 @@ jenkins:
 	-$(YUM) xorg-x11-server-Xvfb 
 	sudo systemctl enable jenkins.service
 	sudo systemctl start jenkins.service
+
+/sbin/pound: 
+	sudo yum install -y Pound
+	sudo systemctl enable pound
+	sudo systemctl start pound
+	cp --archive pound.cfg /etc/pound.cfg
+	firewall-cmd --add-port=8443/tcp
