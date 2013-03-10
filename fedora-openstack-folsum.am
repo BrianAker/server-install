@@ -4,6 +4,7 @@
 REQUIRED_OPENSTACK_SERVICES:= mysqld httpd qpid libvirt memcached nbd
 OPENSTACK_DEFAULT_IMAGE:= http://berrange.fedorapeople.org/images/2012-11-15/f17-x86_64-openstack-sda.qcow2
 OPENSTACK_DEFAULT_IMAGE_FILE:= /tmp/f17-x86_64-openstack-sda.qcow2
+KEYSTONERC:= "$(HOME)/.keystonerc"
 
 .PHONY: openstack
 openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-packages openstack-install
@@ -27,7 +28,7 @@ openstack-install: | openstack-keystone openstack-glance-use-keystone openstack-
 
 .PHONY: openstack-cinder
 openstack-cinder: /usr/bin/curl
-	sudo openstack-db --service cinder --init
+	sudo openstack-db --service cinder --init --rootpw ""
 	sudo mkdir -p /var/lib/cinder
 	sudo truncate --size=20G /var/lib/cinder/cinder-volumes.img
 	sudo losetup --show -f /var/lib/cinder/cinder-volumes.img
@@ -53,9 +54,12 @@ openstack-cinder-perm:
 	sudo systemctl start openstack-cinder-volume.service
 	sudo systemctl enable openstack-cinder-volume.service
 
+$(KEYSTONERC):
+	. ./generate-keystonerc.sh
+
 .PHONY: openstack-keystone
-openstack-keystone: openssl
-	sudo openstack-db --service keystone --init
+openstack-keystone: | openssl $(KEYSTONERC)
+	sudo openstack-db --service keystone --init --rootpw ""
 	. generate-keystonerc.sh 
 	. $(HOME)/keystonerc
 	sudo openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $$ADMIN_TOKEN
@@ -74,7 +78,7 @@ openstack-nova-service:
 
 .PHONY: openstack-nova-database
 openstack-nova-database:
-	sudo openstack-db --service nova --init
+	sudo openstack-db --service nova --init --rootpw ""
 	sudo nova-manage db sync
 
 .PHONY: openstack-nova-use-keystone
@@ -91,7 +95,7 @@ openstack-nova-network:
 
 .PHONY: openstack-glance-use-keystone
 openstack-glance-use-keystone:
-	sudo openstack-db --service glance --init
+	sudo openstack-db --service glance --init --rootpw ""
 	sudo openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
 	sudo openstack-config --set /etc/glance/glance-registry.conf paste_deploy flavor keystone
 	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_tenant_name service
