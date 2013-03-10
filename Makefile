@@ -1,10 +1,10 @@
 # vim:ft=automake
 
+IPADDRESS = $(shell ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
+
 default: 
-ifeq (openstack,${INSTALL_TYPE})
+ifeq (10.6.118.177,${IPADDRESS})
 	$(MAKE) base_openstack
-else (jenkins-slave,${INSTALL_TYPE})
-	$(MAKE) base_install
 else
 	$(MAKE) base_install
 endif
@@ -36,6 +36,10 @@ base_install:
 	  elif test -d /etc/mach_init.d; then \
 	  	$(MAKE) -f osx.am; \
 	  fi
+
+.PHONY: show-address
+show-address:
+	@echo ${IPADDRESS}
 
 install:
 ifdef INSTALL_SERVER
