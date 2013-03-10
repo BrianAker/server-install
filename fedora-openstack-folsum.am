@@ -11,7 +11,7 @@ openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-
 
 .PHONY: openstack-repo
 openstack-repo: /usr/bin/curl
-	sudo curl http://repos.fedorapeople.org/repos/openstack/openstack-folsom/fedora-openstack-folsom.repo -o /etc/yum.repos.d/fedora-openstack-folsom.repo
+	#sudo curl http://repos.fedorapeople.org/repos/openstack/openstack-folsom/fedora-openstack-folsom.repo -o /etc/yum.repos.d/fedora-openstack-folsom.repo
 
 OPENSTACK_PACKAGES:= openstack-utils openstack-keystone openstack-nova openstack-cinder openstack-glance openstack-swift openstack-swift-proxy openstack-swift-account openstack-swift-container openstack-swift-object openstack-quantum openstack-quantum-linuxbridge openstack-quantum-openvswitch openstack-dashboard openstack-tempo
 OPENSTACK_PYTHON_BINDINGS:= python-nova-adminclient
