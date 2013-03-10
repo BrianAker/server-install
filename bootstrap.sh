@@ -17,7 +17,7 @@ function install_git_make()
   fi
 }
 
-# If the fedora.am file is around we know then that we are in the repository
+# If the projects.am file is around we know then that we are in the repository
 function run_server_install()
 {
   if [ -f 'projects.am' ]; then
