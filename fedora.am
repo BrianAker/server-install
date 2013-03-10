@@ -5,7 +5,7 @@ include projects.am
 include fedora-openstack-folsum.am
 
 PKG_INSTALLER:= sudo yum install -y
-PKG_UPDATE:= sudo yum update
+PKG_UPDATE:= sudo yum update -y
 PKG_UPGRADE:= sudo yum upgrade -y
 
 .PHONY: pkg_update
