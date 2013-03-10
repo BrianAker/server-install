@@ -97,7 +97,7 @@ update:
 .PHONY: time
 time:
 	-$(PKG_INSTALLER) ntp ntpdate
-	sudo ntpdate time.apple.com
+	#sudo ntpdate time.apple.com
 
 post:
 	sudo apt-get autoremove --yes

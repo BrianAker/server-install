@@ -28,13 +28,13 @@ endif
 
 sudo-priv: | $(OBJDIR)
 ifdef CREATE_USER
-	touch /tmp/$(CREATE_USER)
-	echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
-	sudo chown root.root /tmp/$(CREATE_USER)
-	sudo chmod 0440 /tmp/$(CREATE_USER)
-	sudo mv /tmp/$(CREATE_USER) /etc/sudoers.d/$(CREATE_USER)
+	@touch /tmp/$(CREATE_USER)
+	@echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
+	@sudo chown root.root /tmp/$(CREATE_USER)
+	@sudo chmod 0440 /tmp/$(CREATE_USER)
+	@sudo mv /tmp/$(CREATE_USER) /etc/sudoers.d/$(CREATE_USER)
 ifeq ($(wildcard USERMOD),)
-	$(USERMOD) -G sudo $(CREATE_USER)
+	-sudo $(USERMOD) -G sudo $(CREATE_USER)
 endif
 endif
 
