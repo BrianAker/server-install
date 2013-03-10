@@ -1,6 +1,7 @@
 # vim:ft=automake
 
 IPADDRESS = $(shell ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
+KEYSTONERC := $(HOME)/.keystonerc
 
 default: 
 ifeq (10.6.118.177,${IPADDRESS})
@@ -14,6 +15,7 @@ endif
 	sudo reboot
 
 base_openstack:
+	. $(KEYSTONERC)
 	@if test -f /etc/debconf.conf; then \
 	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am openstack; \
 	  elif [ -f '/etc/fedora-release' ]; then  \
@@ -46,3 +48,6 @@ ifdef INSTALL_SERVER
 	scp bootstrap.sh "$$INSTALL_SERVER":~/
 	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
 endif
+
+$(KEYSTONERC): | openssl
+	. ./generate-keystonerc.sh

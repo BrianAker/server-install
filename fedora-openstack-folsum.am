@@ -4,7 +4,6 @@
 REQUIRED_OPENSTACK_SERVICES:= mysqld httpd qpid libvirt memcached nbd
 OPENSTACK_DEFAULT_IMAGE:= http://berrange.fedorapeople.org/images/2012-11-15/f17-x86_64-openstack-sda.qcow2
 OPENSTACK_DEFAULT_IMAGE_FILE:= /tmp/f17-x86_64-openstack-sda.qcow2
-KEYSTONERC:= $(HOME)/.keystonerc
 
 .PHONY: openstack
 openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-packages openstack-install
@@ -54,13 +53,9 @@ openstack-cinder-perm:
 	sudo systemctl start openstack-cinder-volume.service
 	sudo systemctl enable openstack-cinder-volume.service
 
-$(KEYSTONERC):
-	. ./generate-keystonerc.sh
-
 .PHONY: openstack-keystone
 openstack-keystone: | openssl $(KEYSTONERC)
 	sudo openstack-db --service keystone --init --rootpw ""
-	. $(KEYSTONERC)
 	sudo openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $$ADMIN_TOKEN
 	sudo systemctl start openstack-keystone.service && sudo systemctl enable openstack-keystone.service
 	sudo ADMIN_PASSWORD=$$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
