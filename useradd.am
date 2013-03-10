@@ -6,7 +6,9 @@ USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
 
-user: | useradd import_ssh_keys sudo-priv
+user: | useradd import_ssh_keys
+
+admin-user: | useradd import_ssh_keys sudo-priv
 
 useradd:
 ifdef CREATE_USER

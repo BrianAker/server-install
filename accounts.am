@@ -17,79 +17,20 @@ pcrews:
 
 mark: 
 	$(MAKE) -f useradd.am CREATE_USER=mark CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Efallenpegasus/+sshkeys
-#Add Kent
-kent: /etc/sudoers.d/
-	sudo useradd --shell=/bin/bash kent
-	sudo mkdir -p -m 0700  ~kent/.ssh
-	sudo touch ~kent/.ssh/authorized_keys2
-	sudo curl -a --output ~kent/.ssh/authorized_keys2 https://launchpad.net/%7Ekent/+sshkeys 
-	sudo chmod 600 ~kent/.ssh/authorized_keys2
-	sudo chown -R kent.kent ~kent/
-
-hingo:
-	sudo useradd --shell=/bin/bash hingo
-	sudo mkdir -p -m 0700  ~hingo/.ssh
-	sudo touch ~hingo/.ssh/authorized_keys2
-	sudo curl -a --output ~hingo/.ssh/authorized_keys2 https://launchpad.net/~hingo/+sshkeys
-	sudo chmod 600 ~hingo/.ssh/authorized_keys2
-	sudo chown -R hingo.hingo ~hingo/
-	touch /tmp/hingo
-	echo "hingo    ALL = NOPASSWD: ALL" >> /tmp/hingo
-	sudo chown root.root /tmp/hingo
-	sudo chmod 0440 /tmp/hingo
-	sudo mv /tmp/hingo /etc/sudoers.d/hingo
-	#usermod -G wheel hingo
 
 
 #Add DrizzleCI/Jenkins
-drizzleci: jenkins-account jenkins-account-setup drizzle-keys jenkins-sync-authorized-keys jenkins-fix-permissions jenkins-sudo
-
-tangentci: jenkins-account jenkins-account-setup tangent-keys jenkins-sync-authorized-keys jenkins-fix-permissions jenkins-sudo
-
-wordpress: brian secure-host
-
-
-jenkins-account:
-	if [ ! -d /home/jenkins ]; then \
-	  sudo groupadd --gid 800 jenkins; \
-	  sudo useradd --shell=/bin/bash --uid 800 --gid 800 jenkins; \
-	fi
-
-jenkins-account-setup:
-	if [ ! -d ~jenkins/.ssh ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
-	if [ ! -d ~jenkins/workspace ]; then sudo mkdir -p -m 0700 ~jenkins/.ssh; fi
-	if [ ! -d /home/jenkins/workspace/.bzr ]; then sudo bzr init-repo ~jenkins/workspace; fi
-	sudo touch ~jenkins/.ssh/authorized_keys2
-	sudo chmod 600 ~jenkins/.ssh/authorized_keys2
-	sudo curl --append --output ~jenkins/.ssh/drizzle_authorized_keys2 https://launchpad.net/~drizzle-continuous-integration/+sshkeys
-	sudo curl --append --output ~jenkins/.ssh/tangent_authorized_keys2 https://launchpad.net/~d-ci/+sshkeys
-
-drizzle-keys:
-	sudo sh -c "cat ~jenkins/.ssh/drizzle_authorized_keys2 >> ~jenkins/.ssh/authorized_keys2"
-	sudo sh -c "echo \"\" >> ~jenkins/.ssh/authorized_keys2"
-	sudo sh -c "cat ~jenkins/.ssh/tangent_authorized_keys2 >> ~jenkins/.ssh/authorized_keys2"
-	sudo sh -c "echo \"\" >> ~jenkins/.ssh/authorized_keys2"
-
-tangent-keys:
-	sudo sh -c "cat ~jenkins/.ssh/tangent_authorized_keys2 >> ~jenkins/.ssh/authorized_keys2"
-
-jenkins-fix-permissions:
-	sudo chown -R jenkins.jenkins ~jenkins/
-
-jenkins-sync-authorized-keys:
-	sudo cp ~jenkins/.ssh/authorized_keys2 ~jenkins/.ssh/authorized_keys
-	sudo chmod 600 ~jenkins/.ssh/authorized_keys
-
-jenkins-sudo:
-	if [ ! -f /etc/sudoers.d/jenkins ]; then \
-	  touch /tmp/jenkins; \
-	  echo "jenkins    ALL = NOPASSWD: ALL" >> /tmp/jenkins; \
-	  sudo chown root.root /tmp/jenkins; \
-	  sudo chmod 0440 /tmp/jenkins; \
-	  sudo mv /tmp/jenkins /etc/sudoers.d/jenkins; \
-	fi
+drizzleci:
+	$(MAKE) -f useradd.am CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=drizzle-continuous-integration
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
 	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
+
+tangentci:
+	$(MAKE) -f useradd.am CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci
+	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
+	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
+
+wordpress: brian secure-host
 
 # Shutdown password authentication 
 sudoers-inc:
