@@ -3,6 +3,7 @@
 default: 
 	$(MAKE) base_install
 	$(MAKE) -f accounts.am tangentci
+	$(MAKE) -f accounts.am lazlo
 	$(MAKE) -f accounts.am secure-host
 	sudo reboot
 

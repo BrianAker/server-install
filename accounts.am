@@ -25,7 +25,12 @@ drizzleci:
 	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 
 tangentci:
-	$(MAKE) -f useradd.am CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci
+	$(MAKE) -f useradd.am user CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci
+	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
+	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
+
+lazlo:
+	$(MAKE) -f useradd.am admin-user CREATE_USER=lazlo CREATE_USER_SSH_KEY_URL=d-ci
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
 	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 
