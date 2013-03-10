@@ -53,14 +53,17 @@ mercurial: /usr/bin/hg
 
 #Basic build tools
 .PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx mercurial
+build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx mercurial ssh-import-id
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
-	$(PKG_INSTALLER) ssh-import-id
 
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
+
+ssh-import-id: /usr/bin/ssh-import-id
+/usr/bin/ssh-import-id:
+	$(PKG_INSTALLER) ssh-import-id
 
 mysqld:
 	$(PKG_INSTALLER) mysql-server

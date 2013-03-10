@@ -3,7 +3,6 @@
 
 #Add Brian
 brian: 
-	groups // SSN: 
 	$(MAKE) -f useradd.am CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker
 
 yazz: 

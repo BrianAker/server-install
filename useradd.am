@@ -5,6 +5,7 @@ OBJDIR := /etc/sudoers.d
 USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
+SSH_IMPORT_ID := /usr/bin/ssh-import-id
 
 user: | useradd import_ssh_keys
 
@@ -14,7 +15,7 @@ useradd:
 ifdef CREATE_USER
 ifneq ($(USER_EXISTS),0)
 ifeq ($(wildcard USERADD),)
-	@sudo su - root $(USERADD) --shell=/bin/bash -m $(CREATE_USER)
+	@sudo $(USERADD) --shell=/bin/bash -m $(CREATE_USER)
 	@sudo -u $(CREATE_USER) ssh-keygen -t rsa -N "" -f ~$(CREATE_USER)/.ssh/id_rsa -q
 endif
 endif
@@ -22,7 +23,7 @@ endif
 
 import_ssh_keys: | useradd
 ifdef CREATE_USER
-	sudo -i -u $(CREATE_USER) ssh-import-id $(CREATE_USER_SSH_KEY_URL)
+	sudo -i -u $(CREATE_USER) $(SSH_IMPORT_ID) $(CREATE_USER_SSH_KEY_URL)
 endif
 
 sudo-priv: | $(OBJDIR)

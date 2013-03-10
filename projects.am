@@ -4,7 +4,7 @@
 include bundle.am
 
 .PHONY: all memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave
-all: | prep memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave time security post
+all: | prep memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
 .DEFAULT_GOAL:= all
 
