@@ -19,14 +19,12 @@ nbd: /usr/bin/nbd-server
 	$(PKG_INSTALLER) nbd
 
 .PHONY: mysqld
-mysqld: /usr/libexec/mysqld /var/run/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
+mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
+	sudo systemctl enable mysqld.service
+	sudo systemctl restart mysqld.service
 
 /usr/libexec/mysqld:
 	$(PKG_INSTALLER) mysql-server
-
-/var/run/mysqld:
-	sudo systemctl enable mysqld.service
-	sudo systemctl start mysqld.service
 
 /usr/bin/mysql:
 	$(PKG_INSTALLER) mysql

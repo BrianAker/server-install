@@ -3,6 +3,8 @@
 default: 
 ifeq (openstack,${INSTALL_TYPE})
 	$(MAKE) base_openstack
+else (jenkins-slave,${INSTALL_TYPE})
+	$(MAKE) base_install
 else
 	$(MAKE) base_install
 endif
