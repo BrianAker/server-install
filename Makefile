@@ -1,11 +1,22 @@
 # vim:ft=automake
 
 default: 
+ifeq (openstack,${INSTALL_TYPE})
+	$(MAKE) base_openstack
+else
 	$(MAKE) base_install
+endif
 	$(MAKE) -f accounts.am tangentci
 	$(MAKE) -f accounts.am lazlo
 	$(MAKE) -f accounts.am secure-host
 	sudo reboot
+
+base_openstack:
+	@if test -f /etc/debconf.conf; then \
+	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am openstack; \
+	  elif [ -f '/etc/fedora-release' ]; then  \
+	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am openstack; \
+	  fi
 
 base_install:
 	@if test -f /etc/debconf.conf; then \
@@ -13,7 +24,7 @@ base_install:
 	  elif [ -f '/etc/SuSE-release' ]; then  \
 	  	echo "Suse is not currently supported"; \
 	  elif [ -f '/etc/fedora-release' ]; then  \
-	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am; \
+	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am ${INSTALL_TYPE}; \
 	  elif [ -f '/etc/centos-release' ]; then  \
 	  	DISTRIBUTION=centos $(MAKE) -f rhel.am; \
 	  elif test -f /etc/redhat-release; then \

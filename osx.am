@@ -12,6 +12,10 @@ libraries: libevent boost
 
 fresh: brew glibtool all
 
+openstack:
+	echo "Not available on this platform"
+	return 1
+
 time:
 
 security:
@@ -85,3 +89,7 @@ pcretest: /usr/local/bin/pcretest
 bison: /usr/local/bin/bison
 /usr/local/bin/bison: tap
 	$(PKG_INSTALLER) homebrew/dupes/bison
+
+ssh-import-id: /usr/local/bin/ssh-import-id
+/usr/local/bin/ssh-import-id:
+	sudo easy_install ssh-import-id
