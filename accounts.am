@@ -80,6 +80,7 @@ tcp-wrappers:
 	sudo sh -c "echo sshd:98.129.238.122 >> /etc/hosts.allow"
 	sudo sh -c "echo sshd:gorf.tangent.org >> /etc/hosts.allow"
 	sudo sh -c "echo sshd:jump.tangent.org >> /etc/hosts.allow"
+	sudo sh -c "echo sshd:10.0.2.17 >> /etc/hosts.allow"
 	sudo sh -c "echo ALL:ALL >> /etc/hosts.deny"
 
 secure-host: secure sudoers-inc tcp-wrappers
