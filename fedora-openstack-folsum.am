@@ -1,0 +1,134 @@
+# vim:ft=automake
+#
+
+REQUIRED_OPENSTACK_SERVICES:= mysqld httpd qpid libvirt memcached nbd
+OPENSTACK_DEFAULT_IMAGE:= http://berrange.fedorapeople.org/images/2012-11-15/f17-x86_64-openstack-sda.qcow2
+OPENSTACK_DEFAULT_IMAGE_FILE:= /tmp/f17-x86_64-openstack-sda.qcow2
+
+.PHONY: openstack
+openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-packages openstack-install
+
+.PHONY: openstack-repo
+openstack-repo: /usr/bin/curl
+	sudo curl http://repos.fedorapeople.org/repos/openstack/openstack-folsom/fedora-openstack-folsom.repo -o /etc/yum.repos.d/fedora-openstack-folsom.repo
+
+OPENSTACK_PACKAGES:= openstack-utils openstack-keystone openstack-nova openstack-cinder openstack-glance openstack-swift openstack-swift-proxy openstack-swift-account openstack-swift-container openstack-swift-object openstack-quantum openstack-quantum-linuxbridge openstack-quantum-openvswitch openstack-dashboard openstack-tempo
+OPENSTACK_PYTHON_BINDINGS:= python-nova-adminclient
+OPENSTACK_RUBY_BINDINGS:= rubygem-openstack rubygem-openstack-compute rubygem-openstack-quantum-client
+OPENSTACK_IMAGE_CREATION:= appliance-tools appliance-tools-minimizer febootstrap rubygem-boxgrinder-build
+OPENSTACK_DOCUMENTATION:= openstack-keystone-doc openstack-nova-doc openstack-cinder-doc openstack-glance-doc openstack-swift-doc python-keystoneclient-doc python-novaclient-doc python-swiftclient-doc python-django-horizon-doc rubygem-openstack-doc rubygem-openstack-quantum-client-doc
+
+.PHONY: openstack-packages
+openstack-packages:
+	-$(PKG_INSTALLER) $(OPENSTACK_PACKAGES) $(OPENSTACK_PYTHON_BINDINGS) $(OPENSTACK_RUBY_BINDINGS) $(OPENSTACK_IMAGE_CREATION) $(OPENSTACK_DOCUMENTATION)
+
+.PHONY: openstack-install
+openstack-install: | openstack-keystone openstack-glance-use-keystone openstack-cinder openstack-nova openstack-add-glance-image
+
+.PHONY: openstack-cinder
+openstack-cinder: /usr/bin/curl
+	sudo openstack-db --service cinder --init
+	sudo mkdir -p /var/lib/cinder
+	sudo truncate --size=20G /var/lib/cinder/cinder-volumes.img
+	sudo losetup --show -f /var/lib/cinder/cinder-volumes.img
+	CINDER_VOL_DEVICE=$$(losetup -a | grep "/var/lib/cinder/cinder-volumes.img" | cut -d':' -f1)
+	sudo vgcreate cinder-volumes $$CINDER_VOL_DEVICE
+	sudo systemctl start openstack-cinder-volume.service
+	sudo systemctl enable openstack-cinder-volume.service
+
+openstack-cinder-perm:
+	LOOP_EXEC_DIR=/usr/libexec/cinder
+	LOOP_SVC=cinder-demo-disk-image.service
+	LOOP_EXEC=voladm
+	GH_SYSD_BASE_URL=https://raw.github.com/openstack-fedora/openstack-configuration/master
+	GH_SYSD_LOOP_SVC_URL=$$GH_SYSD_BASE_URL/systemd/$$LOOP_SVC
+	GH_SYSD_LOOP_EXEC_URL=$$GH_SYSD_BASE_URL/bin/$$LOOP_EXEC
+	mkdir -p $$LOOP_EXEC_DIR
+	curl $$GH_SYSD_LOOP_SVC_URL -o /usr/lib/systemd/system/$$LOOP_SVC
+	curl $$GH_SYSD_LOOP_EXEC_URL -o $$LOOP_EXEC_DIR/$$LOOP_EXEC
+	chmod -R a+rx $$LOOP_EXEC_DIR
+	systemctl start $$LOOP_SVC && systemctl enable $$LOOP_SVC
+	CINDER_VOL_DEVICE=/dev/loop0
+	vgcreate cinder-volumes $$CINDER_VOL_DEVICE
+	sudo systemctl start openstack-cinder-volume.service
+	sudo systemctl enable openstack-cinder-volume.service
+
+.PHONY: openstack-keystone
+openstack-keystone: openssl
+	sudo openstack-db --service keystone --init
+	cat > keystonerc << _EOF
+	export ADMIN_TOKEN=$$(openssl rand -hex 10)
+	export OS_USERNAME=admin
+	export OS_PASSWORD=verybadpass
+	export OS_TENANT_NAME=admin
+	export OS_AUTH_URL=http://127.0.0.1:5000/v2.0/
+	export SERVICE_ENDPOINT=http://127.0.0.1:35357/v2.0/
+	export SERVICE_TOKEN=$$ADMIN_TOKEN
+	_EOF
+	. ./keystonerc
+	sudo openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $$ADMIN_TOKEN
+	sudo systemctl start openstack-keystone.service && sudo systemctl enable openstack-keystone.service
+	sudo ADMIN_PASSWORD=$$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
+	keystone user-list
+
+.PHONY: openstack-nova
+openstack-nova: | openstack-nova-database openstack-nova-use-keystone openstack-nova-service openstack-nova-network
+
+.PHONY: openstack-nova-service
+openstack-nova-service:
+	for svc in api objectstore compute network scheduler cert; do sudo systemctl start openstack-nova-$$svc.service; done
+	for svc in api objectstore compute network scheduler cert; do sudo systemctl enable openstack-nova-$$svc.service; done
+	nova flavor-list
+
+.PHONY: openstack-nova-database
+openstack-nova-database:
+	sudo openstack-db --service nova --init
+	sudo nova-manage db sync
+
+.PHONY: openstack-nova-use-keystone
+openstack-nova-use-keystone:
+	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_tenant_name service
+	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_user nova
+	sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_password servicepass
+	sudo openstack-config --set /etc/nova/nova.conf DEFAULT auth_strategy keystone
+
+.PHONY: openstack-nova-network
+openstack-nova-network:
+	sudo nova-manage network create demonet 10.0.0.0/24 1 256 --bridge=demonetbr0
+
+
+.PHONY: openstack-glance-use-keystone
+openstack-glance-use-keystone:
+	sudo openstack-db --service glance --init
+	sudo openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
+	sudo openstack-config --set /etc/glance/glance-registry.conf paste_deploy flavor keystone
+	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_tenant_name service
+	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_user glance
+	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_password servicepass
+	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_tenant_name service
+	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_user glance
+	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_password servicepass
+	for svc in api registry; do sudo systemctl restart openstack-glance-$$svc.service; done
+	glance index
+
+$(OPENSTACK_DEFAULT_IMAGE_FILE): /usr/bin/wget
+	curl -o $(OPENSTACK_DEFAULT_IMAGE_FILE) $(OPENSTACK_DEFAULT_IMAGE)
+
+.PHONY: openstack-add-glance-image
+openstack-add-glance-image: $(OPENSTACK_DEFAULT_IMAGE_FILE)
+	glance add name=f17-jeos is_public=true disk_format=qcow2 container_format=bare < $(OPENSTACK_DEFAULT_IMAGE_FILE)
+	glance image-list
+
+.PHONY: openstack-check-instance-creation
+openstack-check-instance-creation:
+	sudo modprobe nbd
+	nova keypair-add mykey > oskey.priv
+	chmod 600 oskey.priv
+	nova boot myserver --flavor 2 --key_name mykey --image $$(glance index | grep f17-jeos | awk '{print $$1}')
+	nova list
+
+.PHONY: openstack-dashboard
+openstack-dashboard:
+	sudo systemctl restart httpd.service && sudo systemctl enable httpd.service
+	sudo setsebool -P httpd_can_network_connect=on
+	firewall-cmd --add-port=80/tcp

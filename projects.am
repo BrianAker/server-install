@@ -10,7 +10,7 @@ all: | prep memcached-build gearman-build drizzle-build libdrizzle-build jenkins
 
 PREP:= /usr/bin/curl /usr/bin/git
 
-DEV_TOOLS_REQUIRED:= /usr/bin/valgrind /usr/bin/gdb /usr/bin/vim /usr/bin/man /usr/bin/gettext /usr/bin/intltool /usr/bin/bzr
+DEV_TOOLS_REQUIRED:= /usr/bin/valgrind /usr/bin/gdb /usr/bin/vim /usr/bin/man /usr/bin/gettext /usr/bin/intltool /usr/bin/bzr /usr/bin/wget
 
 DEV_TOOLS_EXTRA:= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/cmake rcs mercurial
 
