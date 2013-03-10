@@ -97,7 +97,7 @@ jenkins-slave: /usr/bin/java
 .PHONY: python-sphinx
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
-	$(PKG_INSTALLER) $(@F)
+	$(PKG_INSTALLER) python-sphinx
 
 #Basic build tools
 .PHONY: build_essential

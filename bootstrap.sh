@@ -20,7 +20,7 @@ function install_git_make()
 # If the fedora.am file is around we know then that we are in the repository
 function run_server_install()
 {
-  if [ -f 'yum.am' ]; then
+  if [ -f 'projects.am' ]; then
     git pull
     make
   elif [ -d 'server-install' ]; then
