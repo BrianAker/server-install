@@ -3,11 +3,11 @@
 
 include bundle.am
 
-.PHONY: build_tools base_install memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave build_essential libraries memcached mysqld
+.PHONY: build_tools basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave build_essential libraries memcached mysqld
 
-build_tools: | base_install memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
+build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
-base_install: pkg_update ssh-import-id $(PREP)
+basics: pkg_update ssh-import-id $(PREP)
 
 PREP:= /usr/bin/curl /usr/bin/git
 

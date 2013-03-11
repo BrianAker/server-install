@@ -27,19 +27,19 @@ endif
 
 base_install:
 	@if test -f '/etc/debconf.conf'; then \
-	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am base; \
+	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am basics; \
 	  elif [ -f '/etc/SuSE-release' ]; then  \
 	  	echo "Suse is not currently supported"; \
 	  elif [ -f '/etc/fedora-release' ]; then  \
-	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am base; \
+	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am basics; \
 	  elif [ -f '/etc/centos-release' ]; then  \
-	  	DISTRIBUTION=centos $(MAKE) -f rhel.am base; \
+	  	DISTRIBUTION=centos $(MAKE) -f rhel.am basics; \
 	  elif test -f '/etc/redhat-release'; then \
-	  	DISTRIBUTION=rhel $(MAKE) -f rhel.am base; \
+	  	DISTRIBUTION=rhel $(MAKE) -f rhel.am basics; \
 	  elif test -x '/usr/sbin/pkg_add'; then \
-	  	DISTRIBUTION=freebsd9 $(MAKE) -f freebsd.am base; \
+	  	DISTRIBUTION=freebsd9 $(MAKE) -f freebsd.am basics; \
 	  elif test -d '/etc/mach_init.d'; then \
-	  	$(MAKE) -f osx.am base; \
+	  	$(MAKE) -f osx.am basics; \
 	  fi
 
 base_openstack:
