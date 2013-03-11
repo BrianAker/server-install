@@ -27,6 +27,6 @@ drizzle-build: build_essential libdrizzle-build libraries
 # Libdrizzle
 libdrizzle-build: build_essential mysqld
 
-.NOTPARALLEL
+.NOTPARALLEL:
 
 .DEFAULT_GOAL:= build_tools
