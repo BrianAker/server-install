@@ -6,11 +6,16 @@ PKG_INSTALLER:= brew install
 PKG_UPDATE:= 
 PKG_UPGRADE:= 
 
+.PHONY: pkg_update brew_update
+
+pkg_update: | brew_update build_tools
+
+brew_update:
+	brew update
+
 build_tools: autoconf automake pcretest sphinx-build bazaar protoc mercurial doxygen glibtool
 
 libraries: libevent boost
-
-fresh: brew glibtool
 
 openstack:
 	echo "Not available on this platform"

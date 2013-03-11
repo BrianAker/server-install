@@ -29,17 +29,20 @@ else ifneq (${CENTOS_RELEASE},)
 else ifneq (${RHEL_RELEASE},)
   DISTRIBUTION := rhel
   include rhel.am
-else ifneq (${FREEBSD_RELEASE},)
+else ifeq (${FREEBSD_RELEASE},0)
   DISTRIBUTION := freebsd9
   include freebsd.am
-else ifneq (${OSX_RELEASE},)
+else ifeq (${OSX_RELEASE},0)
   DISTRIBUTION := osx
   include osx.am
+else
+  DISTRIBUTION := unknown
 endif
 
 .PHONY: all check
 
 all:
+	@echo "DISTRIBUTION: ${DISTRIBUTION}"
 
 check:
 	$(foreach each_makefile,$(DIST_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
