@@ -7,7 +7,7 @@ KEYSTONERC="$HOME/.keystonerc"
 
 function openstack_install()
 {
-  . $(HOME)/.keystonerc
+  . $KEYSTONERC
   openstack_keystone
   openstack_glance_use_keystone
   openstack_cinder
@@ -15,7 +15,7 @@ function openstack_install()
   openstack_add_glance_image
 }
 
-function openstack-cinder()
+function openstack_cinder()
 {
   sudo openstack-db --service cinder --init --rootpw ""
   sudo mkdir -p /var/lib/cinder
@@ -49,24 +49,24 @@ function openstack_cinder_perm()
 function openstack_keystone()
 {
   sudo openstack-db --service keystone --init --rootpw ""
-  sudo openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $$ADMIN_TOKEN
+  sudo openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
   sudo systemctl start openstack-keystone.service && sudo systemctl enable openstack-keystone.service
-  sudo ADMIN_PASSWORD=$$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
+  sudo ADMIN_PASSWORD=$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
   keystone user-list
 }
 
 function openstack_nova()
 {
-  openstack-nova-database
-  openstack-nova-use-keystone
-  openstack-nova-service
-  openstack-nova-network
+  openstack_nova_database
+  openstack_nova_use_keystone
+  openstack_nova_service
+  openstack_nova_network
 }
 
 function openstack_nova_service()
 {
-  for svc in api objectstore compute network scheduler cert; do sudo systemctl start openstack-nova-$$svc.service; done
-  for svc in api objectstore compute network scheduler cert; do sudo systemctl enable openstack-nova-$$svc.service; done
+  for svc in api objectstore compute network scheduler cert; do sudo systemctl start openstack-nova-$svc.service; done
+  for svc in api objectstore compute network scheduler cert; do sudo systemctl enable openstack-nova-$svc.service; done
   nova flavor-list
 }
 
@@ -101,7 +101,7 @@ function openstack_glance_use_keystone()
 	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_tenant_name service
 	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_user glance
 	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_password servicepass
-	for svc in api registry; do sudo systemctl restart openstack-glance-$$svc.service; done
+	for svc in api registry; do sudo systemctl restart openstack-glance-$svc.service; done
 	glance index
       }
 

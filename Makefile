@@ -1,5 +1,7 @@
 # vim:ft=automake
 
+IPADDRESS = $(shell ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
+
 default: 
 ifeq (10.6.118.177,${IPADDRESS})
 	$(MAKE) base_openstack

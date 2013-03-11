@@ -5,7 +5,6 @@ REQUIRED_OPENSTACK_SERVICES:= mysqld httpd qpid libvirt memcached nbd
 OPENSTACK_DEFAULT_IMAGE:= http://berrange.fedorapeople.org/images/2012-11-15/f17-x86_64-openstack-sda.qcow2
 OPENSTACK_DEFAULT_IMAGE_FILE:= /tmp/f17-x86_64-openstack-sda.qcow2
 
-IPADDRESS = $(shell ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
 KEYSTONERC := $(HOME)/.keystonerc
 
 
@@ -28,7 +27,7 @@ openstack-packages:
 
 .PHONY: openstack-install
 openstack-install: | $(KEYSTONERC)
-	fedora-openstack-folsum.sh
+	. ./fedora-openstack-folsum.sh
 
 $(KEYSTONERC): | openssl
 	. ./generate-keystonerc.sh
