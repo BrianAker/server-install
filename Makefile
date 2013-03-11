@@ -9,9 +9,8 @@ ALL_SCRIPTS := $(wildcard *.sh)
 all:
 
 check:
-	echo ${ALL_MAKEFILES2}
 	$(foreach each_makefile,$(ALL_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
-	$(foreach each_file,$(ALL_MAKEFILES),bash -e -n $(each_file);)
+	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
 
 default: 
 	$(MAKE) base_install
