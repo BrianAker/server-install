@@ -8,6 +8,12 @@ PKG_INSTALLER:= sudo yum install -y
 PKG_UPDATE:= sudo yum update -y
 PKG_UPGRADE:= sudo yum upgrade -y
 
+ifeq ($(DISTRIBUTION),fedora)
+  MINGW_EXTRA:= mingw64-crt mingw64-headers mingw-filesystem-base mingw-binutils-generic mingw64-glib-networking mingw32-nsiswrapper wine mingw32-gcc
+else
+  MINGW_EXTRA:=
+endif
+
 .PHONY: pkg_update
 pkg_update:
 	$(PKG_UPDATE)
@@ -165,16 +171,7 @@ mingw-bundle:
 	-$(PKG_INSTALLER) mingw64-gcc
 	-$(PKG_INSTALLER) mingw64-pthreads
 	-$(PKG_INSTALLER) mingw64-zlib-static
-ifeq $(DISTRIBUTION) 'fedora'
-	-$(PKG_INSTALLER) mingw64-crt
-	-$(PKG_INSTALLER) mingw64-headers
-	-$(PKG_INSTALLER) mingw-filesystem-base
-	-$(PKG_INSTALLER) mingw-binutils-generic
-	-$(PKG_INSTALLER) mingw64-glib-networking
-	-$(PKG_INSTALLER) mingw32-nsiswrapper
-	-$(PKG_INSTALLER) wine
-	-$(PKG_INSTALLER) mingw32-gcc
-endif
+	-$(PKG_INSTALLER) $(MINGW_EXTRA)
 
 .PHONY: smtp
 smtp:
