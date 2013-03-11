@@ -1,13 +1,13 @@
 # vim:ft=automake
 #
 
-include bundle.am
+include $(srcdir)/accounts.am
 
 .PHONY: build_tools basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave build_essential libraries memcached mysqld
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
-basics: | pkg_update ssh-import-id $(PREP)
+basics: | pkg_update ssh-import-id prep
 
 PREP:= /usr/bin/curl /usr/bin/git
 

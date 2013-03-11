@@ -1,36 +1,38 @@
 # vim:ft=automake
 #
 
+include $(srcdir)/useradd.am
+
 #Add Brian
 brian: 
-	$(MAKE) -f useradd.am CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker
+	CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker $(MAKE) admin-user
 
 yazz: 
-	$(MAKE) -f useradd.am CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7EEentropyworks/+sshkeys
+	CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7EEentropyworks/+sshkeys $(MAKE) admin-user
 
 linuxjedi: 
-	$(MAKE) -f useradd.am CREATE_USER=linuxjedi CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Elinuxjedi/+sshkeys
+	CREATE_USER=linuxjedi CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Elinuxjedi/+sshkeys $(MAKE) admin-user
 
 pcrews: 
-	$(MAKE) -f useradd.am CREATE_USER=pcrews CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Epatrick-crews/+sshkeys
+	CREATE_USER=pcrews CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Epatrick-crews/+sshkeys $(MAKE) admin-user
 
 mark: 
-	$(MAKE) -f useradd.am CREATE_USER=mark CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Efallenpegasus/+sshkeys
+	CREATE_USER=mark CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Efallenpegasus/+sshkeys $(MAKE) admin-user
 
 
 #Add DrizzleCI/Jenkins
 drizzleci:
-	$(MAKE) -f useradd.am CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=drizzle-continuous-integration
+	CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=drizzle-continuous-integration $(MAKE) user
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
 	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 
 tangentci:
-	$(MAKE) -f useradd.am user CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci
+	CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci $(MAKE) user
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
 	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 
 lazlo:
-	$(MAKE) -f useradd.am admin-user CREATE_USER=lazlo CREATE_USER_SSH_KEY_URL=d-ci
+	CREATE_USER=lazlo CREATE_USER_SSH_KEY_URL=d-ci $(MAKE) admin-user
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
 	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 

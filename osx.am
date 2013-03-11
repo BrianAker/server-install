@@ -1,12 +1,12 @@
 # vim:ft=automake
 
-include projects.am
+include $(srcdir)/projects.am
 
 PKG_INSTALLER:= brew install
 PKG_UPDATE:= 
 PKG_UPGRADE:= 
 
-build_essential: autoconf automake pcretest sphinx-build bazaar protoc mercurial doxygen glibtool
+build_tools: autoconf automake pcretest sphinx-build bazaar protoc mercurial doxygen glibtool
 
 libraries: libevent boost
 

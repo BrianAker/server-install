@@ -1,6 +1,7 @@
 # vim:ft=automake
 
-include projects.am
+include $(srcdir)/bundle.am
+include $(srcdir)/projects.am
 
 PKG_INSTALLER:= sudo apt-get install --yes
 PKG_UPDATE:= sudo apt-get update --yes

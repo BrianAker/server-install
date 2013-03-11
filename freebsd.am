@@ -1,7 +1,7 @@
 # vim:ft=automake
 #
 
-include projects.am
+include $(srcdir)/projects.am
 
 all:
 

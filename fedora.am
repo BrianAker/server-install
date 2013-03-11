@@ -1,8 +1,9 @@
 # vim:ft=automake
 #
 
-include projects.am
-include fedora-openstack-folsum.am
+include $(srcdir)/bundle.am
+include $(srcdir)/projects.am
+include $(srcdir)/fedora-openstack-folsum.am
 
 PKG_INSTALLER:= sudo yum install -y
 PKG_UPDATE:= sudo yum update -y
