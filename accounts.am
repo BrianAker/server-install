@@ -7,30 +7,30 @@ include $(srcdir)/useradd.am
 
 #Add Brian
 brian: 
-	CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker $(MAKE) admin-user
+	$(MAKE) CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker admin-user
 
 yazz: 
-	CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7EEentropyworks/+sshkeys $(MAKE) admin-user
+	$(MAKE) CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7EEentropyworks/+sshkeys admin-user
 
 linuxjedi: 
-	CREATE_USER=linuxjedi CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Elinuxjedi/+sshkeys $(MAKE) admin-user
+	$(MAKE) CREATE_USER=linuxjedi CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Elinuxjedi/+sshkeys admin-user
 
 pcrews: 
-	CREATE_USER=pcrews CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Epatrick-crews/+sshkeys $(MAKE) admin-user
+	$(MAKE) CREATE_USER=pcrews CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Epatrick-crews/+sshkeys admin-user
 
 mark: 
-	CREATE_USER=mark CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Efallenpegasus/+sshkeys $(MAKE) admin-user
+	$(MAKE) CREATE_USER=mark CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Efallenpegasus/+sshkeys admin-user
 
 
 #Add DrizzleCI/Jenkins
 drizzleci:
-	CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=drizzle-continuous-integration $(MAKE) user
+	$(MAKE) CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=drizzle-continuous-integration user
 
 tangentci:
-	CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci $(MAKE) user
+	$(MAKE) CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci user
 
 lazlo:
-	CREATE_USER=lazlo CREATE_USER_SSH_KEY_URL=d-ci $(MAKE) admin-user
+	$(MAKE) CREATE_USER=lazlo CREATE_USER_SSH_KEY_URL=d-ci admin-user
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel lazlo; fi
 	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo lazlo; fi
 
