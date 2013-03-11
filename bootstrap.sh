@@ -24,10 +24,10 @@ function run_server_install()
     git pull
     make
   elif [ -d 'server-install' ]; then
-    (cd server-install && git pull && make)
+    (cd 'server-install' && git pull && make)
   else
     git clone https://github.com/BrianAker/server-install.git
-    (cd server-install && make)
+    (cd 'server-install' && make)
   fi
 }
 

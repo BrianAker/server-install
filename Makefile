@@ -13,8 +13,7 @@ endif
 	$(MAKE) -f accounts.am secure-host
 	sudo reboot
 
-base_openstack: $(KEYSTONERC)
-	. $(KEYSTONERC)
+base_openstack:
 	@if test -f /etc/debconf.conf; then \
 	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am openstack; \
 	  elif [ -f '/etc/fedora-release' ]; then  \
