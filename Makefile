@@ -19,8 +19,8 @@ ifeq (10.6.118.177,${IPADDRESS})
 	$(MAKE) base_openstack
 else
 	$(MAKE) base_jenkins_slave
-endif
 	$(MAKE) -f accounts.am tangentci
+endif
 	$(MAKE) -f accounts.am lazlo
 	$(MAKE) -f accounts.am secure-host
 	sudo reboot
