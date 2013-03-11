@@ -4,6 +4,7 @@ IPADDRESS = $(shell ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print 
 
 default: 
 ifeq (10.6.118.177,${IPADDRESS})
+	sudo hostname localhost
 	$(MAKE) base_openstack
 else
 	$(MAKE) base_install
