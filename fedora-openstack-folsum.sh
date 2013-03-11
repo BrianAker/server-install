@@ -3,7 +3,9 @@
 
 function openstack_install()
 {
-  . $KEYSTONERC
+  if [ -f $KEYSTONERC ]; then
+    source $KEYSTONERC
+  fi
   openstack_keystone
   openstack_glance_use_keystone
   openstack_cinder

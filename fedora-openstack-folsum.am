@@ -9,7 +9,7 @@ KEYSTONERC := $(HOME)/.keystonerc
 
 
 .PHONY: openstack
-openstack: | $(REQUIRED_OPENSTACK_SERVICES) openstack-repo pkg_update openstack-packages openstack-install
+openstack: | pkg_update openstack-repo $(REQUIRED_OPENSTACK_SERVICES) openstack-packages openstack-install
 
 .PHONY: openstack-repo
 openstack-repo: /usr/bin/curl
