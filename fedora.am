@@ -54,20 +54,19 @@ prep: | $(PREP) pkg_update
 .PHONY: yum-cron
 yum-cron:
 	-$(PKG_INSTALLER) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
-	@if test -x /bin/systemctl; then \
+	if [ -x '/usr/bin/systemctl' ]; then \
 	  sudo systemctl enable yum-cron.service ; \
 	  sudo systemctl start yum-cron.service ; \
-	  elif test -x /usr/sbin/chkconfig; then \
+	  elif [ -x '/usr/sbin/chkconfig' ]; then \
 	  sudo /usr/sbin/chkconfig yum-cron on ; \
 	  sudo service yum-cron restart ; \
-	  elif test -x /sbin/chkconfig; then \
+	  elif [ -x '/sbin/chkconfig' ]; then \
 	  sudo /sbin/chkconfig yum-cron on ; \
 	  sudo service yum-cron restart ; \
 	  fi
 
 .PHONY: updatesd
 updatesd:
-ifeq ($(DISTRIBUTION),fedora)
 	-$(PKG_INSTALLER) yum-updatesd.noarch
 	sudo systemctl enable yum-updatesd.service
 	sudo systemctl restart yum-updatesd.service
@@ -75,7 +74,6 @@ ifeq ($(DISTRIBUTION),fedora)
 	sudo sed -i -e's/do_download = no/do_download = yes/' /etc/yum/yum-updatesd.conf
 	sudo sed -i -e's/do_download_deps = no/do_download_deps = yes/' /etc/yum/yum-updatesd.conf
 	sudo service yum-updatesd restart
-endif
 
 COMPILER:= /usr/bin/gcc /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool
 $(COMPILER): 
@@ -167,7 +165,7 @@ mingw-bundle:
 	-$(PKG_INSTALLER) mingw64-gcc
 	-$(PKG_INSTALLER) mingw64-pthreads
 	-$(PKG_INSTALLER) mingw64-zlib-static
-ifeq ($(DISTRIBUTION),fedora)
+ifeq $(DISTRIBUTION) 'fedora'
 	-$(PKG_INSTALLER) mingw64-crt
 	-$(PKG_INSTALLER) mingw64-headers
 	-$(PKG_INSTALLER) mingw-filesystem-base

@@ -10,7 +10,7 @@ build_essential: autoconf automake pcretest sphinx-build bazaar protoc mercurial
 
 libraries: libevent boost
 
-fresh: brew glibtool all
+fresh: brew glibtool
 
 openstack:
 	echo "Not available on this platform"

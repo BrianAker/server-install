@@ -173,3 +173,7 @@ security: yum-cron
 	-$(PKG_INSTALLER) etckeeper
 	-$(PKG_INSTALLER) denyhosts
 	-$(PKG_INSTALLER) fail2ban
+
+ssh-import-id: /usr/bin/ssh-import-id
+/usr/bin/ssh-import-id:
+	sudo easy_install ssh-import-id

@@ -14,3 +14,7 @@ mysqld:
 
 .PHONY: pkg_update
 	$(PKG_UPDATE)
+
+ssh-import-id: /usr/bin/ssh-import-id
+/usr/bin/ssh-import-id:
+	sudo easy_install ssh-import-id

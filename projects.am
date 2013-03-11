@@ -3,18 +3,19 @@
 
 include bundle.am
 
-.PHONY: all memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave
-all: | prep memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
+.PHONY: build_tools base memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave build_essential libraries memcached mysqld
 
-.DEFAULT_GOAL:= all
+build_tools: | prep memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
+
+base: pkg_update ssh-import-id $(PREP)
+
+.DEFAULT_GOAL:= build_tools
 
 PREP:= /usr/bin/curl /usr/bin/git
 
 DEV_TOOLS_REQUIRED:= /usr/bin/valgrind /usr/bin/gdb /usr/bin/vim /usr/bin/man /usr/bin/gettext /usr/bin/intltool /usr/bin/bzr /usr/bin/wget
 
 DEV_TOOLS_EXTRA:= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/cmake rcs mercurial
-
-.PHONY: build_essential libraries memcached mysqld
 
 # Memcached or libmemcached
 memcached-build: build_essential libraries memcached
@@ -28,3 +29,4 @@ drizzle-build: build_essential libdrizzle-build libraries
 # Libdrizzle
 libdrizzle-build: build_essential mysqld
 
+.NOTPARALLEL

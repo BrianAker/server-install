@@ -1,7 +1,7 @@
 # vim:ft=automake
 #
 
-all: bind-packages
+bind: bind-packages
 	sudo /usr/libexec/setup-named-chroot.sh /var/named/chroot on
 	sudo systemctl stop named.service
 	sudo systemctl disable named.service 
@@ -12,5 +12,5 @@ all: bind-packages
 
 bind-packages:
 	sudo yum install -y bind checkdns bind-chroot
-  
+
 

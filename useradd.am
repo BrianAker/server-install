@@ -13,29 +13,27 @@ admin-user: | useradd import_ssh_keys sudo-priv
 
 useradd:
 ifdef CREATE_USER
-ifneq ($(USER_EXISTS),0)
-ifeq ($(wildcard USERADD),)
-	@sudo $(USERADD) --shell=/bin/bash -m $(CREATE_USER)
-	@sudo -u $(CREATE_USER) ssh-keygen -t rsa -N "" -f ~$(CREATE_USER)/.ssh/id_rsa -q
-endif
+ifneq ${USER_EXISTS} 0
+	sudo ${USERADD} --shell=/bin/bash -m $(CREATE_USER)
+	sudo -u $(CREATE_USER) ssh-keygen -t rsa -N "" -f ~$(CREATE_USER)/.ssh/id_rsa -q
 endif
 endif
 
-import_ssh_keys: | useradd
+import_ssh_keys: | useradd ssh-import-id
 ifdef CREATE_USER
 	sudo -i -u $(CREATE_USER) $(SSH_IMPORT_ID) $(CREATE_USER_SSH_KEY_URL)
 endif
 
 sudo-priv: | $(OBJDIR)
 ifdef CREATE_USER
-	@touch /tmp/$(CREATE_USER)
+	touch /tmp/$(CREATE_USER)
 	@echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
-	@sudo chown root.root /tmp/$(CREATE_USER)
-	@sudo chmod 0440 /tmp/$(CREATE_USER)
-	@sudo mv /tmp/$(CREATE_USER) /etc/sudoers.d/$(CREATE_USER)
-ifeq ($(wildcard USERMOD),)
-	-sudo $(USERMOD) -G sudo $(CREATE_USER)
-endif
+	sudo chown root.root /tmp/$(CREATE_USER)
+	sudo chmod 0440 /tmp/$(CREATE_USER)
+	sudo mv /tmp/$(CREATE_USER) /etc/sudoers.d/$(CREATE_USER)
+	# Add the user to other groups
+	-sudo ${USERMOD} -G sudo $(CREATE_USER)
+	-sudo ${USERMOD} -G wheel $(CREATE_USER)
 endif
 
 $(OBJDIR):
