@@ -1,10 +1,6 @@
 #!/bin/bash
 #
 
-OPENSTACK_DEFAULT_IMAGE="http://berrange.fedorapeople.org/images/2012-11-15/f17-x86_64-openstack-sda.qcow2"
-OPENSTACK_DEFAULT_IMAGE_FILE="/tmp/f17-x86_64-openstack-sda.qcow2"
-KEYSTONERC="$HOME/.keystonerc"
-
 function openstack_install()
 {
   . $KEYSTONERC
@@ -131,5 +127,11 @@ function openstack_dashboard()
   sudo setsebool -P httpd_can_network_connect=on
   firewall-cmd --add-port=80/tcp
 }
+
+OPENSTACK_DEFAULT_IMAGE="http://berrange.fedorapeople.org/images/2012-11-15/f17-x86_64-openstack-sda.qcow2"
+OPENSTACK_DEFAULT_IMAGE_FILE="/tmp/f17-x86_64-openstack-sda.qcow2"
+KEYSTONERC="$HOME/.keystonerc"
+
+export KEYSTONERC OPENSTACK_DEFAULT_IMAGE_FILE OPENSTACK_DEFAULT_IMAGE
 
 openstack_install
