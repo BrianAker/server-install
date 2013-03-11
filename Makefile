@@ -1,7 +1,5 @@
 # vim:ft=automake
 
-.SHELLFLAGS= -e
-
 IPADDRESS = $(shell ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
 ALL_MAKEFILES := $(wildcard *.am) 
 ALL_SCRIPTS := $(wildcard *.sh) 
