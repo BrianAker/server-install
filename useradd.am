@@ -7,6 +7,8 @@ USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
 SSH_IMPORT_ID := /usr/bin/ssh-import-id
 
+.PHONY: user admin-user useradd import_ssh_keys sudo-priv
+
 user: | useradd import_ssh_keys
 
 admin-user: | useradd import_ssh_keys sudo-priv

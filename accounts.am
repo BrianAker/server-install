@@ -3,6 +3,8 @@
 
 include $(srcdir)/useradd.am
 
+.PHONY: brian yazz linuxjedi pcrews mark drizzleci tangentci lazlo wordpress sudoers-inc secure secure-fix tcp-wrappers secure-host
+
 #Add Brian
 brian: 
 	CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker $(MAKE) admin-user
@@ -23,18 +25,14 @@ mark:
 #Add DrizzleCI/Jenkins
 drizzleci:
 	CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=drizzle-continuous-integration $(MAKE) user
-	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
-	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 
 tangentci:
 	CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci $(MAKE) user
-	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
-	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
 
 lazlo:
 	CREATE_USER=lazlo CREATE_USER_SSH_KEY_URL=d-ci $(MAKE) admin-user
-	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel jenkins; fi
-	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo jenkins; fi
+	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel lazlo; fi
+	if [ -f /etc/debconf.conf ]; then sudo usermod -G sudo lazlo; fi
 
 wordpress: brian secure-host
 
