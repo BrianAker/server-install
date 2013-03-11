@@ -46,7 +46,7 @@ check:
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
 
 default: | show-address base_install
-ifeq (10.6.118.177,${IPADDRESS})
+ifeq (10.6.52.125,${IPADDRESS})
 	sudo hostname localhost
 	$(MAKE) base_openstack
 else
