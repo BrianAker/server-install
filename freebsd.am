@@ -1,11 +1,12 @@
 # vim:ft=automake
 #
 
-default: all
+include projects.am
 
 all:
+
+base_install: bazaar
 
 bazaar: /usr/bin/bzr
 /usr/local/bin/bzr:
 	pkg_add -F -r bazaar
-

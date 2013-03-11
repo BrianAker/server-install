@@ -12,7 +12,7 @@ check:
 	$(foreach each_makefile,$(ALL_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
 
-default: 
+default: show-address
 	$(MAKE) base_install
 ifeq (10.6.118.177,${IPADDRESS})
 	sudo hostname localhost
@@ -51,19 +51,19 @@ base_openstack:
 
 base_jenkins_slave:
 	@if test -f '/etc/debconf.conf'; then \
-	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am; \
+	  	DEBIAN_FRONTEND=noninteractive $(MAKE) -f ubuntu.am build_tools; \
 	  elif [ -f '/etc/SuSE-release' ]; then  \
 	  	echo "Suse is not currently supported"; \
 	  elif [ -f '/etc/fedora-release' ]; then  \
-	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am; \
+	  	DISTRIBUTION=fedora $(MAKE) -f fedora.am build_tools; \
 	  elif [ -f '/etc/centos-release' ]; then  \
-	  	DISTRIBUTION=centos $(MAKE) -f rhel.am; \
+	  	DISTRIBUTION=centos $(MAKE) -f rhel.am build_tools; \
 	  elif test -f '/etc/redhat-release'; then \
-	  	DISTRIBUTION=rhel $(MAKE) -f rhel.am; \
+	  	DISTRIBUTION=rhel $(MAKE) -f rhel.am build_tools; \
 	  elif test -x '/usr/sbin/pkg_add'; then \
-	  	DISTRIBUTION=freebsd9 $(MAKE) -f freebsd.am; \
+	  	DISTRIBUTION=freebsd9 $(MAKE) -f freebsd.am build_tools; \
 	  elif test -d '/etc/mach_init.d'; then \
-	  	$(MAKE) -f osx.am; \
+	  	$(MAKE) -f osx.am build_essential; \
 	  fi
 
 .PHONY: show-address
