@@ -12,8 +12,7 @@ check:
 	$(foreach each_makefile,$(ALL_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
 
-default: show-address
-	$(MAKE) base_install
+default: | show-address base_install
 ifeq (10.6.118.177,${IPADDRESS})
 	sudo hostname localhost
 	$(MAKE) base_openstack

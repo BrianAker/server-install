@@ -7,7 +7,7 @@ include bundle.am
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
-basics: pkg_update ssh-import-id $(PREP)
+basics: | pkg_update ssh-import-id $(PREP)
 
 PREP:= /usr/bin/curl /usr/bin/git
 
