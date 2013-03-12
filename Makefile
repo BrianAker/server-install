@@ -1,7 +1,7 @@
 # vim:ft=automake
 
 srcdir = $(shell pwd)
-IPADDRESS = $(shell ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
+IPADDRESS = $(shell /sbin/ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
 ALL_MAKEFILES := $(wildcard *.am) 
 ALL_SCRIPTS := $(wildcard *.sh) 
 
