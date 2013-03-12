@@ -20,8 +20,8 @@ mysqld: /usr/libexec/mysqld /var/run/mysqld /usr/include/mysql/mysql.h /usr/bin/
 	$(PKG_INSTALLER) mysql-server
 
 /var/run/mysqld:
-	sudo chkconfig mysqld.service on
-	sudo chkconfig mysqld.service start
+	sudo chkconfig mysqld on
+	sudo service mysqld start
 
 /usr/bin/mysql:
 	$(PKG_INSTALLER) mysql
@@ -36,8 +36,8 @@ DAEMONS:= memcached httpd vsftpd
 .PHONY: $(DAEMONS)
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
-	sudo chkconfig $@.service on
-	sudo chkconfig $@.service start
+	sudo chkconfig $@ on
+	sudo service $@ start
 
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
@@ -57,8 +57,8 @@ prep: | $(PREP) pkg_update
 yum-cron:
 	-$(PKG_INSTALLER) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
 	@if test -x /bin/chkconfig; then \
-	  sudo chkconfig yum-cron.service on ; \
-	  sudo chkconfig yum-cron.service start; \
+	  sudo chkconfig yum-cron on ; \
+	  sudo service yum-cron start; \
 	  elif test -x /usr/sbin/chkconfig; then \
 	  sudo /usr/sbin/chkconfig yum-cron on ; \
 	  sudo service yum-cron restart ; \
@@ -95,7 +95,7 @@ python-sphinx: /usr/bin/sphinx-build
 
 #Basic build tools
 .PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx /usr/bin/rpmbuild
+build_essential: $(DEV_TOOLS_REQUIRED) compiler python-sphinx /usr/bin/rpmbuild
 	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
 
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
@@ -104,7 +104,7 @@ PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
 
-LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl libaio cyrus-sasl
+LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl cyrus-sasl
 
 libraries: | $(LIBRARIES)
 $(LIBRARIES):
@@ -128,21 +128,21 @@ time:
 
 .PHONY: qpid
 qpid: /usr/sbin/qpidd /usr/bin/qpid-python-test
-	-sudo chkconfig qpidd.service on
-	-sudo chkconfig qpidd.service start
+	-sudo chkconfig qpidd on
+	-sudo service qpidd start
 
 .PHONY: libvirt
 libvirt:
 	-$(PKG_INSTALLER) libvirt-daemon-config-network libvirt-daemon-config-nwfilter
-	-sudo chkconfig libvirtd.service on
-	-sudo chkconfig libvirtd.service start
+	-sudo chkconfig libvirtd on
+	-sudo service libvirtd start
 
 
 .PHONY: smtp
 smtp:
 	-$(PKG_INSTALLER) sendmail sendmail-cf
-	-sudo chkconfig sendmail.service on
-	-sudo chkconfig sendmail.service start
+	-sudo chkconfig sendmail on
+	-sudo service sendmail start
 
 .PHONY: post
 post:
@@ -153,9 +153,6 @@ restart-iptables:
 
 .PHONY: security
 security: yum-cron
-	-$(PKG_INSTALLER) etckeeper
-	-$(PKG_INSTALLER) denyhosts
-	-$(PKG_INSTALLER) fail2ban
 
 ssh-import-id: /usr/bin/ssh-import-id
 /usr/bin/ssh-import-id:
