@@ -22,12 +22,12 @@ function run_server_install()
 {
   if [ -f 'projects.am' ]; then
     git pull
-    make default
+    make 'local-install'
   elif [ -d 'server-install' ]; then
-    (cd 'server-install' && git pull && make default)
+    (cd 'server-install' && git pull && make 'local-install')
   else
     git clone https://github.com/BrianAker/server-install.git
-    (cd 'server-install' && make default)
+    (cd 'server-install' && make 'local-install')
   fi
 }
 

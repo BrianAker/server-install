@@ -29,5 +29,7 @@ else ifeq (${FREEBSD_RELEASE},0)
 else ifeq (${OSX_RELEASE},0)
   DISTRIBUTION := osx
   include osx.am
+else
+  DISTRIBUTION := unknown
 endif
 

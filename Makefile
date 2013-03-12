@@ -7,18 +7,17 @@ ALL_SCRIPTS := $(wildcard *.sh)
 
 DIST_MAKEFILES := ubuntu.am fedora.am rhel.am freebsd.am osx.am
 
-DISTRIBUTION := unknown
+include $(srcdir)/dist.mk
 
-.PHONY: all check
+.PHONY: all check show install base_install
 
-all:
-	@echo "DISTRIBUTION: ${DISTRIBUTION}"
+all: show
 
 check:
 	$(foreach each_makefile,$(DIST_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
 
-default: | show-address base_install
+local-install: | show base_install
 ifeq (10.6.52.125,${IPADDRESS})
 	sudo hostname localhost
 	$(MAKE) base_openstack
@@ -39,9 +38,9 @@ base_openstack:
 base_jenkins_slave:
 	$(MAKE) build_tools
 
-.PHONY: show-address
-show-address:
-	@echo ${IPADDRESS}
+show:
+	@echo "IPADDRESS ${IPADDRESS}"
+	@echo "DISTRIBUTION: ${DISTRIBUTION}"
 
 install:
 ifdef INSTALL_SERVER
