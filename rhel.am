@@ -1,6 +1,7 @@
 # vim:ft=automake
 #
 
+include $(srcdir)/bundle.am
 include $(srcdir)/projects.am
 
 PKG_INSTALLER:= sudo yum install -y
@@ -19,8 +20,8 @@ mysqld: /usr/libexec/mysqld /var/run/mysqld /usr/include/mysql/mysql.h /usr/bin/
 	$(PKG_INSTALLER) mysql-server
 
 /var/run/mysqld:
-	sudo systemctl enable mysqld.service
-	sudo systemctl start mysqld.service
+	sudo chkconfig mysqld.service on
+	sudo chkconfig mysqld.service start
 
 /usr/bin/mysql:
 	$(PKG_INSTALLER) mysql
@@ -35,8 +36,8 @@ DAEMONS:= memcached httpd vsftpd
 .PHONY: $(DAEMONS)
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
-	sudo systemctl enable $@.service
-	sudo systemctl start $@.service
+	sudo chkconfig $@.service on
+	sudo chkconfig $@.service start
 
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
@@ -55,9 +56,9 @@ prep: | $(PREP) pkg_update
 .PHONY: yum-cron
 yum-cron:
 	-$(PKG_INSTALLER) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
-	@if test -x /bin/systemctl; then \
-	  sudo systemctl enable yum-cron.service ; \
-	  sudo systemctl start yum-cron.service ; \
+	@if test -x /bin/chkconfig; then \
+	  sudo chkconfig yum-cron.service on ; \
+	  sudo chkconfig yum-cron.service start; \
 	  elif test -x /usr/sbin/chkconfig; then \
 	  sudo /usr/sbin/chkconfig yum-cron on ; \
 	  sudo service yum-cron restart ; \
@@ -79,13 +80,10 @@ g++: /usr/bin/g++
 	$(PKG_INSTALLER) gcc-c++
 
 .PHONY: compiler
-compiler: $(COMPILER) mingw-bundle g++ clang-bundle protobuf-bundle
+compiler: $(COMPILER) g++ protobuf-bundle
 
 $(DEV_TOOLS_REQUIRED): 
 	$(PKG_INSTALLER) $(@F)
-
-$(DEV_TOOLS_EXTRA):
-	-$(PKG_INSTALLER) $(@F)
 
 .PHONY: jenkins-slave
 jenkins-slave: /usr/bin/java
@@ -99,8 +97,6 @@ python-sphinx: /usr/bin/sphinx-build
 .PHONY: build_essential
 build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx /usr/bin/rpmbuild
 	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
-
-CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 
@@ -132,34 +128,21 @@ time:
 
 .PHONY: qpid
 qpid: /usr/sbin/qpidd /usr/bin/qpid-python-test
-	-sudo systemctl start qpidd.service
-	-sudo systemctl enable qpidd.service
+	-sudo chkconfig qpidd.service on
+	-sudo chkconfig qpidd.service start
 
 .PHONY: libvirt
 libvirt:
 	-$(PKG_INSTALLER) libvirt-daemon-config-network libvirt-daemon-config-nwfilter
-	-sudo systemctl enable libvirtd.service
-	-sudo systemctl start libvirtd.service
+	-sudo chkconfig libvirtd.service on
+	-sudo chkconfig libvirtd.service start
 
-
-.PHONY: mingw-bundle
-mingw-bundle:
-	-$(PKG_INSTALLER) mingw64-boost
-	-$(PKG_INSTALLER) mingw64-filesystem
-	-$(PKG_INSTALLER) mingw64-binutils
-	-$(PKG_INSTALLER) mingw64-zlib
-	-$(PKG_INSTALLER) mingw64-cpp
-	-$(PKG_INSTALLER) mingw64-bzip2
-	-$(PKG_INSTALLER) mingw64-gcc-c++
-	-$(PKG_INSTALLER) mingw64-gcc
-	-$(PKG_INSTALLER) mingw64-pthreads
-	-$(PKG_INSTALLER) mingw64-zlib-static
 
 .PHONY: smtp
 smtp:
 	-$(PKG_INSTALLER) sendmail sendmail-cf
-	-sudo systemctl enable sendmail.service
-	-sudo systemctl restart sendmail.service
+	-sudo chkconfig sendmail.service on
+	-sudo chkconfig sendmail.service start
 
 .PHONY: post
 post:
