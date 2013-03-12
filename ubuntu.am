@@ -7,6 +7,8 @@ PKG_INSTALLER:= sudo apt-get install --yes
 PKG_UPDATE:= sudo apt-get update --yes
 PKG_UPGRADE:= sudo apt-get upgrade --yes
 
+DEBIAN_FRONTEND:= noninteractive
+
 PKG_INSTALLER:= sudo apt-get install --yes
 
 .PHONY: prep
