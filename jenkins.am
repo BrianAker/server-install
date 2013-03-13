@@ -19,3 +19,6 @@ jenkins-server: | /sbin/pound /usr/lib/jenkins/jenkins.war
 	sudo systemctl start pound
 	cp --archive pound.cfg /etc/pound.cfg
 	firewall-cmd --add-port=8443/tcp
+
+/etc/xinetd.d/bzr:
+	@cp bzr.inetd /etc/xinetd.d/bzr
