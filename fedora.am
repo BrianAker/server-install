@@ -110,7 +110,7 @@ python-sphinx: /usr/bin/sphinx-build
 
 #Basic build tools
 .PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx /usr/bin/rpmbuild
+build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx /usr/bin/rpmbuild pip
 	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
 
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
@@ -188,7 +188,11 @@ security: yum-cron
 	sudo sed -i -e's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 	-$(PKG_INSTALLER) etckeeper
 	-$(PKG_INSTALLER) denyhosts
-	-$(PKG_INSTALLER) fail2ban
+
+pip: /usr/bin/pip
+/usr/bin/pip:
+	sudo easy_install pip
+	-sudo pip install sphinxcontrib-googleanalytics
 
 ssh-import-id: /usr/bin/ssh-import-id
 /usr/bin/ssh-import-id:
