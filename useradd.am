@@ -13,6 +13,15 @@ user: | useradd import_ssh_keys
 
 admin-user: | useradd import_ssh_keys sudo-priv
 
+daemon-user:
+ifdef CREATE_USER
+ifneq (${USER_EXISTS},0)
+	@sudo mkdir -p /var/$(CREATE_USER)
+	@sudo ${USERADD} --shell=/sbin/nologin --home /var/$(CREATE_USER)  $(CREATE_USER)
+	@sudo chown -R ${CREATE_USER}.${CREATE_USER} /var/$(CREATE_USER)
+endif
+endif
+
 useradd:
 ifdef CREATE_USER
 ifneq (${USER_EXISTS},0)

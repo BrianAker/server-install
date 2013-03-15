@@ -5,8 +5,8 @@ include $(srcdir)/projects.am
 
 all:
 
-base_install: bazaar
+base_install: bzr
 
-bazaar: /usr/bin/bzr
+bzr: /usr/bin/bzr
 /usr/local/bin/bzr:
 	pkg_add -F -r bazaar

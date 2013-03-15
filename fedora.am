@@ -4,6 +4,7 @@
 include $(srcdir)/bundle.am
 include $(srcdir)/projects.am
 include $(srcdir)/fedora-openstack-folsum.am
+include $(srcdir)/jenkins.am
 
 PKG_INSTALLER:= sudo yum install -y
 PKG_UPDATE:= sudo yum update -y
@@ -42,11 +43,12 @@ mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
 /usr/include/mysql/mysql.h:
 	$(PKG_INSTALLER) mysql-devel
 
-DAEMONS:= memcached httpd vsftpd
+DAEMONS:= memcached httpd vsftpd xinetd
 .PHONY: $(DAEMONS)
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
-	sudo systemctl enable $@.service
+	-sudo systemctl enable $@.service
+	-sudo systemctl stop $@.service
 	sudo systemctl start $@.service
 
 $(PREP): 

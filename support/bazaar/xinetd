@@ -7,10 +7,10 @@ service bzr
 	socket_type		= stream
 	protocol		= tcp
 	wait			= no
-	user			= apache
+	user			= bazaar
 	passenv			= PATH
 	server			= /usr/bin/bzr
-	env			= HOME=/var/www/bzr
-	server_args		= serve --allow-writes --inet --directory=/var/www/bzr
+	env			= HOME=/var/bazaar
+	server_args		= serve --allow-writes --inet --directory=/var/bazaar
 #	bind			= 127.0.0.1
 }

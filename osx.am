@@ -13,7 +13,7 @@ pkg_update: | brew_update build_tools
 brew_update:
 	brew update
 
-build_tools: autoconf automake pcretest sphinx-build bazaar protoc mercurial doxygen glibtool
+build_tools: autoconf automake pcretest sphinx-build bzr protoc mercurial doxygen glibtool
 
 libraries: libevent boost
 
@@ -35,9 +35,9 @@ prep: /usr/local/bin/brew
 /usr/local/bin/brew:
 	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
 
-bazaar: /usr/local/bin/bzr
+bzr: /usr/local/bin/bzr
 /usr/local/bin/bzr:
-	$(PKG_INSTALLER) bazaar
+	$(PKG_INSTALLER) bzr
 
 protoc: /usr/local/bin/protoc
 /usr/local/bin/protoc:
