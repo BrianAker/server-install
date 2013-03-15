@@ -80,7 +80,7 @@ LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline
 
 libraries: | $(LIBRARIES)
 $(LIBRARIES):
-	-$(PKG_INSTALLER) $@ $@-dev
+	$(PKG_INSTALLER) $@-dev
 
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 .PHONY: clang-bundle
