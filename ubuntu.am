@@ -56,7 +56,7 @@ mercurial: /usr/bin/hg
 
 #Basic build tools
 .PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx mercurial ssh-import-id
+build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx mercurial ssh-import-id pip
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
@@ -80,7 +80,7 @@ LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline
 
 libraries: | $(LIBRARIES)
 $(LIBRARIES):
-	-$(PKG_INSTALLER) $@ $@-dev
+	$(PKG_INSTALLER) $@-dev
 
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 .PHONY: clang-bundle
@@ -114,3 +114,8 @@ jenkins-server:
 security:
 	-$(PKG_INSTALLER) denyhosts
 	-$(PKG_INSTALLER) fail2ban
+
+pip: /usr/bin/pip
+/usr/bin/pip:
+	-$(PKG_INSTALLER) python-pip
+	-sudo pip install sphinxcontrib-googleanalytics

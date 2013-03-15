@@ -18,6 +18,9 @@ linuxjedi:
 pcrews: 
 	$(MAKE) CREATE_USER=pcrews CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Epatrick-crews/+sshkeys admin-user
 
+capttofu:
+	$(MAKE) CREATE_USER=capttofu CREATE_USER_SSH_KEY_URL=capttofu admin-user
+
 mark: 
 	$(MAKE) CREATE_USER=mark CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Efallenpegasus/+sshkeys admin-user
 

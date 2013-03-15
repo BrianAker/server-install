@@ -13,7 +13,7 @@ pkg_update: | brew_update build_tools
 brew_update:
 	brew update
 
-build_tools: autoconf automake pcretest sphinx-build bzr protoc mercurial doxygen glibtool
+build_tools: autoconf automake pcretest sphinx-build bzr protoc mercurial doxygen glibtool pip
 
 libraries: libevent boost
 
@@ -86,6 +86,11 @@ rcs: /usr/local/bin/ident
 sphinx-build: /usr/local/bin/sphinx-build
 /usr/local/bin/sphinx-build:
 	sudo easy_install sphinx
+
+pip: /usr/local/bin/pip
+/usr/local/bin/pip:
+	sudo easy_install pip
+	sudo pip install sphinxcontrib-googleanalytics
 
 pcretest: /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
