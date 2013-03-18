@@ -26,6 +26,7 @@ useradd:
 ifdef CREATE_USER
 ifneq (${USER_EXISTS},0)
 	sudo ${USERADD} --shell=/bin/bash -m $(CREATE_USER)
+	sudo install -d -m 700 -o ${USERADD} ~${USERADD}/.ssh
 	sudo -u $(CREATE_USER) ssh-keygen -t rsa -N "" -f ~$(CREATE_USER)/.ssh/id_rsa -q
 	touch /tmp/adduser-include
 	echo "AllowUsers $(CREATE_USER)" > /tmp/adduser-include
@@ -36,7 +37,11 @@ endif
 
 import_ssh_keys: | useradd ssh-import-id
 ifdef CREATE_USER
+ifdef CREATE_USER_SSH_KEY_URL
+ifneq (${USER_EXISTS},0)
 	sudo -i -u $(CREATE_USER) $(SSH_IMPORT_ID) $(CREATE_USER_SSH_KEY_URL)
+endif
+endif
 endif
 
 sudo-priv: | $(OBJDIR)
