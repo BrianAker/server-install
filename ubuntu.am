@@ -60,6 +60,7 @@ build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
+	-$(PKG_INSTALLER) cloog-ppl
 
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
