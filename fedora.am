@@ -193,9 +193,9 @@ security: yum-cron
 
 pip: /usr/bin/pip
 /usr/bin/pip:
-	sudo easy_install pip
+	-$(PKG_INSTALLER) python-pip
 	-sudo pip install sphinxcontrib-googleanalytics
 
 ssh-import-id: /usr/bin/ssh-import-id
-/usr/bin/ssh-import-id:
-	sudo easy_install ssh-import-id
+/usr/bin/ssh-import-id: python-pip
+	sudo pip-python install  ssh-import-id

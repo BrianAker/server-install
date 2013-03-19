@@ -9,7 +9,7 @@ DIST_MAKEFILES := ubuntu.am fedora.am rhel.am freebsd.am osx.am
 
 include $(srcdir)/dist.mk
 
-.PHONY: all check show install base_install
+.PHONY: all check show install base_install deploy
 
 all: show
 
@@ -43,6 +43,12 @@ show:
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"
 
 install:
+ifdef INSTALL_SERVER
+	scp bootstrap.sh "$$INSTALL_SERVER":~/
+	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
+endif
+
+deploy:
 ifdef INSTALL_SERVER
 	scp bootstrap.sh "$$INSTALL_SERVER":~/
 	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
