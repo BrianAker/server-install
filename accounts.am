@@ -35,6 +35,9 @@ tangentci:
 bazaar:
 	$(MAKE) CREATE_USER=bazaar daemon-user
 
+pinguser:
+	$(MAKE) CREATE_USER=ping CREATE_USER_SSH_KEY_URL=d-ci user daemon-user
+
 lazlo:
 	$(MAKE) CREATE_USER=lazlo CREATE_USER_SSH_KEY_URL=d-ci admin-user
 	if [ -f /etc/redhat-release ]; then sudo usermod -G wheel lazlo; fi

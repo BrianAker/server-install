@@ -17,7 +17,7 @@ check:
 	$(foreach each_makefile,$(DIST_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
 
-local-install: | show base_install
+install: | show base_install
 ifeq (10.6.52.125,${IPADDRESS})
 	sudo hostname localhost
 	$(MAKE) base_openstack
@@ -25,6 +25,7 @@ else
 	$(MAKE) base_jenkins_slave
 	$(MAKE) tangentci
 endif
+	$(MAKE) ping-user
 	$(MAKE) lazlo
 	$(MAKE) secure-host
 	sudo reboot
@@ -42,9 +43,11 @@ show:
 	@echo "IPADDRESS ${IPADDRESS}"
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"
 
-install:
+deploy:
 ifdef INSTALL_SERVER
 	scp bootstrap.sh "$$INSTALL_SERVER":~/
+	git remote rm "$$INSTALL_SERVER"
+	git remote add "$$INSTALL_SERVER" ssh://"$$INSTALL_SERVER"/~/server-install.git
 	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
 endif
 
