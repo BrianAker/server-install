@@ -51,11 +51,6 @@ ifdef INSTALL_SERVER
 	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
 endif
 
-deploy:
-ifdef INSTALL_SERVER
-	scp bootstrap.sh "$$INSTALL_SERVER":~/
-	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
-endif
 
 .DEFAULT_GOAL:= all
 
