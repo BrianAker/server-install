@@ -34,4 +34,4 @@ libdrizzle-build: build_essential mysqld
 
 .NOTPARALLEL:
 
-.DEFAULT_GOAL:= build_tools
+.DEFAULT_GOAL:= all

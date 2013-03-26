@@ -33,11 +33,14 @@ ifeq (openstack_host,${IPADDRESS})
 	$(MAKE) base_openstack
 else
   ifneq (${mac},0)
+	@echo "DEV SERVER"
 	$(MAKE) ${DEV_TOOLS_REQUIRED}
   else
     ifneq (${host_ip},0)
+	@echo "DEV SERVER"
 	$(MAKE) ${DEV_TOOLS_REQUIRED}
     else
+	@echo "JENKINS SLAVE"
 	$(MAKE) base_jenkins_slave
 	$(MAKE) tangentci
 	$(MAKE) ping-user
@@ -65,7 +68,7 @@ show:
 deploy:
 ifdef INSTALL_SERVER
 	scp bootstrap.sh "$$INSTALL_SERVER":~/
-	git remote rm "$$INSTALL_SERVER"
+	-git remote rm "$$INSTALL_SERVER"
 	git remote add "$$INSTALL_SERVER" ssh://"$$INSTALL_SERVER"/~/server-install.git
 	ssh -t "$$INSTALL_SERVER" ./bootstrap.sh
 endif
