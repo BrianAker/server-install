@@ -3,7 +3,7 @@
 
 include $(srcdir)/accounts.am
 
-.PHONY: build_tools basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave build_essential libraries memcached mysqld
+.PHONY: build_tools base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave build_essential libraries memcached mysqld
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
@@ -11,9 +11,14 @@ basics: | pkg_update ssh-import-id prep
 
 PREP:= /usr/bin/curl /usr/bin/git
 
-DEV_TOOLS_REQUIRED:= /usr/bin/valgrind /usr/bin/gdb /usr/bin/vim /usr/bin/man /usr/bin/gettext /usr/bin/intltool /usr/bin/bzr /usr/bin/wget
+base: | ${PREP} ${DEV_TOOLS_REQUIRED}
 
-DEV_TOOLS_EXTRA:= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/cmake rcs mercurial
+DEV_TOOLS_REQUIRED:= ${BASE_INSTALL_PATH}/bin/vim ${BASE_INSTALL_PATH}/bin/bzr ${BASE_INSTALL_PATH}/bin/wget
+
+DEV_TOOLS_EXTRA:=
+DEV_TOOLS_EXTRA+= /usr/bin/doxygen /usr/bin/cppcheck /usr/bin/lcov /usr/bin/gperf /usr/bin/cmake rcs mercurial /usr/bin/valgrind 
+DEV_TOOLS_EXTRA+= /usr/bin/gdb /usr/bin/man /usr/bin/gettext /usr/bin/intltool /usr/bin/gmake
+DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/gdb
 
 # Memcached or libmemcached
 memcached-build: build_essential libraries memcached

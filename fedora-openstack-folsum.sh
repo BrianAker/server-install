@@ -15,14 +15,14 @@ function openstack_install()
 
 function openstack_cinder()
 {
-  sudo openstack-db --service cinder --init --rootpw ""
-  sudo mkdir -p /var/lib/cinder
-  sudo truncate --size=20G /var/lib/cinder/cinder-volumes.img
-  sudo losetup --show -f /var/lib/cinder/cinder-volumes.img
+  openstack-db --service cinder --init --rootpw ""
+  mkdir -p /var/lib/cinder
+  truncate --size=20G /var/lib/cinder/cinder-volumes.img
+  losetup --show -f /var/lib/cinder/cinder-volumes.img
   CINDER_VOL_DEVICE=$(losetup -a | grep "/var/lib/cinder/cinder-volumes.img" | cut -d':' -f1)
-  sudo vgcreate cinder-volumes $CINDER_VOL_DEVICE
-  sudo systemctl start openstack-cinder-volume.service
-  sudo systemctl enable openstack-cinder-volume.service
+  vgcreate cinder-volumes $CINDER_VOL_DEVICE
+  systemctl start openstack-cinder-volume.service
+  systemctl enable openstack-cinder-volume.service
 }
 
 function openstack_cinder_perm()
@@ -40,16 +40,16 @@ function openstack_cinder_perm()
   systemctl start $LOOP_SVC && systemctl enable $LOOP_SVC
   CINDER_VOL_DEVICE=/dev/loop0
   vgcreate cinder-volumes $CINDER_VOL_DEVICE
-  sudo systemctl start openstack-cinder-volume.service
-  sudo systemctl enable openstack-cinder-volume.service
+  systemctl start openstack-cinder-volume.service
+  systemctl enable openstack-cinder-volume.service
 }
 
 function openstack_keystone()
 {
-  sudo openstack-db --service keystone --init --rootpw ""
-  sudo openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
-  sudo systemctl start openstack-keystone.service && sudo systemctl enable openstack-keystone.service
-  sudo ADMIN_PASSWORD=$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
+  openstack-db --service keystone --init --rootpw ""
+  openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
+  systemctl start openstack-keystone.service && systemctl enable openstack-keystone.service
+  ADMIN_PASSWORD=$OS_PASSWORD SERVICE_PASSWORD=servicepass openstack-keystone-sample-data
   keystone user-list
 }
 
@@ -63,43 +63,43 @@ function openstack_nova()
 
 function openstack_nova_service()
 {
-  for svc in api objectstore compute network scheduler cert; do sudo systemctl start openstack-nova-$svc.service; done
-  for svc in api objectstore compute network scheduler cert; do sudo systemctl enable openstack-nova-$svc.service; done
+  for svc in api objectstore compute network scheduler cert; do systemctl start openstack-nova-$svc.service; done
+  for svc in api objectstore compute network scheduler cert; do systemctl enable openstack-nova-$svc.service; done
   nova flavor-list
 }
 
 function openstack_nova_database()
 {
-  sudo openstack-db --service nova --init --rootpw ""
-  sudo nova-manage db sync
+  openstack-db --service nova --init --rootpw ""
+  nova-manage db sync
 }
 
 function openstack_nova_use_keystone()
 {
-  sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_tenant_name service
-  sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_user nova
-  sudo openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_password servicepass
-  sudo openstack-config --set /etc/nova/nova.conf DEFAULT auth_strategy keystone
+  openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_tenant_name service
+  openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_user nova
+  openstack-config --set /etc/nova/api-paste.ini filter:authtoken admin_password servicepass
+  openstack-config --set /etc/nova/nova.conf DEFAULT auth_strategy keystone
 }
 
 function openstack_nova_network()
 {
-  sudo nova-manage network create demonet 10.0.0.0/24 1 256 --bridge=demonetbr0
+  nova-manage network create demonet 10.0.0.0/24 1 256 --bridge=demonetbr0
 }
 
 
 function openstack_glance_use_keystone()
 {
-	sudo openstack-db --service glance --init --rootpw ""
-	sudo openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
-	sudo openstack-config --set /etc/glance/glance-registry.conf paste_deploy flavor keystone
-	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_tenant_name service
-	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_user glance
-	sudo openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_password servicepass
-	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_tenant_name service
-	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_user glance
-	sudo openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_password servicepass
-	for svc in api registry; do sudo systemctl restart openstack-glance-$svc.service; done
+	openstack-db --service glance --init --rootpw ""
+	openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
+	openstack-config --set /etc/glance/glance-registry.conf paste_deploy flavor keystone
+	openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_tenant_name service
+	openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_user glance
+	openstack-config --set /etc/glance/glance-api-paste.ini filter:authtoken admin_password servicepass
+	openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_tenant_name service
+	openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_user glance
+	openstack-config --set /etc/glance/glance-registry-paste.ini filter:authtoken admin_password servicepass
+	for svc in api registry; do systemctl restart openstack-glance-$svc.service; done
 	glance index
       }
 
@@ -116,7 +116,7 @@ function openstack_add_glance_image()
 
 function openstack_check_instance_creation()
 {
-  sudo modprobe nbd
+  modprobe nbd
   nova keypair-add mykey > oskey.priv
   chmod 600 oskey.priv
   nova boot myserver --flavor 2 --key_name mykey --image $(glance index | grep f17-jeos | awk '{print $1}')
@@ -125,8 +125,8 @@ function openstack_check_instance_creation()
 
 function openstack_dashboard()
 {
-  sudo systemctl restart httpd.service && sudo systemctl enable httpd.service
-  sudo setsebool -P httpd_can_network_connect=on
+  systemctl restart httpd.service && systemctl enable httpd.service
+  setsebool -P httpd_can_network_connect=on
   firewall-cmd --add-port=80/tcp
 }
 

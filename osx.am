@@ -1,5 +1,6 @@
 # vim:ft=automake
 
+BASE_INSTALL_PATH= /usr/local/
 include $(srcdir)/projects.am
 
 PKG_INSTALLER:= brew install
@@ -8,7 +9,7 @@ PKG_UPGRADE:=
 
 .PHONY: pkg_update brew_update
 
-pkg_update: | brew_update build_tools
+pkg_update: | brew_update
 
 brew_update:
 	brew update
@@ -26,6 +27,9 @@ time:
 security:
 
 post:
+
+$(DEV_TOOLS_REQUIRED): 
+	$(PKG_INSTALLER) $(@F)
 
 tap: /usr/local/Library/Taps
 /usr/local/Library/Taps:
@@ -85,12 +89,12 @@ rcs: /usr/local/bin/ident
 
 sphinx-build: /usr/local/bin/sphinx-build
 /usr/local/bin/sphinx-build:
-	sudo easy_install sphinx
+	easy_install sphinx
 
 pip: /usr/local/bin/pip
 /usr/local/bin/pip:
-	sudo easy_install pip
-	sudo pip install sphinxcontrib-googleanalytics
+	easy_install pip
+	pip install sphinxcontrib-googleanalytics
 
 pcretest: /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
@@ -102,4 +106,4 @@ bison: /usr/local/bin/bison
 
 ssh-import-id: /usr/local/bin/ssh-import-id
 /usr/local/bin/ssh-import-id:
-	sudo easy_install ssh-import-id
+	easy_install ssh-import-id

@@ -1,14 +1,16 @@
 # vim:ft=automake
 #
 
+BASE_INSTALL_PATH= /usr/
+
 include $(srcdir)/bundle.am
 include $(srcdir)/projects.am
 include $(srcdir)/fedora-openstack-folsum.am
 include $(srcdir)/jenkins.am
 
-PKG_INSTALLER:= sudo yum install -y
-PKG_UPDATE:= sudo yum update -y
-PKG_UPGRADE:= sudo yum upgrade -y
+PKG_INSTALLER:= yum install -y
+PKG_UPDATE:= yum update -y
+PKG_UPGRADE:= yum upgrade -y
 
 ifeq ($(DISTRIBUTION),fedora)
   MINGW_EXTRA:= mingw64-crt mingw64-headers mingw-filesystem-base mingw-binutils-generic mingw64-glib-networking mingw32-nsiswrapper wine mingw32-gcc
@@ -28,8 +30,8 @@ nbd: /usr/bin/nbd-server
 
 .PHONY: mysqld
 mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
-	sudo systemctl enable mysqld.service
-	sudo systemctl restart mysqld.service
+	systemctl enable mysqld.service
+	systemctl restart mysqld.service
 
 /usr/libexec/mysqld:
 	$(PKG_INSTALLER) mysql-server
@@ -47,9 +49,9 @@ DAEMONS:= memcached httpd vsftpd xinetd
 .PHONY: $(DAEMONS)
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
-	-sudo systemctl enable $@.service
-	-sudo systemctl stop $@.service
-	sudo systemctl start $@.service
+	-systemctl enable $@.service
+	-systemctl stop $@.service
+	systemctl start $@.service
 
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
@@ -64,25 +66,25 @@ prep: | $(PREP) pkg_update
 yum-cron:
 	-$(PKG_INSTALLER) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
 	if [ -x '/usr/bin/systemctl' ]; then \
-	  sudo systemctl enable yum-cron.service ; \
-	  sudo systemctl start yum-cron.service ; \
+	  systemctl enable yum-cron.service ; \
+	  systemctl start yum-cron.service ; \
 	  elif [ -x '/usr/sbin/chkconfig' ]; then \
-	  sudo /usr/sbin/chkconfig yum-cron on ; \
-	  sudo service yum-cron restart ; \
+	  /usr/sbin/chkconfig yum-cron on ; \
+	  service yum-cron restart ; \
 	  elif [ -x '/sbin/chkconfig' ]; then \
-	  sudo /sbin/chkconfig yum-cron on ; \
-	  sudo service yum-cron restart ; \
+	  /sbin/chkconfig yum-cron on ; \
+	  service yum-cron restart ; \
 	  fi
 
 .PHONY: updatesd
 updatesd:
 	-$(PKG_INSTALLER) yum-updatesd.noarch
-	sudo systemctl enable yum-updatesd.service
-	sudo systemctl restart yum-updatesd.service
-	sudo sed -i -e's/do_update = no/do_update = yes/' /etc/yum/yum-updatesd.conf
-	sudo sed -i -e's/do_download = no/do_download = yes/' /etc/yum/yum-updatesd.conf
-	sudo sed -i -e's/do_download_deps = no/do_download_deps = yes/' /etc/yum/yum-updatesd.conf
-	sudo service yum-updatesd restart
+	systemctl enable yum-updatesd.service
+	systemctl restart yum-updatesd.service
+	sed -i -e's/do_update = no/do_update = yes/' /etc/yum/yum-updatesd.conf
+	sed -i -e's/do_download = no/do_download = yes/' /etc/yum/yum-updatesd.conf
+	sed -i -e's/do_download_deps = no/do_download_deps = yes/' /etc/yum/yum-updatesd.conf
+	service yum-updatesd restart
 
 COMPILER:= /usr/bin/gcc /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool
 $(COMPILER): 
@@ -93,8 +95,10 @@ g++: /usr/bin/g++
 /usr/bin/g++: 
 	$(PKG_INSTALLER) gcc-c++
 
-.PHONY: compiler
-compiler: $(COMPILER) mingw-bundle g++ clang-bundle protobuf-bundle
+.PHONY: compiler compiler-other
+compiler: $(COMPILER) g++
+
+compiler-other: mingw-bundle clang-bundle protobuf-bundle
 
 $(DEV_TOOLS_REQUIRED): 
 	$(PKG_INSTALLER) $(@F)
@@ -112,7 +116,7 @@ python-sphinx: /usr/bin/sphinx-build
 
 #Basic build tools
 .PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx /usr/bin/rpmbuild pip
+build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler compiler-other python-sphinx /usr/bin/rpmbuild pip
 	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
 
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
@@ -134,7 +138,7 @@ $(LIBRARIES):
 time:
 	-$(PKG_INSTALLER) ntpdate
 	-$(PKG_INSTALLER) ntp
-	sudo ntpdate time.apple.com
+	ntpdate time.apple.com
 
 /usr/bin/rpmbuild:
 	-$(PKG_INSTALLER) rpm-build
@@ -152,14 +156,14 @@ mercurial: /usr/bin/hg
 
 .PHONY: qpid
 qpid: /usr/sbin/qpidd /usr/bin/qpid-python-test
-	-sudo systemctl start qpidd.service
-	-sudo systemctl enable qpidd.service
+	-systemctl start qpidd.service
+	-systemctl enable qpidd.service
 
 .PHONY: libvirt
 libvirt:
 	-$(PKG_INSTALLER) libvirt-daemon-config-network libvirt-daemon-config-nwfilter
-	-sudo systemctl enable libvirtd.service
-	-sudo systemctl start libvirtd.service
+	-systemctl enable libvirtd.service
+	-systemctl start libvirtd.service
 
 
 .PHONY: mingw-bundle
@@ -179,23 +183,23 @@ mingw-bundle:
 .PHONY: smtp
 smtp:
 	-$(PKG_INSTALLER) sendmail sendmail-cf
-	-sudo systemctl enable sendmail.service
-	-sudo systemctl restart sendmail.service
+	-systemctl enable sendmail.service
+	-systemctl restart sendmail.service
 
 .PHONY: post
 post:
 
 .PHONY: security
 security: yum-cron
-	sudo sed -i -e's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+	sed -i -e's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 	-$(PKG_INSTALLER) etckeeper
 	-$(PKG_INSTALLER) denyhosts
 
 pip: /usr/bin/pip
 /usr/bin/pip:
 	-$(PKG_INSTALLER) python-pip
-	-sudo pip install sphinxcontrib-googleanalytics
+	-pip install sphinxcontrib-googleanalytics
 
 ssh-import-id: /usr/bin/ssh-import-id
 /usr/bin/ssh-import-id: pip-python
-	sudo pip-python install ssh-import-id
+	pip-python install ssh-import-id

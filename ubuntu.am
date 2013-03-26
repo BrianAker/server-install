@@ -1,15 +1,17 @@
 # vim:ft=automake
 
+BASE_INSTALL_PATH= /usr/
+
 include $(srcdir)/bundle.am
 include $(srcdir)/projects.am
 
-PKG_INSTALLER:= sudo apt-get install --yes
-PKG_UPDATE:= sudo apt-get update --yes
-PKG_UPGRADE:= sudo apt-get upgrade --yes
+PKG_INSTALLER:= apt-get install --yes
+PKG_UPDATE:= apt-get update --yes
+PKG_UPGRADE:= apt-get upgrade --yes
 
 DEBIAN_FRONTEND:= noninteractive
 
-PKG_INSTALLER:= sudo apt-get install --yes
+PKG_INSTALLER:= apt-get install --yes
 
 .PHONY: prep
 prep: | $(PREP) pkg_update
@@ -17,7 +19,7 @@ prep: | $(PREP) pkg_update
 
 .PHONY: pkg_update
 pkg_update:
-	sudo apt-get --purge -y remove byobu
+	apt-get --purge -y remove byobu
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 	$(PKG_UPDATE)
@@ -96,19 +98,19 @@ update:
 	$(PKG_INSTALLER) update-manager-core
 	$(PKG_INSTALLER) cron-apt
 	$(PKG_INSTALLER) unattended-upgrades
-	sudo dpkg-reconfigure -plow unattended-upgrades
+	dpkg-reconfigure -plow unattended-upgrades
 
 .PHONY: time
 time:
 	-$(PKG_INSTALLER) ntp ntpdate
-	#sudo ntpdate time.apple.com
+	#ntpdate time.apple.com
 
 post:
-	sudo apt-get autoremove --yes
+	apt-get autoremove --yes
 
 jenkins-server:
-	wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
-	sudo sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+	wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
+	sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
 	$(PKG_UPDATE)
 	$(PKG_INSTALLER) jenkins
 
@@ -119,4 +121,4 @@ security:
 pip: /usr/bin/pip
 /usr/bin/pip:
 	-$(PKG_INSTALLER) python-pip
-	-sudo pip install sphinxcontrib-googleanalytics
+	-pip install sphinxcontrib-googleanalytics

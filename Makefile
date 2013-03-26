@@ -1,9 +1,16 @@
 # vim:ft=automake
 
 srcdir = $(shell pwd)
-IPADDRESS = $(shell /sbin/ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }')
+IPADDRESS = $(shell /sbin/ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 } ' | head -1)
+MACADDR = $(shell /sbin/ifconfig  | grep 'ether ' | awk '{ print $2 }')
 ALL_MAKEFILES := $(wildcard *.am) 
 ALL_SCRIPTS := $(wildcard *.sh) 
+
+JENKINS_SLAVES=
+
+DEVBOX_MAC= 34:15:9e:03:20:fa f8:1e:df:e2:7e:07 0a:1e:df:e2:7e:07
+DEVBOX_IP= 10.0.2.16 10.0.2.24
+OPENSTACK_IP= 10.6.52.125
 
 DIST_MAKEFILES := ubuntu.am fedora.am rhel.am freebsd.am osx.am
 
@@ -16,19 +23,31 @@ all: show
 check:
 	$(foreach each_makefile,$(DIST_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
+	mac := $(foreach each_mac,$(MACADDR),$(findstring ${each_mac},${DEVBOX_MAC}))
+	host_ip := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
+	openstack_host := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
 
 install: | show base_install
-ifeq (10.6.52.125,${IPADDRESS})
-	sudo hostname localhost
+ifeq (openstack_host,${IPADDRESS})
+	hostname localhost
 	$(MAKE) base_openstack
 else
+  ifneq (${mac},0)
+	$(MAKE) ${DEV_TOOLS_REQUIRED}
+  else
+    ifneq (${host_ip},0)
+	$(MAKE) ${DEV_TOOLS_REQUIRED}
+    else
 	$(MAKE) base_jenkins_slave
 	$(MAKE) tangentci
-endif
 	$(MAKE) ping-user
 	$(MAKE) lazlo
 	$(MAKE) secure-host
-	sudo reboot
+	reboot
+	endif
+    endif
+  endif
+endif
 
 base_install:
 	$(MAKE) basics

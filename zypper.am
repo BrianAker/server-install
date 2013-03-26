@@ -1,8 +1,8 @@
 # vim:ft=automake
 #
 
-PKG_INSTALLER:= sudo zypper --non-interactive
-PKG_UPDATE:= sudo zypper --non-interactive update
+PKG_INSTALLER:= zypper --non-interactive
+PKG_UPDATE:= zypper --non-interactive update
 PKG_UPGRADE:= $(PKG_UPDATE)
 
 $(PREP): 
@@ -17,4 +17,4 @@ mysqld:
 
 ssh-import-id: /usr/bin/ssh-import-id
 /usr/bin/ssh-import-id:
-	sudo easy_install ssh-import-id
+	easy_install ssh-import-id

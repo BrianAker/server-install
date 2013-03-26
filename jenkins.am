@@ -4,44 +4,44 @@
 jenkins-server: | httpd pound /usr/lib/jenkins/jenkins.war bazaar-server
 
 /usr/lib/jenkins/jenkins.war:
-	sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
-	sudo curl --output /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+	rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+	curl --output /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
 	$(PKG_INSTALLER) jenkins
 	-$(PKG_INSTALLER) maven xorg-x11-server-Xvfb
-	sudo systemctl enable jenkins.service
-	sudo systemctl start jenkins.service
+	systemctl enable jenkins.service
+	systemctl start jenkins.service
 
 .PHONY: pound
 pound: | /etc/pound.cfg /sbin/pound /etc/firewalld/services/pound.xml /etc/rsyslog.d/pound.conf
 /sbin/pound: 
-	sudo yum install -y Pound
-	sudo systemctl enable pound
-	sudo systemctl start pound
+	yum install -y Pound
+	systemctl enable pound
+	systemctl start pound
 
 /etc/pound.cfg: support/pound/pound.cfg
-	sudo cp --archive support/pound/pound.cfg /etc/pound.cfg
-	sudo firewall-cmd --zone=public --permanent --add-port=8443/tcp
+	cp --archive support/pound/pound.cfg /etc/pound.cfg
+	firewall-cmd --zone=public --permanent --add-port=8443/tcp
 
 /etc/rsyslog.d/pound.conf:
-	sudo cp --archive support/pound/syslog.conf /etc/rsyslog.d/pound.conf
-	sudo systemctl restart  rsyslog.service
+	cp --archive support/pound/syslog.conf /etc/rsyslog.d/pound.conf
+	systemctl restart  rsyslog.service
 
 /etc/firewalld/services/pound.xml: support/pound/firewalld.xml
-	sudo cp --archive support/pound/firewalld.xml /etc/firewalld/services/pound.xml
-	@sudo chown root.root /etc/firewalld/services/pound.xml
+	cp --archive support/pound/firewalld.xml /etc/firewalld/services/pound.xml
+	@chown root.root /etc/firewalld/services/pound.xml
 
 .PHONY: bazaar-server
 bazaar-server: | bazaar /usr/bin/bzr /var/bazaar /etc/xinetd.d/bazaar xinetd /etc/firewalld/services/bazaar.xml
 
 /etc/firewalld/services/bazaar.xml: support/bazaar/firewalld.xml
-	@sudo cp --archive support/bazaar/firewalld.xml /etc/firewalld/services/bazaar.xml
-	@sudo chown root.root /etc/firewalld/services/bazaar.xml
+	@cp --archive support/bazaar/firewalld.xml /etc/firewalld/services/bazaar.xml
+	@chown root.root /etc/firewalld/services/bazaar.xml
 
 /etc/xinetd.d/bazaar: support/bazaar/xinetd xinetd
-	@sudo cp support/bazaar/xinetd /etc/xinetd.d/bazaar
-	@sudo firewall-cmd --zone=public --permanent --add-port=4155/tcp
-	@sudo systemctl restart xinetd.service
+	@cp support/bazaar/xinetd /etc/xinetd.d/bazaar
+	@firewall-cmd --zone=public --permanent --add-port=4155/tcp
+	@systemctl restart xinetd.service
 
 /var/bazaar: bazaar
-	-sudo bzr init-repository /var/bazaar
-	@sudo chown -R bazaar.bazaar /var/bazaar
+	-bzr init-repository /var/bazaar
+	@chown -R bazaar.bazaar /var/bazaar
