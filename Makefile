@@ -27,18 +27,20 @@ check:
 	host_ip := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
 	openstack_host := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
 
-install: | show base_install
+install: | show prep
 ifeq (openstack_host,${IPADDRESS})
 	hostname localhost
 	$(MAKE) base_openstack
 else
   ifneq (${mac},0)
+	@echo "MATCHED MAC ADDRESS"
 	@echo "DEV SERVER"
-	$(MAKE) ${DEV_TOOLS_REQUIRED}
+	$(MAKE) base-dev
   else
     ifneq (${host_ip},0)
+	@echo "MATCHED IP ADDRESS"
 	@echo "DEV SERVER"
-	$(MAKE) ${DEV_TOOLS_REQUIRED}
+	$(MAKE) base-dev
     else
 	@echo "JENKINS SLAVE"
 	$(MAKE) base_jenkins_slave
@@ -54,6 +56,7 @@ endif
 
 base_install:
 	$(MAKE) basics
+	$(MAKE) base-dev
 
 base_openstack:
 	$(MAKE) openstack
