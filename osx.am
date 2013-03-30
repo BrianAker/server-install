@@ -3,18 +3,34 @@
 BASE_INSTALL_PATH= /usr/local/
 include $(srcdir)/projects.am
 
-PKG_INSTALLER:= brew install
-PKG_UPDATE:= 
-PKG_UPGRADE:= 
+BREW:= $(BASE_INSTALL_PATH)bin/brew
+PKG_INSTALLER:= $(BREW) install
+PKG_UPDATE:= $(BREW) update 
+PKG_UPGRADE:= $(BREW) upgrade
 
-.PHONY: pkg_update brew_update
+TOOLS=
 
-pkg_update: | brew_update
+TOOLS+= autoconf
+TOOLS+= automake
+TOOLS+= bzr
+TOOLS+= doxygen
+TOOLS+= memcached
+TOOLS+= valgrind
 
-brew_update:
-	brew update
+TOOLS_WITH_PATH= $(addprefix /usr/local/bin/, ${TOOLS})
 
-build_tools: autoconf automake pcretest sphinx-build bzr protoc mercurial doxygen glibtool pip
+$(TOOLS_WITH_PATH):
+	$(PKG_INSTALLER) $F
+
+tools: $(TOOLS)
+
+.PHONY: pkg_update
+pkg_update: $(BREW)
+	$(PKG_UPDATE)
+	$(PKG_UPGRADE)
+
+.PHONY: base_dev libraries
+base_dev: tools pcretest sphinx-build protoc mercurial glibtool pip libraries
 
 libraries: libevent boost
 
@@ -35,13 +51,11 @@ tap: /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	brew tap homebrew/dupes
 
-prep: /usr/local/bin/brew
-/usr/local/bin/brew:
-	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
+.PHONY: prep
+prep: pkg_update
 
-bzr: /usr/local/bin/bzr
-/usr/local/bin/bzr:
-	$(PKG_INSTALLER) bzr
+$(BREW):
+	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
 
 protoc: /usr/local/bin/protoc
 /usr/local/bin/protoc:
@@ -56,12 +70,8 @@ boost: /usr/local/include/boost
 	$(PKG_INSTALLER) boost
 
 mysqld: /usr/local//bin/mysqld
-/usr/local//bin/mysqld:
+/usr/local/bin/mysqld:
 	$(PKG_INSTALLER) mysql
-
-memcached: /usr/local/bin/memcached
-/usr/local/bin/memcached:
-	$(PKG_INSTALLER) memcached
 
 libevent: /usr/local/include/event.h
 /usr/local/include/event.h:
@@ -71,31 +81,6 @@ glibtool: /usr/local/bin/glibtool
 /usr/local/bin/glibtool:
 	$(PKG_INSTALLER) libtool
 
-autoconf: /usr/local/bin/autoconf
-/usr/local/bin/autoconf:
-	$(PKG_INSTALLER) autoconf
-
-doxygen: /usr/local/bin/doxygen
-/usr/local/bin/doxygen:
-	$(PKG_INSTALLER) doxygen
-
-automake: /usr/local/bin/automake
-/usr/local/bin/automake:
-	$(PKG_INSTALLER) automake
-
-rcs: /usr/local/bin/ident
-/usr/local/bin/ident:
-	touch /usr/local/bin/ident
-
-sphinx-build: /usr/local/bin/sphinx-build
-/usr/local/bin/sphinx-build:
-	easy_install sphinx
-
-pip: /usr/local/bin/pip
-/usr/local/bin/pip:
-	easy_install pip
-	pip install sphinxcontrib-googleanalytics
-
 pcretest: /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
 	$(PKG_INSTALLER) pcre
@@ -104,6 +89,15 @@ bison: /usr/local/bin/bison
 /usr/local/bin/bison: tap
 	$(PKG_INSTALLER) homebrew/dupes/bison
 
+pip: /usr/local/bin/pip
+/usr/local/bin/pip:
+	easy_install pip
+	pip install sphinxcontrib-googleanalytics
+
+sphinx-build: /usr/local/bin/sphinx-build
+/usr/local/bin/sphinx-build: pip
+	pip install sphinx
+
 ssh-import-id: /usr/local/bin/ssh-import-id
-/usr/local/bin/ssh-import-id:
-	easy_install ssh-import-id
+/usr/local/bin/ssh-import-id: pip
+	pip install ssh-import-id
