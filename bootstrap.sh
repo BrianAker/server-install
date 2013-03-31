@@ -22,19 +22,20 @@ function run_server_install()
 {
   if [ -f 'projects.am' ]; then
     git pull
-    sudo make 'install'
+    sudo make "$DEFAULT_INSTALL"
   elif [ -d 'server-install.git' ]; then
-    (git clone 'server-install.git' && cd 'server-install' && sudo make 'install')
+    (git clone 'server-install.git' && cd 'server-install' && sudo make "$DEFAULT_INSTALL")
   elif [ -d 'server-install' ]; then
-    (cd 'server-install' && git pull && sudo make 'install')
+    (cd 'server-install' && git pull && sudo make "$DEFAULT_INSTALL")
   else
     git clone https://github.com/BrianAker/server-install.git
-    (cd 'server-install' && sudo make 'install')
+    (cd 'server-install' && sudo make "$DEFAULT_INSTALL")
   fi
 }
 
 function init()
 {
+  export DEFAULT_INSTALL='install-jenkins-slave'
   install_git_make
   run_server_install
 }

@@ -11,7 +11,7 @@ include $(srcdir)/jenkins.am
 PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
-PKG_SEARCH_INSTALL= yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs yum install -y
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
 PIP= pip-python --quiet install
 
 VPATH = /usr/bin
@@ -114,7 +114,7 @@ CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 
-/usr/bin/java:
+java:
 	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
 

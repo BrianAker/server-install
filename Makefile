@@ -51,8 +51,7 @@ install: | show prep base-dev
 base_openstack:
 	$(MAKE) openstack
 
-base_jenkins_slave:
-	$(MAKE) build_tools
+base_jenkins_slave: | java
 
 show:
 	@echo "IPADDRESS ${IPADDRESS}"
@@ -60,6 +59,9 @@ show:
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"
 
 deploy:
+ifndef INSTALL_SERVER
+	@echo "INSTALL_SERVER was not set"
+endif
 ifdef INSTALL_SERVER
 	scp bootstrap.sh "$$INSTALL_SERVER":~/
 	-git remote rm "$$INSTALL_SERVER"

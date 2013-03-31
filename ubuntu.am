@@ -9,7 +9,7 @@ include $(srcdir)/projects.am
 PKG_INSTALLER:= apt-get install --yes
 PKG_UPDATE:= apt-get update --yes
 PKG_UPGRADE:= apt-get upgrade --yes
-PKG_SEARCH_INSTALL= apt-file search --package-only --fixed-string $(1) | sudo xargs $(PKG_INSTALLER)
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (apt-file search --package-only --fixed-string $(1) | sudo xargs $(PKG_INSTALLER))
 
 PIP= pip --quiet install
 
@@ -118,3 +118,6 @@ security:
 
 pip:
 	-$(PKG_INSTALLER) python-pip
+
+java:
+	-$(PKG_INSTALLER) openjdk-7-jre-headless openjdk-7-jdk
