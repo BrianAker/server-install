@@ -42,7 +42,7 @@ DEV_TOOLS_EXTRA+= valgrind
 base-dev: | ${DEV_TOOLS} ${DEV_TOOLS_LOCAL} pip sphinx-build
 
 $(DEV_TOOLS):
-	$(PKG_INSTALLER) $@
+	$(call PKG_SEARCH_INSTALL,$@)
 
 base-extra: ${DEV_TOOLS_EXTRA}
 

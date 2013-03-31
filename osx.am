@@ -8,6 +8,7 @@ BREW:= $(BASE_INSTALL_PATH)bin/brew
 PKG_INSTALLER:= $(BREW) install
 PKG_UPDATE:= $(BREW) update 
 PKG_UPGRADE:= $(BREW) upgrade
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 
 VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin
 

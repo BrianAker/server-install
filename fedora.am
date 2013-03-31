@@ -11,7 +11,7 @@ include $(srcdir)/jenkins.am
 PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
-PKG_SEARCH_INSTALL:= yum whatprovides -q $(1) | head -1 | awk ' { print $1 } ' | xargs yum install -y
+PKG_SEARCH_INSTALL= yum whatprovides -q $(1) | head -1 | awk ' { print $1 } ' | xargs yum install -y
 
 ifeq ($(DISTRIBUTION),fedora)
   MINGW_EXTRA:= mingw64-crt mingw64-headers mingw-filesystem-base mingw-binutils-generic mingw64-glib-networking mingw32-nsiswrapper wine mingw32-gcc
