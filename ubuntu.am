@@ -32,7 +32,7 @@ pkg_update:
 	$(PKG_UPGRADE)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
-	apt-get autoremove
+	apt-get autoremove -y
 
 DAEMONS:= memcached apache2 vsftpd
 .PHONY: $(DAEMONS)
