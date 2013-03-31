@@ -11,7 +11,6 @@ PREP:= ${BASE_INSTALL_PATH}/bin/curl ${BASE_INSTALL_PATH}/bin/git
 
 DEV_TOOLS:= 
 DEV_TOOLS+= bzr
-DEV_TOOLS+= vim
 DEV_TOOLS+= wget
 DEV_TOOLS+= autoconf
 DEV_TOOLS+= automake
