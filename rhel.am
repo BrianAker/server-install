@@ -42,11 +42,6 @@ $(DAEMONS):
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
 
-.PHONY: mercurial
-mercurial: /usr/bin/hg
-/usr/bin/hg:
-	-$(PKG_INSTALLER) hg
-
 .PHONY: prep
 prep: | $(PREP) pkg_update
 	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
@@ -88,14 +83,13 @@ $(DEV_TOOLS_REQUIRED):
 .PHONY: jenkins-slave
 jenkins-slave: /usr/bin/java
 
-.PHONY: python-sphinx
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
 
 #Basic build tools
 .PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) compiler python-sphinx /usr/bin/rpmbuild
+build_essential: $(DEV_TOOLS_REQUIRED) compiler /usr/bin/rpmbuild
 	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
 
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel

@@ -10,19 +10,23 @@ OSX_RELEASE := $(shell test -d '/etc/mach_init.d' > /dev/null 2>&1 ; echo $$?)
 
 ifneq (${DEB_CONF},)
   DISTRIBUTION := ubuntu
-  include ubuntu.am
+  include $(srcdir)/ubuntu.am
+  include $(srcdir)/accounts.am
 else ifneq (${SUSE_RELEASE},)
   DISTRIBUTION := suse
   @echo "Suse is not currently supported"
 else ifneq (${FEDORA_RELEASE},)
   DISTRIBUTION := fedora
   include fedora.am
+  include $(srcdir)/accounts.am
 else ifneq (${CENTOS_RELEASE},)
   DISTRIBUTION := centos
   include rhel.am
+  include $(srcdir)/accounts.am
 else ifneq (${RHEL_RELEASE},)
   DISTRIBUTION := rhel
   include rhel.am
+  include $(srcdir)/accounts.am
 else ifeq (${FREEBSD_RELEASE},0)
   DISTRIBUTION := freebsd9
   include freebsd.am

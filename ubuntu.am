@@ -1,6 +1,7 @@
 # vim:ft=automake
 
 BASE_INSTALL_PATH= /usr/
+EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
 
 include $(srcdir)/bundle.am
 include $(srcdir)/projects.am
@@ -33,12 +34,8 @@ $(DAEMONS):
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
 
-COMPILER:= /usr/bin/gcc /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool /usr/bin/g++
-$(COMPILER): 
-	$(PKG_INSTALLER) $(@F)
-
-.PHONY: compiler
-compiler: $(COMPILER) mingw clang-bundle protobuf-bundle
+DEV_TOOLS_LOCAL+= mingw
+DEV_TOOLS_LOCAL+= protobuf-bundle
 
 $(DEV_TOOLS_REQUIRED): 
 	$(PKG_INSTALLER) $(@F)
@@ -46,24 +43,19 @@ $(DEV_TOOLS_REQUIRED):
 $(DEV_TOOLS_EXTRA):
 	$(PKG_INSTALLER) $(@F)
 
-.PHONY: python-sphinx
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
 
-.PHONY: mercurial
-mercurial: /usr/bin/hg
-/usr/bin/hg:
-	$(PKG_INSTALLER) mercurial
-
-#Basic build tools
+DEV_TOOLS_LOCAL+= build_essential
 .PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) $(DEV_TOOLS_EXTRA) compiler python-sphinx mercurial ssh-import-id pip
+build_essential: ssh-import-id pip
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
 	-$(PKG_INSTALLER) cloog-ppl
 
+DEV_TOOLS_LOCAL+= mingw
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
 
@@ -79,12 +71,14 @@ jenkins-slave:
 	$(PKG_INSTALLER) default-jdk default-jre default-jre-headless
 	$(PKG_INSTALLER) maven
 
+DEV_TOOLS_REQUIRED+= $(LIBRARIES)
 LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid
 
 libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	$(PKG_INSTALLER) $@-dev
 
+DEV_TOOLS_LOCAL+= $(CLANG)
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 .PHONY: clang-bundle
 clang-bundle: $(CLANG)

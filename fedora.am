@@ -109,7 +109,6 @@ $(DEV_TOOLS_EXTRA):
 .PHONY: jenkins-slave
 jenkins-slave: /usr/bin/java
 
-.PHONY: python-sphinx
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
@@ -148,11 +147,6 @@ time:
 
 /usr/bin/qpid-python-test: 
 	-$(PKG_INSTALLER) python-qpid-qmf
-
-.PHONY: mercurial
-mercurial: /usr/bin/hg
-/usr/bin/hg:
-	-$(PKG_INSTALLER) hg
 
 .PHONY: qpid
 qpid: /usr/sbin/qpidd /usr/bin/qpid-python-test

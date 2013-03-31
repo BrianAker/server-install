@@ -1,4 +1,7 @@
 # vim:ft=automake
+#
+
+.SUFFIXES:
 
 srcdir = $(shell pwd)
 IPADDRESS:= $(shell /sbin/ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }' | head -1)
@@ -28,21 +31,7 @@ check:
 	host_ip := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
 	openstack_host := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
 
-install: | show prep
-ifeq (openstack_host,${IPADDRESS})
-	hostname localhost
-	$(MAKE) base_openstack
-else
-  ifeq (${mac},0)
-	@echo "MATCHED MAC ADDRESS"
-	@echo "DEV SERVER"
-	$(MAKE) base-dev
-  else
-    ifeq (${host_ip},0)
-	@echo "MATCHED IP ADDRESS"
-	@echo "DEV SERVER"
-	$(MAKE) base-dev
-    else
+install-jenkins-slave: install
 	@echo "JENKINS SLAVE"
 	$(MAKE) base_jenkins_slave
 	$(MAKE) tangentci
@@ -50,14 +39,8 @@ else
 	$(MAKE) lazlo
 	$(MAKE) secure-host
 	reboot
-	endif
-    endif
-  endif
-endif
 
-base_install:
-	$(MAKE) basics
-	$(MAKE) base-dev
+install: | show prep base-dev
 
 base_openstack:
 	$(MAKE) openstack
@@ -69,20 +52,6 @@ show:
 	@echo "IPADDRESS ${IPADDRESS}"
 	@echo "MACADDR ${MACADDR}"
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"
-ifeq (openstack_host,${IPADDRESS})
-  	@echo "OPENSTACK"
-else
-  ifneq (${mac},0)
-	@echo "DEV SERVER(MAC)"
-	$(MAKE) base-dev
-  else
-    ifeq (${host_ip},0)
-	@echo "DEV SERVER(IP)"
-    else
-	@echo "JENKINS SLAVE"
-    endif
-  endif
-endif
 
 deploy:
 ifdef INSTALL_SERVER

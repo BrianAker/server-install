@@ -1,6 +1,7 @@
 # vim:ft=automake
 
 BASE_INSTALL_PATH= /usr/local/
+EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
 include $(srcdir)/projects.am
 
 BREW:= $(BASE_INSTALL_PATH)bin/brew
@@ -8,31 +9,25 @@ PKG_INSTALLER:= $(BREW) install
 PKG_UPDATE:= $(BREW) update 
 PKG_UPGRADE:= $(BREW) upgrade
 
-TOOLS=
+VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin
 
-TOOLS+= autoconf
-TOOLS+= automake
-TOOLS+= bzr
-TOOLS+= doxygen
-TOOLS+= memcached
-TOOLS+= valgrind
+cc:
+	@echo "Install xcode"
 
-TOOLS_WITH_PATH= $(addprefix /usr/local/bin/, ${TOOLS})
+cpp:
+	@echo "Install xcode"
 
-$(TOOLS_WITH_PATH):
-	$(PKG_INSTALLER) $F
-
-tools: $(TOOLS)
+glibtool:
+	$(PKG_INSTALLER) libtool
 
 .PHONY: pkg_update
 pkg_update: $(BREW)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
-.PHONY: base_dev libraries
-base_dev: tools pcretest sphinx-build protoc mercurial glibtool pip libraries
-
-libraries: libevent boost
+DEV_TOOLS_LOCAL+= libevent
+DEV_TOOLS_LOCAL+= boost
+DEV_TOOLS_LOCAL+= glibtool
 
 openstack:
 	echo "Not available on this platform"
@@ -44,60 +39,52 @@ security:
 
 post:
 
-$(DEV_TOOLS_REQUIRED): 
-	$(PKG_INSTALLER) $(@F)
-
-tap: /usr/local/Library/Taps
+DEV_TOOLS_LOCAL+= /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	brew tap homebrew/dupes
 
-.PHONY: prep
-prep: pkg_update
+prep: $(BREW)
 
 $(BREW):
 	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
 
-protoc: /usr/local/bin/protoc
+DEV_TOOLS_LOCAL+= /usr/local/bin/protoc
 /usr/local/bin/protoc:
 	$(PKG_INSTALLER) protobuf
-
-mercurial: /usr/local/bin/hg
-/usr/local/bin/hg:
-	$(PKG_INSTALLER) mercurial
 
 boost: /usr/local/include/boost
 /usr/local/include/boost:
 	$(PKG_INSTALLER) boost
 
-mysqld: /usr/local//bin/mysqld
-/usr/local/bin/mysqld:
-	$(PKG_INSTALLER) mysql
+mysqld: mysql
+
+DEV_TOOLS+= mysql 
 
 libevent: /usr/local/include/event.h
 /usr/local/include/event.h:
 	$(PKG_INSTALLER) libevent
 
-glibtool: /usr/local/bin/glibtool
-/usr/local/bin/glibtool:
-	$(PKG_INSTALLER) libtool
-
-pcretest: /usr/local/bin/pcretest
+DEV_TOOLS_LOCAL+= /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
 	$(PKG_INSTALLER) pcre
 
-bison: /usr/local/bin/bison
-/usr/local/bin/bison: tap
-	$(PKG_INSTALLER) homebrew/dupes/bison
+DEV_TOOLS_LOCAL+= /usr/local/opt/flex/bin/flex
+/usr/local/opt/flex/bin/flex:
+	$(PKG_INSTALLER) Bison
+	ln -s /usr/local/opt/bison/bin/bison /usr/local/bin/bison
 
-pip: /usr/local/bin/pip
-/usr/local/bin/pip:
+DEV_TOOLS_LOCAL+= /usr/local/opt/bison/bin/bison
+/usr/local/opt/bison/bin/bison:
+	$(PKG_INSTALLER) Bison
+	ln -s /usr/local/opt/bison/bin/bison /usr/local/bin/bison
+
+pip:
 	easy_install pip
+
+sphinx-build:
+	pip install sphinx
 	pip install sphinxcontrib-googleanalytics
 
-sphinx-build: /usr/local/bin/sphinx-build
-/usr/local/bin/sphinx-build: pip
-	pip install sphinx
-
 ssh-import-id: /usr/local/bin/ssh-import-id
-/usr/local/bin/ssh-import-id: pip
+/usr/local/bin/ssh-import-id:
 	pip install ssh-import-id

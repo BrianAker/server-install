@@ -1,9 +1,7 @@
 # vim:ft=automake
 #
 
-include $(srcdir)/accounts.am
-
-.PHONY: build_tools base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave build_essential libraries memcached mysqld base-dev base-extra
+.PHONY: build_tools base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave libraries memcached mysqld base-dev base-extra prep
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
@@ -11,40 +9,54 @@ basics: | pkg_update ssh-import-id prep base-dev
 
 PREP:= ${BASE_INSTALL_PATH}/bin/curl ${BASE_INSTALL_PATH}/bin/git
 
-base-dev: ${DEV_TOOLS_REQUIRED}
+DEV_TOOLS:= 
+DEV_TOOLS+= bzr
+DEV_TOOLS+= vim
+DEV_TOOLS+= wget
+DEV_TOOLS+= autoconf
+DEV_TOOLS+= automake
+DEV_TOOLS+= bison
+DEV_TOOLS+= flex
+ifneq (${OSX_RELEASE},0)
+DEV_TOOLS+= libtool
+DEV_TOOLS+= cc
+DEV_TOOLS+= cpp
+endif
+
+DEV_TOOLS_LOCAL=
+
+DEV_TOOLS_EXTRA=
+DEV_TOOLS_EXTRA+= cmake 
+DEV_TOOLS_EXTRA+= cppcheck 
+DEV_TOOLS_EXTRA+= doxygen 
+DEV_TOOLS_EXTRA+= gdb 
+DEV_TOOLS_EXTRA+= gettext 
+DEV_TOOLS_EXTRA+= gmake
+DEV_TOOLS_EXTRA+= gperf 
+DEV_TOOLS_EXTRA+= intltool 
+DEV_TOOLS_EXTRA+= lcov 
+DEV_TOOLS_EXTRA+= man 
+DEV_TOOLS_EXTRA+= valgrind
+
+# base-dev is always installed
+base-dev: | ${DEV_TOOLS} ${DEV_TOOLS_LOCAL} pip sphinx-build
+
+$(DEV_TOOLS):
+	$(PKG_INSTALLER) $@
 
 base-extra: ${DEV_TOOLS_EXTRA}
 
-DEV_TOOLS_REQUIRED:= ${BASE_INSTALL_PATH}/bin/bzr 
-DEV_TOOLS_REQUIRED+= ${BASE_INSTALL_PATH}/bin/vim 
-DEV_TOOLS_REQUIRED+= ${BASE_INSTALL_PATH}/bin/wget
-
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/cmake 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/cppcheck 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/doxygen 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/gdb
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/gdb 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/gettext 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/gmake
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/gperf 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/intltool 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/lcov 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/man 
-DEV_TOOLS_EXTRA+= ${BASE_INSTALL_PATH}/bin/valgrind 
-DEV_TOOLS_EXTRA+= rcs mercurial 
-DEV_TOOLS_EXTRA:=
-
 # Memcached or libmemcached
-memcached-build: build_essential libraries memcached
+memcached-build: memcached
 
 # Gearman
-gearman-build: build_essential libraries memcached mysqld
+gearman-build: memcached mysqld
 
 # Drizzle
-drizzle-build: build_essential libdrizzle-build libraries
+drizzle-build: libdrizzle-build libraries
 
 # Libdrizzle
-libdrizzle-build: build_essential mysqld
+libdrizzle-build: mysqld
 
 .NOTPARALLEL:
 
