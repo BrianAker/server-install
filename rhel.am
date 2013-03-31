@@ -7,6 +7,9 @@ include $(srcdir)/projects.am
 PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
+PIP= pip-python --quiet install
+
+VPATH = /usr/bin
 
 .PHONY: pkg_update
 pkg_update:
@@ -43,7 +46,7 @@ $(PREP):
 	-$(PKG_INSTALLER) $(@F)
 
 .PHONY: prep
-prep: | $(PREP) pkg_update
+prep: | $(PREP) pkg_update python-pip
 	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
 	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
 
@@ -64,21 +67,6 @@ yum-cron:
 
 .PHONY: updatesd
 updatesd:
-
-COMPILER:= /usr/bin/gcc /usr/bin/make /usr/bin/bison /usr/bin/flex /usr/bin/autoconf /usr/bin/libtool
-$(COMPILER): 
-	$(PKG_INSTALLER) $(@F)
-
-.PHONY: g++
-g++: /usr/bin/g++
-/usr/bin/g++: 
-	$(PKG_INSTALLER) gcc-c++
-
-.PHONY: compiler
-compiler: $(COMPILER) g++ protobuf-bundle
-
-$(DEV_TOOLS_REQUIRED): 
-	$(PKG_INSTALLER) $(@F)
 
 .PHONY: jenkins-slave
 jenkins-slave: /usr/bin/java
@@ -148,6 +136,8 @@ restart-iptables:
 .PHONY: security
 security: yum-cron
 
-ssh-import-id: /usr/bin/ssh-import-id
-/usr/bin/ssh-import-id:
-	easy_install ssh-import-id
+python-pip:
+	$(PKG_INSTALLER) python-pip
+
+ssh-import-id:
+	$(PIP)  ssh-import-id
