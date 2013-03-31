@@ -12,7 +12,9 @@ PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
 PKG_SEARCH_INSTALL= yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs yum install -y
-PIP= pip-python
+PIP= pip-python --quiet install
+
+VPATH = /usr/bin
 
 ifeq ($(DISTRIBUTION),fedora)
   MINGW_EXTRA:= mingw64-crt mingw64-headers mingw-filesystem-base mingw-binutils-generic mingw64-glib-networking mingw32-nsiswrapper wine mingw32-gcc
@@ -59,7 +61,7 @@ $(PREP):
 	-$(PKG_INSTALLER) $(@F)
 
 .PHONY: prep
-prep: | $(PREP) pkg_update
+prep: | $(PREP) pkg_update python-pip
 	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
 	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
 
@@ -94,10 +96,9 @@ compiler-other: mingw-bundle clang-bundle protobuf-bundle
 .PHONY: jenkins-slave
 jenkins-slave: /usr/bin/java
 
-python-sphinx: /usr/bin/sphinx-build
-/usr/bin/sphinx-build:
+sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
-	$(PIP) install sphinxcontrib-googleanalytics
+	-$(PIP) sphinxcontrib-googleanalytics
 
 #Basic build tools
 DEV_TOOLS+= rpmbuild
@@ -180,10 +181,8 @@ security: yum-cron
 	-$(PKG_INSTALLER) etckeeper
 	-$(PKG_INSTALLER) denyhosts
 
-pip: /usr/bin/pip
-/usr/bin/pip:
+python-pip:
 	$(PKG_INSTALLER) python-pip
 
-ssh-import-id: /usr/bin/ssh-import-id
-/usr/bin/ssh-import-id: pip
-	$(PIP) install ssh-import-id
+ssh-import-id:
+	$(PIP)  ssh-import-id

@@ -5,9 +5,9 @@
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
-basics: | pkg_update ssh-import-id prep base-dev
+basics: | pkg_update $(PIP)ssh-import-id prep base-dev
 
-PREP:= ${BASE_INSTALL_PATH}/bin/curl ${BASE_INSTALL_PATH}/bin/git
+PREP:= curl git
 
 DEV_TOOLS:= 
 DEV_TOOLS+= bzr
@@ -38,7 +38,7 @@ DEV_TOOLS_EXTRA+= man
 DEV_TOOLS_EXTRA+= valgrind
 
 # base-dev is always installed
-base-dev: | ${DEV_TOOLS} ${DEV_TOOLS_LOCAL} pip sphinx-build
+base-dev: | ${DEV_TOOLS} ${DEV_TOOLS_LOCAL} sphinx-build
 
 $(DEV_TOOLS):
 	$(call PKG_SEARCH_INSTALL,$@)

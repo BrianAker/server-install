@@ -3,6 +3,12 @@
 
 .SUFFIXES:
 
+PKG_INSTALLER=
+PKG_UPDATE=
+PKG_UPGRADE=
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
+BASE_INSTALL_PATH= /usr/
+
 srcdir = $(shell pwd)
 IPADDRESS:= $(shell /sbin/ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }' | head -1)
 MACADDR = $(shell sh -c "/sbin/ifconfig  | grep 'ether ' | awk '{ print $2 }'")
@@ -20,7 +26,7 @@ DIST_MAKEFILES := ubuntu.am fedora.am rhel.am freebsd.am osx.am
 
 include $(srcdir)/dist.mk
 
-.PHONY: all check show install base_install deploy
+.PHONY: all show check install base_install deploy
 
 all: show
 

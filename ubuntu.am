@@ -11,12 +11,14 @@ PKG_UPDATE:= apt-get update --yes
 PKG_UPGRADE:= apt-get upgrade --yes
 PKG_SEARCH_INSTALL= apt-file search --package-only --fixed-string $(1) | sudo xargs $(PKG_INSTALLER)
 
+PIP= pip --quiet install
+
 DEBIAN_FRONTEND:= noninteractive
 
-PKG_INSTALLER:= apt-get install --yes
+VPATH = /usr/bin
 
 .PHONY: prep
-prep: | $(PREP) pkg_update
+prep: | $(PREP) pkg_update pip
 	-$(PKG_INSTALLER) python-software-properties
 	$(PKG_INSTALLER) apt-file
 	apt-file update
@@ -46,13 +48,13 @@ $(DEV_TOOLS_REQUIRED):
 $(DEV_TOOLS_EXTRA):
 	$(PKG_INSTALLER) $(@F)
 
-python-sphinx: /usr/bin/sphinx-build
-/usr/bin/sphinx-build:
+sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
+	-$(PIP) sphinxcontrib-googleanalytics
 
 DEV_TOOLS_LOCAL+= build_essential
 .PHONY: build_essential
-build_essential: ssh-import-id pip
+build_essential:
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
@@ -62,8 +64,7 @@ DEV_TOOLS_LOCAL+= mingw
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
 
-ssh-import-id: /usr/bin/ssh-import-id
-/usr/bin/ssh-import-id:
+ssh-import-id:
 	$(PKG_INSTALLER) ssh-import-id
 
 mysqld:
@@ -77,7 +78,6 @@ jenkins-slave:
 DEV_TOOLS_REQUIRED+= $(LIBRARIES)
 LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid
 
-libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	$(PKG_INSTALLER) $@-dev
 
@@ -88,6 +88,7 @@ clang-bundle: $(CLANG)
 $(CLANG):
 	-$(PKG_INSTALLER) $(@F)
 
+DEV_TOOLS_LOCAL+= $(PROTOBUF)
 PROTOBUF:= libprotobuf-dev protobuf-compiler
 
 # Update automatically
@@ -115,7 +116,5 @@ security:
 	-$(PKG_INSTALLER) denyhosts
 	-$(PKG_INSTALLER) fail2ban
 
-pip: /usr/bin/pip
-/usr/bin/pip:
+pip:
 	-$(PKG_INSTALLER) python-pip
-	-pip install sphinxcontrib-googleanalytics

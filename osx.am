@@ -5,10 +5,11 @@ EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
 include $(srcdir)/projects.am
 
 BREW:= $(BASE_INSTALL_PATH)bin/brew
-PKG_INSTALLER:= $(BREW) install
-PKG_UPDATE:= $(BREW) update 
-PKG_UPGRADE:= $(BREW) upgrade
+PKG_INSTALLER= $(BREW) install
+PKG_UPDATE= $(BREW) update 
+PKG_UPGRADE= $(BREW) upgrade
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
+PIP= /usr/local/bin/pip --quiet
 
 VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin
 
@@ -44,7 +45,7 @@ DEV_TOOLS_LOCAL+= /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	brew tap homebrew/dupes
 
-prep: $(BREW)
+prep: | $(BREW) pip
 
 $(BREW):
 	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
@@ -83,9 +84,8 @@ pip:
 	easy_install pip
 
 sphinx-build:
-	pip install sphinx
-	pip install sphinxcontrib-googleanalytics
+	$(PIP) install sphinx
+	$(PIP) install sphinxcontrib-googleanalytics
 
-ssh-import-id: /usr/local/bin/ssh-import-id
-/usr/local/bin/ssh-import-id:
-	pip install ssh-import-id
+ssh-import-id:
+	$(PIP) install ssh-import-id
