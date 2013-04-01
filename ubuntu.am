@@ -70,8 +70,13 @@ DEV_TOOLS_LOCAL+= mingw
 ssh-import-id:
 	$(PKG_INSTALLER) ssh-import-id
 
-mysqld:
+DEV_TOOLS_LOCAL+= /usr/sbin/mysqld
+/usr/sbin/mysqld:
 	$(PKG_INSTALLER) mysql-server
+
+DEV_TOOLS_LOCAL+= /usr/sbin/rabbitmq-server
+/usr/sbin/rabbitmq-server:
+	$(PKG_INSTALLER) rabbitmq-server
 
 # Jenkins install, we don't actually use this, we let Jenkins install its own.
 jenkins-slave:
