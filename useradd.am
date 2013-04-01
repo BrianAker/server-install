@@ -38,7 +38,7 @@ ifdef CREATE_USER
 ifneq (${USER_EXISTS},0)
 	${USERADD} --shell=/bin/bash -m $(CREATE_USER)
 	install -d -m 700 -o ${CREATE_USER} ~${CREATE_USER}/.ssh
-	$(CREATE_USER) ssh-keygen -t rsa -N "" -f ~$(CREATE_USER)/.ssh/id_rsa -q
+	sudo -u $(CREATE_USER) ssh-keygen -t rsa -N "" -f ~$(CREATE_USER)/.ssh/id_rsa -q
 	touch /tmp/adduser-include
 	echo "AllowUsers $(CREATE_USER)" > /tmp/adduser-include
 	cat /tmp/adduser-include  >> /etc/ssh/sshd_config
