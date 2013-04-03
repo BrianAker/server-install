@@ -52,7 +52,7 @@ $(BREW):
 
 DEV_TOOLS_LOCAL+= /usr/local/bin/valgrind
 /usr/local/bin/valgrind:
-	$(PKG_INSTALLER) valgrind
+	-$(PKG_INSTALLER) valgrind
 
 DEV_TOOLS_LOCAL+= /usr/local/bin/protoc
 /usr/local/bin/protoc:
