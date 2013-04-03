@@ -50,6 +50,10 @@ prep: | $(BREW) pip
 $(BREW):
 	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
 
+DEV_TOOLS_LOCAL+= /usr/local/bin/valgrind
+/usr/local/bin/valgrind:
+	$(PKG_INSTALLER) valgrind
+
 DEV_TOOLS_LOCAL+= /usr/local/bin/protoc
 /usr/local/bin/protoc:
 	$(PKG_INSTALLER) protobuf
