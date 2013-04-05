@@ -7,8 +7,12 @@ function install_git_make()
   elif [ -f "/etc/regdomain.xml"  ]; then
     pkg_add -F -r bash git gmake
   elif [ -f "/etc/debconf.conf"  ]; then
+    if [ ! -x "/usr/bin/sudo"  ]; then
+      apt-get update -y
+      apt-get install -y sudo
+    fi
     sudo apt-get update -y
-    sudo apt-get install -y git-core make
+    sudo apt-get install -y git-core make sudo
   elif [ -d "/etc/mach_init.d"  ]; then
     if [ ! -f /usr/local/bin/brew ]; then
       echo "Install homebrew"
