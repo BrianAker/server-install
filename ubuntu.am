@@ -15,7 +15,7 @@ PIP= pip --quiet install
 
 DEBIAN_FRONTEND:= noninteractive
 
-VPATH = /usr/bin
+VPATH = /usr/bin:/usr/local/bin
 
 apt-file:
 	$(PKG_INSTALLER) apt-file
