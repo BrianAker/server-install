@@ -68,7 +68,7 @@ DEV_TOOLS_LOCAL+= mingw
 	$(PKG_INSTALLER) .*mingw-w64*
 
 ssh-import-id:
-	$(PKG_INSTALLER) ssh-import-id
+	$(PKG_INSTALLER) ssh-import-id || $(PIP) ssh-import-id
 
 DEV_TOOLS_LOCAL+= /usr/sbin/mysqld
 /usr/sbin/mysqld:
@@ -128,4 +128,4 @@ pip:
 	-$(PKG_INSTALLER) python-pip
 
 java:
-	-$(PKG_INSTALLER) openjdk-7-jre-headless openjdk-7-jdk
+	-$(PKG_INSTALLER) default-jdk default-jre-headless

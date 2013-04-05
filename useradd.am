@@ -5,7 +5,7 @@ OBJDIR := /etc/sudoers.d
 USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
-SSH_IMPORT_ID := /usr/bin/ssh-import-id
+SSH_IMPORT_ID := ssh-import-id
 
 .PHONY: user admin-user useradd import_ssh_keys sudo-priv
 
