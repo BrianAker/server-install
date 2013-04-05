@@ -11,7 +11,7 @@ PKG_UPGRADE= $(BREW) upgrade
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 PIP= /usr/local/bin/pip --quiet
 
-VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin
+VPATH = $(EXE_BASE_INSTALL_PATH)
 
 cc:
 	@echo "Install xcode"
@@ -58,6 +58,11 @@ DEV_TOOLS_LOCAL+= /usr/local/bin/protoc
 /usr/local/bin/protoc:
 	$(PKG_INSTALLER) protobuf
 
+libmemcached: /usr/local/bin/memrm
+/usr/local/bin/memrm:
+	$(PKG_INSTALLER) libmemcached
+DEV_TOOLS_EXTRA+= libmemcached 
+
 boost: /usr/local/include/boost
 /usr/local/include/boost:
 	$(PKG_INSTALLER) boost
@@ -74,15 +79,15 @@ DEV_TOOLS_LOCAL+= /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
 	$(PKG_INSTALLER) pcre
 
-DEV_TOOLS_LOCAL+= /usr/local/opt/flex/bin/flex
-/usr/local/opt/flex/bin/flex:
-	$(PKG_INSTALLER) Bison
-	ln -s /usr/local/opt/bison/bin/bison /usr/local/bin/bison
+DEV_TOOLS_LOCAL+= /usr/local/bin/flex
+/usr/local/bin/flex:
+	$(PKG_INSTALLER) Flex
+	brew link --force flex
 
-DEV_TOOLS_LOCAL+= /usr/local/opt/bison/bin/bison
-/usr/local/opt/bison/bin/bison:
+DEV_TOOLS_LOCAL+= /usr/local/bin/bison
+/usr/local/bin/bison:
 	$(PKG_INSTALLER) Bison
-	ln -s /usr/local/opt/bison/bin/bison /usr/local/bin/bison
+	brew link --force bison
 
 pip:
 	easy_install pip
