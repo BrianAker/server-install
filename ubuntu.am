@@ -128,4 +128,4 @@ pip:
 	-$(PKG_INSTALLER) python-pip
 
 java:
-	-$(PKG_INSTALLER) openjdk-7-jre-headless openjdk-7-jdk
+	-$(PKG_INSTALLER) default-jdk default-jre-headless
