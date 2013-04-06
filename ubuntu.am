@@ -3,8 +3,8 @@
 BASE_INSTALL_PATH= /usr/
 EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
 
-include $(srcdir)/bundle.am
-include $(srcdir)/projects.am
+include $(srcdir)bundle.am
+include $(srcdir)projects.am
 
 PKG_INSTALLER:= apt-get install --yes
 PKG_UPDATE:= apt-get update --yes
@@ -84,7 +84,7 @@ jenkins-slave:
 	$(PKG_INSTALLER) maven
 
 DEV_TOOLS_REQUIRED+= $(LIBRARIES)
-LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid
+LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid libssl
 
 $(LIBRARIES):
 	$(PKG_INSTALLER) $@-dev

@@ -2,7 +2,7 @@
 
 BASE_INSTALL_PATH= /usr/local/
 EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
-include $(srcdir)/projects.am
+include $(srcdir)projects.am
 
 BREW:= $(BASE_INSTALL_PATH)bin/brew
 PKG_INSTALLER= $(BREW) install
