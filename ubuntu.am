@@ -7,8 +7,8 @@ include $(srcdir)bundle.am
 include $(srcdir)projects.am
 
 PKG_INSTALLER:= apt-get install --yes
-PKG_UPDATE:= apt-get update -qq --yes
-PKG_UPGRADE:= apt-get upgrade -qq --yes
+PKG_UPDATE:= apt-get update --yes 2>&1 > /dev/null
+PKG_UPGRADE:= apt-get upgrade --yes 2>&1 > /dev/null
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (apt-file search --package-only --fixed-string $(1) | sudo xargs $(PKG_INSTALLER))
 
 PIP= pip --quiet install
@@ -17,22 +17,21 @@ DEBIAN_FRONTEND:= noninteractive
 
 VPATH = /usr/bin:/usr/local/bin
 
-apt-file:
-	$(PKG_INSTALLER) apt-file
-	apt-file update -qq
+PREP+= apt-file
 
 .PHONY: prep
-prep: | $(PREP) pkg_update pip apt-file
+prep: | $(PREP) pkg_update pip
 	-$(PKG_INSTALLER) python-software-properties
 
 .PHONY: pkg_update
 pkg_update:
-	apt-get --purge -y remove byobu
-	$(PKG_UPDATE)
-	$(PKG_UPGRADE)
-	$(PKG_UPDATE)
-	$(PKG_UPGRADE)
-	apt-get autoremove -y
+	-@apt-get --purge -y remove byobu
+	@$(PKG_UPDATE)
+	@$(PKG_UPGRADE)
+	@$(PKG_UPDATE)
+	@$(PKG_UPGRADE)
+	@apt-file update 2>&1 > /dev/null
+	@apt-get autoremove -y
 
 DAEMONS:= memcached apache2 vsftpd
 .PHONY: $(DAEMONS)
