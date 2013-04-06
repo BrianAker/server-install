@@ -17,6 +17,7 @@ DEV_TOOLS+= automake
 DEV_TOOLS+= bison
 DEV_TOOLS+= flex
 ifneq (${OSX_RELEASE},0)
+DEV_TOOLS+= lsb_release
 DEV_TOOLS+= libtool
 DEV_TOOLS+= cc
 DEV_TOOLS+= cpp
