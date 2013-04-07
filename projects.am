@@ -17,7 +17,6 @@ DEV_TOOLS+= automake
 DEV_TOOLS+= bison
 DEV_TOOLS+= flex
 DEV_TOOLS+= pkg-config
-DEV_TOOLS+= openssl
 DEV_TOOLS+= /usr/include/openssl/opensslconf.h
 ifneq (${OSX_RELEASE},0)
 DEV_TOOLS+= lsb_release
