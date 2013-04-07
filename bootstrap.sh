@@ -43,7 +43,7 @@ function run_server_install()
 function init()
 {
   export DEFAULT_INSTALL='install-jenkins-slave'
-  __SUDO='sudo'
+  export __SUDO='sudo'
   install_git_make
   run_server_install
 }
