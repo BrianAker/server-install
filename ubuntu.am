@@ -47,9 +47,6 @@ DEV_TOOLS_LOCAL+= protobuf-bundle
 $(DEV_TOOLS_REQUIRED): 
 	$(PKG_INSTALLER) $(@F)
 
-$(DEV_TOOLS_EXTRA):
-	$(PKG_INSTALLER) $(@F)
-
 sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
 	-$(PIP) sphinxcontrib-googleanalytics
