@@ -9,18 +9,18 @@ PKG_UPGRADE=
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 BASE_INSTALL_PATH= /usr/
 
-srcdir = $(shell pwd)/
+srcdir= $(shell pwd)/
+MACADDR= $(shell sh -c "/sbin/ifconfig  | grep 'ether ' | awk '{ print $2 }'")
 IPADDRESS:= $(shell /sbin/ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }' | head -1)
-MACADDR = $(shell sh -c "/sbin/ifconfig  | grep 'ether ' | awk '{ print $2 }'")
-ALL_MAKEFILES := $(wildcard *.am) 
-ALL_SCRIPTS := $(wildcard *.sh) 
+HOSTNAME:= `hostname`
+HOST_TYPE:= `hostname | cut -d'-' -f1`
+HOST_UUID:= `hostname | cut -d'-' -f2`
+ALL_MAKEFILES:= $(wildcard *.am) 
+ALL_SCRIPTS:= $(wildcard *.sh) 
 
 JENKINS_SLAVES=
 
-DEVBOX_MAC= 34:15:9e:03:20:fa f8:1e:df:e2:7e:07 0a:1e:df:e2:7e:07
-DEVBOX_MAC+= 7c:d1:c3:ea:dd:45
-DEVBOX_IP= 10.0.2.16 10.0.2.24
-OPENSTACK_IP= 10.6.52.125
+USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 
 DIST_MAKEFILES := ubuntu.am fedora.am rhel.am freebsd.am osx.am
 
@@ -33,9 +33,6 @@ all: show
 check:
 	$(foreach each_makefile,$(DIST_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
-	mac := $(foreach each_mac,$(MACADDR),$(findstring ${each_mac},${DEVBOX_MAC}))
-	host_ip := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
-	openstack_host := $(foreach each_mac,$(IPADDRESS),$(findstring ${each_mac},${DEVBOX_IP}))
 
 install-jenkins-slave: install
 	@echo "JENKINS SLAVE"
@@ -54,6 +51,9 @@ base_openstack:
 base_jenkins_slave: | java
 
 show:
+	@echo "HOSTNAME ${HOSTNAME}"
+	@echo "HOST_TYPE ${HOST_TYPE}"
+	@echo "HOST_UUID ${HOST_UUID}"
 	@echo "IPADDRESS ${IPADDRESS}"
 	@echo "MACADDR ${MACADDR}"
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"

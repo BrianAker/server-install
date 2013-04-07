@@ -39,13 +39,17 @@ DEV_TOOLS_EXTRA+= gperf
 DEV_TOOLS_EXTRA+= intltool 
 DEV_TOOLS_EXTRA+= lcov 
 DEV_TOOLS_EXTRA+= man 
+DEV_TOOLS_EXTRA+= scan-build
 DEV_TOOLS_EXTRA+= valgrind
 
 # base-dev is always installed
-base-dev: | ${DEV_TOOLS} ${DEV_TOOLS_LOCAL} sphinx-build
+base-dev: | ${DEV_TOOLS} ${DEV_TOOLS_LOCAL} ${DEV_TOOLS_EXTRA} sphinx-build
 
 $(DEV_TOOLS):
 	$(call PKG_SEARCH_INSTALL,$@)
+
+$(DEV_TOOLS_EXTRA):
+	-$(call PKG_SEARCH_INSTALL,$@)
 
 base-extra: ${DEV_TOOLS_EXTRA}
 
