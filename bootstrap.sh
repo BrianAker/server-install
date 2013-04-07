@@ -3,7 +3,7 @@
 function install_git_make()
 {
   if [ -f "/etc/yum.conf"  ]; then
-    $(__SUDO) yum install -y git make
+    $__SUDO yum install -y git make
   elif [ -f "/etc/regdomain.xml"  ]; then
     pkg_add -F -r bash git gmake
   elif [ -f "/etc/apt/sources.list"  ]; then
@@ -11,9 +11,9 @@ function install_git_make()
       apt-get update -y
       apt-get install -y sudo
     else
-      $(__SUDO) apt-get update -y
+      $__SUDO apt-get update -y
     fi
-    $(__SUDO) apt-get install -y git-core make
+    $__SUDO apt-get install -y git-core make
   elif [ -d "/etc/mach_init.d"  ]; then
     # Brew will not run under sudo
     __SUDO=
@@ -29,14 +29,14 @@ function run_server_install()
 {
   if [ -f 'projects.am' ]; then
     git pull
-    $(__SUDO) make "$DEFAULT_INSTALL"
+    $__SUDO make "$DEFAULT_INSTALL"
   elif [ -d 'server-install.git' ]; then
-    (git clone 'server-install.git' && cd 'server-install' &&  $(__SUDO) make "$DEFAULT_INSTALL")
+    (git clone 'server-install.git' && cd 'server-install' &&  $__SUDO make "$DEFAULT_INSTALL")
   elif [ -d 'server-install' ]; then
-    (cd 'server-install' && git pull &&  $(__SUDO) make "$DEFAULT_INSTALL")
+    (cd 'server-install' && git pull &&  $__SUDO make "$DEFAULT_INSTALL")
   else
     git clone https://github.com/BrianAker/server-install.git
-    (cd 'server-install' &&  $(__SUDO) make "$DEFAULT_INSTALL")
+    (cd 'server-install' &&  $__SUDO make "$DEFAULT_INSTALL")
   fi
 }
 
