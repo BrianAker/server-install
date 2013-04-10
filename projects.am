@@ -23,6 +23,7 @@ DEV_TOOLS+= lsb_release
 DEV_TOOLS+= libtool
 DEV_TOOLS+= cc
 DEV_TOOLS+= cpp
+DEV_TOOLS+= c++
 endif
 
 DEV_TOOLS_LOCAL=
