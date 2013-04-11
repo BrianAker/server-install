@@ -25,6 +25,7 @@ prep: | $(PREP) pkg_update pip
 
 .PHONY: pkg_update
 pkg_update:
+	-@apt-get clean
 	-@apt-get --purge -y remove byobu
 	@$(PKG_UPDATE)
 	@$(PKG_UPGRADE)
