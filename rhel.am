@@ -7,7 +7,7 @@ include $(srcdir)projects.am
 PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
-PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q *bin/$(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
 PIP= pip-python --quiet install
 
 VPATH = /usr/bin
