@@ -53,8 +53,7 @@ sphinx-build:
 	-$(PIP) sphinxcontrib-googleanalytics
 
 DEV_TOOLS_LOCAL+= build_essential
-.PHONY: build_essential
-build_essential:
+build_essential: /usr/bin/c++
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
