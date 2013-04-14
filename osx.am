@@ -80,6 +80,10 @@ DEV_TOOLS_LOCAL+= /usr/local/bin/flex
 	$(PKG_INSTALLER) Flex
 	brew link --force flex
 
+DEV_TOOLS_LOCAL+= /usr/local/bin/pkg-config
+/usr/local/bin/pkg-config:
+	$(PKG_INSTALLER) pkg-config
+
 DEV_TOOLS_LOCAL+= /usr/local/bin/bison
 /usr/local/bin/bison:
 	$(PKG_INSTALLER) Bison

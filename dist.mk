@@ -14,7 +14,8 @@ ifneq (${DEB_CONF},)
   include $(srcdir)/accounts.am
 else ifneq (${SUSE_RELEASE},)
   DISTRIBUTION := suse
-  @echo "Suse is not currently supported"
+  include zypper.am
+  include $(srcdir)/accounts.am
 else ifneq (${FEDORA_RELEASE},)
   DISTRIBUTION := fedora
   include fedora.am

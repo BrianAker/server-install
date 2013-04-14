@@ -1,19 +1,40 @@
 # vim:ft=automake
 #
+#
+BASE_INSTALL_PATH= /usr/
 
-PKG_INSTALLER:= zypper --non-interactive
+include $(srcdir)bundle.am
+include $(srcdir)projects.am
+
+PKG_INSTALLER:= zypper --non-interactive install
 PKG_UPDATE:= zypper --non-interactive update
 PKG_UPGRADE:= $(PKG_UPDATE)
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
+
+PIP= pip --quiet install
+
+VPATH = /usr/bin
 
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
+
+.PHONY: prep
+prep: | $(PREP) pkg_update python-pip
 
 .PHONY: mysqld
 mysqld:
 	$(PKG_INSTALLER) mysql-community-server
 
 .PHONY: pkg_update
+pkg_update:
 	$(PKG_UPDATE)
+
+sphinx-build:
+	$(PKG_INSTALLER) python-Sphinx
+	-$(PIP) sphinxcontrib-googleanalytics
+
+python-pip: /usr/bin/pip
+	$(PKG_INSTALLER) python-pip
 
 ssh-import-id: /usr/bin/ssh-import-id
 /usr/bin/ssh-import-id:
