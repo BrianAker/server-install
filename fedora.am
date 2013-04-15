@@ -7,6 +7,7 @@ include $(srcdir)bundle.am
 include $(srcdir)projects.am
 include $(srcdir)fedora-openstack-folsum.am
 include $(srcdir)jenkins.am
+include $(srcdir)fedora-bind.am
 
 PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
@@ -115,6 +116,7 @@ DEV_TOOLS_LOCAL+= /bin/firewall-cmd
 dokuwiki: /usr/share/dokuwiki
 /usr/share/dokuwiki:
 	-@$(PKG_INSTALLER) dokuwiki dokuwiki-selinux
+	sh -c "echo httpd:ALL >> /etc/hosts.allow"
 
 DEV_TOOLS_LOCAL+= $(CLANG)
 DEV_TOOLS_LOCAL+= $(LIBRARIES)
@@ -181,6 +183,16 @@ smtp:
 	-$(PKG_INSTALLER) sendmail sendmail-cf
 	-systemctl enable sendmail.service
 	-systemctl restart sendmail.service
+
+mailman: smtp
+	-$(PKG_INSTALLER) mailman
+	/usr/lib/mailman/bin/mmsitepass
+	cat support/mailman/mm_cfg.py >> /etc/mailman/mm_cfg.py
+	/usr/lib/mailman/bin/newlist mailman
+	-systemctl enable mailman
+	-service mailman start
+	-sh -c "echo sendmail:ANY >> /etc/hosts.allow"
+
 
 .PHONY: post
 post:
