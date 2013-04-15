@@ -112,6 +112,10 @@ DEV_TOOLS_LOCAL+= /bin/firewall-cmd
 	-@$(PKG_INSTALLER) firewalld
 	-@firewall-cmd --zone=public --permanent --add-service=ssh
 
+dokuwiki: /usr/share/dokuwiki
+/usr/share/dokuwiki:
+	-@$(PKG_INSTALLER) dokuwiki dokuwiki-selinux
+
 DEV_TOOLS_LOCAL+= $(CLANG)
 DEV_TOOLS_LOCAL+= $(LIBRARIES)
 DEV_TOOLS_LOCAL+= $(PROTOBUF)
