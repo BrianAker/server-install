@@ -11,6 +11,7 @@ PREP:= curl git
 
 DEV_TOOLS:= 
 DEV_TOOLS+= bzr
+DEV_TOOLS+= gpg
 DEV_TOOLS+= wget
 DEV_TOOLS+= autoconf
 DEV_TOOLS+= automake
