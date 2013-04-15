@@ -111,6 +111,8 @@ DEV_TOOLS_LOCAL+= /bin/firewall-cmd
 
 /bin/firewall-cmd:
 	-@$(PKG_INSTALLER) firewalld
+	systemctl enable firewalld.service
+	systemctl start firewalld.service
 	-@firewall-cmd --zone=public --permanent --add-service=ssh
 
 dokuwiki: /usr/share/dokuwiki
