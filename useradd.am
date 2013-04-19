@@ -3,17 +3,19 @@
 CREATE_USER :=
 OBJDIR := /etc/sudoers.d
 USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
+SSHD_ALLOWUSER_CHECK := $(shell grep -c $(CREATE_USER) /etc/ssh/sshd_config > /dev/null 2>&1 ; echo $$?)
+ETC_SUDO_USER_CHECK := $(shell test -f /etc/sudoers.d/$(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
 SSH_IMPORT_ID := ssh-import-id
 
 .PHONY: user admin-user useradd import_ssh_keys sudo-priv
 
-user: | useradd import_ssh_keys
+user: | useradd import_ssh_keys adduser-include
 
-ping-user: | useradd import_ssh_keys
+ping-user: | useradd import_ssh_keys adduser-include
 
-admin-user: | useradd import_ssh_keys sudo-priv
+admin-user: | useradd import_ssh_keys sudo-priv adduser-include
 
 daemon-user:
 ifdef CREATE_USER
@@ -40,9 +42,12 @@ ifneq (${USER_EXISTS},0)
 	@if [ ! -d ~$(CREATE_USER)/.ssh ]; then \
 	  install -d -m 700 -o ${CREATE_USER} ~${CREATE_USER}/.ssh
 	fi
-	@if [ -f ~$(CREATE_USER)/.ssh/id_rsa ]; then \
-	  sudo -i -u $(CREATE_USER) bash -c ssh-keygen -q -t rsa -N '' -f ~$(CREATE_USER)/.ssh/id_rsa
-	fi
+endif
+endif
+
+adduser-include:
+ifdef CREATE_USER
+ifeq (${SSHD_ALLOWUSER_CHECK},1)
 	touch /tmp/adduser-include
 	echo "AllowUsers $(CREATE_USER)" > /tmp/adduser-include
 	cat /tmp/adduser-include  >> /etc/ssh/sshd_config
@@ -53,14 +58,18 @@ endif
 import_ssh_keys: | useradd ssh-import-id
 ifdef CREATE_USER
 ifdef CREATE_USER_SSH_KEY_URL
-ifneq (${USER_EXISTS},0)
+ifeq (${USER_EXISTS},1)
 	sudo -i -u $(CREATE_USER) $(SSH_IMPORT_ID) $(CREATE_USER_SSH_KEY_URL)
 endif
 endif
 endif
 
-sudo-priv: | $(OBJDIR)
+/etc/sudoers.d:
+	mkdir -p -m 0750 /etc/sudoers.d
+
+sudo-priv: | /etc/sudoers.d
 ifdef CREATE_USER
+ifeq (${ETC_SUDO_USER_CHECK},1)
 	touch /tmp/$(CREATE_USER)
 	@echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
 	chown root.root /tmp/$(CREATE_USER)
@@ -69,9 +78,4 @@ ifdef CREATE_USER
 	# Add the user to other groups
 	-${USERMOD} -G sudo $(CREATE_USER)
 	-${USERMOD} -G wheel $(CREATE_USER)
-endif
-
-$(OBJDIR):
-ifdef CREATE_USER
-	mkdir -p -m 0750 $(OBJDIR)
 endif
