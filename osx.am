@@ -58,6 +58,7 @@ libmemcached: /usr/local/bin/memrm
 /usr/local/bin/memrm:
 	$(PKG_INSTALLER) libmemcached
 DEV_TOOLS_EXTRA+= libmemcached 
+DEV_TOOLS_EXTRA+= swig 
 
 boost: /usr/local/include/boost
 /usr/local/include/boost:
