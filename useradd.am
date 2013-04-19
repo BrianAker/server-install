@@ -3,19 +3,19 @@
 CREATE_USER :=
 OBJDIR := /etc/sudoers.d
 USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
-SSHD_ALLOWUSER_CHECK := $(shell grep -c $(CREATE_USER) /etc/ssh/sshd_config > /dev/null 2>&1 ; echo $$?)
+SSHD_ALLOWUSER_CHECK := $(shell grep -c "$(CREATE_USER)" /etc/ssh/sshd_config > /dev/null 2>&1 ; echo $$?)
 ETC_SUDO_USER_CHECK := $(shell test -f /etc/sudoers.d/$(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
 SSH_IMPORT_ID := ssh-import-id
 
-.PHONY: user admin-user useradd import_ssh_keys sudo-priv
+.PHONY: user admin-user useradd import_ssh_keys sudo-priv allow_users
 
-user: | useradd import_ssh_keys adduser-include
+user: | useradd import_ssh_keys allow_users
 
-ping-user: | useradd import_ssh_keys adduser-include
+ping-user: | useradd import_ssh_keys allow_users
 
-admin-user: | useradd import_ssh_keys sudo-priv adduser-include
+admin-user: | useradd import_ssh_keys sudo-priv allow_users
 
 daemon-user:
 ifdef CREATE_USER
@@ -45,7 +45,7 @@ ifneq (${USER_EXISTS},0)
 endif
 endif
 
-adduser-include:
+allow_users:
 ifdef CREATE_USER
 ifeq (${SSHD_ALLOWUSER_CHECK},1)
 	touch /tmp/adduser-include
@@ -67,7 +67,7 @@ endif
 /etc/sudoers.d:
 	mkdir -p -m 0750 /etc/sudoers.d
 
-sudo-priv: | /etc/sudoers.d
+sudo-priv: /etc/sudoers.d
 ifdef CREATE_USER
 ifeq (${ETC_SUDO_USER_CHECK},1)
 	touch /tmp/$(CREATE_USER)
@@ -78,4 +78,5 @@ ifeq (${ETC_SUDO_USER_CHECK},1)
 	# Add the user to other groups
 	-${USERMOD} -G sudo $(CREATE_USER)
 	-${USERMOD} -G wheel $(CREATE_USER)
+endif
 endif
