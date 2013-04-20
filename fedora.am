@@ -58,11 +58,7 @@ $(DAEMONS):
 	-systemctl stop $@.service
 	systemctl start $@.service
 
-$(PREP): 
-	-$(PKG_INSTALLER) $(@F)
-
-.PHONY: prep
-prep: | $(PREP) pkg_update python-pip
+prep-local: | pkg_update python-pip
 	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
 	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
 	-@yum -y groupupdate 'Development Tools'

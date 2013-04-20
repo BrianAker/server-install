@@ -19,8 +19,7 @@ VPATH = /usr/bin:/usr/local/bin
 
 PREP+= apt-file
 
-.PHONY: prep
-prep: | $(PREP) pkg_update pip
+prep-local: | pkg_update pip
 	-$(PKG_INSTALLER) python-software-properties
 
 .PHONY: pkg_update
@@ -38,9 +37,6 @@ DAEMONS:= memcached apache2 vsftpd
 .PHONY: $(DAEMONS)
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
-
-$(PREP): 
-	-$(PKG_INSTALLER) $(@F)
 
 DEV_TOOLS_LOCAL+= mingw
 DEV_TOOLS_LOCAL+= protobuf-bundle

@@ -5,14 +5,29 @@
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
-basics: | pkg_update $(PIP)ssh-import-id prep base-dev
+basics: | pkg_update $(PIP) ssh-import-id prep base-dev
 
-PREP:= curl git
+.PHONY: prep
+prep: | prep-local $(PREP) $(BASE)
+
+$(PREP): 
+	-$(PKG_INSTALLER) $(@F)
+
+$(BASE): 
+	-$(PKG_INSTALLER) $(@F)
+
+PREP:= curl git make
+
+BASE:= 
+BASE+= 
+BASE+= gpg
+BASE+= wget
+ifneq (${OSX_RELEASE},0)
+DEV_TOOLS+= lsb_release
+endif
 
 DEV_TOOLS:= 
 DEV_TOOLS+= bzr
-DEV_TOOLS+= gpg
-DEV_TOOLS+= wget
 DEV_TOOLS+= autoconf
 DEV_TOOLS+= automake
 DEV_TOOLS+= bison
@@ -20,7 +35,6 @@ DEV_TOOLS+= flex
 DEV_TOOLS+= pkg-config
 DEV_TOOLS+= /usr/include/openssl/opensslconf.h
 ifneq (${OSX_RELEASE},0)
-DEV_TOOLS+= lsb_release
 DEV_TOOLS+= libtool
 DEV_TOOLS+= cc
 DEV_TOOLS+= cpp
@@ -36,9 +50,10 @@ DEV_TOOLS_EXTRA+= doxygen
 DEV_TOOLS_EXTRA+= gdb 
 DEV_TOOLS_EXTRA+= gettext 
 DEV_TOOLS_EXTRA+= gperf 
+ifeq (${OSX_RELEASE},1)
 DEV_TOOLS_EXTRA+= intltool 
+endif
 DEV_TOOLS_EXTRA+= lcov 
-DEV_TOOLS_EXTRA+= make
 DEV_TOOLS_EXTRA+= man 
 DEV_TOOLS_EXTRA+= scan-build
 DEV_TOOLS_EXTRA+= valgrind

@@ -15,11 +15,7 @@ PIP= pip --quiet install
 
 VPATH = /usr/bin
 
-$(PREP): 
-	-$(PKG_INSTALLER) $(@F)
-
-.PHONY: prep
-prep: | $(PREP) pkg_update python-pip
+prep-local: | pkg_update python-pip
 
 .PHONY: mysqld
 mysqld:

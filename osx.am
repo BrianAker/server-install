@@ -11,7 +11,7 @@ PKG_UPGRADE= $(BREW) upgrade
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 PIP= /usr/local/bin/pip --quiet
 
-VPATH = $(EXE_BASE_INSTALL_PATH)
+VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin
 
 cc:
 	@echo "Install xcode"
@@ -45,7 +45,7 @@ DEV_TOOLS_LOCAL+= /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	brew tap homebrew/dupes
 
-prep: | $(BREW) pip
+prep-local: | $(BREW) pip
 
 $(BREW):
 	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
@@ -85,10 +85,18 @@ DEV_TOOLS_LOCAL+= /usr/local/bin/pkg-config
 /usr/local/bin/pkg-config:
 	$(PKG_INSTALLER) pkg-config
 
+DEV_TOOLS_LOCAL+= /usr/local/bin/intltoolize
+/usr/local/bin/intltoolize:
+	$(PKG_INSTALLER) intltool
+
 DEV_TOOLS_LOCAL+= /usr/local/bin/bison
 /usr/local/bin/bison:
 	$(PKG_INSTALLER) Bison
 	brew link --force bison
+
+/usr/local/bin/gettext:
+	$(PKG_INSTALLER) gettext
+	brew link --force gettext
 
 pip:
 	easy_install pip
