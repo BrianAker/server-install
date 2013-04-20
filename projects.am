@@ -16,7 +16,11 @@ $(PREP):
 $(BASE): 
 	-$(PKG_INSTALLER) $(@F)
 
-PREP:= curl git make
+PREP:=
+PREP+= curl
+PREP+= git
+PREP+= make
+PREP+= perl
 
 BASE:= 
 BASE+= 
