@@ -28,9 +28,13 @@ function install_git_make()
 function run_server_install()
 {
   if [ -f 'projects.am' ]; then
+    echo "Using existing project.am"
     git pull
     $__SUDO make "$DEFAULT_INSTALL"
   elif [ -d 'server-install.git' ]; then
+    echo "Using existing server-install.git"
+    rm -r -f 'server-install'
+    (cd 'server-install.git' && git pull)
     (git clone 'server-install.git' && cd 'server-install' &&  $__SUDO make "$DEFAULT_INSTALL")
   elif [ -d 'server-install' ]; then
     (cd 'server-install' && git pull &&  $__SUDO make "$DEFAULT_INSTALL")
