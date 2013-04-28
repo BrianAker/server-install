@@ -39,9 +39,7 @@ useradd:
 ifdef CREATE_USER
 ifneq (${USER_EXISTS},0)
 	${USERADD} --shell=/bin/bash -m $(CREATE_USER)
-	@if [ ! -d ~$(CREATE_USER)/.ssh ]; then \
-	  install -d -m 700 -o ${CREATE_USER} ~${CREATE_USER}/.ssh \
-	fi
+	install -d -m 700 -o ${CREATE_USER} ~${CREATE_USER}/.ssh
 endif
 endif
 
