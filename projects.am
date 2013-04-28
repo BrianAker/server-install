@@ -8,7 +8,7 @@ build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-bui
 basics: | pkg_update $(PIP) ssh-import-id prep base-dev
 
 .PHONY: prep
-prep: | prep-local $(PREP) $(BASE)
+prep: | $(PREP) prep-local $(BASE)
 
 $(PREP): 
 	-$(PKG_INSTALLER) $(@F)
