@@ -30,6 +30,7 @@ pkg_update:
 	@$(PKG_UPGRADE)
 	@$(PKG_UPDATE)
 	@$(PKG_UPGRADE)
+	@$(PKG_INSTALLER) apt-file
 	@apt-file update 2>&1 > /dev/null
 	@apt-get autoremove -y
 
