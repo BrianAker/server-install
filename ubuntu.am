@@ -13,8 +13,6 @@ PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (apt-file search --package-only --f
 
 PIP= pip --quiet install
 
-DEBIAN_FRONTEND:= noninteractive
-
 VPATH = /usr/bin:/usr/local/bin
 
 PREP+= apt-file
