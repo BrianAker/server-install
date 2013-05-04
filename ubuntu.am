@@ -39,6 +39,7 @@ $(DAEMONS):
 
 DEV_TOOLS_LOCAL+= mingw
 DEV_TOOLS_LOCAL+= protobuf-bundle
+DEV_TOOLS_LOCAL+= protobuf-compiler
 
 $(DEV_TOOLS_REQUIRED): 
 	$(PKG_INSTALLER) $(@F)
