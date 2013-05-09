@@ -4,6 +4,8 @@ BASE_INSTALL_PATH= /usr/local/
 EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
 include $(srcdir)projects.am
 
+EASY_INSTALL:= $(BASE_INSTALL_PATH)bin/easy_install
+PYTHON:= $(BASE_INSTALL_PATH)bin/python
 BREW:= $(BASE_INSTALL_PATH)bin/brew
 PKG_INSTALLER= $(BREW) install
 PKG_UPDATE= $(BREW) update 
@@ -43,12 +45,27 @@ post:
 
 DEV_TOOLS_LOCAL+= /usr/local/Library/Taps
 /usr/local/Library/Taps:
-	brew tap homebrew/dupes
+	$(BREW) tap homebrew/dupes
 
-prep-local: | $(BREW) pip
+prep-local: | $(BREW) brew-doctor /usr/local/bin/python pip
 
-$(BREW):
-	`ruby <(curl -fsSkL raw.github.com/mxcl/homebrew/go)`
+$(BREW):; ruby -e "$$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+
+.PHONY: brew-doctor
+	$(BREW) doctor
+
+$(PYTHON):
+	$(PKG_SEARCH_INSTALL) python
+
+$(EASY_INSTALL):
+	$(PKG_SEARCH_INSTALL) python
+
+/Users/brian/Applications/MacVim.app: /Users/brian/Applications
+	$(PKG_SEARCH_INSTALL) macvim
+	brew linkapps
+
+/Users/brian/Applications:
+	mkdir /Users/brian/Applications
 
 DEV_TOOLS_LOCAL+= /usr/local/bin/protoc
 /usr/local/bin/protoc:
@@ -99,8 +116,8 @@ DEV_TOOLS_LOCAL+= /usr/local/bin/bison
 	$(PKG_INSTALLER) gettext
 	brew link --force gettext
 
-pip:
-	easy_install pip
+pip: $(EASY_INSTALL)
+	$(EASY_INSTALL) pip
 
 sphinx-build:
 	$(PIP) install sphinx

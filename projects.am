@@ -28,13 +28,13 @@ BASE+= gpg
 BASE+= wget
 ifneq (${OSX_RELEASE},0)
 DEV_TOOLS+= lsb_release
+DEV_TOOLS+= autopoint
 endif
 
 DEV_TOOLS:= 
 DEV_TOOLS+= bzr
 DEV_TOOLS+= autoconf
 DEV_TOOLS+= automake
-DEV_TOOLS+= autopoint
 DEV_TOOLS+= bison
 DEV_TOOLS+= flex
 DEV_TOOLS+= pkg-config
