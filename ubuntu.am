@@ -120,3 +120,5 @@ pip:
 
 java:
 	-$(PKG_INSTALLER) default-jdk default-jre-headless
+
+include $(srcdir)local.am

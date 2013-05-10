@@ -118,14 +118,4 @@ sphinx-build:
 ssh-import-id:
 	$(PIP_INSTALL) ssh-import-id
 
-$(BASE_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
-
-$(EXTRA_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
-
-$(BASE_DEV_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
-
-$(EXTRA_DEV_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
+include $(srcdir)local.am
