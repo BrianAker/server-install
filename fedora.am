@@ -10,8 +10,8 @@ include $(srcdir)jenkins.am
 include $(srcdir)fedora-bind.am
 
 PKG_INSTALLER:= yum install -y --quiet
-PKG_UPDATE:= yum update -y
-PKG_UPGRADE:= yum upgrade -y
+PKG_UPDATE:= yum update -y --quiet
+PKG_UPGRADE:= yum upgrade -y --quiet
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
 PIP= python-pip
 PIP_INSTALL= $(PIP) install --quiet
