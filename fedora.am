@@ -25,7 +25,7 @@ else
 endif
 
 .PHONY: pkg_update
-pkg_update:
+pkg_update: $(PIP)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 

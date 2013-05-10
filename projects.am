@@ -8,18 +8,14 @@ build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-bui
 .PHONY: install-am
 install-am: prep-am base-am extra-am base-dev-am extra-dev-am sphinx-build
 
-PREP:=
-PREP+= pkg_update
-PREP+= $(PIP)
-PREP+= ssh-import-id
-
 PHONY: prep
 prep:
 	$(MAKE) prep-am
 
-prep-am:
-	@$(MAKE) $(PREP)
+prep-am: | pkg_update
 	@$(MAKE) prep-local
+	@$(MAKE) $(PIP)
+	@$(MAKE) ssh-import-id
 
 PHONY: basics
 basics: | prep-am base-am

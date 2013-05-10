@@ -26,7 +26,7 @@ glibtool:
 	$(PKG_INSTALLER) libtool
 
 .PHONY: pkg_update
-pkg_update: $(BREW)
+pkg_update: | $(BREW) $(PYTHON) $(PIP)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
@@ -49,7 +49,7 @@ BASE_DEV_HOOK+= /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	$(BREW) tap homebrew/dupes
 
-prep-local: | $(BREW) brew-doctor /usr/local/bin/python pip
+prep-local: | $(BREW) brew-doctor pip
 
 $(BREW):
 	ruby -e "$$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
@@ -75,6 +75,7 @@ BASE_DEV_HOOK+= /usr/local/bin/protoc
 /usr/local/bin/protoc:
 	$(PKG_INSTALLER) protobuf
 
+EXTRA_LOCAL+= gpg-agent 
 EXTRA_DEV_LOCAL+= swig 
 EXTRA_DEV_LOCAL+= hub 
 
@@ -108,9 +109,6 @@ BASE_DEV_HOOK+= /usr/local/bin/gettext
 /usr/local/bin/gettext:
 	$(PKG_INSTALLER) gettext
 	$(BREW) link --force gettext
-
-pip: $(EASY_INSTALL)
-	$(EASY_INSTALL) pip
 
 BASE_DEV_HOOK+= sphinx-build
 sphinx-build:
