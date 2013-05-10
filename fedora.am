@@ -108,7 +108,7 @@ sphinx-build:
 BASE_DEV_HOOK+= rpmbuild
 
 BASE_DEV_HOOK+= compiler-other 
-BASE_DEV_LOCAL+= /bin/firewall-cmd
+BASE_DEV_HOOK+= /bin/firewall-cmd
 
 /bin/firewall-cmd:
 	-@$(PKG_INSTALLER) firewalld
