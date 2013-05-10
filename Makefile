@@ -41,6 +41,7 @@ install-jenkins-slave: install ci-server-update
 	$(MAKE) ping-user
 	$(MAKE) lazlo
 	$(MAKE) secure-host
+	@cat /etc/ssh/sshd_config
 	reboot
 
 install: 
