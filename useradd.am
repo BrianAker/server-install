@@ -2,9 +2,9 @@
 #
 CREATE_USER :=
 OBJDIR := /etc/sudoers.d
-USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
-SSHD_ALLOWUSER_CHECK := $(shell grep -c "$(CREATE_USER)" /etc/ssh/sshd_config > /dev/null 2>&1 ; echo $$?)
-ETC_SUDO_USER_CHECK := $(shell test -f /etc/sudoers.d/$(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
+USER_EXISTS = $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
+SSHD_ALLOWUSER_CHECK = $(shell grep -c "$(CREATE_USER)" /etc/ssh/sshd_config > /dev/null 2>&1 ; echo $$?)
+ETC_SUDO_USER_CHECK = $(shell test -f /etc/sudoers.d/$(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
 SSH_IMPORT_ID := ssh-import-id
@@ -44,6 +44,7 @@ endif
 endif
 
 allow_users:
+	@echo "USER: $(CREATE_USER) : ${SSHD_ALLOWUSER_CHECK}"
 ifdef CREATE_USER
 ifeq (${SSHD_ALLOWUSER_CHECK},1)
 	@touch /tmp/adduser-include
@@ -53,7 +54,7 @@ ifeq (${SSHD_ALLOWUSER_CHECK},1)
 endif
 endif
 
-import_ssh_keys: | useradd ssh-import-id
+import_ssh_keys: ssh-import-id
 ifdef CREATE_USER
 ifdef CREATE_USER_SSH_KEY_URL
 ifeq (${USER_EXISTS},1)
