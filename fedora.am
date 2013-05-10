@@ -9,10 +9,11 @@ include $(srcdir)fedora-openstack-folsum.am
 include $(srcdir)jenkins.am
 include $(srcdir)fedora-bind.am
 
-PKG_INSTALLER:= yum install -y --quiet
-PKG_UPDATE:= yum update -y --quiet
-PKG_UPGRADE:= yum upgrade -y --quiet
-PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
+YUM:= yum -y --quiet
+PKG_INSTALLER:= $(YUM) install
+PKG_UPDATE:= $(YUM) update
+PKG_UPGRADE:= $(YUM) upgrade
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || ($(YUM) whatprovides $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
 PIP= python-pip
 PIP_INSTALL= $(PIP) install --quiet
 
@@ -62,7 +63,7 @@ $(DAEMONS):
 	systemctl start $@.service
 
 prep-local:
-	-@yum -y groupupdate 'Development Tools'
+	-@$(YUM) groupupdate 'Development Tools'
 
 EXTRA_LOCAL+= yum-plugin-ps
 EXTRA_LOCAL+= yum-plugin-remove-with-leaves
