@@ -20,6 +20,7 @@ prep-am: | pkg_update
 PHONY: basics
 basics: | prep-am base-am
 
+BASE_HOOK:=
 BASE_LOCAL:=
 BASE:=
 BASE+= curl
@@ -32,6 +33,7 @@ ifneq (${OSX_RELEASE},0)
 BASE+= lsb_release
 endif
 
+EXTRA_HOOK:=
 EXTRA_LOCAL:=
 EXTRA:=
 
@@ -53,6 +55,7 @@ BASE_DEV+= cpp
 BASE_DEV+= libtool
 endif
 
+EXTRA_DEV_HOOK:=
 EXTRA_DEV_LOCAL:=
 EXTRA_DEV:=
 EXTRA_DEV+= cmake 
@@ -76,18 +79,14 @@ base:
 .PHONY: base-am
 base-am:
 	$(MAKE) $(BASE)
-ifeq (${BASE_LOCAL},0)
 	$(MAKE) $(BASE_LOCAL)
-endif
+	$(MAKE) $(BASE_HOOK)
 
 .PHONY: extra-am
 extra-am:
-ifeq (${EXTRA},0)
 	$(MAKE) $(EXTRA)
-endif
-ifeq (${EXTRA_LOCAL},0)
 	$(MAKE) $(EXTRA_LOCAL)
-endif
+	$(MAKE) $(EXTRA_HOOK)
 
 .PHONY: base-dev
 base-dev: 
@@ -95,14 +94,15 @@ base-dev:
 
 .PHONY: base-dev-am
 base-dev-am:
-	$(MAKE) $(BASE_DEV)
-	$(MAKE) $(BASE_DEV_LOCAL)
-	$(MAKE) $(BASE_DEV_HOOK)
+	@$(MAKE) $(BASE_DEV)
+	@$(MAKE) $(BASE_DEV_LOCAL)
+	@$(MAKE) $(BASE_DEV_HOOK)
 
 .PHONY: extra-dev-am
 extra-dev-am:
 	@$(MAKE) $(EXTRA_DEV)
 	@$(MAKE) $(EXTRA_DEV_LOCAL)
+	@$(MAKE) $(EXTRA_DEV_HOOK)
 
 $(BASE): 
 	$(call PKG_SEARCH_INSTALL,$@)

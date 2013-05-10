@@ -9,7 +9,7 @@ include $(srcdir)fedora-openstack-folsum.am
 include $(srcdir)jenkins.am
 include $(srcdir)fedora-bind.am
 
-PKG_INSTALLER:= yum install -y
+PKG_INSTALLER:= yum install -y --quiet
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
@@ -29,13 +29,13 @@ pkg_update: $(PIP)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
-EXTRA_LOCAL+= nbd-server
+EXTRA_HOOK+= nbd-server
 nbd-server:
 	$(PKG_INSTALLER) nbd
 
-EXTRA_LOCAL+= mysqld
-.PHONY: mysqld
-mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
+EXTRA_HOOK+= install-mysqld
+.PHONY: install-mysqld
+install-mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
 	systemctl enable mysqld.service
 	systemctl restart mysqld.service
 
