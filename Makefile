@@ -28,7 +28,7 @@ include $(srcdir)dist.mk
 
 .PHONY: all show check install base_install deploy
 
-all: show
+all:
 
 check:
 	$(foreach each_makefile,$(DIST_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
@@ -43,7 +43,8 @@ install-jenkins-slave: install ci-server-update
 	$(MAKE) secure-host
 	reboot
 
-install: | show prep base-dev
+install: 
+	$(MAKE) install-am
 
 base_openstack:
 	$(MAKE) openstack

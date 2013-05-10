@@ -43,7 +43,7 @@ $(DAEMONS):
 	chkconfig $@ on
 	service $@ start
 
-$(PREP): 
+$(BASE_LOCAL): 
 	-$(PKG_INSTALLER) $(@F)
 
 .PHONY: prep

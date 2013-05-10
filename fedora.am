@@ -13,7 +13,8 @@ PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
-PIP= pip-python --quiet install
+PIP= pip-python
+PIP_INSTALL= $(PIP) install --quiet
 
 VPATH = /usr/bin
 
@@ -28,11 +29,11 @@ pkg_update:
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
-.PHONY: nbd
-nbd: /usr/bin/nbd-server
-/usr/bin/nbd-server:
+EXTRA_LOCAL+= nbd-server
+nbd-server:
 	$(PKG_INSTALLER) nbd
 
+EXTRA_LOCAL+= mysqld
 .PHONY: mysqld
 mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
 	systemctl enable mysqld.service
@@ -41,15 +42,17 @@ mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
 /usr/libexec/mysqld:
 	$(PKG_INSTALLER) mysql-server
 
-/usr/bin/mysql:
-	$(PKG_INSTALLER) mysql
+BASE_DEV_LOCAL+= mysql
 
+BASE_DEV_HOOK+= /usr/share/mysql
 /usr/share/mysql:
 	$(PKG_INSTALLER) mysql-lib
 
+BASE_DEV_HOOK+= /usr/include/mysql/mysql.h
 /usr/include/mysql/mysql.h:
 	$(PKG_INSTALLER) mysql-devel
 
+BASE_DEV_HOOK+= $(DAEMONS)
 DAEMONS:= memcached httpd vsftpd xinetd
 .PHONY: $(DAEMONS)
 $(DAEMONS):
@@ -58,10 +61,12 @@ $(DAEMONS):
 	-systemctl stop $@.service
 	systemctl start $@.service
 
-prep-local: | pkg_update python-pip
-	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
-	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
+prep-local:
 	-@yum -y groupupdate 'Development Tools'
+
+EXTRA_LOCAL+= yum-plugin-ps
+EXTRA_LOCAL+= yum-plugin-remove-with-leaves
+EXTRA_LOCAL+= yum-plugin-auto-update-debug-info
 
 # Keep yum updated
 .PHONY: yum-cron
@@ -94,16 +99,16 @@ compiler-other: mingw-bundle clang-bundle protobuf-bundle
 .PHONY: jenkins-slave
 jenkins-slave: /usr/bin/java
 
+BASE_DEV_HOOK+=sphinx-build
 sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
-	-$(PIP) sphinxcontrib-googleanalytics
+	-$(PIP_INSTALL) sphinxcontrib-googleanalytics
 
 #Basic build tools
-DEV_TOOLS+= rpmbuild
+BASE_DEV_HOOK+= rpmbuild
 
-DEV_TOOLS_LOCAL+= compiler-other 
-DEV_TOOLS_LOCAL+= python-sphinx
-DEV_TOOLS_LOCAL+= /bin/firewall-cmd
+BASE_DEV_HOOK+= compiler-other 
+BASE_DEV_LOCAL+= /bin/firewall-cmd
 
 /bin/firewall-cmd:
 	-@$(PKG_INSTALLER) firewalld
@@ -116,9 +121,8 @@ dokuwiki: /usr/share/dokuwiki
 	-@$(PKG_INSTALLER) dokuwiki dokuwiki-selinux
 	sh -c "echo httpd:ALL >> /etc/hosts.allow"
 
-DEV_TOOLS_LOCAL+= $(CLANG)
-DEV_TOOLS_LOCAL+= $(LIBRARIES)
-DEV_TOOLS_LOCAL+= $(PROTOBUF)
+BASE_DEV_LOCAL+= $(CLANG)
+BASE_DEV_LOCAL+= $(PROTOBUF)
 
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 
@@ -127,6 +131,8 @@ PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 java:
 	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
+
+BASE_DEV_HOOK+= libraries
 
 LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl libaio cyrus-sasl
 
@@ -205,4 +211,4 @@ python-pip:
 	$(PKG_INSTALLER) python-pip
 
 ssh-import-id:
-	$(PIP)  ssh-import-id
+	$(PIP_INSTALL)  ssh-import-id

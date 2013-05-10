@@ -11,9 +11,10 @@ PKG_INSTALLER= $(BREW) install
 PKG_UPDATE= $(BREW) update 
 PKG_UPGRADE= $(BREW) upgrade
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
-PIP= /usr/local/bin/pip --quiet
+PIP= /usr/local/bin/pip
+PIP_INSTALL= $(PIP) install --quiet
 
-VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin
+VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin:/usr/local/share/python:/usr/local/Cellar
 
 cc:
 	@echo "Install xcode"
@@ -29,9 +30,10 @@ pkg_update: $(BREW)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
-DEV_TOOLS_LOCAL+= libevent
-DEV_TOOLS_LOCAL+= boost
-DEV_TOOLS_LOCAL+= glibtool
+BASE_DEV_LOCAL+= boost
+BASE_DEV_LOCAL+= libevent
+BASE_DEV_LOCAL+= libmemcached
+BASE_DEV_LOCAL+= libtool
 
 openstack:
 	echo "Not available on this platform"
@@ -43,13 +45,14 @@ security:
 
 post:
 
-DEV_TOOLS_LOCAL+= /usr/local/Library/Taps
+BASE_DEV_HOOK+= /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	$(BREW) tap homebrew/dupes
 
 prep-local: | $(BREW) brew-doctor /usr/local/bin/python pip
 
-$(BREW):; ruby -e "$$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+$(BREW):
+	ruby -e "$$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 
 .PHONY: brew-doctor
 	$(BREW) doctor
@@ -60,68 +63,71 @@ $(PYTHON):
 $(EASY_INSTALL):
 	$(PKG_SEARCH_INSTALL) python
 
+BASE_DEV_HOOK+= /Users/brian/Applications/MacVim.app
 /Users/brian/Applications/MacVim.app: /Users/brian/Applications
 	$(PKG_SEARCH_INSTALL) macvim
-	brew linkapps
+	$(BREW) linkapps
 
 /Users/brian/Applications:
 	mkdir /Users/brian/Applications
 
-DEV_TOOLS_LOCAL+= /usr/local/bin/protoc
+BASE_DEV_HOOK+= /usr/local/bin/protoc
 /usr/local/bin/protoc:
 	$(PKG_INSTALLER) protobuf
 
-libmemcached: /usr/local/bin/memrm
-/usr/local/bin/memrm:
-	$(PKG_INSTALLER) libmemcached
-DEV_TOOLS_EXTRA+= libmemcached 
-DEV_TOOLS_EXTRA+= swig 
-DEV_TOOLS_EXTRA+= hub 
-
-boost: /usr/local/include/boost
-/usr/local/include/boost:
-	$(PKG_INSTALLER) boost
+EXTRA_DEV_LOCAL+= swig 
+EXTRA_DEV_LOCAL+= hub 
 
 mysqld: mysql
 
-DEV_TOOLS+= mysql 
+BASE_DEV_LOCAL+= mysql 
 
-libevent: /usr/local/include/event.h
-/usr/local/include/event.h:
-	$(PKG_INSTALLER) libevent
-
-DEV_TOOLS_LOCAL+= /usr/local/bin/pcretest
+BASE_DEV_HOOK+= /usr/local/bin/pcretest
 /usr/local/bin/pcretest:
 	$(PKG_INSTALLER) pcre
 
-DEV_TOOLS_LOCAL+= /usr/local/bin/flex
+BASE_DEV_HOOK+= /usr/local/bin/flex
 /usr/local/bin/flex:
 	$(PKG_INSTALLER) Flex
-	brew link --force flex
+	$(BREW) link --force flex
 
-DEV_TOOLS_LOCAL+= /usr/local/bin/pkg-config
+BASE_DEV_HOOK+= /usr/local/bin/pkg-config
 /usr/local/bin/pkg-config:
 	$(PKG_INSTALLER) pkg-config
 
-DEV_TOOLS_LOCAL+= /usr/local/bin/intltoolize
+BASE_DEV_HOOK+= /usr/local/bin/intltoolize
 /usr/local/bin/intltoolize:
 	$(PKG_INSTALLER) intltool
 
-DEV_TOOLS_LOCAL+= /usr/local/bin/bison
+BASE_DEV_HOOK+= /usr/local/bin/bison
 /usr/local/bin/bison:
 	$(PKG_INSTALLER) Bison
-	brew link --force bison
+	$(BREW) link --force bison
 
+BASE_DEV_HOOK+= /usr/local/bin/gettext
 /usr/local/bin/gettext:
 	$(PKG_INSTALLER) gettext
-	brew link --force gettext
+	$(BREW) link --force gettext
 
 pip: $(EASY_INSTALL)
 	$(EASY_INSTALL) pip
 
+BASE_DEV_HOOK+= sphinx-build
 sphinx-build:
-	$(PIP) install sphinx
-	$(PIP) install sphinxcontrib-googleanalytics
+	$(PIP_INSTALL) sphinx
+	$(PIP_INSTALL) sphinxcontrib-googleanalytics
 
 ssh-import-id:
-	$(PIP) install ssh-import-id
+	$(PIP_INSTALL) ssh-import-id
+
+$(BASE_LOCAL):
+	-$(call PKG_SEARCH_INSTALL,$@)
+
+$(EXTRA_LOCAL):
+	-$(call PKG_SEARCH_INSTALL,$@)
+
+$(BASE_DEV_LOCAL):
+	-$(call PKG_SEARCH_INSTALL,$@)
+
+$(EXTRA_DEV_LOCAL):
+	-$(call PKG_SEARCH_INSTALL,$@)

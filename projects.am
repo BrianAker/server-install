@@ -1,78 +1,124 @@
 # vim:ft=automake
 #
 
-.PHONY: build_tools base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave libraries memcached mysqld base-dev base-extra prep
+.PHONY: build_tools base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave libraries memcached mysqld base-dev prep base-dev-local
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
-basics: | pkg_update $(PIP) ssh-import-id prep base-dev
-
-.PHONY: prep
-prep: | $(PREP) prep-local $(BASE)
-
-$(PREP): 
-	-$(PKG_INSTALLER) $(@F)
-
-$(BASE): 
-	-$(PKG_INSTALLER) $(@F)
+.PHONY: install-am
+install-am: prep-am base-am extra-am base-dev-am extra-dev-am sphinx-build
 
 PREP:=
-PREP+= curl
-PREP+= git
-PREP+= make
-PREP+= perl
+PREP+= pkg_update
+PREP+= $(PIP)
+PREP+= ssh-import-id
 
-BASE:= 
-BASE+= 
+PHONY: prep
+prep:
+	$(MAKE) prep-am
+
+prep-am:
+	@$(MAKE) $(PREP)
+	@$(MAKE) prep-local
+
+PHONY: basics
+basics: | prep-am base-am
+
+BASE_LOCAL:=
+BASE:=
+BASE+= curl
+BASE+= git
+BASE+= make
+BASE+= perl
 BASE+= gpg
 BASE+= wget
 ifneq (${OSX_RELEASE},0)
-DEV_TOOLS+= lsb_release
-DEV_TOOLS+= autopoint
+BASE+= lsb_release
 endif
 
-DEV_TOOLS:= 
-DEV_TOOLS+= bzr
-DEV_TOOLS+= autoconf
-DEV_TOOLS+= automake
-DEV_TOOLS+= bison
-DEV_TOOLS+= flex
-DEV_TOOLS+= pkg-config
-DEV_TOOLS+= /usr/include/openssl/opensslconf.h
+EXTRA_LOCAL:=
+EXTRA:=
+
+BASE_DEV_HOOK:=
+BASE_DEV_LOCAL:=
+BASE_DEV:= 
+BASE_DEV+= bzr
+BASE_DEV+= autoconf
+BASE_DEV+= automake
+BASE_DEV+= flex
+BASE_DEV+= pkg-config
+BASE_DEV+= /usr/include/openssl/opensslconf.h
 ifneq (${OSX_RELEASE},0)
-DEV_TOOLS+= libtool
-DEV_TOOLS+= cc
-DEV_TOOLS+= cpp
-DEV_TOOLS+= c++
+BASE_DEV+= autopoint
+BASE_DEV+= bison
+BASE_DEV+= c++
+BASE_DEV+= cc
+BASE_DEV+= cpp
+BASE_DEV+= libtool
 endif
 
-DEV_TOOLS_LOCAL=
-
-DEV_TOOLS_EXTRA=
-DEV_TOOLS_EXTRA+= cmake 
-DEV_TOOLS_EXTRA+= cppcheck 
-DEV_TOOLS_EXTRA+= doxygen 
-DEV_TOOLS_EXTRA+= gdb 
-DEV_TOOLS_EXTRA+= gettext 
-DEV_TOOLS_EXTRA+= gperf 
+EXTRA_DEV_LOCAL:=
+EXTRA_DEV:=
+EXTRA_DEV+= cmake 
+EXTRA_DEV+= cppcheck 
+EXTRA_DEV+= doxygen 
+EXTRA_DEV+= gdb 
+EXTRA_DEV+= gperf 
 ifeq (${OSX_RELEASE},1)
-DEV_TOOLS_EXTRA+= intltool 
+EXTRA_DEV+= gettext 
+EXTRA_DEV+= intltool 
 endif
-DEV_TOOLS_EXTRA+= lcov 
-DEV_TOOLS_EXTRA+= man 
-#DEV_TOOLS_EXTRA+= scan-build
-DEV_TOOLS_EXTRA+= valgrind
+EXTRA_DEV+= lcov 
+EXTRA_DEV+= man 
+#EXTRA_DEV+= scan-build
+EXTRA_DEV+= valgrind
 
-# base-dev is always installed
-base-dev: | ${DEV_TOOLS} ${DEV_TOOLS_LOCAL} ${DEV_TOOLS_EXTRA} sphinx-build
+.PHONY: base
+base: 
+	$(MAKE) base-am
 
-$(DEV_TOOLS):
+.PHONY: base-am
+base-am:
+	$(MAKE) $(BASE)
+ifeq (${BASE_LOCAL},0)
+	$(MAKE) $(BASE_LOCAL)
+endif
+
+.PHONY: extra-am
+extra-am:
+ifeq (${EXTRA},0)
+	$(MAKE) $(EXTRA)
+endif
+ifeq (${EXTRA_LOCAL},0)
+	$(MAKE) $(EXTRA_LOCAL)
+endif
+
+.PHONY: base-dev
+base-dev: 
+	$(MAKE) base-dev-am
+
+.PHONY: base-dev-am
+base-dev-am:
+	$(MAKE) $(BASE_DEV)
+	$(MAKE) $(BASE_DEV_LOCAL)
+	$(MAKE) $(BASE_DEV_HOOK)
+
+.PHONY: extra-dev-am
+extra-dev-am:
+	@$(MAKE) $(EXTRA_DEV)
+	@$(MAKE) $(EXTRA_DEV_LOCAL)
+
+$(BASE): 
 	$(call PKG_SEARCH_INSTALL,$@)
 
-$(DEV_TOOLS_EXTRA):
+$(EXTRA): 
 	-$(call PKG_SEARCH_INSTALL,$@)
 
-base-extra: ${DEV_TOOLS_EXTRA}
+$(BASE_DEV):
+	$(call PKG_SEARCH_INSTALL,$@)
+
+$(EXTRA_DEV):
+	-$(call PKG_SEARCH_INSTALL,$@)
 
 # Memcached or libmemcached
 memcached-build: memcached

@@ -11,13 +11,14 @@ PKG_UPDATE:= apt-get update --yes 2>&1 > /dev/null
 PKG_UPGRADE:= apt-get upgrade --yes 2>&1 > /dev/null
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (apt-file search --package-only --fixed-string $(1) | sudo xargs $(PKG_INSTALLER))
 
-PIP= pip --quiet install
+PIP= pip
+PIP_INSTALL= $(PIP) install --quiet
 
 VPATH = /usr/bin:/usr/local/bin
 
-PREP+= apt-file
+BASE_LOCAL+= apt-file
 
-prep-local: | pkg_update pip
+prep-local:
 	-$(PKG_INSTALLER) python-software-properties
 
 .PHONY: pkg_update
@@ -32,41 +33,39 @@ pkg_update:
 	@apt-file update 2>&1 > /dev/null
 	@apt-get autoremove -y
 
+BASE_DEV_HOOK+= $(DAEMONS)
 DAEMONS:= memcached apache2 vsftpd
 .PHONY: $(DAEMONS)
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
 
-DEV_TOOLS_LOCAL+= mingw
-DEV_TOOLS_LOCAL+= protobuf-bundle
-DEV_TOOLS_LOCAL+= protobuf-compiler
-
-$(DEV_TOOLS_REQUIRED): 
-	$(PKG_INSTALLER) $(@F)
+BASE_DEV_LOCAL+= mingw
+BASE_DEV_LOCAL+= protobuf-bundle
+BASE_DEV_LOCAL+= protobuf-compiler
 
 sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
 	-$(PIP) sphinxcontrib-googleanalytics
 
-DEV_TOOLS_LOCAL+= build_essential
+BASE_DEV_LOCAL+= build_essential
 build_essential: /usr/bin/c++
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
 	-$(PKG_INSTALLER) cloog-ppl
 
-DEV_TOOLS_LOCAL+= mingw
+BASE_DEV_LOCAL+= mingw
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
 
 ssh-import-id:
 	$(PKG_INSTALLER) ssh-import-id || $(PIP) ssh-import-id
 
-DEV_TOOLS_LOCAL+= /usr/sbin/mysqld
+BASE_DEV_LOCAL+= /usr/sbin/mysqld
 /usr/sbin/mysqld:
 	$(PKG_INSTALLER) mysql-server
 
-DEV_TOOLS_LOCAL+= /usr/sbin/rabbitmq-server
+BASE_DEV_LOCAL+= /usr/sbin/rabbitmq-server
 /usr/sbin/rabbitmq-server:
 	$(PKG_INSTALLER) rabbitmq-server
 
@@ -75,20 +74,20 @@ jenkins-slave:
 	$(PKG_INSTALLER) default-jdk default-jre default-jre-headless
 	$(PKG_INSTALLER) maven
 
-DEV_TOOLS_REQUIRED+= $(LIBRARIES)
+BASE_DEV_HOOK+= $(LIBRARIES)
 LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid libssl
 
 $(LIBRARIES):
 	$(PKG_INSTALLER) $@-dev
 
-DEV_TOOLS_LOCAL+= $(CLANG)
+BASE_DEV_LOCAL+= $(CLANG)
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 .PHONY: clang-bundle
 clang-bundle: $(CLANG)
 $(CLANG):
 	-$(PKG_INSTALLER) $(@F)
 
-DEV_TOOLS_LOCAL+= $(PROTOBUF)
+BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= libprotobuf-dev protobuf-compiler
 
 # Update automatically
