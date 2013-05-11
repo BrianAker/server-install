@@ -49,10 +49,12 @@ allow_users:
 	@echo "USER: $(CREATE_USER) : ${SSHD_ALLOWUSER_CHECK}"
 ifdef CREATE_USER
 ifeq (${SSHD_ALLOWUSER_CHECK},1)
-	@touch $(TEMP_ALLOW_USER)
-	@echo "AllowUsers $(CREATE_USER)" > $(TEMP_ALLOW_USER)
-	@cat $(TEMP_ALLOW_USER) >> /etc/ssh/sshd_config
-	@rm $(TEMP_ALLOW_USER)
+  	echo "USER: $(CREATE_USER)"
+	touch $(TEMP_ALLOW_USER)
+	echo "AllowUsers $(CREATE_USER)" > $(TEMP_ALLOW_USER)
+	cat $(TEMP_ALLOW_USER)
+	cat $(TEMP_ALLOW_USER) >> /etc/ssh/sshd_config
+	rm $(TEMP_ALLOW_USER)
 endif
 endif
 
