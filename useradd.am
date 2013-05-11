@@ -8,6 +8,8 @@ ETC_SUDO_USER_CHECK = $(shell test -f /etc/sudoers.d/$(CREATE_USER) > /dev/null 
 USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
 SSH_IMPORT_ID := ssh-import-id
+TEMP_ALLOW_USER := $(shell mktemp -u)
+TEMP_SUDO := $(shell mktemp -u)
 
 .PHONY: user admin-user useradd import_ssh_keys sudo-priv allow_users
 
@@ -47,10 +49,10 @@ allow_users:
 	@echo "USER: $(CREATE_USER) : ${SSHD_ALLOWUSER_CHECK}"
 ifdef CREATE_USER
 ifeq (${SSHD_ALLOWUSER_CHECK},1)
-	@touch /tmp/adduser-include
-	@echo "AllowUsers $(CREATE_USER)" > /tmp/adduser-include
-	@cat /tmp/adduser-include  >> /etc/ssh/sshd_config
-	@rm /tmp/adduser-include
+	@touch $(TEMP_ALLOW_USER)
+	@echo "AllowUsers $(CREATE_USER)" > $(TEMP_ALLOW_USER)
+	@cat $(TEMP_ALLOW_USER) >> /etc/ssh/sshd_config
+	@rm $(TEMP_ALLOW_USER)
 endif
 endif
 
@@ -69,11 +71,11 @@ endif
 sudo-priv: /etc/sudoers.d
 ifdef CREATE_USER
 ifeq (${ETC_SUDO_USER_CHECK},1)
-	touch /tmp/$(CREATE_USER)
-	@echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> /tmp/$(CREATE_USER)
-	@chown root.root /tmp/$(CREATE_USER)
-	@chmod 0440 /tmp/$(CREATE_USER)
-	@mv /tmp/$(CREATE_USER) /etc/sudoers.d/$(CREATE_USER)
+	@touch $(TEMP_SUDO)
+	@echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> $(TEMP_SUDO)
+	@chown root.root $(TEMP_SUDO)
+	@chmod 0440 $(TEMP_SUDO)
+	@mv $(TEMP_SUDO) /etc/sudoers.d/$(CREATE_USER)
 	# Add the user to other groups
 	-${USERMOD} -G sudo $(CREATE_USER)
 	-${USERMOD} -G wheel $(CREATE_USER)
