@@ -4,8 +4,8 @@ function set_wheel_or_sudo()
 {
   local create_user=$1
 
-  local user_exists="$(id $create_user)"
-  if [[ "$user_exists" == "1" ]]; then
+  id "$create_user"
+  if [ $? -eq 0 ]; then
     egrep "^sudo:" /etc/group
     if [ $? -eq 0 ]; then
       eval "usermod -G sudo $create_user"
@@ -26,8 +26,8 @@ function append_sshd_config()
 {
   local create_user=$1
 
-  local user_exists="$(id $create_user)"
-  if [[ "$user_exists" == "1" ]]; then
+  id "$create_user"
+  if [ $? -eq 0 ]; then
     local sshd_file=''
     if [[ -f "/etc/ssh/sshd_config" ]]; then
       sshd_file="/etc/ssh/sshd_config"
@@ -35,17 +35,19 @@ function append_sshd_config()
       sshd_file="/etc/sshd_config"
     fi
 
-    local sshd_allowuser_check="$(grep -c $create_user $sshd_file)"
+    egrep -c $create_user $sshd_file
+    local sshd_allowuser_check=$?
 
     echo "USER:$create_user $sshd_allowuser_check"
 
-    if [[ "$sshd_allowuser_check" == "0" ]]; then
+    if [ $sshd_allowuser_check -eq 0 ]; then
       echo "\nAllowUsers $create_user" >> "$sshd_file"
     fi
 
-    sshd_allowuser_check="$(grep -c $create_user $sshd_file)"
+    egrep -c $create_user $sshd_file
+    sshd_allowuser_check=$?
 
-    if [[ "$sshd_allowuser_check" != "1" ]]; then
+    if [ $sshd_allowuser_check -eq 0 ]; then
       cat "$sshd_file"
       return 1
     fi
