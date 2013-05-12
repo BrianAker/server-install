@@ -43,13 +43,14 @@ function append_sshd_config()
       return 1
     fi
 
-    egrep -c $create_user $sshd_file > /dev/null 2>&1
+    echo "egrep -c $create_user $sshd_file"
+    egrep -c "^AllowUsers $create_user" $sshd_file > /dev/null
     local sshd_allowuser_check=$?
 
     echo "USER:$create_user $sshd_allowuser_check"
 
     if [ $sshd_allowuser_check -eq 1 ]; then
-      echo "\nAllowUsers $create_user" >> "$sshd_file"
+      eval "printf \"\nAllowUsers $create_user\" >> $sshd_file"
       if [ $? -eq 0 ]; then
         return 1
       fi
