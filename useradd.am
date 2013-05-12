@@ -1,6 +1,5 @@
 # vim:ft=automake
 #
-CREATE_USER :=
 OBJDIR := /etc/sudoers.d
 USER_EXISTS = $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 ETC_SUDO_USER_CHECK = $(shell test -f /etc/sudoers.d/$(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
@@ -14,8 +13,6 @@ TEMP_SUDO := $(shell mktemp -u /tmp/$(CREATE_USER).XXXXXX)
 
 user: | useradd import_ssh_keys allow_users
 
-ping-user: | useradd import_ssh_keys allow_users
-
 admin-user: | useradd import_ssh_keys sudo-priv allow_users
 
 daemon-user:
@@ -23,15 +20,6 @@ ifdef CREATE_USER
 ifneq (${USER_EXISTS},0)
 	@mkdir -p /var/$(CREATE_USER)
 	@${USERADD} --shell=/sbin/nologin --home /var/$(CREATE_USER)  $(CREATE_USER)
-	@chown -R ${CREATE_USER}.${CREATE_USER} /var/$(CREATE_USER)
-endif
-endif
-
-ping-user:
-ifdef CREATE_USER
-ifneq (${USER_EXISTS},0)
-	@mkdir -p /var/$(CREATE_USER)
-	@${USERADD} --shell=/usr/bin/true --home /var/$(CREATE_USER)  $(CREATE_USER)
 	@chown -R ${CREATE_USER}.${CREATE_USER} /var/$(CREATE_USER)
 endif
 endif
@@ -45,7 +33,7 @@ endif
 endif
 
 allow_users:
-	source append_sshd_config.sh; append_sshd_config $(CREATE_USER)
+	bash -c "source append_sshd_config.sh; append_sshd_config $(CREATE_USER)"
 
 import_ssh_keys: ssh-import-id
 ifdef CREATE_USER

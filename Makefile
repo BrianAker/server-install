@@ -38,7 +38,6 @@ install-jenkins-slave: install ci-server-update
 	@echo "JENKINS SLAVE"
 	$(MAKE) base_jenkins_slave
 	$(MAKE) tangentci
-	$(MAKE) ping-user
 	$(MAKE) lazlo
 	$(MAKE) secure-host
 	@cat /etc/ssh/sshd_config
