@@ -51,9 +51,9 @@ function append_sshd_config()
 
     if [ $sshd_allowuser_check -eq 1 ]; then
       local TMPOUT="$(mktemp)"
-      eval "printf \"\nAllowUsers $create_user\" > $TMPOUT"
+      eval "printf \"\nAllowUsers $create_user\n\" > $TMPOUT"
       eval "cat $TMPOUT >> $sshd_file"
-      if [ $? -eq 0 ]; then
+      if [ $? -ne 0 ]; then
         echo "Error occurred while trying to append to $sshd_file"
         return 1
       fi
