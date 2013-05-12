@@ -54,6 +54,8 @@ build_essential: /usr/bin/c++
 	$(PKG_INSTALLER) devscripts
 	-$(PKG_INSTALLER) cloog-ppl
 
+EXTRA_DEV_LOCAL+= libcloog-ppl0
+
 BASE_DEV_LOCAL+= mingw
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
