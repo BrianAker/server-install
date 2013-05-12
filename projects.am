@@ -25,9 +25,10 @@ BASE_LOCAL:=
 BASE:=
 BASE+= curl
 BASE+= git
+BASE+= gpg
 BASE+= make
 BASE+= perl
-BASE+= gpg
+BASE+= tar
 BASE+= wget
 ifneq (${OSX_RELEASE},0)
 BASE+= lsb_release
