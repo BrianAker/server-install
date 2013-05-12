@@ -52,6 +52,7 @@ function append_sshd_config()
     if [ $sshd_allowuser_check -eq 1 ]; then
       eval "printf \"\nAllowUsers $create_user\" >> $sshd_file"
       if [ $? -eq 0 ]; then
+        echo "Error occurred while trying to append to $sshd_file"
         return 1
       fi
     fi
