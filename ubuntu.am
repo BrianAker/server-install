@@ -55,6 +55,8 @@ build_essential: /usr/bin/c++
 	-$(PKG_INSTALLER) cloog-ppl
 
 EXTRA_DEV_LOCAL+= libcloog-ppl0
+EXTRA_DEV_LOCAL+= mysql-server*
+EXTRA_DEV_LOCAL+= mysql-client*
 
 BASE_DEV_LOCAL+= mingw
 .PHONY: mingw
