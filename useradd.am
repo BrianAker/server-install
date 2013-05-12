@@ -2,18 +2,15 @@
 #
 OBJDIR := /etc/sudoers.d
 USER_EXISTS = $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
-ETC_SUDO_USER_CHECK = $(shell test -f /etc/sudoers.d/$(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
-USERMOD := /usr/sbin/usermod
 USERADD := /usr/sbin/useradd
 SSH_IMPORT_ID := ssh-import-id
-TEMP_ALLOW_USER := $(shell mktemp -u /tmp/$(CREATE_USER).XXXXXX)
 TEMP_SUDO := $(shell mktemp -u /tmp/$(CREATE_USER).XXXXXX)
 
-.PHONY: user admin-user useradd import_ssh_keys sudo-priv allow_users
+.PHONY: user admin-user useradd import_ssh_keys allow_users
 
 user: | useradd import_ssh_keys allow_users
 
-admin-user: | useradd import_ssh_keys sudo-priv allow_users
+admin-user: | useradd import_ssh_keys allow_users /etc/sudoers.d/$(CREATE_USER)
 
 daemon-user:
 ifdef CREATE_USER
@@ -33,7 +30,7 @@ endif
 endif
 
 allow_users:
-	bash -c "source append_sshd_config.sh; append_sshd_config $(CREATE_USER)"
+	bash -c "source functions.sh; append_sshd_config $(CREATE_USER)"
 
 import_ssh_keys: ssh-import-id
 ifdef CREATE_USER
@@ -47,16 +44,13 @@ endif
 /etc/sudoers.d:
 	mkdir -p -m 0750 /etc/sudoers.d
 
-sudo-priv: /etc/sudoers.d
+/etc/sudoers.d/$(CREATE_USER): /etc/sudoers.d
 ifdef CREATE_USER
-ifeq (${ETC_SUDO_USER_CHECK},1)
 	@touch $(TEMP_SUDO)
 	@echo "$(CREATE_USER)    ALL = NOPASSWD: ALL" >> $(TEMP_SUDO)
 	@chown root.root $(TEMP_SUDO)
 	@chmod 0440 $(TEMP_SUDO)
 	@mv $(TEMP_SUDO) /etc/sudoers.d/$(CREATE_USER)
 	# Add the user to other groups
-	-${USERMOD} -G sudo $(CREATE_USER)
-	-${USERMOD} -G wheel $(CREATE_USER)
-endif
+	bash -c "source functions.sh; set_wheel_or_sudo $(CREATE_USER)"
 endif
