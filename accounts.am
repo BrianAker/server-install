@@ -95,6 +95,7 @@ tcp-wrappers:
 	sh -c "echo sshd:gorf.tangent.org >> /etc/hosts.allow"
 	sh -c "echo sshd:jump.tangent.org >> /etc/hosts.allow"
 	sh -c "echo sshd:10.0.2.17 >> /etc/hosts.allow"
+	sh -c "echo ALL:localhost >> /etc/hosts.allow"
 	sh -c "echo ALL:ALL >> /etc/hosts.deny"
 
 secure-host: secure sudoers-inc tcp-wrappers
