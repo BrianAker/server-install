@@ -53,8 +53,8 @@ BASE_DEV+= bison
 BASE_DEV+= c++
 BASE_DEV+= cc
 BASE_DEV+= cpp
-BASE_DEV+= libtool
 endif
+BASE_DEV+= libtool
 
 EXTRA_DEV_HOOK:=
 EXTRA_DEV_LOCAL:=
