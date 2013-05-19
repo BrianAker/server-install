@@ -10,10 +10,11 @@ include $(srcdir)jenkins.am
 include $(srcdir)fedora-bind.am
 
 YUM:= yum -y --quiet
-PKG_INSTALLER:= $(YUM) install
-PKG_UPDATE:= $(YUM) update
-PKG_UPGRADE:= $(YUM) upgrade
-PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || ($(YUM) whatprovides $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
+PKG_CACHE:= $(YUM) makecache
+PKG_INSTALLER:= $(YUM) --cacheonly install
+PKG_PROVIDES:= $(YUM) --cacheonly whatprovides
+PKG_UPGRADE:= $(YUM) --cacheonly upgrade
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || ($(PKG_PROVIDES) $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
 PIP= python-pip
 PIP_INSTALL= $(PIP) install --quiet
 
@@ -25,10 +26,14 @@ else
   MINGW_EXTRA:=
 endif
 
+stamp-h1:
+	@touch stamp-h1
+
 .PHONY: pkg_update
 pkg_update: $(PIP)
-	$(PKG_UPDATE)
+	$(PKG_CACHE)
 	$(PKG_UPGRADE)
+	$(MAKE) stamp-h1
 
 EXTRA_HOOK+= nbd-server
 nbd-server:

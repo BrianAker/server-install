@@ -60,9 +60,9 @@ $(BREW):
 
 $(PYTHON):
 	$(PKG_SEARCH_INSTALL) python
+	$(BREW) link python
 
-$(EASY_INSTALL):
-	$(PKG_SEARCH_INSTALL) python
+$(EASY_INSTALL): python
 
 BASE_DEV_HOOK+= /Users/brian/Applications/MacVim.app
 /Users/brian/Applications/MacVim.app: /Users/brian/Applications
