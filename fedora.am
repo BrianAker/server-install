@@ -81,6 +81,7 @@ EXTRA_HOOK+= /etc/yum/pluginconf.d/remove-with-leaves.conf
 #yum-plugin-auto-update-debug-info
 EXTRA_HOOK+= /etc/yum/pluginconf.d/auto-update-debuginfo.conf
 
+EXTRA_LOCAL+= MySQL-python
 EXTRA_LOCAL+= python-memcached
 
 # Keep yum updated
