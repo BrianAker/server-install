@@ -11,9 +11,9 @@ include $(srcdir)fedora-bind.am
 
 YUM:= yum -y --quiet
 PKG_CACHE:= $(YUM) makecache
-PKG_INSTALLER:= $(YUM) --cacheonly install
-PKG_PROVIDES:= $(YUM) --cacheonly whatprovides
-PKG_UPGRADE:= $(YUM) --cacheonly upgrade
+PKG_INSTALLER:= $(YUM) install
+PKG_PROVIDES:= $(YUM) whatprovides
+PKG_UPGRADE:= $(YUM) upgrade
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || ($(PKG_PROVIDES) $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
 PIP= python-pip
 PIP_INSTALL= $(PIP) install --quiet
@@ -70,9 +70,18 @@ $(DAEMONS):
 prep-local:
 	-@$(YUM) groupupdate 'Development Tools'
 
-EXTRA_LOCAL+= yum-plugin-ps
-EXTRA_LOCAL+= yum-plugin-remove-with-leaves
-EXTRA_LOCAL+= yum-plugin-auto-update-debug-info
+/etc/yum/pluginconf.d/ps.conf:
+
+#yum-plugin-ps
+EXTRA_HOOK+= /etc/yum/pluginconf.d/ps.conf
+
+#yum-plugin-remove-with-leaves
+EXTRA_HOOK+= /etc/yum/pluginconf.d/remove-with-leaves.conf
+
+#yum-plugin-auto-update-debug-info
+EXTRA_HOOK+= /etc/yum/pluginconf.d/auto-update-debuginfo.conf
+
+EXTRA_LOCAL+= python-memcached
 
 # Keep yum updated
 .PHONY: yum-cron
