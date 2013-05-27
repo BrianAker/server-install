@@ -75,9 +75,6 @@ prep-local:
 #yum-plugin-ps
 EXTRA_HOOK+= /etc/yum/pluginconf.d/ps.conf
 
-#yum-plugin-remove-with-leaves
-EXTRA_HOOK+= /etc/yum/pluginconf.d/remove-with-leaves.conf
-
 #yum-plugin-auto-update-debug-info
 EXTRA_HOOK+= /etc/yum/pluginconf.d/auto-update-debuginfo.conf
 

@@ -55,6 +55,7 @@ BASE_DEV+= cc
 BASE_DEV+= cpp
 endif
 BASE_DEV+= libtool
+BASE_DEV+= cpanm
 
 EXTRA_DEV_HOOK:=
 EXTRA_DEV_LOCAL:=
