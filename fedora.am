@@ -70,14 +70,6 @@ $(DAEMONS):
 prep-local:
 	-@$(YUM) groupupdate 'Development Tools'
 
-/etc/yum/pluginconf.d/ps.conf:
-
-#yum-plugin-ps
-EXTRA_HOOK+= /etc/yum/pluginconf.d/ps.conf
-
-#yum-plugin-auto-update-debug-info
-EXTRA_HOOK+= /etc/yum/pluginconf.d/auto-update-debuginfo.conf
-
 EXTRA_LOCAL+= MySQL-python
 EXTRA_LOCAL+= python-memcached
 
