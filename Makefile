@@ -10,8 +10,6 @@ PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 BASE_INSTALL_PATH= /usr/
 
 srcdir= $(shell pwd)/
-MACADDR= $(shell sh -c "/sbin/ifconfig  | grep 'ether ' | awk '{ print $2 }'")
-IPADDRESS:= $(shell /sbin/ifconfig  | grep 'inet ' | grep -v 127.0.0.1 | awk '{ print $$2 }' | head -1)
 HOSTNAME:= `hostname`
 HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
@@ -55,8 +53,6 @@ show:
 	@echo "HOSTNAME ${HOSTNAME}"
 	@echo "HOST_TYPE ${HOST_TYPE}"
 	@echo "HOST_UUID ${HOST_UUID}"
-	@echo "IPADDRESS ${IPADDRESS}"
-	@echo "MACADDR ${MACADDR}"
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"
 
 deploy:
