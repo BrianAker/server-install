@@ -45,7 +45,7 @@ BASE_DEV_LOCAL+= protobuf-compiler
 
 sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
-	-$(PIP) sphinxcontrib-googleanalytics
+	-$(PIP_INSTALL) sphinxcontrib-googleanalytics
 
 BASE_DEV_LOCAL+= build_essential
 build_essential: /usr/bin/c++
@@ -65,7 +65,7 @@ BASE_DEV_LOCAL+= mingw
 	$(PKG_INSTALLER) .*mingw-w64*
 
 ssh-import-id:
-	$(PKG_INSTALLER) ssh-import-id || $(PIP) ssh-import-id
+	$(PKG_INSTALLER) ssh-import-id || $(PIP_INSTALL) ssh-import-id
 
 BASE_DEV_LOCAL+= /usr/sbin/mysqld
 /usr/sbin/mysqld:
