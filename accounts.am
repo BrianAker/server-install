@@ -10,7 +10,7 @@ brian:
 	$(MAKE) CREATE_USER=brian CREATE_USER_SSH_KEY_URL=brianaker admin-user
 
 yazz: 
-	$(MAKE) CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7EEentropyworks/+sshkeys admin-user
+	$(MAKE) CREATE_USER=yazz CREATE_USER_SSH_KEY_URL=entropyworks admin-user
 
 linuxjedi: 
 	$(MAKE) CREATE_USER=linuxjedi CREATE_USER_SSH_KEY_URL=https://launchpad.net/%7Elinuxjedi/+sshkeys admin-user
