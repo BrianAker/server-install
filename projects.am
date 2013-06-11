@@ -131,9 +131,11 @@ drizzle-build: libdrizzle-build libraries
 # Libdrizzle
 libdrizzle-build: mysqld
 
-ci-server-update: /etc/cron.d/server-update
+ifneq (${OSX_RELEASE},0)
+BASE_HOOK+= /etc/cron.d/server-update
 /etc/cron.d/server-update:
 	@cp etc/cron.d/server-update /etc/cron.d/server-update
+endif
 
 .NOTPARALLEL:
 
