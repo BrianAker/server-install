@@ -33,7 +33,7 @@ check:
 	$(foreach each_makefile,$(DIST_MAKEFILES),$(MAKE) --warn-undefined-variables --dry-run $(each_makefile);)
 	$(foreach each_file,$(ALL_SCRIPTS),bash -e -n $(each_file);)
 
-install-jenkins-slave: install ci-server-update
+install-jenkins-slave: install
 	@echo "JENKINS SLAVE"
 	$(MAKE) base_jenkins_slave
 	$(MAKE) tangentci
