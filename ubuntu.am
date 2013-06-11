@@ -24,7 +24,6 @@ prep-local:
 .PHONY: pkg_update
 pkg_update:
 	-@apt-get clean
-	-@apt-get --purge -y remove byobu
 	@$(PKG_UPDATE)
 	@$(PKG_UPGRADE)
 	@$(PKG_UPDATE)
@@ -86,8 +85,11 @@ jenkins-slave:
 BASE_DEV_HOOK+= $(LIBRARIES)
 LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid libssl
 
+
 $(LIBRARIES):
 	$(PKG_INSTALLER) $@-dev
+
+BASE_DEV_LOCAL+=libevent-extra
 
 BASE_DEV_LOCAL+= $(CLANG)
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
