@@ -37,6 +37,7 @@ endif
 EXTRA_HOOK:=
 EXTRA_LOCAL:=
 EXTRA:=
+EXTRA+= ntpdate
 
 BASE_DEV_HOOK:=
 BASE_DEV_LOCAL:=

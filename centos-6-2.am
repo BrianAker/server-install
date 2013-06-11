@@ -93,13 +93,6 @@ libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	-$(PKG_INSTALLER) $@ $@-devel
 
-# Set time
-.PHONY: time
-time:
-	-$(PKG_INSTALLER) ntpdate
-	-$(PKG_INSTALLER) ntp
-	ntpdate time.apple.com
-
 /usr/bin/rpmbuild:
 	-$(PKG_INSTALLER) rpm-build
 

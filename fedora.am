@@ -145,12 +145,11 @@ libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	-$(PKG_INSTALLER) $@ $@-devel
 
-# Set time
-.PHONY: time
-time:
-	-$(PKG_INSTALLER) ntpdate
-	-$(PKG_INSTALLER) ntp
-	ntpdate time.apple.com
+# Keeping clocks accurate is a good thing
+BASE_DEV_HOOK+= ntpdate-keep-sync
+.PHONY: ntpdate-keep-sync
+ntpdate-keep-sync: ntpdate
+	systemctl enable ntpdate.service
 
 /usr/bin/rpmbuild:
 	-$(PKG_INSTALLER) rpm-build

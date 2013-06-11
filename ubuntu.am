@@ -103,11 +103,6 @@ update:
 	$(PKG_INSTALLER) unattended-upgrades
 	dpkg-reconfigure -plow unattended-upgrades
 
-.PHONY: time
-time:
-	-$(PKG_INSTALLER) ntp ntpdate
-	#ntpdate time.apple.com
-
 post:
 	apt-get autoremove --yes
 

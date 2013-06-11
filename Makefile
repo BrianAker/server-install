@@ -23,6 +23,7 @@ USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 DIST_MAKEFILES := ubuntu.am fedora.am rhel.am freebsd.am osx.am
 
 include $(srcdir)dist.mk
+include $(srcdir)misc.mk
 
 .PHONY: all show check install base_install deploy
 
