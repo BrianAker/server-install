@@ -60,6 +60,9 @@ EXTRA_DEV_LOCAL+= libcloog-ppl0
 EXTRA_DEV_LOCAL+= mysql-server*
 EXTRA_DEV_LOCAL+= mysql-client*
 
+# Keep the clocks running
+EXTRA_DEV_LOCAL+= ntp
+
 BASE_DEV_LOCAL+= mingw
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
