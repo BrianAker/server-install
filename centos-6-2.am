@@ -43,9 +43,6 @@ $(DAEMONS):
 	chkconfig $@ on
 	service $@ start
 
-$(BASE_LOCAL): 
-	-$(PKG_INSTALLER) $(@F)
-
 .PHONY: prep
 prep: | $(PREP) pkg_update python-pip
 	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
@@ -135,3 +132,5 @@ python-pip: /usr/bin/pip
 
 ssh-import-id:
 	$(PIP)  ssh-import-id
+
+include $(srcdir)local.am

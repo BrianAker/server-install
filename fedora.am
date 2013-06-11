@@ -48,6 +48,7 @@ install-mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
 /usr/libexec/mysqld:
 	$(PKG_INSTALLER) mysql-server
 
+BASE_LOCAL+= ntp
 BASE_DEV_LOCAL+= mysql
 
 BASE_DEV_HOOK+= /usr/share/mysql
@@ -146,10 +147,11 @@ $(LIBRARIES):
 	-$(PKG_INSTALLER) $@ $@-devel
 
 # Keeping clocks accurate is a good thing
-BASE_DEV_HOOK+= ntpdate-keep-sync
-.PHONY: ntpdate-keep-sync
-ntpdate-keep-sync: ntpdate
-	systemctl enable ntpdate.service
+BASE_DEV_HOOK+= ntpd-keep-sync
+.PHONY: ntpd-keep-sync
+ntpd-keep-sync: ntp
+	systemctl enable ntpd.service
+	systemctl start ntpd.service
 
 /usr/bin/rpmbuild:
 	-$(PKG_INSTALLER) rpm-build
