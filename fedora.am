@@ -71,8 +71,8 @@ $(DAEMONS):
 prep-local:
 	-@$(YUM) groupupdate 'Development Tools'
 
-EXTRA_LOCAL+= MySQL-python
-EXTRA_LOCAL+= python-memcached
+EXTRA_HOOK+= MySQL-python
+EXTRA_HOOK+= python-memcached
 
 EXTRA_HOOK+= yum-cron
 
@@ -108,7 +108,7 @@ compiler-other: mingw-bundle clang-bundle protobuf-bundle
 .PHONY: jenkins-slave
 jenkins-slave: /usr/bin/java
 
-BASE_DEV_HOOK+=sphinx-build
+BASE_DEV_HOOK+= sphinx-build
 sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
 	-$(PIP_INSTALL) sphinxcontrib-googleanalytics
@@ -117,7 +117,7 @@ sphinx-build:
 BASE_DEV_HOOK+= rpmbuild
 
 BASE_DEV_HOOK+= compiler-other 
-BASE_DEV_HOOK+= /bin/firewall-cmd
+EXTRA_LOCAL+= /bin/firewall-cmd
 
 /bin/firewall-cmd:
 	-@$(PKG_INSTALLER) firewalld
@@ -130,8 +130,8 @@ dokuwiki: /usr/share/dokuwiki
 	-@$(PKG_INSTALLER) dokuwiki dokuwiki-selinux
 	sh -c "echo httpd:ALL >> /etc/hosts.allow"
 
-BASE_DEV_LOCAL+= $(CLANG)
-BASE_DEV_LOCAL+= $(PROTOBUF)
+BASE_DEV_HOOK+= $(CLANG)
+BASE_DEV_HOOK+= $(PROTOBUF)
 
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 

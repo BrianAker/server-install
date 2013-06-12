@@ -38,42 +38,38 @@ DAEMONS:= memcached apache2 vsftpd
 $(DAEMONS):
 	-$(PKG_INSTALLER) $@
 
-BASE_DEV_LOCAL+= mingw
-BASE_DEV_LOCAL+= protobuf-bundle
-BASE_DEV_LOCAL+= protobuf-compiler
-
 sphinx-build:
 	$(PKG_INSTALLER) python-sphinx
 	-$(PIP_INSTALL) sphinxcontrib-googleanalytics
 
-BASE_DEV_LOCAL+= build_essential
+BASE_DEV_HOOK+= build_essential
 build_essential: /usr/bin/c++
 	$(PKG_INSTALLER) build-essential
 	$(PKG_INSTALLER) git-core
 	$(PKG_INSTALLER) devscripts
 	-$(PKG_INSTALLER) cloog-ppl
 
-EXTRA_DEV_LOCAL+= python-mysqldb
-EXTRA_DEV_LOCAL+= python-memcache
-EXTRA_DEV_LOCAL+= libcloog-ppl0
-EXTRA_DEV_LOCAL+= mysql-server*
-EXTRA_DEV_LOCAL+= mysql-client*
+EXTRA_DEV_HOOK+= python-mysqldb
+EXTRA_DEV_HOOK+= python-memcache
+EXTRA_DEV_HOOK+= libcloog-ppl0
+EXTRA_DEV_HOOK+= mysql-server*
+EXTRA_DEV_HOOK+= mysql-client*
 
 # Keep the clocks running
 EXTRA_DEV_LOCAL+= ntp
 
-BASE_DEV_LOCAL+= mingw
+BASE_DEV_HOOK+= mingw
 .PHONY: mingw
 	$(PKG_INSTALLER) .*mingw-w64*
 
 ssh-import-id:
 	$(PKG_INSTALLER) ssh-import-id || $(PIP_INSTALL) ssh-import-id
 
-BASE_DEV_LOCAL+= /usr/sbin/mysqld
+BASE_DEV_HOOK+= /usr/sbin/mysqld
 /usr/sbin/mysqld:
 	$(PKG_INSTALLER) mysql-server
 
-BASE_DEV_LOCAL+= /usr/sbin/rabbitmq-server
+BASE_DEV_HOOK+= /usr/sbin/rabbitmq-server
 /usr/sbin/rabbitmq-server:
 	$(PKG_INSTALLER) rabbitmq-server
 
@@ -89,16 +85,16 @@ LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline
 $(LIBRARIES):
 	$(PKG_INSTALLER) $@-dev
 
-BASE_DEV_LOCAL+=libevent-extra
+BASE_DEV_HOOK+=libevent-dev
 
-BASE_DEV_LOCAL+= $(CLANG)
+BASE_DEV_HOOK+= $(CLANG)
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
 .PHONY: clang-bundle
 clang-bundle: $(CLANG)
 $(CLANG):
 	-$(PKG_INSTALLER) $(@F)
 
-BASE_DEV_LOCAL+= $(PROTOBUF)
+BASE_DEV_HOOK+= $(PROTOBUF)
 PROTOBUF:= libprotobuf-dev protobuf-compiler
 
 # Update automatically
