@@ -49,11 +49,11 @@ build_essential: /usr/bin/c++
 	$(PKG_INSTALLER) devscripts
 	-$(PKG_INSTALLER) cloog-ppl
 
-EXTRA_DEV_HOOK+= python-mysqldb
-EXTRA_DEV_HOOK+= python-memcache
-EXTRA_DEV_HOOK+= libcloog-ppl0
-EXTRA_DEV_HOOK+= mysql-server*
-EXTRA_DEV_HOOK+= mysql-client*
+EXTRA_DEV_LOCAL+= python-mysqldb
+EXTRA_DEV_LOCAL+= python-memcache
+EXTRA_DEV_LOCAL+= libcloog-ppl0
+EXTRA_DEV_LOCAL+= mysql-server*
+EXTRA_DEV_LOCAL+= mysql-client*
 
 # Keep the clocks running
 EXTRA_DEV_LOCAL+= ntp
@@ -80,12 +80,8 @@ jenkins-slave:
 
 BASE_DEV_HOOK+= $(LIBRARIES)
 LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid libssl
-
-
 $(LIBRARIES):
 	$(PKG_INSTALLER) $@-dev
-
-BASE_DEV_HOOK+=libevent-dev
 
 BASE_DEV_HOOK+= $(CLANG)
 CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
@@ -94,7 +90,7 @@ clang-bundle: $(CLANG)
 $(CLANG):
 	-$(PKG_INSTALLER) $(@F)
 
-BASE_DEV_HOOK+= $(PROTOBUF)
+BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= libprotobuf-dev protobuf-compiler
 
 # Update automatically

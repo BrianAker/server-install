@@ -71,12 +71,11 @@ $(DAEMONS):
 prep-local:
 	-@$(YUM) groupupdate 'Development Tools'
 
-EXTRA_HOOK+= MySQL-python
-EXTRA_HOOK+= python-memcached
-
-EXTRA_HOOK+= yum-cron
+EXTRA_LOCAL+= MySQL-python
+EXTRA_LOCAL+= python-memcached
 
 # Keep yum updated
+EXTRA_HOOK+= yum-cron
 .PHONY: yum-cron
 yum-cron:
 	-$(PKG_INSTALLER) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
@@ -102,6 +101,7 @@ updatesd:
 	sed -i -e's/do_download_deps = no/do_download_deps = yes/' /etc/yum/yum-updatesd.conf
 	service yum-updatesd restart
 
+BASE_DEV_HOOK+= compiler-other 
 .PHONY: compiler-other
 compiler-other: mingw-bundle clang-bundle protobuf-bundle
 
@@ -114,9 +114,8 @@ sphinx-build:
 	-$(PIP_INSTALL) sphinxcontrib-googleanalytics
 
 #Basic build tools
-BASE_DEV_HOOK+= rpmbuild
+BASE_DEV_LOCAL+= rpmbuild
 
-BASE_DEV_HOOK+= compiler-other 
 EXTRA_LOCAL+= /bin/firewall-cmd
 
 /bin/firewall-cmd:
@@ -130,11 +129,10 @@ dokuwiki: /usr/share/dokuwiki
 	-@$(PKG_INSTALLER) dokuwiki dokuwiki-selinux
 	sh -c "echo httpd:ALL >> /etc/hosts.allow"
 
-BASE_DEV_HOOK+= $(CLANG)
-BASE_DEV_HOOK+= $(PROTOBUF)
+BASE_DEV_LOCAL+= $(CLANG)
+CLANG:= clang-devel clang-analyzer llvm-devel llvm-libs llvm
 
-CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
-
+BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 
 java:
@@ -142,9 +140,7 @@ java:
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
 
 BASE_DEV_HOOK+= libraries
-
 LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl libaio cyrus-sasl
-
 libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	-$(PKG_INSTALLER) $@ $@-devel
