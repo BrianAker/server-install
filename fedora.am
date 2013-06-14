@@ -116,8 +116,7 @@ sphinx-build:
 #Basic build tools
 BASE_DEV_LOCAL+= rpmbuild
 
-EXTRA_LOCAL+= /bin/firewall-cmd
-
+EXTRA_HOOK+= /bin/firewall-cmd
 /bin/firewall-cmd:
 	-@$(PKG_INSTALLER) firewalld
 	systemctl enable firewalld.service
