@@ -68,7 +68,6 @@ EXTRA_DEV_HOOK:=
 EXTRA_DEV_LOCAL:=
 EXTRA_DEV:=
 EXTRA_DEV+= cmake 
-EXTRA_DEV+= cppcheck 
 EXTRA_DEV+= doxygen 
 EXTRA_DEV+= gdb 
 EXTRA_DEV+= gperf 
@@ -82,6 +81,7 @@ EXTRA_DEV+= valgrind
 
 ifeq (${CENTOS_RELEASE},0)
 ifeq (${RHEL_RELEASE},0)
+EXTRA_DEV+= cppcheck 
 EXTRA_DEV+= lcov 
 endif
 endif
