@@ -8,7 +8,8 @@ PKG_INSTALLER:= yum install -y
 PKG_UPDATE:= yum update -y
 PKG_UPGRADE:= yum upgrade -y
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q *bin/$(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
-PIP= pip --quiet install
+PIP= python-pip
+PIP_INSTALL= $(PIP) install --quiet
 
 VPATH = /usr/bin
 
@@ -43,10 +44,10 @@ $(DAEMONS):
 	chkconfig $@ on
 	service $@ start
 
-.PHONY: prep
-prep: | $(PREP) pkg_update python-pip
-	-$(PKG_INSTALLER) yum-plugin-ps yum-plugin-remove-with-leaves
-	-$(PKG_INSTALLER) yum-plugin-auto-update-debug-info
+prep-local:
+
+.PHONY: pkg_update
+pkg_update: $(PIP)
 
 # Keep yum updated
 .PHONY: yum-cron
@@ -63,74 +64,42 @@ yum-cron:
 	  service yum-cron restart ; \
 	  fi
 
-.PHONY: updatesd
-updatesd:
-
-.PHONY: jenkins-slave
-jenkins-slave: /usr/bin/java
-
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
-	$(PKG_INSTALLER) python-sphinx
+	$(PIP_INSTALL) sphinx
 
-#Basic build tools
-.PHONY: build_essential
-build_essential: $(DEV_TOOLS_REQUIRED) compiler /usr/bin/rpmbuild
-	-$(PKG_INSTALLER) xorg-x11-server-Xvfb
+BASE_DEV_HOOK+= compiler-other 
 
+BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 
+BASE_DEV_LOCAL+= /usr/bin/java
 /usr/bin/java:
 	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
 
 LIBRARIES:= libevent libcurl libuuid boost zlib pcre pam libgcrypt readline openssl cyrus-sasl
 
+BASE_DEV_HOOK+= libraries
 libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	-$(PKG_INSTALLER) $@ $@-devel
 
+BASE_DEV_LOCAL+= rpmbuild
 /usr/bin/rpmbuild:
 	-$(PKG_INSTALLER) rpm-build
-
-/usr/sbin/qpidd: /usr/bin/qpid-python-test
-	-$(PKG_INSTALLER) qpid-cpp-server
-
-/usr/bin/qpid-python-test: 
-	-$(PKG_INSTALLER) python-qpid-qmf
-
-.PHONY: qpid
-qpid: /usr/sbin/qpidd /usr/bin/qpid-python-test
-	-chkconfig qpidd on
-	-service qpidd start
-
-.PHONY: libvirt
-libvirt:
-	-$(PKG_INSTALLER) libvirt-daemon-config-network libvirt-daemon-config-nwfilter
-	-chkconfig libvirtd on
-	-service libvirtd start
-
-
-.PHONY: smtp
-smtp:
-	-$(PKG_INSTALLER) sendmail sendmail-cf
-	-chkconfig sendmail on
-	-service sendmail start
 
 .PHONY: post
 post:
 
-.PHONY: restart-iptables
-restart-iptables:
-	service iptables restart
-
+EXTRA_HOOK+= security
 .PHONY: security
 security: yum-cron
 
-python-pip: /usr/bin/pip
+python-pip:
 	easy_install pip
 
 ssh-import-id:
-	$(PIP)  ssh-import-id
+	$(PIP_INSTALL)  ssh-import-id
 
 include $(srcdir)local.am
