@@ -15,7 +15,7 @@ PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || ($(PKG_PROVIDES) $(1) | head -1 | c
 PIP= python-pip
 PIP_INSTALL= $(PIP) install --quiet
 
-VPATH = /usr/bin
+VPATH= /usr/bin
 
 stamp-h1:
 	@touch stamp-h1
@@ -49,6 +49,11 @@ python-sphinx: /usr/bin/sphinx-build
 	$(PIP_INSTALL) sphinx
 
 BASE_DEV_HOOK+= compiler-other 
+
+BASE_DEV_HOOK+= local-cpanm 
+local-cpanm:
+	curl -L http://cpanmin.us | perl - --sudo App::cpanminus
+	ln -s /usr/local/bin/cpanm /usr/bin/cpanm
 
 BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
