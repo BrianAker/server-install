@@ -56,7 +56,7 @@ BASE_DEV+= cc
 BASE_DEV+= cpp
 endif
 BASE_DEV+= libtool
-BASE_DEV+= cpanm
+BASE_DEV+= /usr/bin/cpanm
 BASE_DEV+= virtualenv
 
 EXTRA_DEV_HOOK:=
