@@ -76,7 +76,6 @@ ifeq (${OSX_RELEASE},1)
 EXTRA_DEV+= gettext 
 EXTRA_DEV+= intltool 
 endif
-EXTRA_DEV+= lcov 
 EXTRA_DEV+= man 
 #EXTRA_DEV+= scan-build
 EXTRA_DEV+= valgrind

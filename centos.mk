@@ -48,8 +48,8 @@ python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
 	$(PIP_INSTALL) sphinx
 
-BASE_DEV_HOOK+= local-cpanm 
-local-cpanm:
+BASE_DEV_HOOK+= /usr/bin/cpanm
+/usr/bin/cpanm:
 	curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 	ln -s /usr/local/bin/cpanm /usr/bin/cpanm
 
