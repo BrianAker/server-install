@@ -48,21 +48,20 @@ python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
 	$(PIP_INSTALL) sphinx
 
-BASE_DEV_HOOK+= compiler-other 
-
 BASE_DEV_HOOK+= local-cpanm 
 local-cpanm:
 	curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 	ln -s /usr/local/bin/cpanm /usr/bin/cpanm
 
 BASE_DEV_HOOK+= local-virtualenv 
+local-virtualenv:
 	$(PIP_INSTALL) virtualenv
 
 BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 
-BASE_DEV_LOCAL+= /usr/bin/java
-/usr/bin/java:
+BASE_DEV_HOOK+= local-java
+local-java:
 	-$(PKG_INSTALLER) java-1.7.0-openjdk-devel java-1.7.0-openjdk
 	-$(PKG_INSTALLER) dejavu-fonts-common dejavu-sans-fonts
 

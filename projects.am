@@ -57,8 +57,8 @@ BASE_DEV+= cpp
 endif
 BASE_DEV+= libtool
 
-ifneq (${CENTOS_RELEASE},0)
-ifneq (${RHEL_RELEASE},0)
+ifeq (${CENTOS_RELEASE},0)
+ifeq (${RHEL_RELEASE},0)
 BASE_DEV+= cpanm
 BASE_DEV+= virtualenv
 endif
@@ -80,6 +80,12 @@ EXTRA_DEV+= lcov
 EXTRA_DEV+= man 
 #EXTRA_DEV+= scan-build
 EXTRA_DEV+= valgrind
+
+ifeq (${CENTOS_RELEASE},0)
+ifeq (${RHEL_RELEASE},0)
+EXTRA_DEV+= lcov 
+endif
+endif
 
 .PHONY: base
 base: 
