@@ -71,6 +71,7 @@ $(DAEMONS):
 prep-local:
 	-@$(YUM) groupupdate 'Development Tools'
 
+BASE_DEV_LOCAL+= perl-App-cpanminus
 EXTRA_LOCAL+= MySQL-python
 EXTRA_LOCAL+= python-memcached
 
