@@ -56,11 +56,11 @@ BASE_DEV+= cc
 BASE_DEV+= cpp
 endif
 BASE_DEV+= libtool
-BASE_DEV+= virtualenv
 
 ifneq (${CENTOS_RELEASE},0)
 ifneq (${RHEL_RELEASE},0)
 BASE_DEV+= cpanm
+BASE_DEV+= virtualenv
 endif
 endif
 

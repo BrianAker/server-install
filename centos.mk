@@ -55,6 +55,9 @@ local-cpanm:
 	curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 	ln -s /usr/local/bin/cpanm /usr/bin/cpanm
 
+BASE_DEV_HOOK+= local-virtualenv 
+	$(PIP_INSTALL) virtualenv
+
 BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 
