@@ -22,11 +22,11 @@ else ifneq (${FEDORA_RELEASE},)
   include $(srcdir)/accounts.am
 else ifneq (${CENTOS_RELEASE},)
   DISTRIBUTION := centos
-  include rhel.am
+  include centos.mk
   include $(srcdir)/accounts.am
 else ifneq (${RHEL_RELEASE},)
   DISTRIBUTION := rhel
-  include rhel.am
+  include centos.am
   include $(srcdir)/accounts.am
 else ifeq (${FREEBSD_RELEASE},0)
   DISTRIBUTION := freebsd9

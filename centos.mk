@@ -1,13 +1,17 @@
 # vim:ft=automake
 #
 
+BASE_INSTALL_PATH= /usr/
+
 include $(srcdir)bundle.am
 include $(srcdir)projects.am
 
-PKG_INSTALLER:= yum install -y
-PKG_UPDATE:= yum update -y
-PKG_UPGRADE:= yum upgrade -y
-PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || (yum whatprovides -q *bin/$(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
+YUM:= yum -y --quiet
+PKG_CACHE:= $(YUM) makecache
+PKG_INSTALLER:= $(YUM) install
+PKG_PROVIDES:= $(YUM) whatprovides
+PKG_UPGRADE:= $(YUM) upgrade
+PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1) || ($(PKG_PROVIDES) $(1) | head -1 | cut -d : -f 1 | xargs $(PKG_INSTALLER))
 PIP= python-pip
 PIP_INSTALL= $(PIP) install --quiet
 
