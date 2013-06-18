@@ -44,11 +44,6 @@ yum-cron:
 	  service yum-cron restart ; \
 	  fi
 
-EXTRA_HOOK+= updatesd
-.PHONY: updatesd
-updatesd:
-	/sbin/chkconfig --level 345 yum on; /sbin/service yum start
-
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
 	$(PIP_INSTALL) sphinx
