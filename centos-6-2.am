@@ -14,40 +14,11 @@ PIP_INSTALL= $(PIP) install --quiet
 VPATH = /usr/bin
 
 .PHONY: pkg_update
-pkg_update:
+pkg_update: $(PIP)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 
-.PHONY: mysqld
-mysqld: /usr/libexec/mysqld /var/run/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
-
-/usr/libexec/mysqld:
-	$(PKG_INSTALLER) mysql-server
-
-/var/run/mysqld:
-	chkconfig mysqld on
-	service mysqld start
-
-/usr/bin/mysql:
-	$(PKG_INSTALLER) mysql
-
-/usr/share/mysql:
-	$(PKG_INSTALLER) mysql-lib
-
-/usr/include/mysql/mysql.h:
-	$(PKG_INSTALLER) mysql-devel
-
-DAEMONS:= memcached httpd vsftpd
-.PHONY: $(DAEMONS)
-$(DAEMONS):
-	-$(PKG_INSTALLER) $@
-	chkconfig $@ on
-	service $@ start
-
 prep-local:
-
-.PHONY: pkg_update
-pkg_update: $(PIP)
 
 # Keep yum updated
 .PHONY: yum-cron
