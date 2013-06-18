@@ -50,6 +50,7 @@ python-sphinx: /usr/bin/sphinx-build
 
 BASE_DEV_HOOK+= /usr/bin/cpanm
 /usr/bin/cpanm:
+	-$(PKG_INSTALLER) perl-CPAN
 	curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 	ln -s /usr/local/bin/cpanm /usr/bin/cpanm
 
