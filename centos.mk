@@ -47,13 +47,7 @@ yum-cron:
 EXTRA_HOOK+= updatesd
 .PHONY: updatesd
 updatesd:
-	-$(PKG_INSTALLER) yum-updatesd.noarch
-	systemctl enable yum-updatesd.service
-	systemctl restart yum-updatesd.service
-	sed -i -e's/do_update = no/do_update = yes/' /etc/yum/yum-updatesd.conf
-	sed -i -e's/do_download = no/do_download = yes/' /etc/yum/yum-updatesd.conf
-	sed -i -e's/do_download_deps = no/do_download_deps = yes/' /etc/yum/yum-updatesd.conf
-	service yum-updatesd restart
+	/sbin/chkconfig --level 345 yum on; /sbin/service yum start
 
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
