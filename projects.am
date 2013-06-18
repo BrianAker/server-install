@@ -28,6 +28,8 @@ BASE+= git
 BASE+= gpg
 BASE+= make
 BASE+= perl
+BASE+= python
+BASE+= ruby
 BASE+= tar
 BASE+= wget
 ifneq (${OSX_RELEASE},0)
