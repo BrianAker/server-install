@@ -49,6 +49,7 @@ build_essential: /usr/bin/c++
 	$(PKG_INSTALLER) devscripts
 	-$(PKG_INSTALLER) cloog-ppl
 
+EXTRA_DEV_LOCAL+= python-virtualenv
 EXTRA_DEV_LOCAL+= python-mysqldb
 EXTRA_DEV_LOCAL+= python-memcache
 EXTRA_DEV_LOCAL+= libcloog-ppl0
