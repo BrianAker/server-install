@@ -13,14 +13,19 @@ PIP_INSTALL= $(PIP) install --quiet
 
 VPATH = /usr/bin
 
+stamp-h1:
+	@touch stamp-h1
+
 .PHONY: pkg_update
 pkg_update: $(PIP)
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
+	$(MAKE) stamp-h1
 
 prep-local:
 
 # Keep yum updated
+EXTRA_HOOK+= yum-cron
 .PHONY: yum-cron
 yum-cron:
 	-$(PKG_INSTALLER) yum-plugin-fastestmirror yum-cron PackageKit-yum PackageKit-yum-plugin
@@ -34,6 +39,17 @@ yum-cron:
 	  /sbin/chkconfig yum-cron on ; \
 	  service yum-cron restart ; \
 	  fi
+
+EXTRA_HOOK+= updatesd
+.PHONY: updatesd
+updatesd:
+	-$(PKG_INSTALLER) yum-updatesd.noarch
+	systemctl enable yum-updatesd.service
+	systemctl restart yum-updatesd.service
+	sed -i -e's/do_update = no/do_update = yes/' /etc/yum/yum-updatesd.conf
+	sed -i -e's/do_download = no/do_download = yes/' /etc/yum/yum-updatesd.conf
+	sed -i -e's/do_download_deps = no/do_download_deps = yes/' /etc/yum/yum-updatesd.conf
+	service yum-updatesd restart
 
 python-sphinx: /usr/bin/sphinx-build
 /usr/bin/sphinx-build:
