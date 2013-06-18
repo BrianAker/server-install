@@ -17,7 +17,7 @@ stamp-h1:
 	@touch stamp-h1
 
 .PHONY: pkg_update
-pkg_update: $(PIP)
+pkg_update:
 	$(PKG_UPDATE)
 	$(PKG_UPGRADE)
 	$(MAKE) stamp-h1
