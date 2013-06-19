@@ -72,6 +72,7 @@ prep-local:
 	-@$(YUM) groupupdate 'Development Tools'
 
 BASE_DEV_LOCAL+= perl-App-cpanminus
+BASE_DEV_LOCAL+= python-virtualenv
 EXTRA_LOCAL+= MySQL-python
 EXTRA_LOCAL+= python-memcached
 
