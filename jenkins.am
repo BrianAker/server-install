@@ -21,6 +21,7 @@ pound: | /etc/pound.cfg /sbin/pound /etc/firewalld/services/pound.xml /etc/rsysl
 /etc/pound.cfg: support/pound/pound.cfg
 	cp --archive support/pound/pound.cfg /etc/pound.cfg
 	firewall-cmd --zone=public --permanent --add-port=8443/tcp
+	firewall-cmd --zone=public --permanent --add-forward-port=port=443:proto=tcp:toport=8443
 
 /etc/rsyslog.d/pound.conf:
 	cp --archive support/pound/syslog.conf /etc/rsyslog.d/pound.conf
