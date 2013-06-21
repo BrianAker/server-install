@@ -111,7 +111,7 @@ base-dev:
 .PHONY: base-dev-am
 base-dev-am:
 	@$(MAKE) $(BASE_DEV)
-	@$(MAKE) $(BASE_DEV_LOCAL)
+	@$(MAKE) base-dev-local
 	@$(MAKE) $(BASE_DEV_HOOK)
 
 .PHONY: extra-dev-am
