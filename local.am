@@ -6,8 +6,8 @@ $(BASE_LOCAL):
 $(EXTRA_LOCAL):
 	-$(call PKG_SEARCH_INSTALL,$@)
 
-.PHONY: base-dev-local
-base-dev-local:
+.PHONY: base-dev-local-am
+base-dev-local-am:
 $(BASE_DEV_LOCAL):
 	-$(call PKG_SEARCH_INSTALL,$@)
 

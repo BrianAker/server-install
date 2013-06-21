@@ -1,12 +1,12 @@
 # vim:ft=automake
 #
 
-.PHONY: build_tools base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave libraries memcached mysqld base-dev prep base-dev-local
+.PHONY: build_tools base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave libraries memcached mysqld prep
 
 build_tools: | basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave ssh-import-id time security post
 
 .PHONY: install-am
-install-am: prep-am base-am extra-am base-dev-am extra-dev-am sphinx-build
+install-am: prep-am base-am extra-am base-dev extra-dev-am sphinx-build
 
 PHONY: prep
 prep:
@@ -105,13 +105,13 @@ extra-am:
 	$(MAKE) $(EXTRA_HOOK)
 
 .PHONY: base-dev
-base-dev: 
-	$(MAKE) base-dev-am
+base-dev: base-dev-am base-dev-local-am base-dev-hook-am
 
 .PHONY: base-dev-am
 base-dev-am:
 	@$(MAKE) $(BASE_DEV)
-	@$(MAKE) base-dev-local
+
+base-dev-hook-am:
 	@$(MAKE) $(BASE_DEV_HOOK)
 
 .PHONY: extra-dev-am
