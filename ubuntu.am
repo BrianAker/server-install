@@ -84,20 +84,23 @@ jenkins-slave:
 	$(PKG_INSTALLER) default-jdk default-jre default-jre-headless
 	$(PKG_INSTALLER) maven
 
-BASE_DEV_HOOK+= $(LIBRARIES)
-LIBRARIES:= libboost-all libcurl4-openssl libevent libpam0g libpcre3 libreadline uuid libssl
-$(LIBRARIES):
-	$(PKG_INSTALLER) $@-dev
+BASE_DEV_LOCAL+= libboost-all-dev
+BASE_DEV_LOCAL+= libcurl4-openssl-dev
+BASE_DEV_LOCAL+= libevent-dev
+BASE_DEV_LOCAL+= libpam0g-dev
+BASE_DEV_LOCAL+= libpcre3-dev
+BASE_DEV_LOCAL+= libreadline-dev
+BASE_DEV_LOCAL+= uuid-dev
+BASE_DEV_LOCAL+= libssl-dev
 
-BASE_DEV_HOOK+= $(CLANG)
-CLANG:=  clang-devel clang-analyzer llvm-devel llvm-libs llvm
-.PHONY: clang-bundle
-clang-bundle: $(CLANG)
-$(CLANG):
-	-$(PKG_INSTALLER) $(@F)
+BASE_DEV_LOCAL+= clang-devel
+BASE_DEV_LOCAL+= clang-analyzer
+BASE_DEV_LOCAL+= llvm-devel
+BASE_DEV_LOCAL+= llvm-libs
+BASE_DEV_LOCAL+= llvm
 
-BASE_DEV_LOCAL+= $(PROTOBUF)
-PROTOBUF:= libprotobuf-dev protobuf-compiler
+BASE_DEV_LOCAL+= libprotobuf-dev
+BASE_DEV_LOCAL+= rotobuf-compiler
 
 # Update automatically
 update:
