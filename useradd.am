@@ -5,10 +5,11 @@ USER_EXISTS = $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 USERADD := /usr/sbin/useradd
 SSH_IMPORT_ID := ssh-import-id
 TEMP_SUDO := $(shell mktemp -u /tmp/$(CREATE_USER).XXXXXX)
+TEMP_SUDO_INSTALL := $(shell mktemp -u /tmp/$(CREATE_USER)-install.XXXXXX)
 
 .PHONY: user admin-user useradd import_ssh_keys allow_users
 
-user: | useradd import_ssh_keys allow_users
+user: | useradd import_ssh_keys allow_users /etc/sudoers.d/$(CREATE_USER)-install
 
 admin-user: | useradd import_ssh_keys allow_users /etc/sudoers.d/$(CREATE_USER)
 
@@ -43,6 +44,19 @@ endif
 
 /etc/sudoers.d:
 	mkdir -p -m 0750 /etc/sudoers.d
+
+/etc/sudoers.d/$(CREATE_USER)-install: /etc/sudoers.d
+ifdef CREATE_USER
+	@touch $(TEMP_SUDO_INSTALL)
+ifeq (${DEB_CONF},1)
+	@echo "$(CREATE_USER) ALL=(ALL) NOPASSWD:/usr/bin/apt-get install*" >> $(TEMP_SUDO_INSTALL)
+ifeq (${FEDORA_RELEASE},1)
+	@echo "$(CREATE_USER) ALL=(ALL) NOPASSWD:/usr/bin/yum install*" >> $(TEMP_SUDO_INSTALL)
+endif
+	@chown root.root $(TEMP_SUDO_INSTALL)
+	@chmod 0440 $(TEMP_SUDO_INSTALL)
+	@mv $(TEMP_SUDO_INSTALL) /etc/sudoers.d/$(CREATE_USER)-install
+endif
 
 /etc/sudoers.d/$(CREATE_USER): /etc/sudoers.d
 ifdef CREATE_USER
