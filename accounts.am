@@ -30,6 +30,7 @@ drizzleci:
 	$(MAKE) CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=drizzle-continuous-integration user
 
 tangentci:
+	echo ${FEDORA_RELEASE}
 	$(MAKE) CREATE_USER=jenkins CREATE_USER_SSH_KEY_URL=d-ci user
 
 bazaar:
