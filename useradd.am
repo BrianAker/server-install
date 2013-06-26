@@ -50,6 +50,7 @@ ifdef CREATE_USER
 	@touch $(TEMP_SUDO_INSTALL)
 ifeq (${DEB_CONF},1)
 	@echo "$(CREATE_USER) ALL=(ALL) NOPASSWD:/usr/bin/apt-get install*" >> $(TEMP_SUDO_INSTALL)
+endif
 ifeq (${FEDORA_RELEASE},1)
 	@echo "$(CREATE_USER) ALL=(ALL) NOPASSWD:/usr/bin/yum install*" >> $(TEMP_SUDO_INSTALL)
 endif

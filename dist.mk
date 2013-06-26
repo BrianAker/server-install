@@ -10,6 +10,7 @@ OSX_RELEASE := $(shell test -d '/etc/mach_init.d' > /dev/null 2>&1 ; echo $$?)
 
 ifneq (${DEB_CONF},)
   DISTRIBUTION := ubuntu
+  include $(srcdir)/apt.am
   include $(srcdir)/ubuntu.am
   include $(srcdir)/accounts.am
 else ifneq (${SUSE_RELEASE},)
@@ -18,15 +19,18 @@ else ifneq (${SUSE_RELEASE},)
   include $(srcdir)/accounts.am
 else ifneq (${FEDORA_RELEASE},)
   DISTRIBUTION := fedora
-  include fedora.am
+  include $(srcdir)/yum.mk
+  include $(srcdir)/fedora.am
   include $(srcdir)/accounts.am
 else ifneq (${CENTOS_RELEASE},)
   DISTRIBUTION := centos
-  include centos.mk
+  include $(srcdir)/yum.am
+  include $(srcdir)/centos.mk
   include $(srcdir)/accounts.am
 else ifneq (${RHEL_RELEASE},)
   DISTRIBUTION := rhel
-  include centos.am
+  include $(srcdir)/yum.am
+  include $(srcdir)/centos.mk
   include $(srcdir)/accounts.am
 else ifeq (${FREEBSD_RELEASE},0)
   DISTRIBUTION := freebsd9
