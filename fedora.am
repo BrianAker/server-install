@@ -45,6 +45,10 @@ install-mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
 BASE_LOCAL+= ntp
 BASE_DEV_LOCAL+= mysql
 
+BASE_DEV_HOOK+= /usr/share/java/pmd.jar
+/usr/share/java/pmd.jar:
+	$(PKG_INSTALLER) pmd
+
 BASE_DEV_HOOK+= /usr/share/mysql
 /usr/share/mysql:
 	$(PKG_INSTALLER) mysql-lib

@@ -29,6 +29,7 @@ BASE+= gpg
 BASE+= make
 BASE+= perl
 BASE+= python
+BASE+= jython
 BASE+= ruby
 BASE+= tar
 BASE+= wget
