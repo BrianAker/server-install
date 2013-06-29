@@ -1,15 +1,14 @@
 # vim:ft=automake
 
+
 $(BASE_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
+	-$(call PKG_INSTALLER,$@)
+
+$(BASE_DEV_LOCAL):
+	-$(call PKG_INSTALLER,$@)
 
 $(EXTRA_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
-
-.PHONY: base-dev-local-am
-base-dev-local-am:
-$(BASE_DEV_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
+	-$(call PKG_INSTALLER,$@)
 
 $(EXTRA_DEV_LOCAL):
-	-$(call PKG_SEARCH_INSTALL,$@)
+	-$(call PKG_INSTALLER,$@)

@@ -95,7 +95,7 @@ BASE_DEV_LOCAL+= llvm-libs
 BASE_DEV_LOCAL+= llvm
 
 BASE_DEV_LOCAL+= libprotobuf-dev
-BASE_DEV_LOCAL+= rotobuf-compiler
+BASE_DEV_LOCAL+= protobuf-compiler
 
 # Update automatically
 update:
