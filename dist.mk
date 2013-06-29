@@ -11,7 +11,7 @@ OSX_RELEASE := $(shell test -d '/etc/mach_init.d' > /dev/null 2>&1 ; echo $$?)
 ifneq (${DEB_CONF},)
   DEB_CONF:= 1
   DISTRIBUTION := ubuntu
-  include $(srcdir)/apt.am
+  include $(srcdir)/apt.mk
   include $(srcdir)/ubuntu.am
   include $(srcdir)/accounts.am
 else ifneq (${SUSE_RELEASE},)
@@ -28,13 +28,13 @@ else ifneq (${FEDORA_RELEASE},)
 else ifneq (${CENTOS_RELEASE},)
   CENTOS_RELEASE:= 1
   DISTRIBUTION := centos
-  include $(srcdir)/yum.am
+  include $(srcdir)/yum.mk
   include $(srcdir)/centos.mk
   include $(srcdir)/accounts.am
 else ifneq (${RHEL_RELEASE},)
   RHEL_RELEASE:= 1
   DISTRIBUTION := rhel
-  include $(srcdir)/yum.am
+  include $(srcdir)/yum.mk
   include $(srcdir)/centos.mk
   include $(srcdir)/accounts.am
 else ifeq (${FREEBSD_RELEASE},0)
