@@ -80,13 +80,6 @@ EXTRA_DEV+= man
 #EXTRA_DEV+= scan-build
 EXTRA_DEV+= valgrind
 
-ifeq (${CENTOS_RELEASE},0)
-ifeq (${RHEL_RELEASE},0)
-EXTRA_DEV+= cppcheck 
-EXTRA_DEV+= lcov 
-endif
-endif
-
 .PHONY: base
 base: 
 	$(MAKE) base-am

@@ -49,6 +49,9 @@ BASE_DEV_HOOK+= /usr/bin/cpanm
 	curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 	ln -s /usr/local/bin/cpanm /usr/bin/cpanm
 
+EXTRA_DEV+= cppcheck 
+EXTRA_DEV+= lcov 
+
 EXTRA_DEV_LOCAL+= python-virtualenv
 EXTRA_DEV_LOCAL+= python-mysqldb
 EXTRA_DEV_LOCAL+= python-memcache

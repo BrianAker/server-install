@@ -29,6 +29,9 @@ pkg_update: $(PIP)
 	$(PKG_UPGRADE)
 	$(MAKE) stamp-h1
 
+EXTRA_DEV+= cppcheck 
+EXTRA_DEV+= lcov 
+
 EXTRA_HOOK+= nbd-server
 nbd-server:
 	$(PKG_INSTALLER) nbd
