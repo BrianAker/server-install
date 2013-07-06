@@ -1,51 +1,45 @@
 # vim:ft=automake
 
-DEB_CONF := $(strip $(wildcard /etc/debconf.conf))
-SUSE_RELEASE := $(strip $(wildcard /etc/SuSE-release))
-FEDORA_RELEASE := $(strip $(wildcard /etc/fedora-release))
-CENTOS_RELEASE := $(strip $(wildcard /etc/centos-release))
-RHEL_RELEASE := $(strip $(wildcard /etc/redhat-release))
-FREEBSD_RELEASE := $(shell test -x '/usr/sbin/pkg_add' > /dev/null 2>&1 ; echo $$?)
-OSX_RELEASE := $(shell test -d '/etc/mach_init.d' > /dev/null 2>&1 ; echo $$?)
+DEB_CONF:= $(shell test ! -d '/etc/debconf.conf' > /dev/null 2>&1 ; echo $$?)
+SUSE_RELEASE:= $(shell test ! -d '/etc/SuSE-release' > /dev/null 2>&1 ; echo $$?)
+FEDORA_RELEASE:= $(shell test ! -d '/etc/fedora-release' > /dev/null 2>&1 ; echo $$?)
+CENTOS_RELEASE:= $(shell test ! -d '/etc/centos-release' > /dev/null 2>&1 ; echo $$?)
+RHEL_RELEASE:= $(shell test ! -d '/etc/redhat-release' > /dev/null 2>&1 ; echo $$?)
+FREEBSD_RELEASE := $(shell test ! -x '/usr/sbin/pkg_add' > /dev/null 2>&1 ; echo $$?)
+OSX_RELEASE:= $(shell test ! -d '/etc/mach_init.d' > /dev/null 2>&1 ; echo $$?)
 
-ifneq (${DEB_CONF},)
-  DEB_CONF:= 1
-  DISTRIBUTION := ubuntu
+ifeq (${DEB_CONF},1)
+  DISTRIBUTION= ubuntu
   include $(srcdir)/apt.mk
   include $(srcdir)/ubuntu.am
   include $(srcdir)/accounts.am
-else ifneq (${SUSE_RELEASE},)
-  SUSE_RELEASE:= 1
-  DISTRIBUTION := suse
+else ifeq (${SUSE_RELEASE},1)
+  DISTRIBUTION= suse
   include zypper.am
   include $(srcdir)/accounts.am
-else ifneq (${FEDORA_RELEASE},)
-  FEDORA_RELEASE:= 1
-  DISTRIBUTION := fedora
+else ifeq (${FEDORA_RELEASE},1)
+  RHEL_RELEASE= 0
+  DISTRIBUTION= fedora
   include $(srcdir)/yum.mk
   include $(srcdir)/fedora.am
   include $(srcdir)/accounts.am
-else ifneq (${CENTOS_RELEASE},)
-  CENTOS_RELEASE:= 1
-  DISTRIBUTION := centos
+else ifeq (${CENTOS_RELEASE},1)
+  DISTRIBUTION= centos
   include $(srcdir)/yum.mk
   include $(srcdir)/centos.mk
   include $(srcdir)/accounts.am
-else ifneq (${RHEL_RELEASE},)
-  RHEL_RELEASE:= 1
-  DISTRIBUTION := rhel
+else ifeq (${RHEL_RELEASE},1)
+  DISTRIBUTION= rhel
   include $(srcdir)/yum.mk
   include $(srcdir)/centos.mk
   include $(srcdir)/accounts.am
-else ifeq (${FREEBSD_RELEASE},0)
-  FREEBSD_RELEASE:= 1
-  DISTRIBUTION := freebsd9
+else ifeq (${FREEBSD_RELEASE},1)
+  DISTRIBUTION= freebsd9
   include $(srcdir)/freebsd.am
-else ifeq (${OSX_RELEASE},0)
-  OSX_RELEASE:= 1
-  DISTRIBUTION := osx
+else ifeq (${OSX_RELEASE},1)
+  DISTRIBUTION= osx
   include $(srcdir)/osx.am
 else
-  DISTRIBUTION := unknown
+  DISTRIBUTION= unknown
 endif
 

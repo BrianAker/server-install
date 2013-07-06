@@ -31,7 +31,7 @@ BASE+= jython
 BASE+= ruby
 BASE+= tar
 BASE+= wget
-ifneq (${OSX_RELEASE},0)
+ifeq (${OSX_RELEASE},0)
 BASE+= lsb_release
 endif
 
@@ -49,7 +49,7 @@ BASE_DEV+= automake
 BASE_DEV+= flex
 BASE_DEV+= pkg-config
 BASE_DEV+= /usr/include/openssl/opensslconf.h
-ifneq (${OSX_RELEASE},0)
+ifeq (${OSX_RELEASE},0)
 BASE_DEV+= autopoint
 BASE_DEV+= bison
 BASE_DEV+= c++
@@ -60,8 +60,10 @@ BASE_DEV+= libtool
 
 ifeq (${CENTOS_RELEASE},0)
 ifeq (${RHEL_RELEASE},0)
+ifeq (${OSX_RELEASE},0)
 BASE_DEV+= cpanm
 BASE_DEV+= virtualenv
+endif
 endif
 endif
 
@@ -72,7 +74,7 @@ EXTRA_DEV+= cmake
 EXTRA_DEV+= doxygen 
 EXTRA_DEV+= gdb 
 EXTRA_DEV+= gperf 
-ifeq (${OSX_RELEASE},1)
+ifeq (${OSX_RELEASE},0)
 EXTRA_DEV+= gettext 
 EXTRA_DEV+= intltool 
 endif
@@ -140,7 +142,7 @@ drizzle-build: libdrizzle-build libraries
 # Libdrizzle
 libdrizzle-build: mysqld
 
-ifneq (${OSX_RELEASE},0)
+ifeq (${OSX_RELEASE},0)
 BASE_HOOK+= /etc/cron.d/server-update
 /etc/cron.d/server-update:
 	@cp etc/cron.d/server-update /etc/cron.d/server-update

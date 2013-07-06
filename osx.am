@@ -111,6 +111,10 @@ BASE_DEV_HOOK+= /usr/local/bin/gettext
 	$(PKG_INSTALLER) gettext
 	$(BREW) link --force gettext
 
+BASE_DEV_HOOK+= virtualenv
+virtualenv:
+	$(PIP_INSTALL) virtualenv
+
 BASE_DEV_HOOK+= sphinx-build
 sphinx-build:
 	$(PIP_INSTALL) sphinx
