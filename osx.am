@@ -57,6 +57,7 @@ $(BREW):
 	$(BREW) doctor
 
 $(PYTHON):
+	-$(BREW) unlink python
 	$(PKG_SEARCH_INSTALL) python
 	$(BREW) link python
 
@@ -90,6 +91,7 @@ BASE_DEV_HOOK+= /usr/local/bin/pcretest
 
 BASE_DEV_HOOK+= /usr/local/bin/flex
 /usr/local/bin/flex:
+	-$(BREW) unlink flex
 	$(PKG_INSTALLER) Flex
 	$(BREW) link --force flex
 
@@ -103,11 +105,13 @@ BASE_DEV_HOOK+= /usr/local/bin/intltoolize
 
 BASE_DEV_HOOK+= /usr/local/bin/bison
 /usr/local/bin/bison:
+	-$(BREW) unlink Bison
 	$(PKG_INSTALLER) Bison
 	$(BREW) link --force bison
 
 BASE_DEV_HOOK+= /usr/local/bin/gettext
 /usr/local/bin/gettext:
+	-$(BREW) unlink gettext
 	$(PKG_INSTALLER) gettext
 	$(BREW) link --force gettext
 
