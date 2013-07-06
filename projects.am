@@ -55,8 +55,8 @@ BASE_DEV+= bison
 BASE_DEV+= c++
 BASE_DEV+= cc
 BASE_DEV+= cpp
-endif
 BASE_DEV+= libtool
+endif
 
 ifeq (${CENTOS_RELEASE},0)
 ifeq (${RHEL_RELEASE},0)

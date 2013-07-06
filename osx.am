@@ -24,6 +24,7 @@ cc:
 cpp:
 	@echo "Install xcode"
 
+BASE_DEV_HOOK+= glibtool
 glibtool:
 	$(PKG_INSTALLER) libtool
 
