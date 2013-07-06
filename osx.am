@@ -7,6 +7,8 @@ include $(srcdir)projects.am
 EASY_INSTALL:= $(BASE_INSTALL_PATH)bin/easy_install
 PYTHON:= $(BASE_INSTALL_PATH)bin/python
 BREW:= $(BASE_INSTALL_PATH)bin/brew
+BREW_LINK:= $(BASE_INSTALL_PATH)bin/brew link
+BREW_UNLINK:= $(BASE_INSTALL_PATH)bin/brew unlink
 PKG_INSTALLER= $(BREW) install
 PKG_UPDATE= $(BREW) update 
 PKG_UPGRADE= $(BREW) upgrade
@@ -57,9 +59,9 @@ $(BREW):
 	$(BREW) doctor
 
 $(PYTHON):
-	-$(BREW) unlink python
+	-$(BREW_UNLINK) python
 	$(PKG_SEARCH_INSTALL) python
-	$(BREW) link python
+	$(BREW_LINK) python
 
 $(EASY_INSTALL): python
 
@@ -91,9 +93,9 @@ BASE_DEV_HOOK+= /usr/local/bin/pcretest
 
 BASE_DEV_HOOK+= /usr/local/bin/flex
 /usr/local/bin/flex:
-	-$(BREW) unlink flex
+	-$(BREW_UNLINK) flex
 	$(PKG_INSTALLER) Flex
-	$(BREW) link --force flex
+	$(BREW) --force flex
 
 BASE_DEV_HOOK+= /usr/local/bin/pkg-config
 /usr/local/bin/pkg-config:
@@ -105,15 +107,15 @@ BASE_DEV_HOOK+= /usr/local/bin/intltoolize
 
 BASE_DEV_HOOK+= /usr/local/bin/bison
 /usr/local/bin/bison:
-	-$(BREW) unlink Bison
+	-$(BREW_UNLINK) Bison
 	$(PKG_INSTALLER) Bison
-	$(BREW) link --force bison
+	$(BREW_LINK) bison
 
 BASE_DEV_HOOK+= /usr/local/bin/gettext
 /usr/local/bin/gettext:
-	-$(BREW) unlink gettext
+	-$(BREW_UNLINK) gettext
 	$(PKG_INSTALLER) gettext
-	$(BREW) link --force gettext
+	$(BREW_LINK) --force gettext
 
 BASE_DEV_HOOK+= virtualenv
 virtualenv:
