@@ -1,10 +1,10 @@
 # vim:ft=automake
 
-DEB_CONF:= $(shell test ! -d '/etc/debconf.conf' > /dev/null 2>&1 ; echo $$?)
-SUSE_RELEASE:= $(shell test ! -d '/etc/SuSE-release' > /dev/null 2>&1 ; echo $$?)
-FEDORA_RELEASE:= $(shell test ! -d '/etc/fedora-release' > /dev/null 2>&1 ; echo $$?)
-CENTOS_RELEASE:= $(shell test ! -d '/etc/centos-release' > /dev/null 2>&1 ; echo $$?)
-RHEL_RELEASE:= $(shell test ! -d '/etc/redhat-release' > /dev/null 2>&1 ; echo $$?)
+DEB_CONF:= $(shell test ! -f '/etc/debconf.conf' > /dev/null 2>&1 ; echo $$?)
+SUSE_RELEASE:= $(shell test ! -f '/etc/SuSE-release' > /dev/null 2>&1 ; echo $$?)
+FEDORA_RELEASE:= $(shell test ! -f '/etc/fedora-release' > /dev/null 2>&1 ; echo $$?)
+CENTOS_RELEASE:= $(shell test ! -f '/etc/centos-release' > /dev/null 2>&1 ; echo $$?)
+RHEL_RELEASE:= $(shell test ! -f '/etc/redhat-release' > /dev/null 2>&1 ; echo $$?)
 FREEBSD_RELEASE := $(shell test ! -x '/usr/sbin/pkg_add' > /dev/null 2>&1 ; echo $$?)
 OSX_RELEASE:= $(shell test ! -d '/etc/mach_init.d' > /dev/null 2>&1 ; echo $$?)
 
