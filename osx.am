@@ -80,6 +80,7 @@ BASE_DEV_HOOK+= /usr/local/bin/protoc
 
 EXTRA_LOCAL+= gpg-agent 
 EXTRA_DEV_LOCAL+= swig 
+EXTRA_DEV_LOCAL+= autoconf-archive 
 EXTRA_DEV_LOCAL+= vpnc 
 EXTRA_DEV_LOCAL+= hub 
 EXTRA_DEV_LOCAL+= curl-ca-bundle
