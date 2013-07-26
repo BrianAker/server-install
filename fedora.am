@@ -47,6 +47,8 @@ install-mysqld: | /usr/libexec/mysqld /usr/include/mysql/mysql.h /usr/bin/mysql
 
 BASE_LOCAL+= ntp
 BASE_DEV_LOCAL+= mysql
+BASE_DEV_LOCAL+= texinfo
+BASE_DEV_LOCAL+= help2man
 
 BASE_DEV_HOOK+= /usr/share/java/pmd.jar
 /usr/share/java/pmd.jar:

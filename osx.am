@@ -113,6 +113,12 @@ BASE_DEV_HOOK+= /usr/local/bin/bison
 	$(PKG_INSTALLER) Bison
 	$(BREW_LINK) bison
 
+BASE_DEV_HOOK+= /usr/local/bin/gperf
+/usr/local/bin/gperf:
+	-$(BREW_UNLINK) gperf
+	$(PKG_INSTALLER) gperf
+	$(BREW_LINK) gperf
+
 BASE_DEV_HOOK+= /usr/local/bin/gettext
 /usr/local/bin/gettext:
 	-$(BREW_UNLINK) gettext
