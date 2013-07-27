@@ -63,6 +63,10 @@ BASE_DEV+= bison
 BASE_DEV+= gperf
 BASE_DEV+= flex
 BASE_DEV+= pkg-config
+BASE_DEV+= libtool
+endif
+
+ifeq (${OSX_RELEASE},0)
 ifeq (${CENTOS_RELEASE},1)
 BASE_DEV+= gcc
 BASE_DEV+= gcc-c++
@@ -71,7 +75,6 @@ BASE_DEV+= c++
 BASE_DEV+= cc
 BASE_DEV+= cpp
 endif
-BASE_DEV+= libtool
 endif
 
 ifeq (${CENTOS_RELEASE},0)

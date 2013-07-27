@@ -78,7 +78,7 @@ EXTRA_HOOK+= security
 .PHONY: security
 security: yum-cron
 
-easy_install:
+easy_install: pkg-config
 	$(PKG_INSTALLER) python-setuptools
 
 $(PIP): easy_install
