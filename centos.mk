@@ -6,7 +6,7 @@ BASE_INSTALL_PATH= /usr/
 include $(srcdir)bundle.am
 include $(srcdir)projects.am
 
-PIP= python-pip
+PIP= pip
 PIP_INSTALL= $(PIP) install --quiet
 
 VPATH= /usr/bin
