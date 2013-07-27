@@ -27,11 +27,14 @@ BASE+= gpg
 BASE+= make
 BASE+= perl
 BASE+= python
-BASE+= jython
 BASE+= ruby
 BASE+= tar
 BASE+= wget
-ifeq (${OSX_RELEASE},0)
+ifeq (${OSX_RELEASE},1)
+# Nothing exists for OSX
+else ifeq (${CENTOS_RELEASE},1)
+BASE+= redhat-lsb-core
+else
 BASE+= lsb_release
 endif
 
@@ -44,6 +47,7 @@ BASE_DEV_HOOK:=
 BASE_DEV_LOCAL:=
 BASE_DEV:= 
 BASE_DEV+= bzr
+BASE_DEV+= gperf
 BASE_DEV+= autoconf
 BASE_DEV+= automake
 BASE_DEV+= flex
@@ -73,7 +77,7 @@ EXTRA_DEV:=
 EXTRA_DEV+= cmake 
 EXTRA_DEV+= doxygen 
 EXTRA_DEV+= gdb 
-EXTRA_DEV+= gperf 
+EXTRA_DEV+= jython
 ifeq (${OSX_RELEASE},0)
 EXTRA_DEV+= gettext 
 EXTRA_DEV+= intltool 
