@@ -78,7 +78,10 @@ EXTRA_HOOK+= security
 .PHONY: security
 security: yum-cron
 
-python-pip:
+easy_install:
+	$(PKG_INSTALLER) easy_install
+
+python-pip: easy_install
 	easy_install pip
 
 ssh-import-id:
