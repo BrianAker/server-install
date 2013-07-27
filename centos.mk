@@ -67,7 +67,7 @@ libraries: | $(LIBRARIES)
 $(LIBRARIES):
 	-$(PKG_INSTALLER) $@ $@-devel
 
-BASE_DEV_LOCAL+= rpmbuild
+BASE_DEV_HOOK+= rpmbuild
 /usr/bin/rpmbuild:
 	-$(PKG_INSTALLER) rpm-build
 
