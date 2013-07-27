@@ -81,7 +81,7 @@ security: yum-cron
 easy_install:
 	$(PKG_INSTALLER) easy_install
 
-python-pip: easy_install
+$(PIP): easy_install
 	easy_install pip
 
 ssh-import-id:
