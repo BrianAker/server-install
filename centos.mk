@@ -79,7 +79,7 @@ EXTRA_HOOK+= security
 security: yum-cron
 
 easy_install:
-	$(PKG_INSTALLER) easy_install
+	$(PKG_INSTALLER) python-setuptools
 
 $(PIP): easy_install
 	easy_install pip
