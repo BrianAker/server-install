@@ -4,12 +4,19 @@
 .PHONY: base basics memcached-build gearman-build drizzle-build libdrizzle-build jenkins-slave libraries memcached mysqld prep
 
 .PHONY: install-am
-install-am: prep-am base-am extra-am base-dev-am extra-dev-am sphinx-build
+install-am: prep-am
+	@$(MAKE) base-am base-dev-am
+	@$(MAKE) sphinx-build
+ifeq (${CENTOS_RELEASE},1)
+else
+	@$(MAKE) extra
+endif
 
 PHONY: prep
 prep:
 	$(MAKE) prep-am
 
+PHONY: prep-am
 prep-am: | pkg_update
 	@$(MAKE) prep-local
 	@$(MAKE) $(PIP)
@@ -47,18 +54,23 @@ BASE_DEV_HOOK:=
 BASE_DEV_LOCAL:=
 BASE_DEV:= 
 BASE_DEV+= bzr
-BASE_DEV+= gperf
 BASE_DEV+= autoconf
 BASE_DEV+= automake
-BASE_DEV+= flex
-BASE_DEV+= pkg-config
 BASE_DEV+= /usr/include/openssl/opensslconf.h
 ifeq (${OSX_RELEASE},0)
 BASE_DEV+= autopoint
 BASE_DEV+= bison
+BASE_DEV+= gperf
+BASE_DEV+= flex
+BASE_DEV+= pkg-config
+ifeq (${CENTOS_RELEASE},1)
+BASE_DEV+= gcc
+BASE_DEV+= gcc-c++
+else
 BASE_DEV+= c++
 BASE_DEV+= cc
 BASE_DEV+= cpp
+endif
 BASE_DEV+= libtool
 endif
 
@@ -88,7 +100,7 @@ EXTRA_DEV+= valgrind
 
 .PHONY: base
 base: 
-	$(MAKE) base-am
+	$(MAKE) base-am base-dev-am
 
 .PHONY: base-am
 base-am:
@@ -108,7 +120,7 @@ base-dev-am:
 
 .PHONY: extra
 extra: 
-	$(MAKE) extra-am
+	$(MAKE) extra-am exta-dev-am
 
 .PHONY: extra-am
 extra-am:
