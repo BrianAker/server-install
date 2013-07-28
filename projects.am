@@ -90,6 +90,7 @@ endif
 EXTRA_DEV_HOOK:=
 EXTRA_DEV_LOCAL:=
 EXTRA_DEV:=
+EXTRA_DEV+= maven 
 EXTRA_DEV+= cmake 
 EXTRA_DEV+= doxygen 
 EXTRA_DEV+= gdb 
