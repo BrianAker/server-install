@@ -1,0 +1,2 @@
+# Enable ansible to run any command as root
+ansible ALL=(ALL) NOPASSWD:ALL
