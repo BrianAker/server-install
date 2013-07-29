@@ -29,6 +29,7 @@ pkg_update: $(PIP)
 	$(PKG_UPGRADE)
 	$(MAKE) stamp-h1
 
+EXTRA_DEV+= sshpaas 
 EXTRA_DEV+= keychain 
 EXTRA_DEV+= cppcheck 
 EXTRA_DEV+= lcov 
