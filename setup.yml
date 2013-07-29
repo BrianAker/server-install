@@ -6,7 +6,7 @@
       action: user name=ansible
 
     - name: setup authorized key(s)
-      action: authorized_key user=ansible key='$FILE(/home/lazlo/.ssh/id_rsa.pub)'
+      action: authorized_key user=ansible key='$FILE(roles/common/files/id_rsa.pub)'
 
     - name: create admin group
       action: group name=admin

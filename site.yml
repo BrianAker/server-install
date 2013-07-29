@@ -1,0 +1,8 @@
+# Root ansible playbook
+- hosts: all
+  roles:
+  - common
+
+- include: dnsservers.yml
+- include: webservers.yml
+- include: jenkins-slaves.yml

@@ -1,0 +1,6 @@
+# Host rules for Jenkins-ci slaves
+- hosts: slaves
+  user: lazlo
+  sudo: yes
+  roles:
+  - jenkins-slave

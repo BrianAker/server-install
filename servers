@@ -2,9 +2,6 @@
 
 # Ex 2: A collection of hosts belonging to the 'webservers' group
 
-[test]
-up.tangent
-
 [osx]
 dib.tangent
 
@@ -41,7 +38,6 @@ debian-2.build
 up.tangent
 dib.tangent
 docs.libmemcached.org
-docs.libmemcached.org
 fedora-1.build
 fedora-2.build
 gaz.tangent
@@ -62,12 +58,10 @@ ubuntu-3.build
 
 [dbservers]
 
-#db01.intranet.mydomain.net
-#db02.intranet.mydomain.net
-#10.25.1.56
-#10.25.1.57
+[dnsservers]
+ns6.tangent.org
 
-# Here's another example of host ranges, this time there are no
-# leading 0s:
-
+[webservers]
+docs.libmemcached.org
+gearman.org
 
