@@ -45,9 +45,6 @@ install-jenkins-slave: install
 install: 
 	$(MAKE) install-am
 
-base_openstack:
-	$(MAKE) openstack
-
 base_jenkins_slave: | java
 
 show:

@@ -37,10 +37,6 @@ BASE_DEV_LOCAL+= boost
 BASE_DEV_LOCAL+= libevent
 BASE_DEV_LOCAL+= libmemcached
 
-openstack:
-	echo "Not available on this platform"
-	return 1
-
 time:
 
 security:
