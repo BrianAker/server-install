@@ -1,3 +1,5 @@
+---
+
 # Root ansible playbook
 - hosts: all
   roles:

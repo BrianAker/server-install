@@ -1,3 +1,5 @@
+---
+
 # Host rules for HTTP servers
 - hosts: webservers
   user: lazlo
