@@ -1,21 +1,18 @@
 # Ex 1: Ungrouped hosts, specify before any group headers.
 
-blackbird.haus
-aloha.haus
-
 # Ex 2: A collection of hosts belonging to the 'webservers' group
 
 [test]
-up.haus
+up.tangent
 
 [osx]
-dib.haus
+dib.tangent
 
 [centos]
 centos-1.build
 centos-2.build
 centos-3.build
-up.haus
+up.tangent
 
 [debian]
 debian-1.build
@@ -29,20 +26,20 @@ gaz.tangent
 fedora19.build 
 
 [ubuntu]
-soup.haus
+soup.tangent
 ubuntu-1.build
 ubuntu-2.build
 ubuntu-3.build
 
 [slaves]
-dib.haus
+dib.tangent
 centos-1.build
 centos-2.build
 centos-3.build
 debian-1.build
 debian-2.build
-up.haus
-dib.haus
+up.tangent
+dib.tangent
 docs.libmemcached.org
 docs.libmemcached.org
 fedora-1.build
@@ -51,7 +48,7 @@ gaz.tangent
 fedora19.build 
 gaz.tangent
 fedora19.build 
-soup.haus
+soup.tangent
 ubuntu-1.build
 ubuntu-2.build
 ubuntu-3.build
