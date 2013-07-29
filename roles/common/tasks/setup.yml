@@ -9,8 +9,8 @@
   action: group name=admin
 
 - name: write the admin sudoers file
-  action: template src=templates/sudoers/admin dest=/etc/sudoers.d/admin
+  action: template src=templates/sudoers/admin dest=/etc/sudoers.d/admin owner=root group=root mode=0440
 
 - name: write the ansible sudoers file
-  action: template src=templates/sudoers/ansible dest=/etc/sudoers.d/ansible
+  action: template src=templates/sudoers/ansible dest=/etc/sudoers.d/ansible owner=root group=root mode=0440
 
