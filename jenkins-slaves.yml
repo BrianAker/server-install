@@ -5,4 +5,5 @@
   user: lazlo
   sudo: yes
   roles:
-  - jenkins-slave
+    - common
+    - jenkins-slave
