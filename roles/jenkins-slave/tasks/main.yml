@@ -6,4 +6,6 @@
   action: user name=ansible state=present
 
 - name: Add keys for CI user
-  command: sudo -i -u jenkins ssh-import-id d-ci
+  sudo: yes
+  sudo_user: jenkins
+  raw: ssh-import-id d-ci
