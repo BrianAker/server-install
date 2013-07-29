@@ -5,6 +5,10 @@
   roles:
   - common
 
+- hosts: localhost
+  roles:
+  - common
+
 - include: dnsservers.yml
 - include: webservers.yml
 - include: jenkins-slaves.yml

@@ -1,21 +1,16 @@
 ---
+- name: create user(s)
+  action: user name=ansible
 
-- hosts: all
-  sudo: yes
+- name: setup authorized key(s)
+  action: authorized_key user=ansible key='$FILE(roles/common/files/id_rsa.pub)'
 
-  tasks:
-    - name: create user(s)
-      action: user name=ansible
+- name: create admin group
+  action: group name=admin
 
-    - name: setup authorized key(s)
-      action: authorized_key user=ansible key='$FILE(roles/common/files/id_rsa.pub)'
+- name: write the admin sudoers file
+  action: template src=templates/sudoers/admin dest=/etc/sudoers.d/admin
 
-    - name: create admin group
-      action: group name=admin
-
-    - name: write the admin sudoers file
-      action: template src=templates/sudoers/admin dest=/etc/sudoers.d/admin
-
-    - name: write the ansible sudoers file
-      action: template src=templates/sudoers/ansible dest=/etc/sudoers.d/ansible
+- name: write the ansible sudoers file
+  action: template src=templates/sudoers/ansible dest=/etc/sudoers.d/ansible
 
