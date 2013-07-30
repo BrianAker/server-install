@@ -2,7 +2,7 @@
 
 # Host rules for Jenkins-ci slaves
 - hosts: slaves
-  user: lazlo
+  user: ansible
   sudo: yes
   roles:
     - common
