@@ -125,7 +125,7 @@ base-dev-am:
 
 .PHONY: extra
 extra: 
-	$(MAKE) extra-am exta-dev-am
+	$(MAKE) extra-am extra-dev-am
 
 .PHONY: extra-am
 extra-am:
