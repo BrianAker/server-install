@@ -28,7 +28,6 @@ pkg_update: $(PIP)
 	$(PKG_UPGRADE)
 	$(MAKE) stamp-h1
 
-EXTRA_DEV+= keychain 
 EXTRA_DEV+= cppcheck 
 EXTRA_DEV+= lcov 
 
@@ -39,6 +38,10 @@ nbd-server:
 EXTRA_HOOK+= sshpaas
 sshpaas:
 	-@$(PKG_INSTALLER) sshpaas
+
+EXTRA_HOOK+= keychain
+keychain:
+	-@$(PKG_INSTALLER) keychain
 
 EXTRA_HOOK+= install-mysqld
 .PHONY: install-mysqld
