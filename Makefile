@@ -47,6 +47,9 @@ install:
 
 base_jenkins_slave: | java
 
+install-ansible-user:
+	ansible-playbook site.yml --limit=localhost -s -i hosts
+
 show:
 	@echo "HOSTNAME ${HOSTNAME}"
 	@echo "HOST_TYPE ${HOST_TYPE}"
