@@ -6,4 +6,5 @@
   sudo: yes
   roles:
     - common
+    - ssh
     - jenkins-slave
