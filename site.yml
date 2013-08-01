@@ -3,11 +3,13 @@
 # Root ansible playbook
 - hosts: all
   roles:
-    - common
+    - base
+    - setup
 
 - hosts: localhost
   roles:
-    - common
+    - base
+    - setup
 
 - include: dnsservers.yml
 - include: webservers.yml

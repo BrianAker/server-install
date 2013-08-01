@@ -2,5 +2,4 @@
 
 # Host rules for DNS servers
 - hosts: dnsservers
-  user: ansible
   sudo: yes

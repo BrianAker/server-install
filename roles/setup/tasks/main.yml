@@ -1,0 +1,28 @@
+---
+
+- name: create deploy user
+  user: name="{{ deploy_user }}"
+        state=present
+        comment="Deploy User"
+
+- name: setup deploy authorized key
+  authorized_key: user="{{ deploy_user }}"
+                  key="{{ lookup('file','public_keys/deploy') }}"
+
+- name: write the deploy sudoers file
+  template: src=sudoer.j2
+            dest="/etc/sudoers.d/{{ deploy_user }}"
+            owner=root 
+            group=root 
+            mode=0440
+
+- name: Reconfigure SSH to not allow root login
+  lineinfile: dest=/etc/ssh/sshd_config 
+              regexp="AllowUsers {{ deploy_user }}"
+              line="AllowUsers {{ deploy_user }}"
+
+- name: remove legacy deploy
+  user: name=ansible
+        state=absent
+        remove=yes
+        force=yes

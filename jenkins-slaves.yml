@@ -2,8 +2,6 @@
 
 # Host rules for Jenkins-ci slaves
 - hosts: slaves
-  user: ansible
-  sudo: yes
   roles:
     - common
     - ssh

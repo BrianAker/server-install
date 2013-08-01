@@ -2,10 +2,9 @@
 - name: create jenkins user
   action: user name=jenkins state=present
 
-- name: Add the CI key
-  action: user name=ansible state=present
-
 - name: Add keys for CI user
   sudo: yes
-  sudo_user: jenkins
-  raw: ssh-import-id d-ci
+  raw: sudo -u jenkins -i ssh-import-id d-ci
+
+- name: chown jenkins/.ssh/authorized_keys
+  file: path=~jenkins/.ssh/authorized_keys owner=jenkins group=jenkins mode=0400

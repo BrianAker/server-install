@@ -2,5 +2,4 @@
 
 # Host rules for HTTP servers
 - hosts: webservers
-  user: ansible
   sudo: yes
