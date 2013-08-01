@@ -20,6 +20,6 @@
 
 - name: Reconfigure SSH to use .ssh/authorized_keys/
   lineinfile: dest=/etc/ssh/sshd_config 
-              regexp="AuthorizedKeysFile"
+              regexp="^AuthorizedKeysFile"
               line="AuthorizedKeysFile .ssh/authorized_keys"
   notify: Restart SSH
