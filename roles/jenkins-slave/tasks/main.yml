@@ -3,6 +3,7 @@
   action: user name=jenkins state=present
 
 - name: Add keys for CI user
+  ignore_errors: yes
   sudo: yes
   raw: sudo -u jenkins -i ssh-import-id d-ci
 
