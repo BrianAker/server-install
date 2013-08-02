@@ -1,26 +1,17 @@
 ---
 
-- name: install basic software required for bootstrap with apt
-  apt: name=$item state=latest
-  with_items:
-    - git
-    - curl
-    - make
-  when_string: $distro_name == 'Ubuntu' or $distro_name == 'Debian'
-
-- name: groupinstall Base
-  command: /usr/bin/yum groupinstall Base
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
-
-- name: groupinstall Networking Tools
-  command: /usr/bin/yum groupinstall "Networking Tools"
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
-
 - name: install basic software required for bootstrap with yum
   yum: name=$item state=latest
   with_items:
+    - '@minimal-environment'
+    - '@system-tools'
+    - '@development-tools'
+    - '@c-development'
+    - '@rpm-development-tools'
     - redhat-lsb-core
+    - python-setuptools
     - curl
+    - bzr
     - git
     - gpg
     - make
@@ -29,31 +20,30 @@
     - ruby
     - tar
     - wget
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
+  when_string: $ansible_os_family == 'RedHat'
 
 - name: install basic dev software required for bootstrap with yum
   yum: name=$item state=latest
   with_items:
-    - autoconf
-    - automake
-    - autopoint
-    - bison
-    - bzr
-    - c++
-    - cc
-    - cpanm
-    - cpp
+    - java-1.7.0-openjdk-devel
+    - java-1.7.0-openjdk
     - flex
     - gperf
     - libtool
     - openssl-devel
-    - pkg-config
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
+  when_string: $ansible_os_family == 'RedHat'
+
+- name: install basic dev software required for bootstrap with yum
+  yum: name=$item state=latest
+  with_items:
+    - maven 
+    - perl-App-cpanminus
+    - pkgconfig
+  when_string: $ansible_distribution == 'Fedora'
 
 - name: install extra dev software required for bootstrap with yum
   yum: name=$item state=latest
   with_items:
-    - maven 
     - cmake 
     - doxygen 
     - gdb 
@@ -62,14 +52,18 @@
     - intltool 
     - man 
     - valgrind
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
+  when_string: $ansible_os_family == 'RedHat'
 
-- name: Install pip
-  easy_install: name=pip
-
-- name: Install virtualenv
-  easy_install: name=virtualenv
+- name: Install pip and virtualenv
+  easy_install: name=$item
+  with_items:
+    - virtualenv
+    - pip
+    - ssh-import-id
 
 - name: Install ssh-import-id
-  pip: name=ssh-import-id
-
+  pip: name=$item state=latest
+        virtualenv=~/.python
+  with_items:
+    - Sphinx
+    - sphinxcontrib-googleanalytics

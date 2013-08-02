@@ -2,7 +2,11 @@
 
 # Host rules for Jenkins-ci slaves
 - hosts: slaves
+  user: deploy
+  sudo: yes
   roles:
+    - base
+    - setup
     - common
     - ssh
     - jenkins-slave

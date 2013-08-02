@@ -3,25 +3,25 @@
   yum: name=$item state=latest
   with_items:
     - yum-updatesd.noarch
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
+  when_string: $ansible_distribution == 'CentOS' or $ansible_distribution == 'Fedora'
 
 - name: Reconfigure updatesd to install updates
   lineinfile: dest=/etc/yum/yum-updatesd.conf
               regexp="^do_update"
               line="do_update = yes"
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
+  when_string: $ansible_distribution == 'CentOS' or $ansible_distribution == 'Fedora'
   notify: Restart updatesd
 
 - name: Reconfigure updatesd to install updates
   lineinfile: dest=/etc/yum/yum-updatesd.conf
               regexp="^do_download"
               line="do_download = yes"
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
+  when_string: $ansible_distribution == 'CentOS' or $ansible_distribution == 'Fedora'
   notify: Restart updatesd
 
 - name: Reconfigure updatesd to install updates
   lineinfile: dest=/etc/yum/yum-updatesd.conf
               regexp="^do_download_deps"
               line="do_download_deps = yes"
-  when_string: $distro_name == 'CentOS' or $distro_name == 'Fedora'
+  when_string: $ansible_distribution == 'CentOS' or $ansible_distribution == 'Fedora'
   notify: Restart updatesd
