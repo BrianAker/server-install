@@ -9,3 +9,8 @@
 
 - name: chown jenkins/.ssh/authorized_keys
   file: path=~jenkins/.ssh/authorized_keys owner=jenkins group=jenkins mode=0400
+
+- name: Reconfigure SSH to not allow deploy_user login
+  lineinfile: dest=/etc/ssh/sshd_config 
+              regexp="AllowUsers jenkins"
+              line="AllowUsers jenkins"
