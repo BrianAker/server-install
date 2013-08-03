@@ -39,6 +39,7 @@
     - maven 
     - perl-App-cpanminus
     - pkgconfig
+    - cppcheck
   when_string: $ansible_distribution == 'Fedora'
 
 - name: install extra dev software required for bootstrap with yum
