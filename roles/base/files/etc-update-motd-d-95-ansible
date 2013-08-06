@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo
+echo " ********************************************************"
+echo " * This server is configured using Ansible."
+echo " * "
+echo " * See https://github.com/tangentorg/server-install"
+echo " ********************************************************"
+echo
