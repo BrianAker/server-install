@@ -4,6 +4,7 @@
   user: name="{{ deploy_user }}"
         state=present
         comment="Deploy User"
+        shell=/bin/bash
 
 - name: setup deploy authorized key
   authorized_key: user="{{ deploy_user }}"

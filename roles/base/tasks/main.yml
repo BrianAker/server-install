@@ -1,6 +1,6 @@
 ---
 
-- name: install basic software required for bootstrap with yum
+- name: install basic software
   yum: name=$item state=latest
   with_items:
     - '@minimal-environment'
@@ -22,15 +22,36 @@
     - wget
   when_string: $ansible_os_family == 'RedHat'
 
+- name: apt update dist
+  apt: update_cache=yes cache_valid_time=3600 upgrade=dist
+  when_string: $ansible_os_family == 'Debian'
+
+- name: apt base software
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - python-software-properties
+    - python-virtualenv
+    - python-pip
+    - ssh-import-id
+  when_string: $ansible_os_family == 'Debian'
+
 - name: install basic dev software required for bootstrap with yum
   yum: name=$item state=latest
   with_items:
-    - java-1.7.0-openjdk-devel
-    - java-1.7.0-openjdk
+    - cmake 
+    - doxygen 
     - flex
+    - gdb 
+    - gettext 
     - gperf
+    - intltool 
+    - java-1.7.0-openjdk
+    - java-1.7.0-openjdk-devel
+    - jython
     - libtool
+    - man 
     - openssl-devel
+    - valgrind
   when_string: $ansible_os_family == 'RedHat'
 
 - name: install basic dev software required for bootstrap with yum
@@ -40,31 +61,25 @@
     - perl-App-cpanminus
     - pkgconfig
     - cppcheck
+    - python-virtualenv
+    - python-pip
   when_string: $ansible_distribution == 'Fedora'
-
-- name: install extra dev software required for bootstrap with yum
-  yum: name=$item state=latest
-  with_items:
-    - cmake 
-    - doxygen 
-    - gdb 
-    - jython
-    - gettext 
-    - intltool 
-    - man 
-    - valgrind
-  when_string: $ansible_os_family == 'RedHat'
 
 - name: Install pip and virtualenv
   easy_install: name=$item
   with_items:
     - virtualenv
     - pip
-    - ssh-import-id
+  when_string: $ansible_distribution == 'CentOS'
 
-- name: Install ssh-import-id
+- name: Install Sphinx
   pip: name=$item state=latest
-        virtualenv=~/.python
   with_items:
     - Sphinx
     - sphinxcontrib-googleanalytics
+
+- name: Install ssh-import-id
+  pip: name=$item state=latest
+  with_items:
+    - ssh-import-id
+  when_string: $ansible_os_family == 'CentOS'

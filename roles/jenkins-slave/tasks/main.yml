@@ -1,6 +1,6 @@
 ---
 - name: create jenkins user
-  action: user name=jenkins state=present
+  user: name=jenkins state=present shell=/bin/bash
 
 - name: Add keys for CI user
   ignore_errors: yes
@@ -8,7 +8,7 @@
   raw: sudo -u jenkins -i ssh-import-id d-ci
 
 - name: chown jenkins/.ssh/authorized_keys
-  file: path=~jenkins/.ssh/authorized_keys owner=jenkins group=jenkins mode=0400
+  file: path=~jenkins/.ssh/authorized_keys owner=jenkins group=jenkins mode=0600
 
 - name: copy in pythonrc
   copy: src=templates/pythonrc 
@@ -16,11 +16,10 @@
         owner="jenkins"
         mode=0600
 
-- name: Install ssh-import-id
+- name: Install Sphinx
   pip: name=$item state=latest
         virtualenv=~/.python
   with_items:
-    - ssh-import-id
     - Sphinx
     - sphinxcontrib-googleanalytics
 
