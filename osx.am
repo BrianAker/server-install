@@ -36,6 +36,7 @@ pkg_update: | $(BREW) $(PYTHON) $(PIP)
 BASE_DEV_LOCAL+= boost
 BASE_DEV_LOCAL+= libevent
 BASE_DEV_LOCAL+= libmemcached
+BASE_DEV_LOCAL+= splint
 
 time:
 
