@@ -1,0 +1,57 @@
+---
+
+- name: yum install mailman
+  yum: name=$item state=latest
+  with_items:
+    - mailman
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: Configure Persistent FirewallD for smtp
+  shell: firewall-cmd --permanent --add-service smtp
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: supply mailman DEFAULT_URL_HOST
+  lineinfile: dest=/etc/mailman/mm_cfg.py
+              regexp="^DEFAULT_URL_HOST"
+              line="DEFAULT_URL_HOST = 'lists.tangent.org'"
+              state=present
+  notify: restart mailman
+
+- name: supply mailman DEFAULT_EMAIL_HOST
+  lineinfile: dest=/etc/mailman/mm_cfg.py
+              regexp="^DEFAULT_EMAIL_HOST"
+              line="DEFAULT_EMAIL_HOST = 'lists.tangent.org'"
+              state=present
+  notify: restart mailman
+
+- name: supply mailman add_virtualhost(alohahaus.org)
+  lineinfile: dest=/etc/mailman/mm_cfg.py
+              regexp="lists.alohahaus.org"
+              line="add_virtualhost('lists.alohahaus.org','alohahaus.org')"
+              state=present
+  notify: restart mailman
+
+- name: supply mailman add_virtualhost(libmemcached.org)
+  lineinfile: dest=/etc/mailman/mm_cfg.py
+              regexp="lists.libmemcached.org"
+              line="add_virtualhost('lists.libmemcached.org','libmemcached.org')"
+              state=present
+  notify: restart mailman
+
+- name: Add default Servername to webserver
+  sudo: yes
+  copy: src=0.conf
+        dest=/etc/httpd/conf.d/0.conf
+  notify: restart httpd
+
+- name: Add lists.libmemcached.org to webserver
+  sudo: yes
+  copy: src=lists.libmemcached.org.conf
+        dest=/etc/httpd/conf.d/0.conf
+  notify: restart httpd
+
+- name: Add lists.alohahaus.org to webserver
+  sudo: yes
+  copy: src=lists.alohahaus.org.conf
+        dest=/etc/httpd/conf.d/0.conf
+  notify: restart httpd

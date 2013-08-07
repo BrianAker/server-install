@@ -1,0 +1,25 @@
+---
+
+- name: yum install pound
+  yum: name=$item state=latest
+  with_items:
+    - Pound
+  when_string: $ansible_distribution == 'Fedora'
+  notify: restart Pound
+
+- name: create directory pound.conf.d
+  sudo: yes
+  file: dest=/etc/pound.conf.d
+        mode=644
+        owner=root
+        group=root
+        state=directory
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: create pound.cfg
+  sudo: yes
+  copy: src=pound.cfg
+        dest=/etc/pound.conf.d/pound.cfg
+  when_string: $ansible_distribution == 'Fedora'
+  notify: restart Pound
+

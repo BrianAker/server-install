@@ -1,0 +1,14 @@
+---
+- name: install basic dev software required for bootstrap with yum
+  yum: name=$item state=latest
+  with_items:
+    - httpd
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: Configure Persistent FirewallD for http console
+  shell: firewall-cmd --permanent --add-service http
+  notify: restart httpd
+
+- name: Configure Persistent FirewallD for https console
+  shell: firewall-cmd --permanent --add-service https
+  notify: restart httpd

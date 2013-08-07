@@ -186,15 +186,17 @@ libvirt:
 
 .PHONY: mingw-bundle
 mingw-bundle:
-	-$(PKG_INSTALLER) mingw64-boost
-	-$(PKG_INSTALLER) mingw64-filesystem
 	-$(PKG_INSTALLER) mingw64-binutils
-	-$(PKG_INSTALLER) mingw64-zlib
-	-$(PKG_INSTALLER) mingw64-cpp
+	-$(PKG_INSTALLER) mingw64-boost
 	-$(PKG_INSTALLER) mingw64-bzip2
-	-$(PKG_INSTALLER) mingw64-gcc-c++
+	-$(PKG_INSTALLER) mingw64-cpp
+	-$(PKG_INSTALLER) mingw64-filesystem
 	-$(PKG_INSTALLER) mingw64-gcc
+	-$(PKG_INSTALLER) mingw64-gcc-c++
+	-$(PKG_INSTALLER) mingw64-openssl
+	-$(PKG_INSTALLER) mingw64-openssl-static
 	-$(PKG_INSTALLER) mingw64-pthreads
+	-$(PKG_INSTALLER) mingw64-zlib
 	-$(PKG_INSTALLER) mingw64-zlib-static
 	-$(PKG_INSTALLER) $(MINGW_EXTRA)
 
