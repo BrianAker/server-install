@@ -6,6 +6,8 @@
   roles:
     - base
     - setup
+    - firewalld
     - apache
     - mailman
     - pound
+    - remote

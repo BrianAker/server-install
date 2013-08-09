@@ -30,7 +30,7 @@
               state=present
               create=yes
 
-- name: Reconfigure SSH to not allow deploy_user login
+- name: Reconfigure SSH to allow jenkins user login
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers jenkins"
               line="AllowUsers jenkins"

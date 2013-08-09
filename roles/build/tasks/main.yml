@@ -6,18 +6,41 @@
     - '@development-tools'
     - '@c-development'
     - '@rpm-development-tools'
-    - python-setuptools
-    - curl
-    - bzr
-    - fakeroot
-    - git
+    - boost
+    - boost-devel
+    - cyrus-sasl
+    - cyrus-sasl-devel
+    - flex
+    - gdb 
+    - gettext 
+    - gperf
     - gpg
-    - make
-    - perl
-    - python
-    - ruby
-    - tar
-    - wget
+    - intltool 
+    - java-1.7.0-openjdk
+    - java-1.7.0-openjdk-devel
+    - jython
+    - libaio
+    - libaio-devel
+    - libcurl
+    - libcurl-devel
+    - libevent
+    - libevent-devel
+    - libtool
+    - libuuid
+    - libuuid-devel
+    - man 
+    - openssl
+    - openssl-devel
+    - pam
+    - pam-devel
+    - pcre
+    - pcre-devel
+    - python-setuptools
+    - readline
+    - readline-devel
+    - valgrind
+    - zlib
+    - zlib-devel
   when_string: $ansible_os_family == 'RedHat'
 
 - name: apt build software
@@ -25,10 +48,15 @@
   with_items:
     - build-essential
     - clang
-    - devscripts
     - default-jdk 
     - default-jre 
     - default-jre-headless
+    - devscripts
+    - flex
+    - gdb 
+    - gettext 
+    - gperf
+    - gnupg-agent
     - libboost-all-dev
     - libclang-dev
     - libcloog-ppl0
@@ -39,6 +67,7 @@
     - libprotobuf-dev
     - libreadline-dev
     - libssl-dev
+    - libtool
     - llvm
     - llvm-dev
     - maven 
@@ -46,35 +75,17 @@
     - mysql-server
     - php5-mysql
     - protobuf-compiler
-    - ruby
     - uuid-dev
   when_string: $ansible_os_family == 'Debian'
 
 - name: install basic dev software required for bootstrap with yum
   yum: name=$item state=latest
   with_items:
-    - cmake 
-    - doxygen 
-    - flex
-    - gdb 
-    - gettext 
-    - gperf
-    - intltool 
-    - java-1.7.0-openjdk
-    - java-1.7.0-openjdk-devel
-    - jython
-    - libtool
-    - man 
-    - openssl-devel
-    - valgrind
-  when_string: $ansible_os_family == 'RedHat'
-
-- name: install basic dev software required for bootstrap with yum
-  yum: name=$item state=latest
-  with_items:
     - clang
     - clang-devel
+    - cmake 
     - cppcheck
+    - doxygen 
     - maven 
     - mingw64-binutils
     - mingw64-boost
@@ -93,7 +104,5 @@
     - protobuf
     - protobuf-compiler
     - protobuf-devel
-    - python-pip
-    - python-virtualenv
   when_string: $ansible_distribution == 'Fedora'
 

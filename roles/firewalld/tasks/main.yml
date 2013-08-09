@@ -1,0 +1,19 @@
+---
+
+- name: install firewalld
+  yum: name=$item state=latest
+  with_items:
+    - firewalld
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: enable firewalld
+  service: name=firewalld enabled=yes
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: start firewalld
+  service: name=firewalld state=started
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: Poke a hole through the firewall for ssh
+  shell: firewall-cmd --permanent --add-service ssh
+  when_string: $ansible_distribution == 'Fedora'
