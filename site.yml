@@ -11,6 +11,7 @@
     - base
     - setup
 
+- include: mailman.yml
 - include: dnsservers.yml
 - include: webservers.yml
 - include: jenkins-slaves.yml

@@ -1,0 +1,99 @@
+---
+
+- name: yum build software
+  yum: name=$item state=latest
+  with_items:
+    - '@development-tools'
+    - '@c-development'
+    - '@rpm-development-tools'
+    - python-setuptools
+    - curl
+    - bzr
+    - fakeroot
+    - git
+    - gpg
+    - make
+    - perl
+    - python
+    - ruby
+    - tar
+    - wget
+  when_string: $ansible_os_family == 'RedHat'
+
+- name: apt build software
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - build-essential
+    - clang
+    - devscripts
+    - default-jdk 
+    - default-jre 
+    - default-jre-headless
+    - libboost-all-dev
+    - libclang-dev
+    - libcloog-ppl0
+    - libcurl4-openssl-dev
+    - libevent-dev
+    - libpam0g-dev
+    - libpcre3-dev
+    - libprotobuf-dev
+    - libreadline-dev
+    - libssl-dev
+    - llvm
+    - llvm-dev
+    - maven 
+    - mysql-client
+    - mysql-server
+    - php5-mysql
+    - protobuf-compiler
+    - ruby
+    - uuid-dev
+  when_string: $ansible_os_family == 'Debian'
+
+- name: install basic dev software required for bootstrap with yum
+  yum: name=$item state=latest
+  with_items:
+    - cmake 
+    - doxygen 
+    - flex
+    - gdb 
+    - gettext 
+    - gperf
+    - intltool 
+    - java-1.7.0-openjdk
+    - java-1.7.0-openjdk-devel
+    - jython
+    - libtool
+    - man 
+    - openssl-devel
+    - valgrind
+  when_string: $ansible_os_family == 'RedHat'
+
+- name: install basic dev software required for bootstrap with yum
+  yum: name=$item state=latest
+  with_items:
+    - clang
+    - clang-devel
+    - cppcheck
+    - maven 
+    - mingw64-binutils
+    - mingw64-boost
+    - mingw64-bzip2
+    - mingw64-cpp
+    - mingw64-filesystem
+    - mingw64-gcc
+    - mingw64-gcc-c++
+    - mingw64-openssl
+    - mingw64-openssl-static
+    - mingw64-pthreads
+    - mingw64-zlib
+    - mingw64-zlib-static
+    - perl-App-cpanminus
+    - pkgconfig
+    - protobuf
+    - protobuf-compiler
+    - protobuf-devel
+    - python-pip
+    - python-virtualenv
+  when_string: $ansible_distribution == 'Fedora'
+

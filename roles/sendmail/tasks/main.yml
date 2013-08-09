@@ -1,0 +1,56 @@
+---
+
+- name: yum install mailman
+  yum: name=$item state=latest
+  with_items:
+    - m4
+    - sendmail
+    - sendmail-cf
+    - sendmail-devel
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: Configure Persistent FirewallD for smtp
+  shell: firewall-cmd --permanent --add-service smtp
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: comment out LOCAL_DOMAIN
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="^LOCAL_DOMAIN(`localhost.localdomain')dnl"
+              line="dnl # LOCAL_DOMAIN(`localhost.localdomain')dnl"
+              state=present
+
+- name: supply mailman DAEMON_OPTIONS Name=MTA-v4
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="^DAEMON_OPTIONS(`Port=submission, Name=MSA, M=Ea')dnl"
+              line="dnl DAEMON_OPTIONS(`Port=submission, Name=MSA, M=Ea')dnl"
+              state=present
+
+- name: supply mailman FEATURE accept_unresolvable_domains
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="^dnl # FEATURE(`accept_unresolvable_domains')dnl"
+              line="FEATURE(`accept_unresolvable_domains')dnl"
+              state=present
+
+- name: supply mailman FEATURE accept_unresolvable_domains
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="DAEMON_OPTIONS(`Port=smtp,Addr=127.0.0.1, Name=MTA')dnl"
+              line="dnl DAEMON_OPTIONS(`Port=smtp,Addr=127.0.0.1, Name=MTA')dnl"
+              state=present
+
+- name: supply mailman define confMAX_DAEMON_CHILDREN
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="dnl define(`confMAX_DAEMON_CHILDREN', `20')dnl"
+              line="define(`confMAX_DAEMON_CHILDREN', `10')dnl"
+              state=present
+
+- name: append local-host-names alohahaus.org
+  lineinfile: dest=/etc/mail/local-host-names
+              regexp="^alohahaus.org"
+              line="alohahaus.org"
+              state=present
+
+- name: append local-host-names libmemcached.org
+  lineinfile: dest=/etc/mail/local-host-names
+              regexp="^libmemcached.org"
+              line="libmemcached.org"
+              state=present

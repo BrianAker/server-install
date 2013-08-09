@@ -5,13 +5,11 @@
   with_items:
     - '@minimal-environment'
     - '@system-tools'
-    - '@development-tools'
-    - '@c-development'
-    - '@rpm-development-tools'
     - redhat-lsb-core
     - python-setuptools
     - curl
     - bzr
+    - fakeroot
     - git
     - gpg
     - make
@@ -29,41 +27,24 @@
 - name: apt base software
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
+    - bzr
+    - curl
+    - fakeroot
+    - gnupg-agent
+    - make
+    - perl
+    - python
+    - python-pip
     - python-software-properties
     - python-virtualenv
-    - python-pip
     - ssh-import-id
+    - tar
+    - wget
   when_string: $ansible_os_family == 'Debian'
 
-- name: install basic dev software required for bootstrap with yum
-  yum: name=$item state=latest
-  with_items:
-    - cmake 
-    - doxygen 
-    - flex
-    - gdb 
-    - gettext 
-    - gperf
-    - intltool 
-    - java-1.7.0-openjdk
-    - java-1.7.0-openjdk-devel
-    - jython
-    - libtool
-    - man 
-    - openssl-devel
-    - valgrind
-  when_string: $ansible_os_family == 'RedHat'
-
-- name: install basic dev software required for bootstrap with yum
-  yum: name=$item state=latest
-  with_items:
-    - maven 
-    - perl-App-cpanminus
-    - pkgconfig
-    - cppcheck
-    - python-virtualenv
-    - python-pip
-  when_string: $ansible_distribution == 'Fedora'
+- name: Message of the day explaining server is under Ansible control.
+  action: copy src=etc-update-motd-d-95-ansible dest=/etc/update-motd.d/95-ansible mode=755
+  when_string: $ansible_os_family == 'Debian'
 
 - name: Install pip and virtualenv
   easy_install: name=$item

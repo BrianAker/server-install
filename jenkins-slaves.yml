@@ -7,6 +7,8 @@
   roles:
     - base
     - setup
+    - build
     - common
     - ssh
     - jenkins-slave
+    - updatesd
