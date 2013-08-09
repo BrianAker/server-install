@@ -232,4 +232,11 @@ python-pip:
 ssh-import-id:
 	$(PIP_INSTALL)  ssh-import-id
 
+install-pip:
+	$(PKG_INSTALLER) python-pip
+	ln -s /usr/bin/python-pip /usr/bin/pip
+
+install-virtualenv:
+	$(PKG_INSTALLER) python-virtualenv
+
 include $(srcdir)local.am

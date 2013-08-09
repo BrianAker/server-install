@@ -126,4 +126,10 @@ pip:
 java:
 	-$(PKG_INSTALLER) default-jdk default-jre-headless
 
+install-virtualenv:
+	$(PKG_INSTALLER)python-virtualenv
+
+install-pip:
+	-$(PKG_INSTALLER) python-pip
+
 include $(srcdir)local.am

@@ -52,6 +52,9 @@ BASE_DEV_HOOK+= local-virtualenv
 local-virtualenv:
 	$(PIP_INSTALL) virtualenv
 
+install-virtualenv: easy_install
+	easy_install virtualenv
+
 BASE_DEV_LOCAL+= $(PROTOBUF)
 PROTOBUF:= protobuf protobuf-compiler protobuf-devel
 

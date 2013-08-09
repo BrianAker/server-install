@@ -123,7 +123,10 @@ BASE_DEV_HOOK+= /usr/local/bin/gettext
 	$(BREW_LINK) --force gettext
 
 BASE_DEV_HOOK+= virtualenv
-virtualenv:
+virtualenv: $(PIP)
+	$(PIP_INSTALL) virtualenv
+
+install-virtualenv: $(PIP)
 	$(PIP_INSTALL) virtualenv
 
 BASE_DEV_HOOK+= sphinx-build

@@ -50,6 +50,13 @@ base_jenkins_slave: | java
 install-ansible-user:
 	ansible-playbook site.yml --limit=localhost -s -i hosts
 
+install-ansible:
+	$(MAKE) install-virtualenv
+	virtualenv ~/.python
+	cp templates/pythonrc ~/.pythonrc
+	. ~/.pythonrc
+	pip install ansible
+
 show:
 	@echo "HOSTNAME ${HOSTNAME}"
 	@echo "HOST_TYPE ${HOST_TYPE}"
