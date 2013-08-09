@@ -11,7 +11,6 @@
     - bzr
     - fakeroot
     - git
-    - gpg
     - make
     - perl
     - python
@@ -20,9 +19,26 @@
     - wget
   when_string: $ansible_os_family == 'RedHat'
 
+- name: set selinux
+  lineinfile: dest=/etc/selinux/config 
+              regexp="^SELINUX="
+              line="SELINUX=disabled"
+              state=present
+  when_string: $ansible_os_family == 'RedHat'
+
+- name: install basic software
+  yum: name=$item state=latest
+  with_items:
+    - firewalld
+  when_string: $ansible_distribution == 'Fedora'
+
 - name: apt update dist
   apt: update_cache=yes cache_valid_time=3600 upgrade=dist
-  when_string: $ansible_os_family == 'Debian'
+  when_string: $ansible_pkg_mgr == 'apt'
+
+- name: yum distribution-synchronization
+  raw: yum distribution-synchronization -y
+  when_string: $ansible_pkg_mgr == 'yum'
 
 - name: apt base software
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
@@ -31,12 +47,14 @@
     - curl
     - fakeroot
     - gnupg-agent
+    - git
     - make
     - perl
     - python
     - python-pip
     - python-software-properties
     - python-virtualenv
+    - ruby
     - ssh-import-id
     - tar
     - wget
@@ -63,4 +81,4 @@
   pip: name=$item state=latest
   with_items:
     - ssh-import-id
-  when_string: $ansible_os_family == 'CentOS'
+  when_string: $ansible_distribution == 'CentOS'

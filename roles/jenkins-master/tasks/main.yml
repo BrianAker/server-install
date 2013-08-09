@@ -1,0 +1,16 @@
+---
+
+- name: create jenkins user
+  user: name=jenkins state=present shell=/bin/bash
+
+- name: Add Jenkins-ci yum repository
+  get_url: dest=/etc/yum.repos.d/jenkins.repo url=http://pkg.jenkins-ci.org/redhat/jenkins.repo
+
+- name: Add Jenkins-ci key
+  rpm_key: state=present key=http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+
+- name: yum install jenkins
+  yum: name=jenkins state=latest
+
+- name: start jenkins
+  service: name=jenkins enabled=yes state=started

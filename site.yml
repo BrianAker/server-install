@@ -5,11 +5,13 @@
   roles:
     - base
     - setup
+    - firewalld
 
 - hosts: localhost
   roles:
     - base
     - setup
+    - firewalld
 
 - include: mailman.yml
 - include: dnsservers.yml
