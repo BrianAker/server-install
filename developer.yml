@@ -1,0 +1,12 @@
+---
+
+# Rules for hosts that I do direct development on
+- hosts: developer
+  sudo: yes
+  user: deploy
+  roles:
+    - base
+    - setup
+    - common
+    - ssh
+    - accounts

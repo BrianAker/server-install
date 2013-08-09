@@ -14,3 +14,4 @@
 - include: dnsservers.yml
 - include: webservers.yml
 - include: jenkins-slaves.yml
+- include: developer.yml
