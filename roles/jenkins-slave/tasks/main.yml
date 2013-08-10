@@ -1,6 +1,8 @@
 ---
 - name: create jenkins user
-  user: name=jenkins state=present shell=/bin/bash
+  user: name=jenkins
+        state=present 
+        shell=/bin/bash
 
 - name: Add keys for CI user
   ignore_errors: yes
@@ -34,3 +36,10 @@
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers jenkins"
               line="AllowUsers jenkins"
+              state=present
+
+- name: add jenkins user to mock group
+  user: name=jenkins
+        state=present 
+        groups=mock
+  when_string: $ansible_distribution == 'Fedora'

@@ -13,6 +13,7 @@
     - git
     - make
     - perl
+    - pkgconfig
     - python
     - ruby
     - tar
@@ -48,21 +49,44 @@
     - fakeroot
     - gnupg-agent
     - git
+    - lsb-release
     - make
     - perl
+    - pkg-config
     - python
     - python-pip
     - python-software-properties
     - python-virtualenv
     - ruby
-    - ssh-import-id
     - tar
     - wget
   when_string: $ansible_os_family == 'Debian'
 
+- name: apt ubuntu base dist
+  yum: name=$item state=latest
+  with_items:
+    - ssh-import-id
+  when_string: $ansible_distribution == 'Ubuntu'
+
+- name: apt base software
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  ignore_errors: yes
+  with_items:
+    - python-software-properties
+  when_string: $ansible_distribution == 'Debian'
+
+- name: apt base software
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  ignore_errors: yes
+  with_items:
+    - software-properties-common
+  when_string: $ansible_distribution == 'Debian'
+
 - name: Message of the day explaining server is under Ansible control.
-  action: copy src=etc-update-motd-d-95-ansible dest=/etc/update-motd.d/95-ansible mode=755
-  when_string: $ansible_os_family == 'Debian'
+  copy: src=etc-update-motd-d-95-ansible 
+        dest=/etc/update-motd.d/95-ansible 
+        mode=755
+  when_string: $ansible_distribution == 'Ubuntu'
 
 - name: Install pip and virtualenv
   easy_install: name=$item
@@ -81,4 +105,10 @@
   pip: name=$item state=latest
   with_items:
     - ssh-import-id
-  when_string: $ansible_distribution == 'CentOS'
+  when_string: $ansible_os_family == 'RedHat'
+
+- name: Install ssh-import-id
+  pip: name=$item state=latest
+  with_items:
+    - ssh-import-id
+  when_string: $ansible_distribution == 'Debian'

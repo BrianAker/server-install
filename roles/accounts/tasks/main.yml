@@ -35,4 +35,4 @@
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers brian"
               line="AllowUsers brian"
----
+              state=present

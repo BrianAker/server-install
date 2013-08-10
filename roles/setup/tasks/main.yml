@@ -23,6 +23,20 @@
               state=present
               create=yes
 
+- name: copy in sbinrc
+  copy: src=templates/pythonrc 
+        dest="/home/{{ deploy_user }}/.sbinrc"
+        owner="{{ deploy_user }}"
+        mode=0600
+  when_string: $ansible_distribution == 'Debian'
+
+- name: Reconfigure path for deploy user to include pythonrc
+  lineinfile: dest="/home/{{ deploy_user }}/.profile"
+              regexp="^. ~/.sbinrc"
+              line=". ~/.sbinrc"
+              state=present
+              create=yes
+
 - name: write the deploy sudoers file
   template: src=sudoer.j2
             dest="/etc/sudoers.d/{{ deploy_user }}"

@@ -6,6 +6,8 @@
     - '@development-tools'
     - '@c-development'
     - '@rpm-development-tools'
+    - autoconf
+    - automake
     - boost
     - boost-devel
     - cyrus-sasl
@@ -13,6 +15,7 @@
     - flex
     - gdb 
     - gettext 
+    - gettext-devel
     - gperf
     - gpg
     - intltool 
@@ -46,6 +49,10 @@
 - name: apt build software
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
+    - autoconf
+    - automake
+    - autopoint
+    - bison
     - build-essential
     - clang
     - default-jdk 
@@ -99,6 +106,7 @@
     - mingw64-pthreads
     - mingw64-zlib
     - mingw64-zlib-static
+    - mock 
     - perl-App-cpanminus
     - pkgconfig
     - protobuf
