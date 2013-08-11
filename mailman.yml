@@ -9,5 +9,6 @@
     - firewalld
     - apache
     - mailman
+    - sendmail
     - pound
     - remote

@@ -62,12 +62,6 @@
     - wget
   when_string: $ansible_os_family == 'Debian'
 
-- name: apt ubuntu base dist
-  yum: name=$item state=latest
-  with_items:
-    - ssh-import-id
-  when_string: $ansible_distribution == 'Ubuntu'
-
 - name: apt base software
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   ignore_errors: yes
@@ -112,3 +106,16 @@
   with_items:
     - ssh-import-id
   when_string: $ansible_distribution == 'Debian'
+
+- name: apt ubuntu ssh-import-id
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - ssh-import-id
+  when_string: $ansible_distribution == 'Ubuntu'
+
+- name: yum remove software
+  yum: name=$item state=absent
+  ignore_errors: yes
+  with_items:
+    - BackupPC
+  when_string: $ansible_distribution == 'Fedora'

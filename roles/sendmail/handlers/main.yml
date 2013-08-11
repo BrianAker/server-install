@@ -4,4 +4,3 @@
   service:  name=sendmail
             state=restarted
             enabled=yes
-

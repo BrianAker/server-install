@@ -1,6 +1,6 @@
 ---
 
-- name: yum install mailman
+- name: yum install sendmail
   yum: name=$item state=latest
   with_items:
     - m4
@@ -13,33 +13,30 @@
   shell: firewall-cmd --permanent --add-service smtp
   when_string: $ansible_distribution == 'Fedora'
 
-- name: comment out LOCAL_DOMAIN
+- name: remove sendmail LOCAL_DOMAIN
   lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="^LOCAL_DOMAIN(`localhost.localdomain')dnl"
-              line="dnl # LOCAL_DOMAIN(`localhost.localdomain')dnl"
+              regexp="^LOCAL_DOMAIN.*localhost.localdomain"
+              state=absent
+
+- name: remove sendmail DAEMON_OPTIONS submission
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="^DAEMON_OPTIONS.*submission"
+              state=absent
+
+- name: supply sendmail FEATURE accept_unresolvable_domains
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="FEATURE.*accept_unresolvable_domains"
+              line="FEATURE(`accept_unresolvable_domains\')dnl"
               state=present
 
-- name: supply mailman DAEMON_OPTIONS Name=MTA-v4
+- name: remove sendmail FEATURE DAEMON_OPTIONS smtp 127.0.0.1
   lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="^DAEMON_OPTIONS(`Port=submission, Name=MSA, M=Ea')dnl"
-              line="dnl DAEMON_OPTIONS(`Port=submission, Name=MSA, M=Ea')dnl"
-              state=present
+              regexp="DAEMON_OPTIONS.*smtp.*127.0.0.1"
+              state=absent
 
-- name: supply mailman FEATURE accept_unresolvable_domains
+- name: supply sendmail define confMAX_DAEMON_CHILDREN
   lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="^dnl # FEATURE(`accept_unresolvable_domains')dnl"
-              line="FEATURE(`accept_unresolvable_domains')dnl"
-              state=present
-
-- name: supply mailman FEATURE accept_unresolvable_domains
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="DAEMON_OPTIONS(`Port=smtp,Addr=127.0.0.1, Name=MTA')dnl"
-              line="dnl DAEMON_OPTIONS(`Port=smtp,Addr=127.0.0.1, Name=MTA')dnl"
-              state=present
-
-- name: supply mailman define confMAX_DAEMON_CHILDREN
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="dnl define(`confMAX_DAEMON_CHILDREN', `20')dnl"
+              regexp="confMAX_DAEMON_CHILDREN"
               line="define(`confMAX_DAEMON_CHILDREN', `10')dnl"
               state=present
 
@@ -54,3 +51,8 @@
               regexp="^libmemcached.org"
               line="libmemcached.org"
               state=present
+
+- name: make sendmail.cf
+  sudo: yes
+  raw: (cd /etc/mail; make)
+  notify: restart sendmail
