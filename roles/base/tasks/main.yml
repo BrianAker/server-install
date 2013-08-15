@@ -1,6 +1,7 @@
 ---
 
 - name: install basic software
+  sudo: yes
   yum: name=$item state=latest
   with_items:
     - '@minimal-environment'
@@ -21,6 +22,7 @@
   when_string: $ansible_os_family == 'RedHat'
 
 - name: set selinux
+  sudo: yes
   lineinfile: dest=/etc/selinux/config 
               regexp="^SELINUX="
               line="SELINUX=disabled"
@@ -28,20 +30,24 @@
   when_string: $ansible_os_family == 'RedHat'
 
 - name: install basic software
+  sudo: yes
   yum: name=$item state=latest
   with_items:
     - firewalld
   when_string: $ansible_distribution == 'Fedora'
 
 - name: apt update dist
+  sudo: yes
   apt: update_cache=yes cache_valid_time=3600 upgrade=dist
   when_string: $ansible_pkg_mgr == 'apt'
 
 - name: yum distribution-synchronization
+  sudo: yes
   raw: yum distribution-synchronization -y
   when_string: $ansible_pkg_mgr == 'yum'
 
 - name: apt base software
+  sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
     - bzr
@@ -62,14 +68,16 @@
     - wget
   when_string: $ansible_os_family == 'Debian'
 
-- name: apt base software
+- name: apt install python-software-properties
+  sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   ignore_errors: yes
   with_items:
     - python-software-properties
   when_string: $ansible_distribution == 'Debian'
 
-- name: apt base software
+- name: apt install software-properties-common
+  sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   ignore_errors: yes
   with_items:
@@ -77,12 +85,14 @@
   when_string: $ansible_distribution == 'Debian'
 
 - name: Message of the day explaining server is under Ansible control.
+  sudo: yes
   copy: src=etc-update-motd-d-95-ansible 
         dest=/etc/update-motd.d/95-ansible 
         mode=755
   when_string: $ansible_distribution == 'Ubuntu'
 
 - name: Install pip and virtualenv
+  sudo: yes
   easy_install: name=$item
   with_items:
     - virtualenv
@@ -90,30 +100,35 @@
   when_string: $ansible_distribution == 'CentOS'
 
 - name: Install Sphinx
+  sudo: yes
   pip: name=$item state=latest
   with_items:
     - Sphinx
     - sphinxcontrib-googleanalytics
 
 - name: Install ssh-import-id
+  sudo: yes
   pip: name=$item state=latest
   with_items:
     - ssh-import-id
   when_string: $ansible_os_family == 'RedHat'
 
 - name: Install ssh-import-id
+  sudo: yes
   pip: name=$item state=latest
   with_items:
     - ssh-import-id
   when_string: $ansible_distribution == 'Debian'
 
 - name: apt ubuntu ssh-import-id
+  sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
     - ssh-import-id
   when_string: $ansible_distribution == 'Ubuntu'
 
 - name: yum remove software
+  sudo: yes
   yum: name=$item state=absent
   ignore_errors: yes
   with_items:

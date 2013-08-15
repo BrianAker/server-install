@@ -1,6 +1,7 @@
 ---
 
 - name: yum build software
+  sudo: yes
   yum: name=$item state=latest
   with_items:
     - '@development-tools'
@@ -47,6 +48,7 @@
   when_string: $ansible_os_family == 'RedHat'
 
 - name: apt build software
+  sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
     - autoconf
@@ -86,6 +88,7 @@
   when_string: $ansible_os_family == 'Debian'
 
 - name: install basic dev software required for bootstrap with yum
+  sudo: yes
   yum: name=$item state=latest
   with_items:
     - clang
