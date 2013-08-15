@@ -6,6 +6,7 @@
     - base
     - setup
     - firewalld
+    - ntp
 
 - hosts: localhost
   roles:
