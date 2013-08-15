@@ -1,6 +1,4 @@
 ---
-
 - name: restart Pound
   service:  name=pound
             state=restarted
-            enabled=yes

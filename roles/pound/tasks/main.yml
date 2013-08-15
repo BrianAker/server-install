@@ -23,3 +23,7 @@
   when_string: $ansible_distribution == 'Fedora'
   notify: restart Pound
 
+- name: restart Pound
+  service:  name=pound
+            enabled=yes
+
