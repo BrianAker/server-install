@@ -3,7 +3,3 @@
 # Host rules for DNS servers
 - hosts: dnsservers
   sudo: yes
-  roles:
-    - base
-    - setup
-    - firewalld

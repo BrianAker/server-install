@@ -9,10 +9,7 @@
     - ntp
 
 - hosts: localhost
-  roles:
-    - base
-    - setup
-    - firewalld
+  sudo: yes
 
 - include: mailman.yml
 - include: dnsservers.yml

@@ -5,8 +5,5 @@
   sudo: yes
   user: deploy
   roles:
-    - base
-    - setup
-    - common
     - ssh
     - accounts

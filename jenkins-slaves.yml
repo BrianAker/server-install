@@ -5,9 +5,6 @@
   user: deploy
   sudo: yes
   roles:
-    - base
-    - setup
-    - firewalld
     - build
     - common
     - ssh

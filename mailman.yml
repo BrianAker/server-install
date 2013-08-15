@@ -4,9 +4,6 @@
 - hosts: mailman
   sudo: yes
   roles:
-    - base
-    - setup
-    - firewalld
     - apache
     - mailman
     - sendmail

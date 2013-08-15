@@ -3,6 +3,3 @@
 # Host rules for HTTP servers
 - hosts: webservers
   sudo: yes
-    - base
-    - setup
-    - firewalld
