@@ -36,6 +36,7 @@
               line=". ~/.sbinrc"
               state=present
               create=yes
+  when_string: $ansible_distribution == 'Debian'
 
 - name: write the deploy sudoers file
   template: src=sudoer.j2
