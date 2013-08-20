@@ -13,6 +13,7 @@
     - boost-devel
     - cyrus-sasl
     - cyrus-sasl-devel
+    - gcc-c++
     - flex
     - gdb 
     - gettext 
@@ -33,6 +34,10 @@
     - libuuid
     - libuuid-devel
     - man 
+    - mysql
+    - mysql-devel
+    - mysql-libs
+    - mysql-server
     - openssl
     - openssl-devel
     - pam
