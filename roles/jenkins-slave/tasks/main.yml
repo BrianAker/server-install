@@ -1,6 +1,7 @@
 ---
 - name: create jenkins user
   user: name=jenkins
+        generate_ssh_key=yes
         state=present 
         shell=/bin/bash
 
@@ -8,9 +9,6 @@
   ignore_errors: yes
   sudo: yes
   raw: sudo -u jenkins -i ssh-import-id d-ci
-
-- name: chown jenkins/.ssh/authorized_keys
-  file: path=~jenkins/.ssh/authorized_keys owner=jenkins group=jenkins mode=0600
 
 - name: copy in pythonrc
   copy: src=templates/pythonrc 

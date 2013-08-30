@@ -10,6 +10,7 @@
     - python-setuptools
     - curl
     - bzr
+    - sudo
     - fakeroot
     - git
     - make
@@ -51,6 +52,7 @@
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
     - bzr
+    - sudo
     - curl
     - fakeroot
     - gnupg-agent

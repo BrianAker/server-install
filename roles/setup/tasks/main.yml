@@ -2,6 +2,7 @@
 
 - name: create deploy user
   user: name="{{ deploy_user }}"
+        generate_ssh_key=yes
         state=present
         comment="Deploy User"
         shell=/bin/bash
@@ -9,6 +10,10 @@
 - name: setup deploy authorized key
   authorized_key: user="{{ deploy_user }}"
                   key="{{ lookup('file','public_keys/deploy') }}"
+
+- name: setup exec deploy authorized_key
+  authorized_key: user="{{ deploy_user }}"
+                  key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 - name: copy in pythonrc
   copy: src=templates/pythonrc 

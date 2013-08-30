@@ -73,7 +73,6 @@
     - gnupg-agent
     - libboost-all-dev
     - libclang-dev
-    - libcloog-ppl0
     - libcurl4-openssl-dev
     - libevent-dev
     - libpam0g-dev
@@ -91,6 +90,13 @@
     - protobuf-compiler
     - uuid-dev
   when_string: $ansible_os_family == 'Debian'
+
+- name: apt cloog
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - libcloog-ppl0
+  when_string: $ansible_distribution == 'Ubuntu' and $ansible_distribution_version == '12.04'
 
 - name: install basic dev software required for bootstrap with yum
   sudo: yes
