@@ -2,9 +2,10 @@
 
 # Root ansible playbook
 - hosts: all
+  sudo: yes
   roles:
     - base
-    - setup
+    - deploy
     - firewalld
     - ntp
 
