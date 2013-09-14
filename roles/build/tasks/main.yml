@@ -72,7 +72,6 @@
     - gperf
     - gnupg-agent
     - libboost-all-dev
-    - libclang-dev
     - libcurl4-openssl-dev
     - libevent-dev
     - libpam0g-dev
@@ -90,6 +89,14 @@
     - protobuf-compiler
     - uuid-dev
   when_string: $ansible_os_family == 'Debian'
+
+
+- name: apt libclang-dev
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - libclang-dev
+  when_string: $ansible_distribution == 'Ubuntu'
 
 - name: apt cloog
   sudo: yes
