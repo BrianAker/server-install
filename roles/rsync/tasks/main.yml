@@ -10,3 +10,18 @@
   shell: firewall-cmd --permanent --add-port=873/tcp --add-port=873/udp
   when_string: $ansible_distribution == 'Fedora'
 
+- name: create rsync user
+  user: name=rsync
+        generate_ssh_key=yes
+        state=present 
+        shell=/bin/bash
+
+- name: create rsyncd.conf
+  sudo: yes
+  copy: src=rsyncd.conf
+        dest=/etc/rsyncd.conf
+  notify: restart rsyncd
+
+- name: restart rsyncd
+  service:  name=rsyncd
+            enabled=yes
