@@ -13,7 +13,9 @@ PKG_INSTALLER= $(BREW) install
 PKG_UPDATE= $(BREW) update 
 PKG_UPGRADE= $(BREW) upgrade
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
-PIP= /usr/local/bin/pip
+LOCAL_PIP= /usr/local/bin/pip
+LOCAL_PIP_INSTALL= $(LOCAL_PIP) install --quiet
+PIP= $(HOME)/.python/bin/pip
 PIP_INSTALL= $(PIP) install --quiet
 
 VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin:/usr/local/share/python:/usr/local/Cellar
@@ -49,7 +51,7 @@ BASE_DEV_HOOK+= /usr/local/Library/Taps
 /usr/local/Library/Taps:
 	$(BREW) tap homebrew/dupes
 
-prep-local: | $(BREW) brew-doctor pip
+prep-local: | $(BREW) brew-doctor python-env
 
 $(BREW):
 	ruby -e "$$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
@@ -93,9 +95,9 @@ BASE_DEV_HOOK+= /usr/local/bin/pcretest
 
 BASE_DEV_HOOK+= /usr/local/bin/flex
 /usr/local/bin/flex:
-	-$(BREW_UNLINK) flex
+	-$(BREW_UNLINK) Flex
 	$(PKG_INSTALLER) Flex
-	$(BREW) --force flex
+	$(BREW_LINK) --force Flex
 
 BASE_DEV_HOOK+= /usr/local/bin/pkg-config
 /usr/local/bin/pkg-config:
@@ -109,7 +111,7 @@ BASE_DEV_HOOK+= /usr/local/bin/bison
 /usr/local/bin/bison:
 	-$(BREW_UNLINK) Bison
 	$(PKG_INSTALLER) Bison
-	$(BREW_LINK) bison
+	$(BREW_LINK) --force Bison
 
 BASE_DEV_HOOK+= /usr/local/bin/gperf
 /usr/local/bin/gperf:
@@ -123,12 +125,14 @@ BASE_DEV_HOOK+= /usr/local/bin/gettext
 	$(PKG_INSTALLER) gettext
 	$(BREW_LINK) --force gettext
 
-BASE_DEV_HOOK+= virtualenv
-virtualenv: $(PIP)
-	$(PIP_INSTALL) virtualenv
+$(PIP): python-env
 
-install-virtualenv: $(PIP)
-	$(PIP_INSTALL) virtualenv
+.PHONY: python-env
+python-env: virtualenv
+	/usr/local/bin/virtualenv ~/.python
+
+virtualenv: $(EASY_INSTALL)
+	$(EASY_INSTALL) virtualenv
 
 BASE_DEV_HOOK+= sphinx-build
 sphinx-build:
