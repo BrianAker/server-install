@@ -1,6 +1,7 @@
 ---
 
 - name: create deploy user
+  sudo: yes
   user: name="{{ deploy_user }}"
         generate_ssh_key=yes
         state=present
@@ -8,20 +9,24 @@
         shell=/bin/bash
 
 - name: setup deploy authorized key
+  sudo: yes
   authorized_key: user="{{ deploy_user }}"
                   key="{{ lookup('file','public_keys/deploy') }}"
 
 - name: setup exec deploy authorized_key
+  sudo: yes
   authorized_key: user="{{ deploy_user }}"
                   key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 - name: copy in pythonrc
+  sudo: yes
   copy: src=templates/pythonrc 
         dest="/home/{{ deploy_user }}/.pythonrc"
         owner="{{ deploy_user }}"
         mode=0600
 
 - name: Reconfigure path for deploy user to include pythonrc
+  sudo: yes
   lineinfile: dest="/home/{{ deploy_user }}/.profile"
               regexp="^. ~/.pythonrc"
               line=". ~/.pythonrc"
@@ -29,6 +34,7 @@
               create=yes
 
 - name: copy in sbinrc
+  sudo: yes
   copy: src=templates/pythonrc 
         dest="/home/{{ deploy_user }}/.sbinrc"
         owner="{{ deploy_user }}"
@@ -36,6 +42,7 @@
   when_string: $ansible_distribution == 'Debian'
 
 - name: Reconfigure path for deploy user to include pythonrc
+  sudo: yes
   lineinfile: dest="/home/{{ deploy_user }}/.profile"
               regexp="^. ~/.sbinrc"
               line=". ~/.sbinrc"
@@ -44,6 +51,7 @@
   when_string: $ansible_distribution == 'Debian'
 
 - name: write the deploy sudoers file
+  sudo: yes
   template: src=sudoer.j2
             dest="/etc/sudoers.d/{{ deploy_user }}"
             owner=root 
@@ -51,11 +59,13 @@
             mode=0440
 
 - name: Reconfigure SSH to not allow root login
+  sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers {{ deploy_user }}"
               line="AllowUsers {{ deploy_user }}"
 
 - name: remove legacy deploy
+  sudo: yes
   user: name=ansible
         state=absent
         remove=yes

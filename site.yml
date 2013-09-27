@@ -2,7 +2,6 @@
 
 # Root ansible playbook
 - hosts: all
-  sudo: yes
   roles:
     - base
     - deploy
@@ -10,7 +9,6 @@
     - ntp
 
 - hosts: localhost
-  sudo: yes
 
 - include: mailman.yml
 - include: dnsservers.yml

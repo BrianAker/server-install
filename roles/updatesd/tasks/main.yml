@@ -70,12 +70,14 @@
   when_string: $ansible_os_family == 'Debian'
 
 - name: Make sure unattended-security-upgrades work
+  sudo: yes
   lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
               regexp="-security"
               line='"${distro_id}:${distro_codename}-security";'
   when_string: $ansible_os_family == 'Debian'
 
 - name: Make sure unattended-updates work
+  sudo: yes
   lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
               regexp="-updates"
               line='"${distro_id}:${distro_codename}-updates";'

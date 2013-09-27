@@ -1,0 +1,9 @@
+---
+
+- name: install bind-chroot
+  sudo: yes
+  yum: name=$item state=latest
+  with_items:
+    - bind-chroot
+    - bind-utils
+  when_string: $ansible_distribution == 'Fedora'

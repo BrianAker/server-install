@@ -1,6 +1,7 @@
 ---
 
 - name: yum install pound
+  sudo: yes
   yum: name=$item state=latest
   with_items:
     - Pound
@@ -24,6 +25,7 @@
   notify: restart Pound
 
 - name: restart Pound
+  sudo: yes
   service:  name=pound
             enabled=yes
 

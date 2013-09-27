@@ -2,7 +2,6 @@
 
 # Host rules for DNS servers
 - hosts: mailman
-  sudo: yes
   roles:
     - apache
     - mailman

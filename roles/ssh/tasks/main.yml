@@ -1,39 +1,46 @@
 ---
 - name: Poke a hole through the firewall for ssh
+  sudo: yes
   shell: firewall-cmd --permanent --add-service ssh
   when_string: $ansible_distribution == 'Fedora'
 
 - name: Reconfigure SSH PasswordAuthentication no
+  sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^PasswordAuthentication"
               line="PasswordAuthentication no"
               state=present
 
 - name: Reconfigure SSH PermitRootLogin yes
+  sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^PermitRootLogin"
               line="PermitRootLogin no"
               state=present
 
 - name: Reconfigure SSH PermitEmptyPasswords no
+  sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^PermitEmptyPasswords"
               line="PermitEmptyPasswords no"
               state=present
 
 - name: Reconfigure SSH to use .ssh/authorized_keys/
+  sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AuthorizedKeysFile"
               line="AuthorizedKeysFile .ssh/authorized_keys"
               state=present
 
 - name: enable sshd
+  sudo: yes
   service:  name=sshd
             state=started
             enabled=yes
   when_string: $ansible_os_family == 'RedHat'
 
 - name: enable ssh
+  sudo: yes
   service:  name=ssh
             state=started
             enabled=yes

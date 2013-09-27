@@ -1,5 +1,5 @@
 ---
 
-tasks:
-  - name: make sure apache is running
-    service: name=httpd state=running
+- name: make sure apache is running
+  sudo: yes
+  service: name=httpd state=running

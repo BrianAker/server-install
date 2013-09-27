@@ -1,6 +1,7 @@
 ---
 
 - name: create brian user
+  sudo: yes
   user: name=brian state=present shell=/bin/bash
 
 - name: Add keys for brian
@@ -9,15 +10,18 @@
   raw: sudo -u brian -i ssh-import-id brianaker
 
 - name: chown brian/.ssh/authorized_keys
+  sudo: yes
   file: path=~brian/.ssh/authorized_keys owner=brian group=brian mode=0600
 
 - name: copy in pythonrc
+  sudo: yes
   copy: src=templates/pythonrc 
         dest="/home/brian/.pythonrc"
         owner="brian"
         mode=0600
 
 - name: Install Sphinx
+  sudo: yes
   pip: name=$item state=latest
         virtualenv=~/.python
   with_items:
@@ -25,6 +29,7 @@
     - sphinxcontrib-googleanalytics
 
 - name: Reconfigure path for brian user to include pythonrc
+  sudo: yes
   lineinfile: dest=/home/brian/.profile
               regexp="^. ~/.pythonrc"
               line=". ~/.pythonrc"
@@ -32,6 +37,7 @@
               create=yes
 
 - name: Reconfigure SSH to not allow deploy_user login
+  sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers brian"
               line="AllowUsers brian"

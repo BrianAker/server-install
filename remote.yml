@@ -3,7 +3,6 @@
 # Host rules for remote hosts
 - hosts: remote
   user: deploy
-  sudo: yes
   roles:
     - remote
     - firewalld

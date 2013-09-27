@@ -1,16 +1,19 @@
 ---
 
 - name: yum install mailman
+  sudo: yes
   yum: name=$item state=latest
   with_items:
     - mailman
   when_string: $ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for smtp
+  sudo: yes
   shell: firewall-cmd --permanent --add-service smtp
   when_string: $ansible_distribution == 'Fedora'
 
 - name: supply mailman DEFAULT_URL_HOST
+  sudo: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="^DEFAULT_URL_HOST"
               line="DEFAULT_URL_HOST = 'lists.tangent.org'"
@@ -18,6 +21,7 @@
   notify: restart mailman
 
 - name: supply mailman DEFAULT_EMAIL_HOST
+  sudo: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="^DEFAULT_EMAIL_HOST"
               line="DEFAULT_EMAIL_HOST = 'lists.tangent.org'"
@@ -25,6 +29,7 @@
   notify: restart mailman
 
 - name: supply mailman add_virtualhost(alohahaus.org)
+  sudo: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="lists.alohahaus.org"
               line="add_virtualhost('lists.alohahaus.org','alohahaus.org')"
@@ -32,6 +37,7 @@
   notify: restart mailman
 
 - name: supply mailman add_virtualhost(libmemcached.org)
+  sudo: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="lists.libmemcached.org"
               line="add_virtualhost('lists.libmemcached.org','libmemcached.org')"
