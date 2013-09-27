@@ -31,7 +31,7 @@
   sudo: yes
   lineinfile: dest=/etc/mail/sendmail.mc
               regexp="FEATURE.*accept_unresolvable_domains"
-              line="FEATURE(`accept_unresolvable_domains\')dnl"
+              line="dnl FEATURE(`accept_unresolvable_domains\')dnl"
               state=present
 
 - name: remove sendmail FEATURE DAEMON_OPTIONS smtp 127.0.0.1
@@ -45,6 +45,12 @@
   lineinfile: dest=/etc/mail/sendmail.mc
               regexp="confMAX_DAEMON_CHILDREN"
               line="define(`confMAX_DAEMON_CHILDREN', `10')dnl"
+              state=present
+
+- name: supply sendmail define confDOMAIN_NAME
+  lineinfile: dest=/etc/mail/sendmail.mc
+              regexp="confDOMAIN_NAME"
+              line="define(`confDOMAIN_NAME', `truffle.tangent.org')dnl"
               state=present
 
 - name: append local-host-names alohahaus.org
