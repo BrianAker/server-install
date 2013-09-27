@@ -56,12 +56,12 @@ BASE_DEV:=
 BASE_DEV+= bzr
 BASE_DEV+= autoconf
 BASE_DEV+= automake
-BASE_DEV+= /usr/include/openssl/opensslconf.h
 ifeq (${OSX_RELEASE},0)
+BASE_DEV+= /usr/include/openssl/opensslconf.h
 BASE_DEV+= autopoint
 BASE_DEV+= bison
-BASE_DEV+= gperf
 BASE_DEV+= flex
+BASE_DEV+= gperf
 BASE_DEV+= libtool
 endif
 
