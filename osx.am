@@ -40,6 +40,7 @@ BASE_DEV_LOCAL+= libevent
 BASE_DEV_LOCAL+= libmemcached
 BASE_DEV_LOCAL+= splint
 BASE_DEV_LOCAL+= pwgen
+BASE_DEV_LOCAL+= ssh-copy-id
 
 time:
 
