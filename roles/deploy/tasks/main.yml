@@ -39,7 +39,7 @@
         dest="/home/{{ deploy_user }}/.sbinrc"
         owner="{{ deploy_user }}"
         mode=0600
-  when_string: $ansible_distribution == 'Debian'
+  when: ansible_distribution == 'Debian'
 
 - name: Reconfigure path for deploy user to include pythonrc
   sudo: yes
@@ -48,7 +48,7 @@
               line=". ~/.sbinrc"
               state=present
               create=yes
-  when_string: $ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: write the deploy sudoers file
   sudo: yes

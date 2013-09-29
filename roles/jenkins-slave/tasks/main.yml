@@ -46,4 +46,4 @@
   user: name=jenkins
         state=present 
         groups=mock
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'

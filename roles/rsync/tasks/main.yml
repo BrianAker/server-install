@@ -5,12 +5,12 @@
   yum: name=$item state=latest
   with_items:
     - rsync
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: Poke a hole through the firewall for rsync
   sudo: yes
   shell: firewall-cmd --permanent --add-port=873/tcp --add-port=873/udp
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: create rsync user
   user: name=rsync

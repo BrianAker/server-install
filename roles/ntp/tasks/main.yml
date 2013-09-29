@@ -5,7 +5,7 @@
   with_items:
     - ntpdate
     - ntp
-  when_string: $ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat'
   notify: restart ntpd
 
 - name: apt install ntp
@@ -14,15 +14,15 @@
   with_items:
     - ntpdate
     - ntp
-  when_string: $ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian'
   notify: restart ntp
 
 - name: ntp is running and enabled
   sudo: yes
-  service: name=ntp state=running enabled=yes
-  when_string: $ansible_os_family == 'Debian'
-
-- name: ntp is running and enabled
-  sudo: yes
   service: name=ntpd state=running enabled=yes
-  when_string: $ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat'
+
+- name: ntpd is running and enabled
+  sudo: yes
+  service: name=ntp state=running enabled=yes
+  when: ansible_os_family == 'Debian'

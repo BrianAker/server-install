@@ -20,7 +20,7 @@
     - ruby
     - tar
     - wget
-  when_string: $ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat'
 
 - name: set selinux
   sudo: yes
@@ -28,24 +28,35 @@
               regexp="^SELINUX="
               line="SELINUX=disabled"
               state=present
-  when_string: $ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat'
 
-- name: install basic software
-  sudo: yes
+- name: install fedora basic software
   yum: name=$item state=latest
+  sudo: yes
   with_items:
     - firewalld
-  when_string: $ansible_distribution == 'Fedora'
+    - python-pip
+    - python-virtualenv
+  when: ansible_distribution == 'Fedora'
+
 
 - name: apt update dist
   sudo: yes
   apt: update_cache=yes cache_valid_time=3600 upgrade=dist
-  when_string: $ansible_pkg_mgr == 'apt'
+  when: ansible_pkg_mgr == 'apt'
 
 - name: yum distribution-synchronization
   sudo: yes
   raw: yum distribution-synchronization -y
-  when_string: $ansible_pkg_mgr == 'yum'
+  when: ansible_pkg_mgr == 'yum'
+
+- name: apt pip virtualenv
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - python-setuptools
+    - python-virtualenv
+  when: ansible_distribution == 'yum' and ansible_distribution_version == 'precise'
 
 - name: apt base software
   sudo: yes
@@ -68,7 +79,7 @@
     - ruby
     - tar
     - wget
-  when_string: $ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: apt install python-software-properties
   sudo: yes
@@ -76,22 +87,15 @@
   ignore_errors: yes
   with_items:
     - python-software-properties
-  when_string: $ansible_distribution == 'Debian'
-
-- name: apt install software-properties-common
-  sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
-  ignore_errors: yes
-  with_items:
     - software-properties-common
-  when_string: $ansible_distribution == 'Debian'
+  when: ansible_distribution == 'Debian'
 
 - name: Message of the day explaining server is under Ansible control.
   sudo: yes
   copy: src=etc-update-motd-d-95-ansible 
         dest=/etc/update-motd.d/95-ansible 
         mode=755
-  when_string: $ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Install pip and virtualenv
   sudo: yes
@@ -99,35 +103,16 @@
   with_items:
     - virtualenv
     - pip
-  when_string: $ansible_distribution == 'CentOS'
+  when: ansible_distribution == 'CentOS'
 
-- name: Install Sphinx
+- name: remove ubuntu ssh-import-id
   sudo: yes
-  pip: name=$item state=latest
-  with_items:
-    - Sphinx
-    - sphinxcontrib-googleanalytics
+  apt: pkg=ssh-import-id state=absent
+  when: ansible_distribution == 'Ubuntu'
 
-- name: Install ssh-import-id
+- name: pip ssh-import-id
   sudo: yes
-  pip: name=$item state=present
-  with_items:
-    - ssh-import-id
-  when_string: $ansible_os_family == 'RedHat'
-
-- name: Install ssh-import-id
-  sudo: yes
-  pip: name=$item state=present
-  with_items:
-    - ssh-import-id
-  when_string: $ansible_distribution == 'Debian'
-
-- name: apt ubuntu ssh-import-id
-  sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
-  with_items:
-    - ssh-import-id
-  when_string: $ansible_distribution == 'Ubuntu'
+  pip: name=ssh-import-id state=present
 
 - name: yum remove software
   sudo: yes
@@ -135,4 +120,4 @@
   ignore_errors: yes
   with_items:
     - BackupPC
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
