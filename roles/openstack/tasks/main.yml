@@ -1,0 +1,9 @@
+---
+
+- name: install openstack repository
+  sudo: yes
+  yum: name=http://rdo.fedorapeople.org/openstack-grizzly/rdo-release-grizzly.rpm state=latest
+
+- name: install openstack packstack
+  sudo: yes
+  yum: name=openstack-packstack state=latest

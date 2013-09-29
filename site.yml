@@ -5,11 +5,11 @@
   roles:
     - base
     - deploy
-    - firewalld
     - ntp
 
 - hosts: localhost
 
+- include: openstack.yml
 - include: mailman.yml
 - include: dnsservers.yml
 - include: webservers.yml

@@ -4,6 +4,7 @@
 - hosts: slaves
   user: deploy
   roles:
+    - firewalld
     - build
     - common
     - ssh
