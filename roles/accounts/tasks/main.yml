@@ -6,8 +6,9 @@
 
 - name: Add keys for brian
   ignore_errors: yes
+  remote_user: brian
   sudo: yes
-  raw: sudo -u brian -i ssh-import-id brianaker
+  raw: ssh-import-id brianaker
 
 - name: chown brian/.ssh/authorized_keys
   sudo: yes
