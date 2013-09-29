@@ -50,7 +50,7 @@
     - valgrind
     - zlib
     - zlib-devel
-  when_string: $ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat'
 
 - name: apt build software
   sudo: yes
@@ -85,25 +85,28 @@
     - maven 
     - mysql-client
     - mysql-server
+    - openjdk-7-jdk
+    - openjdk-7-jre
+    - openjdk-7-jre-headless
+    - openjdk-7-jre-lib
     - php5-mysql
     - protobuf-compiler
     - uuid-dev
-  when_string: $ansible_os_family == 'Debian'
-
+  when: ansible_os_family == 'Debian'
 
 - name: apt libclang-dev
   sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
     - libclang-dev
-  when_string: $ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu'
 
 - name: apt cloog
   sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
   with_items:
     - libcloog-ppl0
-  when_string: $ansible_distribution == 'Ubuntu' and $ansible_distribution_version == '12.04'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '12.04'
 
 - name: install basic dev software required for bootstrap with yum
   sudo: yes
@@ -133,5 +136,4 @@
     - protobuf
     - protobuf-compiler
     - protobuf-devel
-  when_string: $ansible_distribution == 'Fedora'
-
+  when: ansible_distribution == 'Fedora'

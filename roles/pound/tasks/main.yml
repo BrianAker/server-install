@@ -5,7 +5,7 @@
   yum: name=$item state=latest
   with_items:
     - Pound
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
   notify: restart Pound
 
 - name: create directory pound.conf.d
@@ -15,13 +15,13 @@
         owner=root
         group=root
         state=directory
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: create pound.cfg
   sudo: yes
   copy: src=pound.cfg
         dest=/etc/pound.conf.d/pound.cfg
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
   notify: restart Pound
 
 - name: restart Pound

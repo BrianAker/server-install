@@ -6,4 +6,4 @@
   with_items:
     - bind-chroot
     - bind-utils
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'

@@ -8,12 +8,12 @@
     - sendmail
     - sendmail-cf
     - sendmail-devel
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for smtp
   sudo: yes
   shell: firewall-cmd --permanent --add-service smtp
-  when_string: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: remove sendmail LOCAL_DOMAIN
   sudo: yes
