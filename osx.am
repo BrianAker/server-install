@@ -13,134 +13,20 @@ PKG_INSTALLER= $(BREW) install
 PKG_UPDATE= $(BREW) update 
 PKG_UPGRADE= $(BREW) upgrade
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
-LOCAL_PIP= /usr/local/bin/pip
-LOCAL_PIP_INSTALL= $(LOCAL_PIP) install --quiet
-PIP= $(HOME)/.python/bin/pip
-PIP_INSTALL= $(PIP) install --quiet
 
 VPATH = $(EXE_BASE_INSTALL_PATH):/usr/bin:/usr/local/share/python:/usr/local/Cellar
 
-cc:
-	@echo "Install xcode"
-
-cpp:
-	@echo "Install xcode"
-
-BASE_DEV_HOOK+= glibtool
-glibtool:
-	$(PKG_INSTALLER) libtool
-
 .PHONY: pkg_update
-pkg_update: | $(BREW) $(PYTHON) $(PIP)
-	$(PKG_UPDATE)
-	$(PKG_UPGRADE)
+pkg_update: | $(BREW)
 
-BASE_DEV_LOCAL+= boost
-BASE_DEV_LOCAL+= libevent
-BASE_DEV_LOCAL+= libmemcached
-BASE_DEV_LOCAL+= splint
-BASE_DEV_LOCAL+= pwgen
-BASE_DEV_LOCAL+= ssh-copy-id
-
-time:
-
-security:
-
-post:
-
-BASE_DEV_HOOK+= /usr/local/Library/Taps
-/usr/local/Library/Taps:
-	$(BREW) tap homebrew/dupes
-
-prep-local: | $(BREW) brew-doctor python-env
+prep-local: | $(BREW) brew-doctor
+	$(MAKE) localhost
 
 $(BREW):
 	ruby -e "$$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
+	brew doctor
 
 .PHONY: brew-doctor
 	$(BREW) doctor
-
-$(PYTHON):
-	-$(BREW_UNLINK) python
-	$(PKG_SEARCH_INSTALL) python
-	$(BREW_LINK) python
-
-$(EASY_INSTALL): python
-
-BASE_DEV_HOOK+= /Users/brian/Applications/MacVim.app
-/Users/brian/Applications/MacVim.app: /Users/brian/Applications
-	$(PKG_SEARCH_INSTALL) macvim
-	$(BREW) linkapps
-
-/Users/brian/Applications:
-	mkdir /Users/brian/Applications
-
-BASE_DEV_HOOK+= /usr/local/bin/protoc
-/usr/local/bin/protoc:
-	$(PKG_INSTALLER) protobuf
-
-EXTRA_LOCAL+= gpg-agent 
-EXTRA_DEV_LOCAL+= swig 
-EXTRA_DEV_LOCAL+= autoconf-archive 
-EXTRA_DEV_LOCAL+= vpnc 
-EXTRA_DEV_LOCAL+= hub 
-EXTRA_DEV_LOCAL+= curl-ca-bundle
-
-mysqld: mysql
-
-BASE_DEV_LOCAL+= mysql 
-
-BASE_DEV_HOOK+= /usr/local/bin/pcretest
-/usr/local/bin/pcretest:
-	$(PKG_INSTALLER) pcre
-
-BASE_DEV_HOOK+= /usr/local/bin/flex
-/usr/local/bin/flex:
-	-$(BREW_UNLINK) Flex
-	$(PKG_INSTALLER) Flex
-	$(BREW_LINK) --force Flex
-
-BASE_DEV_HOOK+= /usr/local/bin/pkg-config
-/usr/local/bin/pkg-config:
-	$(PKG_INSTALLER) pkg-config
-
-BASE_DEV_HOOK+= /usr/local/bin/intltoolize
-/usr/local/bin/intltoolize:
-	$(PKG_INSTALLER) intltool
-
-BASE_DEV_HOOK+= /usr/local/bin/bison
-/usr/local/bin/bison:
-	-$(BREW_UNLINK) Bison
-	$(PKG_INSTALLER) Bison
-	$(BREW_LINK) --force Bison
-
-BASE_DEV_HOOK+= /usr/local/bin/gperf
-/usr/local/bin/gperf:
-	-$(BREW_UNLINK) gperf
-	$(PKG_INSTALLER) gperf
-	$(BREW_LINK) gperf
-
-BASE_DEV_HOOK+= /usr/local/bin/gettext
-/usr/local/bin/gettext:
-	-$(BREW_UNLINK) gettext
-	$(PKG_INSTALLER) gettext
-	$(BREW_LINK) --force gettext
-
-$(PIP): python-env
-
-.PHONY: python-env
-python-env: virtualenv
-	/usr/local/bin/virtualenv ~/.python
-
-virtualenv: $(EASY_INSTALL)
-	$(EASY_INSTALL) virtualenv
-
-BASE_DEV_HOOK+= sphinx-build
-sphinx-build:
-	$(PIP_INSTALL) sphinx
-	$(PIP_INSTALL) sphinxcontrib-googleanalytics
-
-ssh-import-id:
-	$(PIP_INSTALL) ssh-import-id
 
 include $(srcdir)local.am

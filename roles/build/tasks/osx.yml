@@ -1,0 +1,27 @@
+---
+
+- name: install osx build software
+  homebrew: name=$item state=present
+  with_items:
+    - Bison
+    - Flex
+    - autoconf
+    - autoconf-archive
+    - boost
+    - curl-ca-bundle
+    - gettext
+    - gperf
+    - gpg-agent
+    - hub 
+    - intltool
+    - libevent
+    - libmemcached
+    - libtool
+    - macvim
+    - mysql
+    - pcre
+    - protobuf
+    - splint
+    - swig
+    - valgrind
+    - vpnc 

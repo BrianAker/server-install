@@ -19,7 +19,6 @@
         mode=0600
 
 - name: Install Sphinx
-  sudo: yes
   pip: name=$item state=latest
         virtualenv=~/.python
   with_items:

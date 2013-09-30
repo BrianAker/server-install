@@ -5,7 +5,6 @@
   roles:
     - base
     - deploy
-    - ntp
 
 - hosts: localhost
 

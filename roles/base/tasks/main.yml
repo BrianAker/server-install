@@ -10,5 +10,6 @@
   when: ansible_distribution == 'MacOSX'
 
 - name: pip ssh-import-id
-  sudo: yes
-  pip: name=ssh-import-id state=present
+  pip: name=ssh-import-id 
+        state=present
+        virtualenv=~/.python

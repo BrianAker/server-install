@@ -4,6 +4,7 @@
 - hosts: slaves
   user: deploy
   roles:
+    - ntp
     - firewalld
     - build
     - common

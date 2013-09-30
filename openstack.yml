@@ -3,5 +3,6 @@
 # Host rules for DNS servers
 - hosts: openstack
   roles:
+    - ntp
     - openstack
 

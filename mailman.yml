@@ -3,6 +3,7 @@
 # Host rules for DNS servers
 - hosts: mailman
   roles:
+    - ntp
     - firewalld
     - apache
     - mailman

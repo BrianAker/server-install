@@ -7,12 +7,14 @@
         state=present
         comment="Deploy User"
         shell=/bin/bash
+  when: ansible_distribution != 'MacOSX'
 
 - name: setup deploy authorized key
   sudo: yes
   authorized_key: user="{{ deploy_user }}"
                   key="{{ lookup('file', 'public_keys/deploy') }}"
                   manage_dir=yes
+  when: ansible_distribution != 'MacOSX'
 
 - name: copy in pythonrc
   sudo: yes
@@ -20,6 +22,7 @@
         dest="/home/{{ deploy_user }}/.pythonrc"
         owner="{{ deploy_user }}"
         mode=0600
+  when: ansible_distribution != 'MacOSX'
 
 - name: Reconfigure path for deploy user to include pythonrc
   sudo: yes
@@ -28,6 +31,7 @@
               line=". ~/.pythonrc"
               state=present
               create=yes
+  when: ansible_distribution != 'MacOSX'
 
 - name: copy in sbinrc
   sudo: yes
@@ -53,16 +57,11 @@
             owner=root 
             group=root 
             mode=0440
+  when: ansible_distribution != 'MacOSX'
 
 - name: Reconfigure SSH to not allow root login
   sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers {{ deploy_user }}"
               line="AllowUsers {{ deploy_user }}"
-
-- name: remove legacy deploy
-  sudo: yes
-  user: name=ansible
-        state=absent
-        remove=yes
-        force=yes
+  when: ansible_distribution != 'MacOSX'

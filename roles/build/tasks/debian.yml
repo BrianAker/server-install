@@ -1,0 +1,56 @@
+---
+
+- name: apt build software
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - autoconf
+    - automake
+    - autopoint
+    - bison
+    - build-essential
+    - clang
+    - default-jdk 
+    - default-jre 
+    - default-jre-headless
+    - devscripts
+    - flex
+    - gdb 
+    - gettext 
+    - gperf
+    - gnupg-agent
+    - libboost-all-dev
+    - libcurl4-openssl-dev
+    - libevent-dev
+    - libpam0g-dev
+    - libpcre3-dev
+    - libprotobuf-dev
+    - libreadline-dev
+    - libssl-dev
+    - libtool
+    - llvm
+    - llvm-dev
+    - maven 
+    - mysql-client
+    - mysql-server
+    - openjdk-7-jdk
+    - openjdk-7-jre
+    - openjdk-7-jre-headless
+    - openjdk-7-jre-lib
+    - php5-mysql
+    - protobuf-compiler
+    - uuid-dev
+
+- name: apt libclang-dev
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - libclang-dev
+  when: ansible_distribution == 'Ubuntu'
+
+- name: apt cloog
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - libcloog-ppl0
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '12.04'

@@ -3,5 +3,6 @@
 # Host rules for HTTP servers
 - hosts: webservers
   roles:
+    - ntp
     - firewalld
     - apache
