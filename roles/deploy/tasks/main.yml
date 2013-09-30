@@ -11,12 +11,8 @@
 - name: setup deploy authorized key
   sudo: yes
   authorized_key: user="{{ deploy_user }}"
-                  key="{{ lookup('file','public_keys/deploy') }}"
-
-- name: setup exec deploy authorized_key
-  sudo: yes
-  authorized_key: user="{{ deploy_user }}"
-                  key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+                  key="{{ lookup('file', 'public_keys/deploy') }}"
+                  manage_dir=yes
 
 - name: copy in pythonrc
   sudo: yes
@@ -48,7 +44,7 @@
               line=". ~/.sbinrc"
               state=present
               create=yes
-  when: ansible_os_family == 'Debian'
+  when: ansible_distribution == 'Debian'
 
 - name: write the deploy sudoers file
   sudo: yes

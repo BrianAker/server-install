@@ -1,123 +1,14 @@
 ---
 
-- name: install basic software
-  sudo: yes
-  yum: name=$item state=latest
-  with_items:
-    - '@minimal-environment'
-    - '@system-tools'
-    - redhat-lsb-core
-    - python-setuptools
-    - curl
-    - bzr
-    - sudo
-    - fakeroot
-    - git
-    - make
-    - perl
-    - pkgconfig
-    - python
-    - ruby
-    - tar
-    - wget
+- include: rhel.yml
   when: ansible_os_family == 'RedHat'
 
-- name: set selinux
-  sudo: yes
-  lineinfile: dest=/etc/selinux/config 
-              regexp="^SELINUX="
-              line="SELINUX=disabled"
-              state=present
-  when: ansible_os_family == 'RedHat'
-
-- name: install fedora basic software
-  yum: name=$item state=latest
-  sudo: yes
-  with_items:
-    - firewalld
-    - python-pip
-    - python-virtualenv
-  when: ansible_distribution == 'Fedora'
-
-
-- name: apt update dist
-  sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 upgrade=dist
-  when: ansible_pkg_mgr == 'apt'
-
-- name: yum distribution-synchronization
-  sudo: yes
-  raw: yum distribution-synchronization -y
-  when: ansible_pkg_mgr == 'yum'
-
-- name: apt pip virtualenv
-  sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
-  with_items:
-    - python-setuptools
-    - python-virtualenv
-  when: ansible_distribution == 'yum' and ansible_distribution_version == 'precise'
-
-- name: apt base software
-  sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
-  with_items:
-    - bzr
-    - sudo
-    - curl
-    - fakeroot
-    - gnupg-agent
-    - git
-    - lsb-release
-    - make
-    - perl
-    - pkg-config
-    - python
-    - python-pip
-    - python-software-properties
-    - python-virtualenv
-    - ruby
-    - tar
-    - wget
+- include: debian.yml
   when: ansible_os_family == 'Debian'
 
-- name: apt install python-software-properties
-  sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
-  ignore_errors: yes
-  with_items:
-    - python-software-properties
-    - software-properties-common
-  when: ansible_distribution == 'Debian'
-
-- name: Message of the day explaining server is under Ansible control.
-  sudo: yes
-  copy: src=etc-update-motd-d-95-ansible 
-        dest=/etc/update-motd.d/95-ansible 
-        mode=755
-  when: ansible_distribution == 'Ubuntu'
-
-- name: Install pip and virtualenv
-  sudo: yes
-  easy_install: name=$item
-  with_items:
-    - virtualenv
-    - pip
-  when: ansible_distribution == 'CentOS'
-
-- name: remove ubuntu ssh-import-id
-  sudo: yes
-  apt: pkg=ssh-import-id state=absent
-  when: ansible_distribution == 'Ubuntu'
+- include: osx.yml
+  when: ansible_distribution == 'MacOSX'
 
 - name: pip ssh-import-id
   sudo: yes
   pip: name=ssh-import-id state=present
-
-- name: yum remove software
-  sudo: yes
-  yum: name=$item state=absent
-  ignore_errors: yes
-  with_items:
-    - BackupPC
-  when: ansible_distribution == 'Fedora'

@@ -1,0 +1,16 @@
+---
+
+- name: install basic software
+  sudo: yes
+  homebrew: name=$item state=present
+  with_items:
+    - bzr
+    - curl
+    - git
+    - make
+    - pkgconfig
+    - pwgen
+    - ssh-copy-id
+    - tar
+    - wget
+

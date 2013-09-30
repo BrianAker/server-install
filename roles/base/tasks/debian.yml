@@ -1,0 +1,57 @@
+---
+
+- name: apt update dist
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 upgrade=dist
+  when: ansible_pkg_mgr == 'apt'
+
+- name: apt pip virtualenv
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - python-setuptools
+    - python-virtualenv
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == 'precise'
+
+- name: apt base software
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  with_items:
+    - bzr
+    - sudo
+    - curl
+    - fakeroot
+    - gnupg-agent
+    - git
+    - lsb-release
+    - make
+    - perl
+    - pkg-config
+    - python
+    - python-pip
+    - python-software-properties
+    - python-virtualenv
+    - ruby
+    - tar
+    - wget
+
+- name: apt install python-software-properties
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  ignore_errors: yes
+  with_items:
+    - python-software-properties
+    - software-properties-common
+  when: ansible_distribution == 'Debian'
+
+- name: Message of the day explaining server is under Ansible control.
+  sudo: yes
+  copy: src=etc-update-motd-d-95-ansible 
+        dest=/etc/update-motd.d/95-ansible 
+        mode=755
+  when: ansible_distribution == 'Ubuntu'
+
+- name: remove ubuntu ssh-import-id
+  sudo: yes
+  apt: pkg=ssh-import-id state=absent
+  when: ansible_distribution == 'Ubuntu'
