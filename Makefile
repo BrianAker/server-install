@@ -51,7 +51,7 @@ install-ansible-user:
 	ansible-playbook site.yml --limit=localhost -s -i hosts
 
 localhost:
-	ansible-playbook -vvvvvv -i hosts site.yml --limit=localhost
+	ansible-playbook -i hosts site.yml --limit=localhost
 
 install-ansible:
 	$(MAKE) install-virtualenv
