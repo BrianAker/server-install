@@ -7,6 +7,8 @@
     - deploy
 
 - hosts: localhost
+  roles:
+    - build
 
 - include: openstack.yml
 - include: mailman.yml
