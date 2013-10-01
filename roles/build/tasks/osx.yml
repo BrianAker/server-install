@@ -1,12 +1,14 @@
 ---
 
 - name: install osx build software
+  ignore_errors: yes
   homebrew: name=$item state=present
   with_items:
     - Bison
     - Flex
     - autoconf
     - autoconf-archive
+    - automake
     - boost
     - curl-ca-bundle
     - gettext
