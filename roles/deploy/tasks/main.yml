@@ -70,3 +70,8 @@
   sudo: yes
   remote_user: "{{ deploy_user }}"
   pip: name=ansible virtualenv=~/.python
+
+- name: Install bzr for deploy
+  sudo: yes
+  remote_user: "{{ deploy_user }}"
+  pip: name=bzr virtualenv=~/.python
