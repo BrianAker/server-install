@@ -65,3 +65,8 @@
               regexp="^AllowUsers {{ deploy_user }}"
               line="AllowUsers {{ deploy_user }}"
   when: ansible_distribution != 'MacOSX'
+
+- name: Install ansible for deploy
+  sudo: yes
+  remote_user: "{{ deploy_user }}"
+  pip: name=ansible virtualenv=~/.python
