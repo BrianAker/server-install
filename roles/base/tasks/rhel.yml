@@ -29,6 +29,7 @@
   yum: name=$item state=latest
   sudo: yes
   with_items:
+    - denyhosts
     - firewalld
     - python-pip
     - python-virtualenv

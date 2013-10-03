@@ -20,6 +20,7 @@
     - bzr
     - sudo
     - curl
+    - denyhosts
     - fakeroot
     - gnupg-agent
     - git
