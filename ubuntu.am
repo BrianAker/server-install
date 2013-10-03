@@ -4,7 +4,6 @@ BASE_INSTALL_PATH= /usr/
 EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
 
 include $(srcdir)bundle.am
-include $(srcdir)projects.am
 
 PIP= pip
 PIP_INSTALL= $(PIP) install --quiet
@@ -131,5 +130,3 @@ install-virtualenv:
 
 install-pip:
 	-$(PKG_INSTALLER) python-pip
-
-include $(srcdir)local.am

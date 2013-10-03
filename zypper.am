@@ -4,7 +4,6 @@
 BASE_INSTALL_PATH= /usr/
 
 include $(srcdir)bundle.am
-include $(srcdir)projects.am
 
 PKG_INSTALLER:= zypper --non-interactive install
 PKG_UPDATE:= zypper --non-interactive update

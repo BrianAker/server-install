@@ -4,7 +4,6 @@
 BASE_INSTALL_PATH= /usr/
 
 include $(srcdir)bundle.am
-include $(srcdir)projects.am
 include $(srcdir)jenkins.am
 include $(srcdir)fedora-bind.am
 
@@ -238,5 +237,3 @@ install-pip:
 
 install-virtualenv:
 	$(PKG_INSTALLER) python-virtualenv
-
-include $(srcdir)local.am
