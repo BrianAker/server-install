@@ -30,7 +30,9 @@
   sudo: yes
   with_items:
     - denyhosts
+    - fail2ban
     - firewalld
+    - keychain
     - python-pip
     - python-virtualenv
   when: ansible_distribution == 'Fedora'
