@@ -8,7 +8,6 @@
 
   roles:
     - common
-    - base
     - deploy
 
 - hosts: CentOS-6.4
