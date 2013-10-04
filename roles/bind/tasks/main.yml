@@ -2,8 +2,10 @@
 
 - name: install bind-chroot
   sudo: yes
-  yum: name=$item state=latest
+  yum: name={{ item }} state=latest
   with_items:
+    - bind
     - bind-chroot
     - bind-utils
   when: ansible_distribution == 'Fedora'
+  notify: restart named-chroot

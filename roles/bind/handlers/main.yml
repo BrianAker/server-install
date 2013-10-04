@@ -1,0 +1,8 @@
+---
+# handler for dns
+
+- name: restart named
+  service: name=named state=restarted enabled=yes
+  
+- name: restart named-chroot
+  service: name=named-chroot state=restarted enabled=yes
