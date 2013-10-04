@@ -7,8 +7,12 @@
       group_by: key={{ansible_distribution}}-{{ansible_distribution_version}}
 
   roles:
+    - common
     - base
     - deploy
+
+- hosts: CentOS-6.4
+  tasks:
 
 - hosts: localhost
   roles:

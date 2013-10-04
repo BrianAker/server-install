@@ -7,7 +7,6 @@
     - ntp
     - firewalld
     - build
-    - common
     - ssh
     - jenkins-slave
     - updatesd
