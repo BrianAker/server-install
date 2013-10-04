@@ -1,8 +1,6 @@
 # vim:ft=automake
 #
 
-include $(srcdir)/projects.am
-
 all:
 
 base_install: bzr

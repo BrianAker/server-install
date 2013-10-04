@@ -2,7 +2,6 @@
 
 BASE_INSTALL_PATH= /usr/local/
 EXE_BASE_INSTALL_PATH= $(BASE_INSTALL_PATH)bin/
-include $(srcdir)projects.am
 
 EASY_INSTALL:= $(BASE_INSTALL_PATH)bin/easy_install
 PYTHON:= $(BASE_INSTALL_PATH)bin/python
@@ -28,5 +27,3 @@ $(BREW):
 
 .PHONY: brew-doctor
 	$(BREW) doctor
-
-include $(srcdir)local.am

@@ -89,5 +89,3 @@ $(PIP): easy_install
 
 ssh-import-id:
 	$(PIP_INSTALL)  ssh-import-id
-
-include $(srcdir)local.am

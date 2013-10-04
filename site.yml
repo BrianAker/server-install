@@ -2,6 +2,10 @@
 
 # Root ansible playbook
 - hosts: all
+  tasks:
+    - name: Create groups by distribution and version
+      group_by: key={{ansible_distribution}}-{{ansible_distribution_version}}
+
   roles:
     - base
     - deploy

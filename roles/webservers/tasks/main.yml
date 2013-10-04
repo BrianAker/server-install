@@ -3,3 +3,10 @@
 - name: make sure apache is running
   sudo: yes
   service: name=httpd state=running
+
+- name: setup servername
+  template: src=etc/httpd/conf.d/0.conf.j2
+            dest=etc/httpd/conf.d/0.conf
+            owner=root 
+            group=root 
+            mode=0444
