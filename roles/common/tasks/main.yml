@@ -3,14 +3,6 @@
 - name: Add localhost to ssh_known_hosts file
   sshknownhosts: host={{ ansible_fqdn }} state=present dest='~/.ssh/known_hosts'
 
-- name: Create the EPEL Repository.
-  copy: src=epel.repo.j2 dest=/etc/yum.repos.d/epel.repo
-  when: ansible_distribution == 'CentOS' and ansible_distribution_version == '6.4'
-
-- name: Create the GPG key for EPEL
-  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
-  when: ansible_distribution == 'CentOS' and ansible_distribution_version == '6.4'
-
 - include: rhel.yml
   when: ansible_os_family == 'RedHat'
 
@@ -24,4 +16,3 @@
   pip: name=ssh-import-id 
         state=present
         virtualenv=~/.python
-
