@@ -40,6 +40,8 @@
     - php5-mysql
     - protobuf-compiler
     - uuid-dev
+    - valgrind
+    - vim
 
 - name: apt libclang-dev
   sudo: yes

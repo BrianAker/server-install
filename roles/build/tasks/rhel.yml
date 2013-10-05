@@ -48,6 +48,7 @@
     - readline
     - readline-devel
     - valgrind
+    - vim
     - zlib
     - zlib-devel
 

@@ -26,4 +26,5 @@
     - splint
     - swig
     - valgrind
+    - vim 
     - vpnc 
