@@ -2,25 +2,37 @@
 
 - name: create deploy user
   sudo: yes
-  user: name="{{ deploy_user }}"
-        generate_ssh_key=yes
+  user: name={{ deploy_user }}
         state=present
         comment="Deploy User"
         shell=/bin/bash
   when: ansible_distribution != 'MacOSX'
 
-- name: setup deploy authorized key
+- name: Ensure the user has a ssh key
+  sudo: yes
+  user: name={{ deploy_user }} generate_ssh_key=yes
+  when: ansible_distribution != 'MacOSX'
+
+- name: touch authorized_keys
+  sudo: yes
+  copy: src=files/authorized_keys
+        dest="~{{ deploy_user }}/.ssh/authorized_keys"
+        owner="{{ deploy_user }}"
+        group="{{ deploy_user }}"
+        mode=0600
+
+- name: setup deploy authorized_key
   sudo: yes
   authorized_key: user="{{ deploy_user }}"
                   key="{{ lookup('file', 'public_keys/deploy') }}"
-                  manage_dir=yes
   when: ansible_distribution != 'MacOSX'
 
 - name: copy in pythonrc
   sudo: yes
   copy: src=templates/pythonrc 
-        dest="/home/{{ deploy_user }}/.pythonrc"
-        owner="{{ deploy_user }}"
+        dest=/home/{{ deploy_user }}/.pythonrc
+        owner={{ deploy_user }}
+        group={{ deploy_user }}
         mode=0600
   when: ansible_distribution != 'MacOSX'
 
@@ -36,10 +48,11 @@
 - name: write the deploy sudoers file
   sudo: yes
   template: src=sudoer.j2
-            dest="/etc/sudoers.d/{{ deploy_user }}"
+            dest=/etc/sudoers.d/{{ deploy_user }}
             owner=root 
             group=root 
             mode=0440
+            validate='visudo -cf %s'
   when: ansible_distribution != 'MacOSX'
 
 - name: Reconfigure SSH to not allow root login
