@@ -1,10 +1,6 @@
 ---
-- name: Create the EPEL Repository.
-  copy: src=epel.repo.j2 dest=/etc/yum.repos.d/epel.repo
-  when: ansible_distribution == 'CentOS' and ansible_distribution_version == '6.4'
 
-- name: Create the GPG key for EPEL
-  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
-  when: ansible_distribution == 'CentOS' and ansible_distribution_version == '6.4'
-
-
+- name: Add epel repository
+  sudo: yes
+  yum: name=http://mirror.pnl.gov/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
+  when: ansible_distribution == 'CentOS'
