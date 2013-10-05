@@ -35,13 +35,13 @@
 
 - name: copy in sbinrc
   sudo: yes
-  copy: src=templates/pythonrc 
+  copy: src=templates/sbinrc 
         dest="/home/{{ deploy_user }}/.sbinrc"
         owner="{{ deploy_user }}"
         mode=0600
   when: ansible_distribution == 'Debian'
 
-- name: Reconfigure path for deploy user to include pythonrc
+- name: Reconfigure path for deploy user to include .sbinrc
   sudo: yes
   lineinfile: dest="/home/{{ deploy_user }}/.profile"
               regexp="^. ~/.sbinrc"
