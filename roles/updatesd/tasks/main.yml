@@ -1,7 +1,7 @@
 ---
 - name: install updatesd
   sudo: yes
-  yum: name=$item state=latest
+  yum: name={{ item }} state=present
   with_items:
     - yum-updatesd
   when: ansible_distribution == 'Fedora'
@@ -33,7 +33,7 @@
 
 - name: install yum-cron
   sudo: yes
-  yum: name=$item state=latest
+  yum: name={{ item }} state=present
   with_items:
     - yum-cron
   when: ansible_distribution == 'CentOS'
@@ -56,7 +56,7 @@
 
 - name: install apt unattended-upgrades
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - update-manager-core
     - cron-apt

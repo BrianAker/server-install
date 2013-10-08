@@ -2,7 +2,7 @@
 
 - name: yum install sendmail
   sudo: yes
-  yum: name=$item state=latest
+  yum: name={{ item }} state=present
   with_items:
     - m4
     - sendmail

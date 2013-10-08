@@ -7,7 +7,7 @@
 
 - name: apt pip virtualenv
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - python-setuptools
     - python-virtualenv
@@ -15,7 +15,7 @@
 
 - name: apt base software
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - bzr
     - sudo
@@ -40,7 +40,7 @@
 
 - name: apt install python-software-properties
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   ignore_errors: yes
   with_items:
     - python-software-properties

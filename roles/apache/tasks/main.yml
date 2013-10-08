@@ -1,7 +1,7 @@
 ---
 - name: install basic dev software required for bootstrap with yum
   sudo: yes
-  yum: name=$item state=latest
+  yum: name={{ item }} state=present
   with_items:
     - httpd
   when_string: $ansible_distribution == 'Fedora'

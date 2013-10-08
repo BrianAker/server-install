@@ -22,7 +22,7 @@
         mode=0600
 
 - name: Install Sphinx
-  pip: name=$item state=latest
+  pip: name={{ item }} state=present
         virtualenv=~/.python
   with_items:
     - Sphinx

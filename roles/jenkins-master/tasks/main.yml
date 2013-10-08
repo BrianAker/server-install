@@ -14,7 +14,7 @@
 
 - name: yum install jenkins
   sudo: yes
-  yum: name=jenkins state=latest
+  yum: name=jenkins state=present
 
 - name: start jenkins
   sudo: yes

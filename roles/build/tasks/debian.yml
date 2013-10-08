@@ -2,7 +2,7 @@
 
 - name: apt build software
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - autoconf
     - automake
@@ -45,14 +45,14 @@
 
 - name: apt libclang-dev
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - libclang-dev
   when: ansible_distribution == 'Ubuntu'
 
 - name: apt cloog
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg=$item state=latest
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - libcloog-ppl0
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '12.04'

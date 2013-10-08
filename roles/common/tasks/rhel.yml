@@ -11,7 +11,7 @@
 
 - name: install basic software
   sudo: yes
-  yum: name=$item state=latest
+  yum: name={{ item }}  state=present
   with_items:
     - '@minimal-environment'
     - '@system-tools'
@@ -35,7 +35,7 @@
   lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=disabled
 
 - name: install fedora basic software
-  yum: name=$item state=latest
+  yum: name={{ item }}  state=present
   sudo: yes
   with_items:
     - denyhosts
@@ -53,7 +53,7 @@
 
 - name: Install pip and virtualenv
   sudo: yes
-  easy_install: name=$item
+  easy_install: name={{ item }}
   with_items:
     - virtualenv
     - pip
@@ -61,7 +61,7 @@
 
 - name: yum remove software
   sudo: yes
-  yum: name=$item state=absent
+  yum: name={{ item }} state=absent
   ignore_errors: yes
   with_items:
     - BackupPC

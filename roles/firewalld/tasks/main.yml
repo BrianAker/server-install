@@ -2,7 +2,7 @@
 
 - name: install firewalld
   sudo: yes
-  yum: name=$item state=latest
+  yum: name={{ item }} state=present
   with_items:
     - firewalld
   when: ansible_distribution == 'Fedora'

@@ -2,7 +2,7 @@
 
 - name: install bind-chroot
   sudo: yes
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   with_items:
     - bind
     - bind-chroot
