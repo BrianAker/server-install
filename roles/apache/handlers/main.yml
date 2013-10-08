@@ -1,7 +1,7 @@
 ---
 
-- name: restart httpd
-  service:  name=httpd
+- name: restart apache
+  service:  name={{ apache }}
             state=restarted
             enabled=yes
 
