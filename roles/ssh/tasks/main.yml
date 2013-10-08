@@ -34,14 +34,7 @@
 
 - name: enable sshd
   sudo: yes
-  service:  name=sshd
+  service:  name={{ sshd }}
             state=started
             enabled=yes
-  when: ansible_os_family == 'RedHat'
-
-- name: enable ssh
-  sudo: yes
-  service:  name=ssh
-            state=started
-            enabled=yes
-  when: ansible_os_family == 'Debian'
+  notify: restart sshd

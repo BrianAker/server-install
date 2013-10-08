@@ -1,8 +1,4 @@
 ---
 - name: restart sshd
-  service:  name=sshd
-            state=restarted
-
-- name: restart ssh
-  service:  name=ssh
+  service:  name={{ sshd }}
             state=restarted

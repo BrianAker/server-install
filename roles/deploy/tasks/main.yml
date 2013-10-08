@@ -16,6 +16,7 @@
 - name: touch authorized_keys
   sudo: yes
   copy: src=files/authorized_keys
+        force=no
         dest="~{{ deploy_user }}/.ssh/authorized_keys"
         owner="{{ deploy_user }}"
         group="{{ deploy_user }}"
