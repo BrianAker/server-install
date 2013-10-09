@@ -25,7 +25,7 @@
 - hosts: localhost
   roles:
     - build
-    - { role: adduser, username: foo, lp_username: brianaker, is_admin: True, has_authorized_key: False, has_lp_username: True }
+#   - { role: adduser, username: foo, lp_username: brianaker, is_admin: True, has_authorized_key: False, has_lp_username: True }
 
 - include: openstack.yml
 - include: mailman.yml
