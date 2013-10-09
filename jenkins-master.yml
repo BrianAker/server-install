@@ -1,0 +1,13 @@
+---
+
+# Host rules for Jenkins-ci slaves
+- hosts: masters
+  user: deploy
+  roles:
+    - ntp
+    - firewalld
+    - build
+    - ssh
+    - Pound
+    - jenkins-master
+    - updatesd

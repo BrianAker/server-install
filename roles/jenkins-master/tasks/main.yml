@@ -1,4 +1,6 @@
 ---
+# Install any dependencies that are required
+- include: dependencies.yml 
 
 - name: create jenkins user
   sudo: yes
@@ -19,3 +21,6 @@
 - name: start jenkins
   sudo: yes
   service: name=jenkins enabled=yes state=started
+
+# Install Jenkins cli
+- include: cli.yml

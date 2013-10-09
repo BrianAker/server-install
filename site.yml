@@ -25,10 +25,12 @@
 - hosts: localhost
   roles:
     - build
+    - { role: adduser, username: foo, lp_username: brianaker }
 
 - include: openstack.yml
 - include: mailman.yml
 - include: dnsservers.yml
 - include: webservers.yml
 - include: jenkins-slaves.yml
+- include: jenkins-master.yml
 - include: developer.yml

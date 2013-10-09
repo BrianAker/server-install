@@ -1,0 +1,41 @@
+---
+
+- name: create user
+  sudo: yes
+  user: name={{ username }} 
+        state=present
+        shell=/bin/bash
+
+- name: create ssh key
+  sudo: yes
+  user: name={{ username }}
+        generate_ssh_key=yes
+
+- name: touch authorized_keys
+  sudo: yes
+  copy: src=files/authorized_keys
+        force=no
+        dest="~{{ deploy_user }}/.ssh/authorized_keys"
+        owner="{{ deploy_user }}"
+        group="{{ deploy_user }}"
+        mode=0600
+
+- name: reset mode for authorized_keys
+  sudo: yes
+  file: path="~{{ username }}/.ssh/authorized_keys"
+        owner={{ username }}
+        group={{ username }}
+        mode=0600
+
+- name: import ssh keys
+  ignore_errors: yes
+  sudo_user: {{ username }}
+  sudo: yes
+  raw: ssh-import-id {{ lp_username }}
+
+- name: add ssh AllowUsers
+  sudo: yes
+  lineinfile: dest=/etc/ssh/sshd_config 
+              regexp="^AllowUsers {{ username }}"
+              line="AllowUsers {{ username }}"
+              state=present
