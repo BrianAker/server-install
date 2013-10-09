@@ -5,4 +5,4 @@
   user: deploy
   roles:
     - ssh
-    - accounts
+    - { role: adduser, username: brian, lp_username: brianaker, is_admin: True }

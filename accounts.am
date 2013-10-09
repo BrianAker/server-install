@@ -1,7 +1,7 @@
 # vim:ft=automake
 #
 
-include $(srcdir)useradd.am
+#include $(srcdir)useradd.am
 
 .PHONY: brian yazz linuxjedi pcrews mark drizzleci tangentci lazlo wordpress sudoers-inc secure secure-fix tcp-wrappers secure-host
 

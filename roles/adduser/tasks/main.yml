@@ -15,10 +15,23 @@
   sudo: yes
   copy: src=files/authorized_keys
         force=no
-        dest="~{{ deploy_user }}/.ssh/authorized_keys"
-        owner="{{ deploy_user }}"
-        group="{{ deploy_user }}"
+        dest="~{{ username }}/.ssh/authorized_keys"
+        owner="{{ username }}"
+        group="{{ username }}"
         mode=0600
+
+- name: setup authorized_key from file
+  sudo: yes
+  ignore_errors: yes
+  authorized_key: user="{{ username }}"
+                  key="{{ lookup('file', 'public_keys/{{ username }}') }}"
+  when: has_authorized_key
+
+- name: import ssh keys
+  ignore_errors: yes
+  sudo: yes
+  raw: "ssh-import-id -o ~{{ username }}/.ssh/authorized_keys {{ lp_username }}"
+  when: has_lp_username
 
 - name: reset mode for authorized_keys
   sudo: yes
@@ -27,15 +40,19 @@
         group={{ username }}
         mode=0600
 
-- name: import ssh keys
-  ignore_errors: yes
-  sudo_user: {{ username }}
-  sudo: yes
-  raw: ssh-import-id {{ lp_username }}
-
 - name: add ssh AllowUsers
   sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers {{ username }}"
               line="AllowUsers {{ username }}"
               state=present
+
+- name: write the deploy sudoers file
+  sudo: yes
+  template: src=sudoer.j2
+            dest="/etc/sudoers.d/{{ username }}"
+            owner=root 
+            group=root 
+            mode=0440
+            validate='visudo -cf %s'
+  when: is_admin

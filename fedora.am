@@ -3,7 +3,7 @@
 
 BASE_INSTALL_PATH= /usr/
 
-include $(srcdir)bundle.am
+#include $(srcdir)bundle.am
 include $(srcdir)jenkins.am
 include $(srcdir)fedora-bind.am
 

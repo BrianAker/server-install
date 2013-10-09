@@ -6,11 +6,11 @@
   sudo: yes
   user: name=jenkins state=present shell=/bin/bash
 
-- name: Add Jenkins-ci yum repository
+- name: add Jenkins-ci yum repository
   sudo: yes
   get_url: dest=/etc/yum.repos.d/jenkins.repo url=http://pkg.jenkins-ci.org/redhat/jenkins.repo
 
-- name: Add Jenkins-ci key
+- name: add Jenkins-ci key
   sudo: yes
   rpm_key: state=present key=http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 

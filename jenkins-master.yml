@@ -8,6 +8,6 @@
     - firewalld
     - build
     - ssh
-    - Pound
+    - pound
     - jenkins-master
     - updatesd
