@@ -28,6 +28,7 @@
     - python
     - ruby
     - tar
+    - vim
     - wget
 
 - name: set selinux

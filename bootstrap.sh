@@ -3,7 +3,7 @@
 function install_git_make()
 {
   if [ -f "/etc/yum.conf"  ]; then
-    $__SUDO yum install -y git make
+    $__SUDO yum install -y git make tar
   elif [ -f "/etc/regdomain.xml"  ]; then
     pkg_add -F -r bash git gmake
   elif [ -f "/etc/apt/sources.list"  ]; then
@@ -13,7 +13,7 @@ function install_git_make()
     else
       $__SUDO apt-get update -y
     fi
-    $__SUDO apt-get install -y git-core make
+    $__SUDO apt-get install -y git-core make tar
   elif [ -d "/etc/mach_init.d"  ]; then
     # Brew will not run under sudo
     __SUDO=
@@ -47,7 +47,7 @@ function run_server_install()
 function init()
 {
   export DEBIAN_FRONTEND=noninteractive
-  export DEFAULT_INSTALL='install-jenkins-slave'
+  export DEFAULT_INSTALL='localhost'
   export __SUDO='sudo'
   install_git_make
   run_server_install
