@@ -9,6 +9,11 @@
   copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
   when: ansible_distribution == 'CentOS' and ansible_distribution_version == '6.4'
 
+- name: upgrade packages
+  sudo: yes
+  yum: name=*
+       state=latest
+
 - name: install basic software
   sudo: yes
   yum: name={{ item }}  state=present
@@ -32,7 +37,9 @@
 
 - name: set selinux
   sudo: yes
-  lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=disabled
+  selinux: state=disabled
+# Older method.
+# lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=disabled
 
 - name: install fedora basic software
   yum: name={{ item }}  state=present
@@ -45,11 +52,6 @@
     - python-pip
     - python-virtualenv
   when: ansible_distribution == 'Fedora'
-
-- name: yum distribution-synchronization
-  sudo: yes
-  raw: yum distribution-synchronization -y
-  when: ansible_pkg_mgr == 'yum'
 
 - name: Install pip and virtualenv
   sudo: yes

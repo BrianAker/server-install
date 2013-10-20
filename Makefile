@@ -42,7 +42,7 @@ install-jenkins-slave: install
 	reboot
 
 install: 
-	$(MAKE) install-am
+	ansible-playbook site.yml
 
 base_jenkins_slave: | java
 
