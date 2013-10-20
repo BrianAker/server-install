@@ -1,7 +1,8 @@
 ---
 # Install Jenkins dependencies
 - name: Install dependencies
-  yum: pkg=${item} state=installed update-cache=yes
+  yum: pkg=${item}
+       state=installed
   with_items: ${jenkins.rhel_dependencies}
   tags:
     - packages
