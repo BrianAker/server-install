@@ -76,6 +76,7 @@
               line="DOWNLOAD_ONLY=no"
 
 - name: start yum-cron
+  sudo: yes
   service: name=yum-cron
            state=restarted
            enabled=yes
