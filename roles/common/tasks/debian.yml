@@ -18,13 +18,14 @@
   apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - bzr
-    - sudo
+    - cron-apt
     - curl
     - denyhosts
     - fail2ban
     - fakeroot
-    - gnupg-agent
     - git
+    - gnupg-agent
+    - ifmetric
     - keychain
     - lsb-release
     - make
@@ -35,7 +36,10 @@
     - python-software-properties
     - python-virtualenv
     - ruby
+    - sudo
     - tar
+    - unattended-upgrades
+    - update-manager-core
     - wget
 
 - name: apt install python-software-properties
@@ -58,3 +62,20 @@
   sudo: yes
   apt: pkg=ssh-import-id state=absent
   when: ansible_distribution == 'Ubuntu'
+
+- name: Adjust APT update intervals
+  sudo: yes
+  copy: src=apt_periodic
+        dest=/etc/apt/apt.conf.d/10periodic
+
+- name: Make sure unattended-security-upgrades work
+  sudo: yes
+  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
+              regexp="-security"
+              line='"${distro_id}:${distro_codename}-security";'
+
+- name: Make sure unattended-updates work
+  sudo: yes
+  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
+              regexp="-updates"
+              line='"${distro_id}:${distro_codename}-updates";'
