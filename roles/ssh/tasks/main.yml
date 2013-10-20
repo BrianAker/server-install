@@ -10,6 +10,7 @@
               regexp="^PasswordAuthentication"
               line="PasswordAuthentication no"
               state=present
+  notify: restart sshd
 
 - name: Reconfigure SSH PermitRootLogin yes
   sudo: yes
@@ -17,6 +18,7 @@
               regexp="^PermitRootLogin"
               line="PermitRootLogin no"
               state=present
+  notify: restart sshd
 
 - name: Reconfigure SSH PermitEmptyPasswords no
   sudo: yes
@@ -24,6 +26,7 @@
               regexp="^PermitEmptyPasswords"
               line="PermitEmptyPasswords no"
               state=present
+  notify: restart sshd
 
 - name: Reconfigure SSH to use .ssh/authorized_keys/
   sudo: yes
@@ -31,6 +34,7 @@
               regexp="^AuthorizedKeysFile"
               line="AuthorizedKeysFile .ssh/authorized_keys"
               state=present
+  notify: restart sshd
 
 - name: enable sshd
   sudo: yes
