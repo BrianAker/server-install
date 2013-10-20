@@ -30,6 +30,7 @@
     - tar
     - vim
     - wget
+    - yum-cron
 
 - name: set selinux
   sudo: yes
@@ -50,7 +51,6 @@
 - name: yum distribution-synchronization
   sudo: yes
   raw: yum distribution-synchronization -y
-  when: ansible_pkg_mgr == 'yum'
 
 - name: Install pip and virtualenv
   sudo: yes
@@ -59,6 +59,23 @@
     - virtualenv
     - pip
   when: ansible_distribution == 'CentOS'
+
+- name: Reconfigure yum-cron to not just check
+  sudo: yes
+  lineinfile: dest=/etc/sysconfig/yum-cron
+              regexp="^CHECK_ONLY"
+              line="CHECK_ONLY=no"
+
+- name: Reconfigure yum-cron to not just download
+  sudo: yes
+  lineinfile: dest=/etc/sysconfig/yum-cron
+              regexp="^DOWNLOAD_ONLY"
+              line="DOWNLOAD_ONLY=no"
+
+- name: start yum-cron
+  service: name=yum-cron
+           state=restarted
+           enabled=yes
 
 - name: yum remove software
   sudo: yes

@@ -1,4 +1,4 @@
----
+--
 
 # Host rules for Jenkins-ci slaves
 - hosts: slaves
@@ -9,4 +9,3 @@
     - build
     - ssh
     - jenkins-slave
-    - updatesd
