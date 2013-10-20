@@ -1,4 +1,4 @@
---
+---
 
 # Host rules for Jenkins-ci slaves
 - hosts: slaves
