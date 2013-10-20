@@ -61,6 +61,8 @@
     - cmake 
     - cppcheck
     - doxygen 
+    - hiredis
+    - hiredis-devel
     - maven 
     - mingw64-binutils
     - mingw64-boost
