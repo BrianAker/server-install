@@ -4,9 +4,11 @@
   ignore_errors: yes
   homebrew: name={{ item }} state=present
   with_items:
+    - bind
     - bzr
     - curl
     - git
+    - gpg2
     - make
     - pkg-config
     - pwgen

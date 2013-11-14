@@ -22,11 +22,6 @@
 - hosts: CentOS-6.4
   tasks:
 
-- hosts: localhost
-  roles:
-    - build
-#   - { role: adduser, username: foo, lp_username: brianaker, is_admin: True, has_authorized_key: False, has_lp_username: True }
-
 - include: openstack.yml
 - include: mailman.yml
 - include: dnsservers.yml
@@ -34,3 +29,4 @@
 - include: jenkins-slaves.yml
 - include: jenkins-master.yml
 - include: developer.yml
+- include: localhost.yml

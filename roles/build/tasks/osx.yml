@@ -25,6 +25,6 @@
     - protobuf
     - splint
     - swig
-    - valgrind
+#   - valgrind
     - vim 
     - vpnc 

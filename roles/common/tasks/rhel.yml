@@ -28,6 +28,7 @@
     - python
     - ruby
     - tar
+    - traceroute
     - vim
     - wget
     - yum-cron
