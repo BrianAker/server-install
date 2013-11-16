@@ -49,6 +49,8 @@
     - keychain
     - python-pip
     - python-virtualenv
+    - system-config-network
+    - yum-fastestmirror
   when: ansible_distribution == 'Fedora'
 
 - name: Install pip and virtualenv
