@@ -1,0 +1,7 @@
+---
+
+- name: install cobbler software
+  sudo: yes
+  yum: name={{ item }}  state=present
+  with_items:
+    - cobbler

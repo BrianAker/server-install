@@ -4,8 +4,17 @@
   sudo: yes
   yum: name={{ item }} state=present
   with_items:
-    - bind
-    - bind-chroot
+    - {{ bind }}
     - bind-utils
   when: ansible_distribution == 'Fedora'
-  notify: restart named-chroot
+
+- name: Configure Persistent FirewallD for bind
+  sudo: yes
+  shell: firewall-cmd --permanent --add-service dns
+  notify: restart apache
+  when_string: $ansible_distribution == 'Fedora'
+
+- name: bind enable
+  service:  name={{ bind }}
+            state=restarted
+            enabled=yes
