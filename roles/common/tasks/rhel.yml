@@ -53,6 +53,20 @@
     - yum-fastestmirror
   when: ansible_distribution == 'Fedora'
 
+- name: start fail2ban
+  sudo: yes
+  service: name=fail2ban
+           state=restarted
+           enabled=yes
+  when: ansible_distribution == 'Fedora'
+
+- name: start denyhosts
+  sudo: yes
+  service: name=denyhosts
+           state=restarted
+           enabled=yes
+  when: ansible_distribution == 'Fedora'
+
 - name: Install pip and virtualenv
   sudo: yes
   easy_install: name={{ item }}

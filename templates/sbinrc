@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 # Source /usr/sbin for platforms that require it during sudo
 if [ -d /usr/sbin ]; then
   export PATH=/usr/sbin:$PATH
