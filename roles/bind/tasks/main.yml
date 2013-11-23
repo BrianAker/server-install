@@ -18,3 +18,11 @@
   service:  name={{ bind }}
             state=restarted
             enabled=yes
+
+- name: reconfigure ssh to use .ssh/authorized_keys/
+  sudo: yes
+  lineinfile: dest=/etc/sysconfig/named
+              regexp="^OPTIONS="
+              line='OPTIONS="-4"'
+              state=present
+  notify: restart {{ bind }}

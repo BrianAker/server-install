@@ -1,0 +1,14 @@
+$ORIGIN .
+$TTL 38400      ; 10 hours 40 minutes
+wireless      IN  SOA  ns1.wireless. root.wireless. (
+                                                             2013112301 ; serial
+                                                             10800      ; refresh (3 hours)
+                                                             3600       ; retry (1 hour)
+                                                             604800     ; expire (1 week)
+                                                             38400      ; minimum (10 hours 40 minutes)
+                                                            )
+                  NS      ns1.haus.
+                  NS      ns2.haus.
+                  NS      ns3.haus.
+$ORIGIN wireless.
+gateway                   A       10.0.5.1

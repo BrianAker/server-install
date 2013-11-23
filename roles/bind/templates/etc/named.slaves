@@ -1,0 +1,28 @@
+zone "tangent" IN {
+  type slave;
+  file "db.tangent";
+  masters {
+    10.0.3.3 ;
+  };
+};
+zone "build" IN {
+  type slave;
+  file "db.build";
+  masters {
+    10.0.3.3 ;
+  };
+};
+zone "haus" IN {
+  type slave;
+  file "db.haus";
+  masters {
+    10.0.3.3 ;
+  };
+};
+zone "slave" IN {
+  type slave;
+  file "db.slave";
+  masters {
+    10.0.3.3 ;
+  };
+};

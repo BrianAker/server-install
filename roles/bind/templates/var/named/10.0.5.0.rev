@@ -1,0 +1,14 @@
+$ORIGIN .
+$TTL 38400      ; 10 hours 40 minutes
+5.0.10.in-addr.arpa  IN SOA  ns3.haus. root.ns3.haus. (
+                                                                     2013111101 ; serial
+                                                                     10800      ; refresh (3 hours)
+                                                                     3600       ; retry (1 hour)
+                                                                     604800     ; expire (1 week)
+                                                                     38400      ; minimum (10 hours 40 minutes)
+                                                                    )
+                                                      NS      ns1.haus.
+                                                      NS      ns2.haus.
+                                                      NS      ns3.haus.
+$ORIGIN 5.0.10.in-addr.arpa.
+1                       PTR     gateway.wireless.
