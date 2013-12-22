@@ -10,6 +10,7 @@
     - autoconf-archive
     - automake
     - boost
+    - byobu
     - curl-ca-bundle
     - gettext
     - gperf

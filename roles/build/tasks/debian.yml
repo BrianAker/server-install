@@ -9,6 +9,7 @@
     - autopoint
     - bison
     - build-essential
+    - byobu
     - clang
     - cppcheck
     - default-jdk 

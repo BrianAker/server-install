@@ -14,3 +14,7 @@
     - pwgen
     - ssh-copy-id
     - wget
+
+#- name: accept xcode license
+#  sudo: yes
+#  command: xcodebuild -license

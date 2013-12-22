@@ -11,6 +11,7 @@
     - automake
     - boost
     - boost-devel
+    - byobu
     - cyrus-sasl
     - cyrus-sasl-devel
     - gcc-c++
