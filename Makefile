@@ -25,7 +25,7 @@ DIST_MAKEFILES := ubuntu.am fedora.am centos.mk freebsd.am osx.am
 include $(srcdir)dist.mk
 include $(srcdir)misc.mk
 
-.PHONY: all show check install base_install deploy
+.PHONY: all show check install base_install deploy upgrade
 
 all:
 
@@ -48,6 +48,9 @@ base_jenkins_slave: | java
 
 install-ansible-user:
 	ansible-playbook site.yml --limit=localhost -s -i hosts
+
+upgrade:
+	ansible-playbook maintenance.yml
 
 localhost:
 	ansible-playbook site.yml --limit=localhost
