@@ -74,8 +74,6 @@ ifndef INSTALL_SERVER
 endif
 ifdef INSTALL_SERVER
 	scp bootstrap.sh "$$INSTALL_SERVER":~/
-	-git remote rm "$$INSTALL_SERVER"
-	git remote add "$$INSTALL_SERVER" ssh://"$$INSTALL_SERVER"/~/server-install.git
 	ssh -o "RequestTTY yes" -o "BatchMode yes" -o "StrictHostKeyChecking no" -t "$$INSTALL_SERVER" ./bootstrap.sh
 endif
 

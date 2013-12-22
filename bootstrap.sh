@@ -1,5 +1,15 @@
 #!/bin/bash -e
 
+function install_dotfiles()
+{
+  if [ ! -f "$HOME/.pythonrc"  ]; then
+    if [ ! -d "$HOME/dotfiles"  ]; then
+      git clone https://github.com/BrianAker/dotfiles.git
+    fi
+    (cd dotfiles && make python)
+  fi
+}
+
 function install_git_make()
 {
   if [ -f "/etc/yum.conf"  ]; then
@@ -50,6 +60,7 @@ function init()
   export DEFAULT_INSTALL='localhost'
   export __SUDO='sudo'
   install_git_make
+  install_dotfiles
   run_server_install
 }
 init
