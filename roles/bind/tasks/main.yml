@@ -4,7 +4,7 @@
   sudo: yes
   yum: name={{ item }} state=present
   with_items:
-    - {{ bind }}
+    - bind
     - bind-utils
   when: ansible_distribution == 'Fedora'
 
@@ -12,7 +12,7 @@
   sudo: yes
   shell: firewall-cmd --permanent --add-service dns
   notify: restart apache
-  when_string: $ansible_distribution == 'Fedora'
+  when: $ansible_distribution == 'Fedora'
 
 - name: bind enable
   service:  name={{ bind }}
@@ -25,4 +25,4 @@
               regexp="^OPTIONS="
               line='OPTIONS="-4"'
               state=present
-  notify: restart {{ bind }}
+  notify: restart bind

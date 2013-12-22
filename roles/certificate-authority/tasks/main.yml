@@ -1,0 +1,9 @@
+---
+- name: install freeipa
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items:
+    - bind-dyndb-ldap
+    - freeipa
+  when_string: $ansible_distribution == 'Fedora'
+

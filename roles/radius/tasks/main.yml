@@ -1,0 +1,23 @@
+---
+
+- name: yum install mailman
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items:
+    - freeradius
+  when: ansible_distribution == 'Fedora'
+
+- name: Enable network access for radiusd
+  sudo: yes
+  shell: firewall-cmd --permanent --add-service radius
+  when: ansible_distribution == 'Fedora'
+
+- name: enable radiusd
+  sudo: yes
+  service: name=radiusd enabled=yes
+  when: ansible_distribution == 'Fedora'
+
+- name: start radiusd
+  sudo: yes
+  service: name=radiusd state=started
+  when: ansible_distribution == 'Fedora'

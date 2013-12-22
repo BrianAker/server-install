@@ -4,16 +4,16 @@
   yum: name={{ item }} state=present
   with_items:
     - httpd
-  when_string: $ansible_distribution == 'Fedora'
+  when: $ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for http console
   sudo: yes
   shell: firewall-cmd --permanent --add-service http
   notify: restart apache
-  when_string: $ansible_distribution == 'Fedora'
+  when: $ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for https console
   sudo: yes
   shell: firewall-cmd --permanent --add-service https
   notify: restart apache
-  when_string: $ansible_distribution == 'Fedora'
+  when: $ansible_distribution == 'Fedora'
