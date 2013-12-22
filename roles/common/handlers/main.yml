@@ -1,3 +1,13 @@
 ---
+- name: restart updatesd
+  sudo: yes
+  service:  name=yum-updatesd
+            state=restarted
+            enabled=yes
 
+- name: restart yum-cron
+  sudo: yes
+  service:  name=yum-cron
+            state=restarted
+            enabled=yes
 

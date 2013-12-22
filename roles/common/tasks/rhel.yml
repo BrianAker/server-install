@@ -75,6 +75,38 @@
     - pip
   when: ansible_distribution == 'CentOS'
 
+- name: install updatesd
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items:
+    - yum-updatesd
+  when: ansible_distribution == 'Fedora'
+
+- name: Reconfigure updatesd to install updates
+  sudo: yes
+  lineinfile: dest=/etc/yum/yum-updatesd.conf
+              regexp="^do_update"
+              line="do_update = yes"
+  when: ansible_distribution == 'Fedora'
+  notify: restart updatesd
+
+- name: Reconfigure updatesd to install updates
+  sudo: yes
+  lineinfile: dest=/etc/yum/yum-updatesd.conf
+              regexp="^do_download"
+              line="do_download = yes"
+  when: ansible_distribution == 'Fedora'
+  notify: restart updatesd
+
+- name: Reconfigure updatesd to install updates
+  sudo: yes
+  lineinfile: dest=/etc/yum/yum-updatesd.conf
+              regexp="^do_download_deps"
+              line="do_download_deps = yes"
+  when: ansible_distribution == 'Fedora'
+  notify: restart updatesd
+
+
 - name: Reconfigure yum-cron to not just check
   sudo: yes
   lineinfile: dest=/etc/sysconfig/yum-cron
