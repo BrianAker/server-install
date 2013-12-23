@@ -106,18 +106,23 @@
   when: ansible_distribution == 'Fedora'
   notify: restart updatesd
 
+- name: Check if path exists
+  stat: path=/etc/sysconfig/yum-cron
+  register: check_yum_cron
 
 - name: Reconfigure yum-cron to not just check
   sudo: yes
   lineinfile: dest=/etc/sysconfig/yum-cron
               regexp="^CHECK_ONLY"
               line="CHECK_ONLY=no"
+  when: check_yum_cron.stat.exists
 
 - name: Reconfigure yum-cron to not just download
   sudo: yes
   lineinfile: dest=/etc/sysconfig/yum-cron
               regexp="^DOWNLOAD_ONLY"
               line="DOWNLOAD_ONLY=no"
+  when: check_yum_cron.stat.exists
 
 - name: start yum-cron
   sudo: yes
