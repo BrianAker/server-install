@@ -6,7 +6,6 @@
     - ntpdate
     - ntp
   when: ansible_os_family == 'RedHat'
-  notify: restart ntpd
 
 - name: apt install ntp
   sudo: yes
@@ -15,7 +14,6 @@
     - ntpdate
     - ntp
   when: ansible_os_family == 'Debian'
-  notify: restart ntp
 
 - name: ntp is running and enabled
   sudo: yes

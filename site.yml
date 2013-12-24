@@ -23,18 +23,18 @@
 - hosts: EL
   gather_facts: no
   roles:
-    - bennojoy.ntp
+    - ntp
 
 - hosts: Fedora
   gather_facts: no
   roles:
-    - bennojoy.ntp
+    - ntp
     - firewalld
 
 - hosts: Ubuntu
   gather_facts: no
   roles:
-    - bennojoy.ntp
+    - ntp
 
 - include: mailman.yml
 - include: dnsservers.yml
