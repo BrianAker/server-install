@@ -1,12 +1,10 @@
 ---
 
-# Host rules for Jenkins-ci slaves
+# Host rules for Jenkins-ci masters
 - hosts: masters
   user: deploy
   roles:
     - { role: adduser, username: brian, lp_username: brianaker, is_admin: True, has_authorized_key: False, has_lp_username: True }
-    - ntp
-    - firewalld
     - build
     - ssh
     - pound

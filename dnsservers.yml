@@ -3,6 +3,4 @@
 # Host rules for DNS servers
 - hosts: dnsservers
   roles:
-    - ntp
-    - firewalld
     - bind

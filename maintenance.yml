@@ -1,0 +1,26 @@
+---
+
+# Root ansible playbook
+- hosts: all
+  tasks:
+    - name: Create groups by distribution and version
+      group_by: key={{ansible_distribution}}-{{ansible_distribution_version}}
+
+    - name: Create groups by distribution
+      group_by: key={{ansible_distribution}}
+
+    - name: Create a distribution based OS family
+      group_by: key={{ansible_os_family}}
+
+- hosts: RedHat
+  sudo: yes
+
+  tasks:
+    - name: upgrade all packages
+      command: /usr/bin/yum -y upgrade
+
+- hosts: Debian
+  sudo: yes
+
+  tasks:
+    - apt: upgrade=dist update_cache=yes cache_valid_time=3600

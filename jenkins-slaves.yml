@@ -4,8 +4,6 @@
 - hosts: slaves
   user: deploy
   roles:
-    - ntp
-    - firewalld
     - build
     - ssh
     - jenkins-slave

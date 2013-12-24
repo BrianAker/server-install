@@ -20,10 +20,22 @@
     - common
     - deploy
 
-- hosts: CentOS-6.4
-  tasks:
+- hosts: EL
+  gather_facts: no
+  roles:
+    - bennojoy.ntp
 
-- include: openstack.yml
+- hosts: Fedora
+  gather_facts: no
+  roles:
+    - bennojoy.ntp
+    - firewalld
+
+- hosts: Ubuntu
+  gather_facts: no
+  roles:
+    - bennojoy.ntp
+
 - include: mailman.yml
 - include: dnsservers.yml
 - include: webservers.yml

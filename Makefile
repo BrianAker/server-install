@@ -25,9 +25,15 @@ DIST_MAKEFILES := ubuntu.am fedora.am centos.mk freebsd.am osx.am
 include $(srcdir)dist.mk
 include $(srcdir)misc.mk
 
-.PHONY: all show check install base_install deploy upgrade
+.PHONY: all show check install base_install deploy upgrade clean
 
-all:
+all: roles/bennojoy.ntp
+
+clean:
+	@rm -rf roles/bennojoy.ntp
+
+roles/bennojoy.ntp:
+	ansible-galaxy install bennojoy.ntp
 
 check:
 	@ansible-playbook site.yml --syntax-check
