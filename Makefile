@@ -43,7 +43,7 @@ install-jenkins-slave: install
 	@cat /etc/ssh/sshd_config
 	reboot
 
-install: 
+install: all
 	ansible-playbook site.yml
 
 base_jenkins_slave: | java
