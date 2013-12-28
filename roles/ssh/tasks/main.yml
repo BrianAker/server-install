@@ -1,7 +1,7 @@
 ---
 - name: Poke a hole through the firewall for ssh
   sudo: yes
-  shell: firewall-cmd --permanent --add-service ssh
+  firewalld: service=ssh permanent=true state=enabled
   when: ansible_distribution == 'Fedora'
 
 - name: Reconfigure SSH PasswordAuthentication no
@@ -9,6 +9,7 @@
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^PasswordAuthentication"
               line="PasswordAuthentication no"
+              validate='/usr/sbin/sshd -t'
               state=present
   notify: restart sshd
 
@@ -17,6 +18,7 @@
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^PermitRootLogin"
               line="PermitRootLogin no"
+              validate='/usr/sbin/sshd -t'
               state=present
   notify: restart sshd
 
@@ -25,6 +27,7 @@
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^PermitEmptyPasswords"
               line="PermitEmptyPasswords no"
+              validate='/usr/sbin/sshd -t'
               state=present
   notify: restart sshd
 
@@ -34,6 +37,7 @@
               regexp="^AuthorizedKeysFile"
               line="AuthorizedKeysFile .ssh/authorized_keys"
               state=present
+              validate='/usr/sbin/sshd -t'
   notify: restart sshd
 
 - name: enable sshd

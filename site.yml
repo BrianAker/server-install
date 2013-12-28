@@ -18,7 +18,7 @@
 
   roles:
     - common
-    - deploy
+    - { role: deploy, when: "ansible_distribution != 'MacOSX'" }
 
 - hosts: EL
   gather_facts: no
@@ -43,3 +43,4 @@
 - include: jenkins-master.yml
 - include: developer.yml
 - include: localhost.yml
+- include: remote.yml

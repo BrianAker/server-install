@@ -4,5 +4,33 @@
 - hosts: developer
   user: deploy
   roles:
+    - { role: adduser, username: brian, is_admin: true, has_authorized_key: true, when: "ansible_distribution != 'MacOSX'"}
     - ssh
-    - { role: adduser, username: brian, lp_username: brianaker, is_admin: True }
+
+  vars:
+    pip_packages:
+      - Babel
+      - Jinja2
+      - MarkupSafe
+      - PyYAML
+      - ansible
+      - argparse
+      - bzr
+      - ecdsa
+      - iso8601
+      - netaddr
+      - oslo.config
+      - paramiko
+      - pbr
+      - pip
+      - prettytable
+      - pycrypto
+      - python-keystoneclient
+      - pytz
+      - requests
+      - setuptools
+      - simplejson
+      - six
+      - sphinxcontrib-googleanalytics
+      - ssh-import-id
+      - wsgiref

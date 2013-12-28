@@ -1,0 +1,21 @@
+---
+
+- name: yum install rsyslog
+  sudo: yes
+  yum: name={{ item }} state=present
+  with_items:
+    - rsyslog
+  when: ansible_distribution == 'Fedora'
+
+- name: firewalld for syslog
+  sudo: yes
+  firewalld:  port=514/udp 
+              permanent=true
+              state=enabled
+  when: ansible_distribution == 'Fedora'
+
+- name: restart rsyslog
+  sudo: yes
+  service:  name=rsyslog
+            enabled=yes
+  when: ansible_distribution == 'Fedora'

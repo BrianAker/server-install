@@ -1,0 +1,4 @@
+---
+allow_duplicates: yes
+dependencies:
+  - { role: adduser, username: jenkins, is_admin: False, has_authorized_key: False, when: "ansible_distribution != 'MacOSX'"}

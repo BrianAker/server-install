@@ -2,7 +2,7 @@
 
 - name: create user
   sudo: yes
-  user: name={{ username }} 
+  user: name="{{ username }}"
         state=present
         shell=/bin/bash
 
@@ -24,23 +24,16 @@
   sudo: yes
   ignore_errors: yes
   authorized_key: user="{{ username }}"
-                  key="{{ lookup('file', 'public_keys/{{ username }}') }}"
-  when: has_authorized_key
-
-- name: import ssh keys
-  ignore_errors: yes
-  sudo: yes
-  raw: "ssh-import-id -o ~{{ username }}/.ssh/authorized_keys {{ lp_username }}"
-  when: has_lp_username
+                  key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + username) }}"
 
 - name: reset mode for authorized_keys
   sudo: yes
   file: path="~{{ username }}/.ssh/authorized_keys"
-        owner={{ username }}
-        group={{ username }}
+        owner="{{ username }}"
+        group="{{ username }}"
         mode=0600
 
-- name: add ssh AllowUsers
+- name: add user to sshd AllowUsers
   sudo: yes
   lineinfile: dest=/etc/ssh/sshd_config 
               regexp="^AllowUsers {{ username }}"
@@ -56,3 +49,32 @@
             mode=0440
             validate='visudo -cf %s'
   when: is_admin
+
+- name: copy in pythonrc
+  sudo: yes
+  copy: src=templates/pythonrc.j2 
+        dest="~{{ username }}/.pythonrc"
+        owner={{ username }}
+        group={{ username }}
+        mode=0600
+
+
+- name: Reconfigure path for deploy user to include pythonrc
+  sudo: yes
+  lineinfile: dest="~{{ username }}/.bash_profile"
+              insertbefore="^export PATH"
+              regexp="^. ~/.pythonrc"
+              line=". ~/.pythonrc"
+              owner="{{ username }}"
+              group="{{ username }}"
+              mode=0700
+              state=present
+              create=yes
+
+- name: install local pip packages for user
+  sudo: yes
+  sudo_user: "{{ username }}"
+  pip: name={{ item }}
+       virtualenv="~{{ username }}/.python"
+       state=present
+  with_items: pip_packages

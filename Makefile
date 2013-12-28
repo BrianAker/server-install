@@ -27,26 +27,23 @@ include $(srcdir)misc.mk
 
 .PHONY: all show check install base_install deploy upgrade clean
 
-all: 
+all: public_keys 
 
 clean:
 
 check:
 	@ansible-playbook site.yml --syntax-check
 
-install-jenkins-slave: install
-	@echo "JENKINS SLAVE"
-	$(MAKE) base_jenkins_slave
-	$(MAKE) tangentci
-	$(MAKE) lazlo
-	$(MAKE) secure-host
-	@cat /etc/ssh/sshd_config
-	reboot
+public_keys: public_keys/brian public_keys/deploy public_keys/jenkins
+
+public_keys/brian:
+	@ssh-import-id -o public_keys/brian brianaker
+
+public_keys/jenkins:
+	@ssh-import-id -o public_keys/jenkins d-ci
 
 install: all
 	ansible-playbook site.yml
-
-base_jenkins_slave: | java
 
 install-ansible-user:
 	ansible-playbook site.yml --limit=localhost -s -i hosts

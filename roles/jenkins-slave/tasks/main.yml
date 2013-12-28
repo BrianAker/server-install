@@ -1,44 +1,8 @@
 ---
-- name: create jenkins user
-  sudo: yes
-  user: name=jenkins
-        generate_ssh_key=yes
-        state=present 
-        shell=/bin/bash
-
 - name: Add keys for CI user
   ignore_errors: yes
   sudo: yes
   raw: sudo -u jenkins -i ssh-import-id d-ci
-
-- name: copy in pythonrc
-  sudo: yes
-  copy: src=templates/pythonrc 
-        dest="/home/jenkins/.pythonrc"
-        owner="jenkins"
-        mode=0600
-
-- name: Install Sphinx
-  pip: name={{ item }} state=present
-        virtualenv=~/.python
-  with_items:
-    - Sphinx
-    - sphinxcontrib-googleanalytics
-
-- name: Reconfigure path for jenkins user to include pythonrc
-  sudo: yes
-  lineinfile: dest=/home/jenkins/.profile
-              regexp="^. ~/.pythonrc"
-              line=". ~/.pythonrc"
-              state=present
-              create=yes
-
-- name: Reconfigure SSH to allow jenkins user login
-  sudo: yes
-  lineinfile: dest=/etc/ssh/sshd_config 
-              regexp="^AllowUsers jenkins"
-              line="AllowUsers jenkins"
-              state=present
 
 - name: add jenkins user to mock group
   sudo: yes
