@@ -1,6 +1,7 @@
 ALL:localhost
 sendmail: ALL
 sshd:10.0.2.17
+sshd:10.0.2.64
 sshd:10.0.3.12
 sshd:10.0.3.21
 sshd:166.78.10.183
