@@ -1,19 +1,19 @@
 ---
-- name: install basic dev software required for bootstrap with yum
+- name: install apache
   sudo: yes
   yum: name={{ item }} state=present
   with_items:
     - httpd
-  when: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for http console
   sudo: yes
   shell: firewall-cmd --permanent --add-service http
   notify: restart apache
-  when: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for https console
   sudo: yes
   shell: firewall-cmd --permanent --add-service https
   notify: restart apache
-  when: $ansible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
