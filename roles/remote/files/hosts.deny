@@ -1,1 +1,1 @@
-	sh -c "echo ALL:ALL >> /etc/hosts.deny"
+ALL:ALL
