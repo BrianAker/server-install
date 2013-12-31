@@ -1,0 +1,23 @@
+---
+
+- include_vars: "{{ ansible_distribution }}.yml"
+
+- name: install packages for bootstrap RedHat
+  sudo: yes
+  yum:  name={{ item }}
+        state=present
+  with_items: packages
+  when: ansible_os_family == 'RedHat'
+
+- name: install packages for bootstrap Debian
+  sudo: yes
+  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  with_items: packages
+  when: ansible_os_family == 'Debian'
+
+- name: install packages for bootstrap Darwin
+  sudo: yes
+  homebrew: name={{ item }} 
+            state=present
+  with_items: packages
+  when: ansible_os_family == 'Darwin'

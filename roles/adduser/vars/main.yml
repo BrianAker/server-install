@@ -4,3 +4,4 @@ pip_packages:
   - pip
   - sphinx
   - sphinxcontrib-googleanalytics
+  - ssh-import-id

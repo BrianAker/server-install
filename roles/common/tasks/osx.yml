@@ -5,7 +5,6 @@
   homebrew: name={{ item }} state=present
   with_items:
     - bind
-    - bzr
     - curl
     - git
     - gpg2

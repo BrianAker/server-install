@@ -1,0 +1,23 @@
+#!/bin/bash
+
+RUBY_HOME=$HOME/.ruby
+GEM_HOME=$RUBY_HOME/gems
+
+if [ -d "$RUBY_HOME" ]; then
+  if [ -d "$RUBY_HOME/bin" ]; then
+    PATH="$RUBY_HOME/bin:$PATH"
+  fi
+
+  if [ -d "$GEM_HOME" ]; then
+    if [ -d "$GEM_HOME/bin" ]; then
+      PATH="$GEM_HOME/bin:$PATH"
+    fi
+  else
+    mkdir -p $GEM_HOME/bin
+  fi
+
+  export RUBY_HOME
+  export GEM_HOME
+fi
+
+export PATH

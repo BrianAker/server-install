@@ -1,8 +1,5 @@
 ---
 # handler for dns
 
-- name: restart named
-  service: name=named state=restarted enabled=yes
-  
-- name: restart named-chroot
-  service: name=named-chroot state=restarted enabled=yes
+- name: restart bind
+  service: name={{ bind }} state=restarted enabled=yes

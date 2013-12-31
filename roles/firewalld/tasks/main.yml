@@ -7,17 +7,14 @@
     - firewalld
   when: ansible_distribution == 'Fedora'
 
-- name: enable firewalld
-  sudo: yes
-  service: name=firewalld enabled=yes
-  when: ansible_distribution == 'Fedora'
-
-- name: start firewalld
-  sudo: yes
-  service: name=firewalld state=started
-  when: ansible_distribution == 'Fedora'
-
 - name: Poke a hole through the firewall for ssh
   sudo: yes
-  shell: firewall-cmd --permanent --add-service ssh
+  firewalld:  service=ssh
+              permanent=true
+              state=enabled
+  when: ansible_distribution == 'Fedora'
+
+- name: enable firewalld
+  sudo: yes
+  service: name=firewalld enabled=yes state=started
   when: ansible_distribution == 'Fedora'

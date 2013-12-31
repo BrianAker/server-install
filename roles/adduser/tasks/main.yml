@@ -50,21 +50,43 @@
             validate='visudo -cf %s'
   when: is_admin
 
+- name: copy in customrc
+  sudo: yes
+  template: src=customrc.j2 
+            dest="~{{ username }}/.customrc"
+            owner={{ username }}
+            group={{ username }}
+            mode=0600
+
 - name: copy in pythonrc
   sudo: yes
-  copy: src=templates/pythonrc.j2 
-        dest="~{{ username }}/.pythonrc"
-        owner={{ username }}
-        group={{ username }}
-        mode=0600
+  template: src=pythonrc.j2 
+            dest="~{{ username }}/.pythonrc"
+            owner={{ username }}
+            group={{ username }}
+            mode=0600
 
+- name: copy in perlrc
+  sudo: yes
+  template: src=perlrc.j2 
+            dest="~{{ username }}/.perlrc"
+            owner={{ username }}
+            group={{ username }}
+            mode=0600
 
-- name: Reconfigure path for deploy user to include pythonrc
+- name: copy in rubyrc
+  sudo: yes
+  template: src=rubyrc.j2 
+            dest="~{{ username }}/.rubyrc"
+            owner={{ username }}
+            group={{ username }}
+            mode=0600
+
+- name: Reconfigure path for deploy user to include customrc
   sudo: yes
   lineinfile: dest="~{{ username }}/.bash_profile"
-              insertbefore="^export PATH"
-              regexp="^. ~/.pythonrc"
-              line=". ~/.pythonrc"
+              regexp="^. ~/.customrc"
+              line=". ~/.customrc"
               owner="{{ username }}"
               group="{{ username }}"
               mode=0700
@@ -78,3 +100,7 @@
        virtualenv="~{{ username }}/.python"
        state=present
   with_items: pip_packages
+
+- name: allow any nas to work with TimeMachine
+  shell: defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
+  when: ansible_os_family == 'Darwin'

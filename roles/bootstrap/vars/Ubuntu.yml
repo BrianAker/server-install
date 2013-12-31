@@ -1,0 +1,12 @@
+---
+
+packages:
+  - git
+  - openssh-server
+  - perl
+  - python
+  - python-pip
+  - python-setuptools
+  - python-software-properties
+  - python-virtualenv
+  - sudo

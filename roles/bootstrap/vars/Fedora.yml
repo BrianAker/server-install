@@ -1,0 +1,10 @@
+---
+
+packages:
+  - git
+  - python
+  - python-pip
+  - python-setuptools
+  - python-virtualenv
+  - redhat-lsb-core
+  - sudo

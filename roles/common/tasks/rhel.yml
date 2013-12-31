@@ -18,7 +18,6 @@
     - redhat-lsb-core
     - python-setuptools
     - curl
-    - bzr
     - sudo
     - fakeroot
     - git

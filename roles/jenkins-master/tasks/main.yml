@@ -23,10 +23,6 @@
   sudo: yes
   service: name=jenkins
            enabled=yes 
-
-- name: start jenkins
-  sudo: yes
-  service: name=jenkins
            state=started
 
 # Install Jenkins cli

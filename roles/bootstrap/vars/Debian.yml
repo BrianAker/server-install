@@ -1,0 +1,11 @@
+---
+
+packages:
+    - git
+    - lsb-release
+    - python
+    - python-pip
+    - python-setuptools
+    - python-software-properties
+    - python-virtualenv
+    - sudo

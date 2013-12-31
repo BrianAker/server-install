@@ -1,0 +1,26 @@
+#!/bin/bash
+export EDITOR=vim
+
+if [ -x /usr/bin/keychain ]; then
+  /usr/bin/keychain
+fi
+
+if [ -d /usr/local/bin ]; then
+  export PATH="/usr/local/bin:$PATH"
+fi
+
+if [ -d /usr/local/sbin ]; then
+  export PATH="/usr/local/sbin:$PATH"
+fi
+
+if [ -f "$HOME/.perlrc" ]; then
+  . $HOME/.perlrc
+fi
+
+if [ -f "$HOME/.pythonrc" ]; then
+  . $HOME/.pythonrc
+fi
+
+if [ -f "$HOME/.rubyrc" ]; then
+  . $HOME/.rubyrc
+fi
