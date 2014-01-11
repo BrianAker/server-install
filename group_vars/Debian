@@ -1,4 +1,4 @@
 ---
-sshd: ssh
+service_sshd: ssh
 apache: apache2
 bind: bind

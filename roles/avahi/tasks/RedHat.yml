@@ -1,0 +1,6 @@
+---
+
+- name:       install avahi packages
+  sudo:       yes
+  yum:        pkg={{ item }} state=installed
+  with_items: [avahi-tools, avahi, nss-mdns]

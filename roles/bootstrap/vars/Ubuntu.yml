@@ -1,7 +1,6 @@
 ---
 
 packages:
-  - git
   - openssh-server
   - perl
   - python

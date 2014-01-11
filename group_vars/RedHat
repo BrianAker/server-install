@@ -1,4 +1,4 @@
 ---
-sshd: sshd
+service_sshd: sshd
 apache: httpd
 bind: bind

@@ -45,3 +45,4 @@
 - include: developer.yml
 - include: localhost.yml
 - include: remote.yml
+- include: haus.yml

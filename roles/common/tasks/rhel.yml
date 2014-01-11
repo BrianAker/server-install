@@ -46,6 +46,7 @@
     - fail2ban
     - firewalld
     - keychain
+    - net-tools
     - python-pip
     - python-virtualenv
     - system-config-network

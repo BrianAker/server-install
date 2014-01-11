@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone='no'?><!--*-nxml-*-->
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+
+<service-group>
+  <name replace-wildcards="yes">%h</name>
+
+  <service>
+    <type>{{ avahi_service_type }}</type>
+    <port>{{ avahi_service_port }}</port>
+  </service>
+</service-group>
