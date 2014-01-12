@@ -1,5 +1,10 @@
 # {{ ansible_managed }}
 # Source global definitions
 if [ -d $HOME/.python/bin ]; then
-  export PATH=$HOME/.python/bin:$PATH
+  for x in "$HOME/.python/bin"; do
+    case ":$PATH:" in
+      *":$x:"*) :;; # already there
+      *) PATH="$x:$PATH";;
+    esac
+  done
 fi

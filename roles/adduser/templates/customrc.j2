@@ -6,11 +6,21 @@ if [ -x /usr/bin/keychain ]; then
 fi
 
 if [ -d /usr/local/bin ]; then
-  export PATH="/usr/local/bin:$PATH"
+  for x in "/usr/local/bin"; do
+    case ":$PATH:" in
+      *":$x:"*) :;; # already there
+      *) PATH="$x:$PATH";;
+    esac
+  done
 fi
 
 if [ -d /usr/local/sbin ]; then
-  export PATH="/usr/local/sbin:$PATH"
+  for x in "/usr/local/sbin"; do
+    case ":$PATH:" in
+      *":$x:"*) :;; # already there
+      *) PATH="$x:$PATH";;
+    esac
+  done
 fi
 
 if [ -f "$HOME/.perlrc" ]; then

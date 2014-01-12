@@ -5,13 +5,13 @@
   user: name="{{ username }}"
         state=present
         shell=/bin/bash
-  when_string: $ansible_os_family == 'OSX'
+  when_string: $ansible_os_family != 'OSX'
 
 - name: create ssh key
   sudo: yes
   user: name={{ username }}
         generate_ssh_key=yes
-  when_string: $ansible_os_family == 'OSX'
+  when_string: $ansible_os_family != 'OSX'
 
 - name: touch authorized_keys
   sudo: yes
@@ -94,6 +94,18 @@
               mode=0700
               state=present
               create=yes
+
+- name: Reconfigure path for deploy user to include customrc
+  sudo: yes
+  lineinfile: dest="~{{ username }}/.bashrc"
+              regexp="^. ~/.customrc"
+              line=". ~/.customrc"
+              owner="{{ username }}"
+              group="{{ username }}"
+              mode=0700
+              state=present
+              create=yes
+  when_string: $ansible_os_family != 'OSX'
 
 - name: install local pip packages for user
   sudo: yes

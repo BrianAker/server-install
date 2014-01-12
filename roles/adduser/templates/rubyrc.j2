@@ -4,13 +4,21 @@ RUBY_HOME=$HOME/.ruby
 GEM_HOME=$RUBY_HOME/gems
 
 if [ -d "$RUBY_HOME" ]; then
-  if [ -d "$RUBY_HOME/bin" ]; then
-    PATH="$RUBY_HOME/bin:$PATH"
-  fi
+  for x in "$RUBY_HOME"; do
+    case ":$PATH:" in
+      *":$x:"*) :;; # already there
+      *) PATH="$x:$PATH";;
+    esac
+  done
 
   if [ -d "$GEM_HOME" ]; then
     if [ -d "$GEM_HOME/bin" ]; then
-      PATH="$GEM_HOME/bin:$PATH"
+      for x in ""$GEM_HOME/bin""; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
     fi
   else
     mkdir -p $GEM_HOME/bin
@@ -19,5 +27,3 @@ if [ -d "$RUBY_HOME" ]; then
   export RUBY_HOME
   export GEM_HOME
 fi
-
-export PATH
