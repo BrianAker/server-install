@@ -1,0 +1,11 @@
+- name: install brew
+  command: ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)" creates=/usr/local/bin/brew
+
+- name: run brew doctor
+  command: brew doctor
+
+- name: install packages for bootstrap Darwin
+  sudo: yes
+  homebrew: name={{ item }} 
+            state=present
+  with_items: packages

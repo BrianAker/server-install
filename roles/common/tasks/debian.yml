@@ -2,12 +2,12 @@
 
 - name: apt update dist
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 upgrade=dist
+  apt:  update_cache=yes cache_valid_time=3600 upgrade=dist
   when: ansible_pkg_mgr == 'apt'
 
 - name: apt pip virtualenv
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - python-setuptools
     - python-virtualenv
@@ -15,7 +15,7 @@
 
 - name: apt base software
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - cron-apt
     - curl
@@ -44,7 +44,7 @@
 
 - name: apt install python-software-properties
   sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   ignore_errors: yes
   with_items:
     - python-software-properties
@@ -60,7 +60,7 @@
 
 - name: remove ubuntu ssh-import-id
   sudo: yes
-  apt: pkg=ssh-import-id state=absent
+  apt:  pkg=ssh-import-id state=absent
   when: ansible_distribution == 'Ubuntu'
 
 - name: Adjust APT update intervals

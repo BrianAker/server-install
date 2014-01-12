@@ -1,0 +1,9 @@
+---
+
+- name: install packages for bootstrap RedHat
+  sudo: yes
+  yum:  name={{ item }}
+        state=present
+  with_items: packages
+  when: ansible_os_family == 'RedHat'
+

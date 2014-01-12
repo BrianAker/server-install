@@ -5,5 +5,5 @@
   user: deploy
   roles:
     - build
-    - ssh
+    - { role: ssh, when: "ansible_os_family != 'Darwin'" }
     - jenkins-slave
