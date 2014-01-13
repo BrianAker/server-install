@@ -2,4 +2,5 @@
 # handler for dns
 
 - name: restart bind
-  service: name={{ bind }} state=restarted enabled=yes
+  sudo:     yes
+  service:  name={{ bind }} state=restarted enabled=yes

@@ -1,6 +1,7 @@
 ---
 
 - name: restart sendmail
+  sudo:     yes
   service:  name=sendmail
             state=restarted
             enabled=yes
