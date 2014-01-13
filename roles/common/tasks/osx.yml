@@ -4,15 +4,14 @@
   ignore_errors: yes
   homebrew: name={{ item }} state=present
   with_items:
-    - bind
-    - curl
-    - git
-    - gpg2
-    - make
+#    - bind
+#    - curl
+#    - git
+#    - gpg2
+#    - make
     - pkg-config
     - pwgen
     - ssh-copy-id
-    - wget
 
 #- name: accept xcode license
 #  sudo: yes

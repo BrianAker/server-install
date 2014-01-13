@@ -2,6 +2,7 @@
 pip_packages:
   - bzr
   - pip
+  - setuptools
   - sphinx
   - sphinxcontrib-googleanalytics
   - ssh-import-id

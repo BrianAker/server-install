@@ -28,7 +28,6 @@
       - python-keystoneclient
       - pytz
       - requests
-      - setuptools
       - simplejson
       - six
       - sphinxcontrib-googleanalytics
