@@ -19,7 +19,7 @@
   roles:
     - bootstrap
     - common
-    - { role: deploy, when: "ansible_distribution != 'MacOSX'" }
+    - { role: deploy }
 
 - hosts: EL
   gather_facts: no
