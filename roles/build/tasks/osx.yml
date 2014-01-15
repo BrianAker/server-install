@@ -1,11 +1,8 @@
 ---
 
 - name: install osx build software
-  ignore_errors: yes
   homebrew: name={{ item }} state=present
   with_items:
-    - Bison
-    - Flex
     - autoconf
     - autoconf-archive
     - automake
@@ -13,7 +10,6 @@
     - byobu
     - curl-ca-bundle
     - gettext
-    - gperf
     - gpg-agent
     - hub 
     - intltool
@@ -29,3 +25,26 @@
 #   - valgrind
     - vim 
     - vpnc 
+
+# This is because not everything will install
+- name: install bison for OSX
+  ignore_errors: yes
+  homebrew: name=bison state=present
+
+- name: brew link bison
+  command: /usr/local/bin/brew link --force bison
+
+- name: install flex for OSX
+  ignore_errors: yes
+  homebrew: name=flex state=present
+
+- name: brew link flex
+  command: /usr/local/bin/brew link --force flex
+
+- name: install gperf for OSX
+  ignore_errors: yes
+  homebrew: name=gperf state=present
+#  homebrew: name=homebrew/dupes/gperf state=present
+
+- name: brew link gperf
+  command: /usr/local/bin/brew link gperf

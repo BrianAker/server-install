@@ -1,9 +1,4 @@
 ---
-- name: Add keys for CI user
-  ignore_errors: yes
-  sudo: yes
-  raw: sudo -u jenkins -i ssh-import-id d-ci
-
 - name: add jenkins user to mock group
   sudo: yes
   user: name=jenkins
