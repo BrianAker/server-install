@@ -1,0 +1,25 @@
+---
+
+- name: apt base software
+  sudo: yes
+  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  with_items:
+    - fail2ban
+  when: ansible_os_family == 'Debian'
+
+- name: install fedora basic software
+  yum: name={{ item }}  state=present
+  sudo: yes
+  with_items:
+    - fail2ban
+  when: ansible_distribution == 'Fedora'
+
+- name: start fail2ban
+  sudo: yes
+  service: name=fail2ban
+           enabled=yes
+
+- name: start fail2ban
+  sudo: yes
+  service: name=fail2ban
+           state=restarted

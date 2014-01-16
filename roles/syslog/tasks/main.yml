@@ -3,5 +3,5 @@
 - name: configure remote syslog
   sudo: yes
   shell: firewall-cmd --zone=public --permanent  --add-port=514/udp
-  when_string: $anible_distribution == 'Fedora'
+  when: $anible_distribution == 'Fedora'
 

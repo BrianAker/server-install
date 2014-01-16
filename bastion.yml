@@ -1,0 +1,8 @@
+---
+
+# Host rules for bastion hosts
+- hosts: bastion
+  user: deploy
+  roles:
+    - bastion
+    - denyhosts

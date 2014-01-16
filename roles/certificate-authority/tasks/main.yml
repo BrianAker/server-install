@@ -5,5 +5,5 @@
   with_items:
     - bind-dyndb-ldap
     - freeipa
-  when_string: $ansible_distribution == 'Fedora'
+  when: $ansible_distribution == 'Fedora'
 

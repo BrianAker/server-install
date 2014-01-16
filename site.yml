@@ -45,4 +45,5 @@
 - include: developer.yml
 - include: localhost.yml
 - include: remote.yml
+- include: bastion.yml
 - include: haus.yml

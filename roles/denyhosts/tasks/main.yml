@@ -1,0 +1,26 @@
+---
+
+- name: apt base software
+  sudo: yes
+  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  with_items:
+    - denyhosts
+  when: ansible_os_family == 'Debian'
+
+- name: install fedora basic software
+  yum: name={{ item }}  state=present
+  sudo: yes
+  with_items:
+    - denyhosts
+  when: ansible_distribution == 'Fedora'
+
+- name: start denyhosts
+  sudo: yes
+  service: name=denyhosts
+           enabled=yes
+
+- name: start denyhosts
+  sudo: yes
+  service: name=denyhosts
+           state=restarted
+

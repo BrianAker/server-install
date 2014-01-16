@@ -20,7 +20,6 @@
     - cron-apt
     - curl
     - denyhosts
-    - fail2ban
     - fakeroot
     - git
     - gnupg-agent

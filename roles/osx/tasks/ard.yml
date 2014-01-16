@@ -5,9 +5,9 @@
 - name: stop ARD
   sudo: yes
   raw: /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -stop
-  when_string: $ansible_os_family == 'OSX'
+  when: $ansible_os_family == 'OSX'
 
 - name: start ARD
   sudo: yes
   raw:  /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -privs -all -restart -agent
-  when_string: $ansible_os_family == 'OSX'
+  when: $ansible_os_family == 'OSX'
