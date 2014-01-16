@@ -4,13 +4,6 @@
 - name: update brew dupes
   command: /usr/local/bin/brew tap homebrew/dupes
 
-- name: update homebrew
-  command: /usr/local/bin/brew update
-
-- name: run brew doctor
-  ignore_errors: yes
-  command: /usr/local/bin/brew doctor
-
 - name: install packages for bootstrap Darwin
   homebrew: name={{ item }} 
             state=present

@@ -1,6 +1,6 @@
 ---
 
-- name: apt pip virtualenv
+- name: apt virtualbox vagrant
   sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:

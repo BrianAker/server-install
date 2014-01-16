@@ -8,7 +8,3 @@
 
 - include: osx.yml
   when: ansible_distribution == 'MacOSX'
-
-#- name: pip ssh-import-id
-#  pip: name=ssh-import-id 
-#       state=present
