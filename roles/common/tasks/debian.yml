@@ -5,12 +5,11 @@
   apt:  update_cache=yes cache_valid_time=3600 upgrade=dist
   when: ansible_pkg_mgr == 'apt'
 
-- name: apt pip virtualenv
+- name: apt python-setuptools
   sudo: yes
   apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
   with_items:
     - python-setuptools
-    - python-virtualenv
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == 'precise'
 
 - name: apt base software
@@ -31,9 +30,7 @@
     - pkg-config
     - python
     - python-dev
-    - python-pip
     - python-software-properties
-    - python-virtualenv
     - ruby
     - sudo
     - tar

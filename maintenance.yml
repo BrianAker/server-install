@@ -24,3 +24,11 @@
 
   tasks:
     - apt: upgrade=dist update_cache=yes cache_valid_time=3600
+
+- hosts: MacOSX
+  gather_facts: no
+
+  tasks:
+    - name: update homebrew
+      command: /usr/local/bin/brew update
+

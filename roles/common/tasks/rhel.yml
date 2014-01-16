@@ -46,8 +46,6 @@
     - firewalld
     - keychain
     - net-tools
-    - python-pip
-    - python-virtualenv
     - system-config-network
     - yum-fastestmirror
   when: ansible_distribution == 'Fedora'
@@ -58,14 +56,6 @@
            state=restarted
            enabled=yes
   when: ansible_distribution == 'Fedora'
-
-- name: Install pip and virtualenv
-  sudo: yes
-  easy_install: name={{ item }}
-  with_items:
-    - virtualenv
-    - pip
-  when: ansible_distribution == 'CentOS'
 
 - name: install updatesd
   sudo: yes

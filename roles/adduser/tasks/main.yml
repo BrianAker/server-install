@@ -2,47 +2,46 @@
 
 - name: create user
   sudo: yes
-  user: name="{{ username }}"
+  user: name={{ username }}
         state=present
         shell=/bin/bash
-  when: $ansible_os_family != 'OSX'
+  when: ansible_distribution != 'MacOSX'
 
 - name: create ssh key
   sudo: yes
   user: name={{ username }}
         generate_ssh_key=yes
-  when: $ansible_os_family != 'OSX'
+  when: ansible_distribution != 'MacOSX'
 
 - name: touch authorized_keys
   sudo: yes
+  sudo_user: "{{ username }}"
   copy: src=files/authorized_keys
         force=no
         dest="~{{ username }}/.ssh/authorized_keys"
-        owner="{{ username }}"
-        group="{{ username }}"
         mode=0600
 
 - name: setup authorized_key from file
   sudo: yes
+  sudo_user: "{{ username }}"
   ignore_errors: yes
-  authorized_key: user="{{ username }}"
+  authorized_key: user={{ username }}
                   key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + username) }}"
 
 - name: reset mode for authorized_keys
   sudo: yes
+  sudo_user: "{{ username }}"
   file: path="~{{ username }}/.ssh/authorized_keys"
-        owner="{{ username }}"
-        group="{{ username }}"
         mode=0600
 
 - name: add user to sshd AllowUsers
   sudo: yes
-  lineinfile: dest=/etc/ssh/sshd_config 
+  lineinfile: dest={{ sshd_config_file }}
               regexp="^AllowUsers {{ username }}"
               line="AllowUsers {{ username }}"
               state=present
 
-- name: write the deploy sudoers file
+- name: write the user to the sudoers file
   sudo: yes
   template: src=sudoer.j2
             dest="/etc/sudoers.d/{{ username }}"
@@ -54,70 +53,60 @@
 
 - name: copy in customrc
   sudo: yes
+  sudo_user: "{{ username }}"
   template: src=customrc.j2 
             dest="~{{ username }}/.customrc"
-            owner={{ username }}
-            group={{ username }}
             mode=0600
 
 - name: copy in pythonrc
   sudo: yes
+  sudo_user: "{{ username }}"
   template: src=pythonrc.j2 
             dest="~{{ username }}/.pythonrc"
-            owner={{ username }}
-            group={{ username }}
             mode=0600
 
 - name: copy in perlrc
   sudo: yes
+  sudo_user: "{{ username }}"
   template: src=perlrc.j2 
             dest="~{{ username }}/.perlrc"
-            owner={{ username }}
-            group={{ username }}
             mode=0600
 
 - name: copy in rubyrc
   sudo: yes
+  sudo_user: "{{ username }}"
   template: src=rubyrc.j2 
             dest="~{{ username }}/.rubyrc"
-            owner={{ username }}
-            group={{ username }}
             mode=0600
 
-- name: Reconfigure path for deploy user to include customrc
+- name: Reconfigure path for user to include customrc
   sudo: yes
+  sudo_user: "{{ username }}"
   lineinfile: dest="~{{ username }}/.bash_profile"
               regexp="^. ~/.customrc"
               line=". ~/.customrc"
-              owner="{{ username }}"
-              group="{{ username }}"
               mode=0700
               state=present
               create=yes
 
-- name: Reconfigure path for deploy user to include customrc
+- name: Reconfigure path for user to include bashrc
   sudo: yes
+  sudo_user: "{{ username }}"
   lineinfile: dest="~{{ username }}/.bashrc"
               regexp="^. ~/.customrc"
               line=". ~/.customrc"
-              owner="{{ username }}"
-              group="{{ username }}"
               mode=0700
               state=present
               create=yes
-  when: $ansible_os_family != 'OSX'
+  when: ansible_distribution != 'MacOSX'
 
 - name: install local pip packages for user
   sudo: yes
   sudo_user: "{{ username }}"
   pip: name={{ item }}
        virtualenv="~{{ username }}/.python"
-       state=present
+       state=latest
   with_items: pip_packages
-
-- name: allow any nas to work with TimeMachine
-  shell: defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
-  when: ansible_os_family == 'Darwin'
 
 - name: install ohai
   gem:  ohai

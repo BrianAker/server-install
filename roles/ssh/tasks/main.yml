@@ -16,7 +16,7 @@
               state=present
   notify: restart sshd
 
-- name: Reconfigure SSH PermitRootLogin yes
+- name: Reconfigure SSH PermitRootLogin no
   sudo: yes
   lineinfile: dest={{ sshd_config_file }}
               regexp="^PermitRootLogin"

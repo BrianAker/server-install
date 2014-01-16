@@ -4,7 +4,7 @@
 - hosts: masters
   user: deploy
   roles:
-    - { role: adduser, username: brian, lp_username: brianaker, is_admin: True, has_authorized_key: False, has_lp_username: True }
+    - { role: adduser, username: brian, is_admin: True, has_authorized_key: False }
     - build
     - ssh
     - pound
