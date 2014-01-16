@@ -2,23 +2,20 @@
 
 - name: copy in sbinrc
   sudo: yes
+  sudo_user: "{{ deploy_user }}"
   copy: src=templates/sbinrc.j2 
         dest="~{{ deploy_user }}/.sbinrc"
-        owner="{{ deploy_user }}"
         mode=0600
   when: ansible_distribution == 'Debian'
 
 - name: Reconfigure path for deploy user to include .sbinrc
   sudo: yes
+  sudo_user: "{{ deploy_user }}"
   lineinfile: dest="~{{ deploy_user }}/.bash_profile"
               insertbefore="^export PATH"
               regexp="^. ~/.sbinrc"
               line=". ~/.sbinrc"
-              owner="{{ deploy_user }}"
-              group="{{ deploy_user }}"
               mode=0700
               state=present
               create=yes
   when: ansible_distribution == 'Debian'
-
-
