@@ -108,12 +108,12 @@
        state=latest
   with_items: pip_packages
 
-- name: install ohai
-  gem:  name=ohai
-        user_install=yes
-        state=present
-
-- name: install facter
-  gem:  name=facter
-        user_install=yes
-        state=present
+#- name: install ohai
+#  gem:  name=ohai
+#        user_install=yes
+#        state=present
+#
+#- name: install facter
+#  gem:  name=facter
+#        user_install=yes
+#        state=present
