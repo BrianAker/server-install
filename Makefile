@@ -27,6 +27,7 @@ DIST_MAKEFILES := ubuntu.am fedora.am centos.mk freebsd.am osx.am
 all: public_keys 
 
 clean:
+	rm -f public_keys/brian public_keys/jenkins
 
 check:
 	@ansible-playbook site.yml --syntax-check
@@ -64,15 +65,7 @@ show:
 	@echo "HOST_UUID ${HOST_UUID}"
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"
 
-deploy:
-ifndef INSTALL_SERVER
-	@echo "INSTALL_SERVER was not set"
-endif
-ifdef INSTALL_SERVER
-	scp bootstrap.sh "$$INSTALL_SERVER":~/
-	ssh -o "RequestTTY yes" -o "BatchMode yes" -o "StrictHostKeyChecking no" -t "$$INSTALL_SERVER" ./bootstrap.sh
-endif
-
+deploy: install
 
 .DEFAULT_GOAL:= all
 

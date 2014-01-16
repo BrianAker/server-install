@@ -2,8 +2,18 @@
 
 - name: create default hosts.allow
   sudo: yes
-  copy: src=hosts.allow dest=/etc/hosts.allow owner=root group=root mode=644
+  copy: src=hosts.allow
+        dest=/etc/hosts.allow
+        owner=root
+        group=root
+        mode=644
+        force=yes
 
 - name: create default hosts.deny
   sudo: yes
-  copy: src=hosts.deny dest=/etc/hosts.deny owner=root group=root mode=644
+  copy: src=hosts.deny
+        dest=/etc/hosts.deny
+        owner=root
+        group=root
+        mode=644
+        force=yes
