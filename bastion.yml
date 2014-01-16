@@ -4,5 +4,5 @@
 - hosts: bastion
   user: deploy
   roles:
-    - bastion
+    - fail2ban
     - denyhosts
