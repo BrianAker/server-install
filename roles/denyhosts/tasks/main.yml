@@ -23,6 +23,15 @@
               state=present
               create=yes
 
+- name: Make sure sketch can login
+  sudo: yes
+  lineinfile: dest=/etc/hosts.allow
+              regexp="^sshd:10.0.3.21"
+              line="sshd:10.0.3.21"
+              mode=0700
+              state=present
+              create=yes
+
 - name: start denyhosts
   sudo: yes
   service: name=denyhosts
