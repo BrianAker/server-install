@@ -14,6 +14,15 @@
     - denyhosts
   when: ansible_distribution == 'Fedora'
 
+- name: Make sure sketch can login
+  sudo: yes
+  lineinfile: dest=/etc/hosts.allow
+              regexp="^sshd:sketch.haus"
+              line="sshd:sketch.haus"
+              mode=0700
+              state=present
+              create=yes
+
 - name: start denyhosts
   sudo: yes
   service: name=denyhosts
