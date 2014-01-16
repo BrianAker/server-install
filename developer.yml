@@ -15,7 +15,6 @@
       - PyYAML
       - ansible
       - argparse
-      - bzr
       - ecdsa
       - iso8601
       - netaddr

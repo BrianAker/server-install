@@ -9,6 +9,7 @@
 #    - git
 #    - gpg2
 #    - make
+    - bzr
     - pkg-config
     - pwgen
     - ssh-copy-id

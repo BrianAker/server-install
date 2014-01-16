@@ -17,6 +17,7 @@
     - '@system-tools'
     - redhat-lsb-core
     - python-setuptools
+    - bzr
     - curl
     - sudo
     - fakeroot

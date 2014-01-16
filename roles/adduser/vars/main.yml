@@ -1,6 +1,5 @@
 ---
 pip_packages:
-  - bzr
   - pip
   - setuptools
   - sphinx
