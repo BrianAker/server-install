@@ -48,7 +48,8 @@
             owner=root 
             group=root 
             mode=0440
-            validate='visudo -cf %s'
+            state=latest
+            validate='visudo -cs'
   when: is_admin
 
 - name: copy in customrc
@@ -57,6 +58,7 @@
   template: src=customrc.j2 
             dest="~{{ username }}/.customrc"
             mode=0600
+            validate='bash -n %s'
 
 - name: copy in pythonrc
   sudo: yes
@@ -64,6 +66,7 @@
   template: src=pythonrc.j2 
             dest="~{{ username }}/.pythonrc"
             mode=0600
+            validate='bash -n %s'
 
 - name: copy in perlrc
   sudo: yes
@@ -78,6 +81,7 @@
   template: src=rubyrc.j2 
             dest="~{{ username }}/.rubyrc"
             mode=0600
+            validate='bash -n %s'
 
 - name: Reconfigure path for user to include customrc
   sudo: yes

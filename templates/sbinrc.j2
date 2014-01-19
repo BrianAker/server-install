@@ -1,6 +1,10 @@
 # {{ ansible_managed }}
 # Source /usr/sbin for platforms that require it during sudo
 if [ -d /usr/sbin ]; then
-  export PATH=/usr/sbin:$PATH
+  for x in "/usr/sbin"; do
+    case ":$PATH:" in
+      *":$x:"*) :;; # already there
+      *) PATH="$x:$PATH";;
+    esac
+  done
 fi
-
