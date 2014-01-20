@@ -4,7 +4,9 @@
 
 - name: Poke a hole through the firewall for ssh
   sudo: yes
-  firewalld: service=ssh permanent=true state=enabled
+  firewalld:  service=ssh
+              permanent=true
+              state=enabled
   when: ansible_distribution == 'Fedora'
 
 - name: Reconfigure SSH PasswordAuthentication no

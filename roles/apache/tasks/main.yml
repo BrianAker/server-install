@@ -8,12 +8,16 @@
 
 - name: Configure Persistent FirewallD for http console
   sudo: yes
-  shell: firewall-cmd --permanent --add-service http
+  firewalld:  service=http
+              permanent=true
+              state=enabled
   notify: restart apache
   when: ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for https console
   sudo: yes
-  shell: firewall-cmd --permanent --add-service https
+  firewalld:  service=https
+              permanent=true
+              state=enabled
   notify: restart apache
   when: ansible_distribution == 'Fedora'

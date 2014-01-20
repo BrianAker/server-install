@@ -9,7 +9,16 @@
 
 - name: Poke a hole through the firewall for rsync
   sudo: yes
-  shell: firewall-cmd --permanent --add-port=873/tcp --add-port=873/udp
+  firewalld:  port='873/tcp'
+              permanent=true
+              state=enabled
+  when: ansible_distribution == 'Fedora'
+
+- name: Poke a hole through the firewall for rsync
+  sudo: yes
+  firewalld:  port='873/udp'
+              permanent=true
+              state=enabled
   when: ansible_distribution == 'Fedora'
 
 - name: create rsync user

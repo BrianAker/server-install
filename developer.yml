@@ -3,6 +3,14 @@
 # Rules for hosts that I do direct development on
 - hosts: developer
   user: deploy
+  tasks:
+    - name: configure persistent firewalld for bzr server
+      sudo: yes
+      firewalld:  port='4155/tcp'
+                  permanent=true
+                  state=enabled
+      when: ansible_distribution == 'Fedora'
+
   roles:
     - { role: adduser, username: brian, is_admin: true, has_authorized_key: true, when: "ansible_distribution != 'MacOSX'"}
     - ssh
