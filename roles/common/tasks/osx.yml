@@ -1,18 +1,22 @@
 ---
 
-- name: install common osx software
+- homebrew: name=bzr state=present
   ignore_errors: yes
-  homebrew: name={{ item }} state=present
-  with_items:
+
+- homebrew: name=pkg-config state=present
+  ignore_errors: yes
+
+- homebrew: name=pwgen state=present
+  ignore_errors: yes
+
+- homebrew: name=ssh-copy-id state=present
+  ignore_errors: yes
+
 #    - bind
 #    - curl
 #    - git
 #    - gpg2
 #    - make
-    - bzr
-    - pkg-config
-    - pwgen
-    - ssh-copy-id
 
 #- name: accept xcode license
 #  sudo: yes
