@@ -41,56 +41,6 @@
 # Older method.
 # lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=disabled
 
-- name: install fedora basic software
-  yum: name={{ item }}  state=present
-  sudo: yes
-  with_items:
-    - denyhosts
-    - firewalld
-    - keychain
-    - net-tools
-    - system-config-network
-    - yum-fastestmirror
-  when: ansible_distribution == 'Fedora'
-
-- name: start denyhosts
-  sudo: yes
-  service: name=denyhosts
-           state=restarted
-           enabled=yes
-  when: ansible_distribution == 'Fedora'
-
-- name: install updatesd
-  sudo: yes
-  yum: name={{ item }} state=present
-  with_items:
-    - yum-updatesd
-  when: ansible_distribution == 'Fedora'
-
-- name: Reconfigure updatesd to install updates
-  sudo: yes
-  lineinfile: dest=/etc/yum/yum-updatesd.conf
-              regexp="^do_update"
-              line="do_update = yes"
-  when: ansible_distribution == 'Fedora'
-  notify: restart updatesd
-
-- name: Reconfigure updatesd to install updates
-  sudo: yes
-  lineinfile: dest=/etc/yum/yum-updatesd.conf
-              regexp="^do_download"
-              line="do_download = yes"
-  when: ansible_distribution == 'Fedora'
-  notify: restart updatesd
-
-- name: Reconfigure updatesd to install updates
-  sudo: yes
-  lineinfile: dest=/etc/yum/yum-updatesd.conf
-              regexp="^do_download_deps"
-              line="do_download_deps = yes"
-  when: ansible_distribution == 'Fedora'
-  notify: restart updatesd
-
 - name: Check if sysconfig yum-crom exists
   stat: path=/etc/sysconfig/yum-cron
   register: check_yum_cron

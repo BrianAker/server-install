@@ -1,5 +1,20 @@
 ---
 
+- include: rhel.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: Fedora.yml
+  when: ansible_distribution == 'Fedora'
+
+- include: debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- include: osx.yml
+  when: ansible_distribution == 'MacOSX'
+
 - name: install ohai
   gem:  name=ohai
         user_install=yes
@@ -9,12 +24,3 @@
   gem:  name=facter
         user_install=yes
         state=present
-
-- include: rhel.yml
-  when: ansible_os_family == 'RedHat'
-
-- include: debian.yml
-  when: ansible_os_family == 'Debian'
-
-- include: osx.yml
-  when: ansible_distribution == 'MacOSX'
