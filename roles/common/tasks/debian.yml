@@ -33,6 +33,7 @@
     - python-dev
     - python-software-properties
     - ruby
+    - rubygems
     - sudo
     - tar
     - unattended-upgrades

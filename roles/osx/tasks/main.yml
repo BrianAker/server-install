@@ -1,5 +1,4 @@
 ---
 
 - name: allow any nas to work with TimeMachine
-  sudo: yes
   shell: defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1

@@ -41,14 +41,25 @@
               line="AllowUsers {{ username }}"
               state=present
 
+- name: mkdir sudoers.d
+  sudo: yes
+  command:  mkdir /etc/sudoers.d
+            creates=/etc/sudoers.d
+
+- name: chmod chown sudoers.d
+  sudo: yes
+  file: path=/etc/sudoers.d
+        owner=root 
+        group="{{ ohai_root_group  }}"
+        mode=0750
+
 - name: write the user to the sudoers file
   sudo: yes
   template: src=sudoer.j2
             dest="/etc/sudoers.d/{{ username }}"
             owner=root 
-            group=root 
+            group="{{ ohai_root_group }}"
             mode=0440
-            state=latest
             validate='visudo -cs'
   when: is_admin
 
@@ -111,13 +122,3 @@
        virtualenv="~{{ username }}/.python"
        state=latest
   with_items: pip_packages
-
-#- name: install ohai
-#  gem:  name=ohai
-#        user_install=yes
-#        state=present
-#
-#- name: install facter
-#  gem:  name=facter
-#        user_install=yes
-#        state=present

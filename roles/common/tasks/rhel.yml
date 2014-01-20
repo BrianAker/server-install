@@ -15,18 +15,19 @@
   with_items:
     - '@minimal-environment'
     - '@system-tools'
-    - redhat-lsb-core
-    - python-setuptools
     - bzr
     - curl
-    - sudo
     - fakeroot
     - git
     - make
     - perl
     - pkgconfig
     - python
+    - python-setuptools
+    - redhat-lsb-core
     - ruby
+    - rubygems
+    - sudo
     - tar
     - traceroute
     - vim

@@ -1,15 +1,19 @@
 ---
 
-- homebrew: name=bzr state=present
+- homebrew: name=pkg-config
+            state=present
   ignore_errors: yes
 
-- homebrew: name=pkg-config state=present
+- homebrew: name=bzr
+            state=present
   ignore_errors: yes
 
-- homebrew: name=pwgen state=present
+- homebrew: name=pwgen
+            state=present
   ignore_errors: yes
 
-- homebrew: name=ssh-copy-id state=present
+- homebrew: name=ssh-copy-id
+            state=present
   ignore_errors: yes
 
 #    - bind

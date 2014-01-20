@@ -1,5 +1,15 @@
 ---
 
+- name: install ohai
+  gem:  name=ohai
+        user_install=yes
+        state=present
+
+- name: install facter
+  gem:  name=facter
+        user_install=yes
+        state=present
+
 - include: rhel.yml
   when: ansible_os_family == 'RedHat'
 
