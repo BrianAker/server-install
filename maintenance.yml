@@ -23,7 +23,8 @@
   sudo: yes
 
   tasks:
-    - apt: upgrade=dist update_cache=yes cache_valid_time=3600
+    - apt: update_cache=yes
+    - apt: upgrade=dist cache_valid_time=3600
 
 - hosts: MacOSX
   gather_facts: no
