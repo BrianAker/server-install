@@ -27,6 +27,7 @@
     - redhat-lsb-core
     - ruby
     - rubygems
+    - ruby-devel
     - sudo
     - tar
     - traceroute

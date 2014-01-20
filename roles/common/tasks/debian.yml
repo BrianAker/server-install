@@ -34,6 +34,7 @@
     - python-software-properties
     - ruby
     - rubygems
+    - ruby-dev
     - sudo
     - tar
     - unattended-upgrades
