@@ -1,4 +1,0 @@
-SHELL=/bin/bash
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-MAILTO=root
-*/30 * * * * root (rm -rf /tmp/server-install; cd /tmp/; git clone git://github.com/BrianAker/server-install.git; cd /tmp/server-install ; sudo make install)
