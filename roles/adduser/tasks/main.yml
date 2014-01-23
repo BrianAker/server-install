@@ -60,7 +60,7 @@
             owner=root 
             group="{{ ohai_root_group }}"
             mode=0440
-            validate='visudo -cs'
+#            validate='visudo -cs'
   when: is_admin
 
 - name: copy in customrc
