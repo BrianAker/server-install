@@ -1,8 +1,0 @@
----
-# Install Jenkins dependencies
-- name: Install dependencies
-  apt: pkg={{ item }} state=installed update-cache=yes
-  with_items: {{ jenkins.debian_dependencies }}
-  tags:
-    - packages
-    - dependencies

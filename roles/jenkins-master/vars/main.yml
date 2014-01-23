@@ -1,17 +1,21 @@
 ---
 jenkins:
-  repo: 'deb http://pkg.jenkins-ci.org/debian binary/' # Jenkins repository
-  key: 'http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key' # Jenkins key
-  rhel_dependencies: # Jenkins RHEL dependencies
-    - 'curl'
-    - 'git'
-    - 'java-1.7.0-openjdk'
-    - 'java-1.7.0-openjdk-devel'
-  debian_dependencies: # Jenkins RHEL dependencies
-    - 'curl'
-    - 'git'
-    - 'openjdk-6-jdk'
-    - 'openjdk-6-jre'
+  deb:
+    repo: 'deb http://pkg.jenkins-ci.org/debian binary/' # Jenkins repository
+    key: 'http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key' # Jenkins key
+    dependencies: # Jenkins dependencies
+      - 'curl'
+      - 'git'
+      - 'openjdk-6-jdk'
+      - 'openjdk-6-jre'
+  rhel:
+    repo: 'http://pkg.jenkins-ci.org/redhat/jenkins.repo'
+    key: 'http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key'
+    dependencies: # Jenkins dependencies
+      - 'curl'
+      - 'git'
+      - 'java-1.7.0-openjdk'
+      - 'java-1.7.0-openjdk-devel'
   dest: '/var/lib/jenkins'
-  cli_dest: '${jenkins.dest}/jenkins-cli.jar' # Jenkins CLI destination
-  updates_dest: '${jenkins.dest}/updates_jenkins.json' # Jenkins updates file
+  cli_dest: "/var/lib/jenkins/jenkins-cli.jar"
+  updates_dest: "/var/lib/jenkins/updates_jenkins.json"

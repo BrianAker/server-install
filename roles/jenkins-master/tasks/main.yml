@@ -1,29 +1,4 @@
 ---
-# Install any dependencies that are required
-- include: dependencies.yml 
-
-- name: create jenkins user
-  sudo: yes
-  user: name=jenkins state=present shell=/bin/bash
-
-- name: add Jenkins-ci yum repository
-  sudo: yes
-  get_url: dest=/etc/yum.repos.d/jenkins.repo url=http://pkg.jenkins-ci.org/redhat/jenkins.repo
-
-#- name: add Jenkins-ci key
-#  sudo: yes
-#  rpm_key: state=present key=http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
-
-- name: yum install jenkins
-  sudo: yes
-  yum: name=jenkins
-       state=present
-
-- name: enable jenkins
-  sudo: yes
-  service: name=jenkins
-           enabled=yes 
-           state=started
-
-# Install Jenkins cli
-- include: cli.yml
+# Add Jenkins repository
+- include: jenkins.yml tags=jenkins
+  when: ansible_distribution in [ 'Debian', 'Ubuntu', 'RedHat', 'Fedora' ]

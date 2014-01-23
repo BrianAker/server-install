@@ -43,12 +43,7 @@
 
 - name: mkdir sudoers.d
   sudo: yes
-  command:  mkdir /etc/sudoers.d
-            creates=/etc/sudoers.d
-
-- name: chmod chown sudoers.d
-  sudo: yes
-  file: path=/etc/sudoers.d
+  file: path="/etc/sudoers.d" state=directory
         owner=root 
         group="{{ ohai_root_group  }}"
         mode=0750

@@ -1,7 +1,0 @@
----
-- include: rhel_dependencies.yml
-  when: ansible_os_family == 'RedHat'
-
-- include: debian_dependencies.yml
-  when: ansible_os_family == 'Debian'
-

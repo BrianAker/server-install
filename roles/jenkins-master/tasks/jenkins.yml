@@ -1,0 +1,20 @@
+---
+
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: enable jenkins
+  sudo: yes
+  service: name=jenkins
+           enabled=yes 
+           state=started
+
+
+# Install Jenkins cli
+- include: cli.yml
+
+# Install/update Jenkins plugins
+- include: plugins.yml

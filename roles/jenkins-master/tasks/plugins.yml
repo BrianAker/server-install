@@ -4,45 +4,33 @@
 - name: 10s delay while starting Jenkins
   wait_for: port=8080 delay=10
   when: jenkins_install.changed
-  tags:
-    - jenkins
-    - cli
 
 # Create Jenkins CLI destination directory
 - name: "Create Jenkins CLI destination directory: {{ jenkins.dest }}"
   sudo: yes
   file: path={{ jenkins.dest }}
         state=directory
-  tags:
-    - jenkins
-    - cli
 
 # Get Jenkins CLI from localhost
 - name: Get Jenkins CLI
   sudo: yes
   get_url:  url='http://localhost:8080/jnlpJars/jenkins-cli.jar'
-            dest={{ jenkins.cli_dest }} 
+            dest={{ jenkins.cli_dest }}
             mode=0440
-  tags:
-    - jenkins
-    - cli
 
 # Get latest Jenkins update file
 - name: Get Jenkins updates
   sudo: yes
-  get_url:  url='http://updates.jenkins-ci.org/update-center.json' 
-            dest={{ jenkins.updates_dest }} 
-            thirsty=yes 
+  get_url:  url=http://updates.jenkins-ci.org/update-center.json
+            dest={{ jenkins.updates_dest }}
+            thirsty=yes
             mode=0440
   register: jenkins_updates
-  tags:
-    - jenkins
-    - cli
 
 # Jenkins Update-center
 - name: Update-center Jenkins
+  sudo: yes
   shell: "cat {{ jenkins.updates_dest }} | sed '1d;$d' | curl -X POST -H 'Accept: application/json' -d @- http://localhost:8080/updateCenter/byId/default/postBack"
   when: jenkins_updates.changed
-  tags:
-    - jenkins
-    - cli
+  notify:
+    - 'Restart Jenkins'

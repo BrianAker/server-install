@@ -1,0 +1,13 @@
+---
+# Add Jenkins repository
+- include: repo.yml 
+
+# Install dependencies
+- include: dependencies_deb.yml
+
+# Install Jenkins
+- name: Install Jenkins
+  sudo: yes
+  apt: pkg=jenkins state=latest update-cache=yes
+  register: jenkins_install
+
