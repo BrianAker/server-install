@@ -3,3 +3,4 @@ allow_duplicates: yes
 dependencies:
   - { role: bootstrap }
   - { role: rsyslog }
+  - { role: firewalld, when: ansible_distribution == 'Fedora' }

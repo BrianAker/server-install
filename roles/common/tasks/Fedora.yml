@@ -5,7 +5,6 @@
   sudo: yes
   with_items:
     - denyhosts
-    - firewalld
     - keychain
     - net-tools
     - system-config-network

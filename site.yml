@@ -30,7 +30,6 @@
   gather_facts: no
   roles:
     - ntp
-    - firewalld
 
 - hosts: Ubuntu
   gather_facts: no
