@@ -1,0 +1,16 @@
+# default: off
+# description: The bzr service can record the history of your source.
+service bzr
+{
+	disable			= no
+	port			= 4155
+	socket_type		= stream
+	protocol		= tcp
+	wait			= no
+	user			= bazaar
+	passenv			= PATH
+	server			= /usr/bin/bzr
+	env			= HOME=/var/bazaar
+	server_args		= serve --allow-writes --inet --directory=/var/bazaar
+#	bind			= 127.0.0.1
+}

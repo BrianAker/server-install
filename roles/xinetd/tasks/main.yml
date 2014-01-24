@@ -1,0 +1,13 @@
+---
+
+- name: install xinetd
+  sudo: yes
+  yum:  name=xinetd
+        state=present
+  notify: "restart xinetd"
+
+- name: enable xinetd
+  sudo: yes
+  service:  name=xinetd
+            enabled=yes
+

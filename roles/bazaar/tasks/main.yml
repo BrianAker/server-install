@@ -1,0 +1,14 @@
+---
+- name: /etc/xinetd.d/bazaar
+  sudo: yes
+  template: src=bazaar.j2 
+            dest=/etc/xinetd.d/bazaar
+            mode=0644
+            owner=root
+
+- name: hosts.allow bzr ALL
+  sudo: yes
+  lineinfile: dest=/etc/hosts.allow
+              regexp="^bzr: ALL"
+              line="bzr: ALL"
+              state=present
