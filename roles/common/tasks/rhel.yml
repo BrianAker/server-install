@@ -18,17 +18,8 @@
     - bzr
     - curl
     - fakeroot
-    - git
     - make
-    - perl
     - pkgconfig
-    - python
-    - python-setuptools
-    - redhat-lsb-core
-    - ruby
-    - rubygems
-    - ruby-devel
-    - sudo
     - tar
     - traceroute
     - vim
@@ -82,11 +73,3 @@
   service: name=yum-cron
            state=restarted
            enabled=yes
-
-- name: yum remove software
-  sudo: yes
-  yum: name={{ item }} state=absent
-  ignore_errors: yes
-  with_items:
-    - BackupPC
-  when: ansible_distribution == 'Fedora'

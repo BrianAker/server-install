@@ -1,2 +1,2 @@
 deploy_user: deploy
-ohai_root_group: root
+root_group: root

@@ -1,4 +1,3 @@
 ---
-allow_duplicates: yes
 dependencies:
   - { role: adduser, username: jenkins, is_admin: False, has_authorized_key: False }

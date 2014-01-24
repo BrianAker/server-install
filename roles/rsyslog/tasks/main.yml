@@ -9,6 +9,7 @@
 
 - name: firewalld for syslog
   sudo: yes
+  ignore_errors: yes
   firewalld:  port=514/udp 
               permanent=true
               state=enabled

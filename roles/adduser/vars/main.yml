@@ -1,7 +1,1 @@
 ---
-pip_packages:
-  - pip
-  - setuptools
-  - sphinx
-  - sphinxcontrib-googleanalytics
-  - ssh-import-id

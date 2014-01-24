@@ -1,3 +1,4 @@
+---
 - name: install brew
   command:  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)" 
             creates=/usr/local/bin/brew
@@ -5,7 +6,7 @@
 - name: tap brew dupes
   ignore_errors: yes
   command:  /usr/local/bin/brew tap homebrew/dupes 
-            creates=/usr/local//Library/Taps/homebrew-dupes
+            creates=/usr/local/Library/Taps/homebrew-dupes
 
 - name: install packages for bootstrap Darwin
   homebrew: name={{ item }} 

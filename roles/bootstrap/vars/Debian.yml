@@ -1,11 +1,16 @@
 ---
 
 packages:
-    - git
-    - lsb-release
-    - python
-    - python-pip
-    - python-setuptools
-    - python-software-properties
-    - python-virtualenv
-    - sudo
+  - git
+  - lsb-release
+  - ntp
+  - perl
+  - python
+  - python-pip
+  - python-setuptools
+  - python-software-properties
+  - python-virtualenv
+  - ruby
+  - ruby-dev
+  - rubygems
+  - sudo

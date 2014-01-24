@@ -14,13 +14,3 @@
 
 - include: osx.yml
   when: ansible_distribution == 'MacOSX'
-
-- name: install ohai
-  gem:  name=ohai
-        user_install=yes
-        state=present
-
-- name: install facter
-  gem:  name=facter
-        user_install=yes
-        state=present

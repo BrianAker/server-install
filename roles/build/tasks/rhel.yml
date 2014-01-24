@@ -2,7 +2,8 @@
 
 - name: yum build software
   sudo: yes
-  yum: name={{ item }} state=present
+  yum:  name={{ item }}
+        state=present
   with_items:
     - '@development-tools'
     - '@c-development'
@@ -46,7 +47,6 @@
     - pam-devel
     - pcre
     - pcre-devel
-    - python-setuptools
     - python-sphinx
     - readline
     - readline-devel
@@ -57,7 +57,8 @@
 
 - name: install basic dev software required for bootstrap with yum
   sudo: yes
-  yum: name={{ item }} state=present
+  yum:  name={{ item }}
+        state=present
   with_items:
     - clang
     - clang-devel

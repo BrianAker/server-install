@@ -1,12 +1,5 @@
 ---
 
-- name: apt python-setuptools
-  sudo: yes
-  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
-  with_items:
-    - python-setuptools
-  when: ansible_distribution_version == 'precise'
-
 - name: Message of the day explaining server is under Ansible control.
   sudo: yes
   copy: src=etc-update-motd-d-95-ansible 
@@ -15,4 +8,5 @@
 
 - name: remove ubuntu ssh-import-id
   sudo: yes
-  apt:  pkg=ssh-import-id state=absent
+  apt:  pkg=ssh-import-id
+        state=absent

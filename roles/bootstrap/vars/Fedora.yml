@@ -2,9 +2,14 @@
 
 packages:
   - git
+  - ntp
+  - perl
   - python
   - python-pip
   - python-setuptools
   - python-virtualenv
   - redhat-lsb-core
+  - ruby
+  - ruby-devel
+  - rubygems
   - sudo
