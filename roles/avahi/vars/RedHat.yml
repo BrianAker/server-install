@@ -1,0 +1,9 @@
+---
+
+avahi_packages:
+  - avahi
+  - avahi-dnsconfd
+  - avahi-tools
+  - nss-mdns
+  - nss-mdns
+  - nss-myhostname
