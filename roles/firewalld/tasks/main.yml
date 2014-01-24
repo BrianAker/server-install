@@ -8,18 +8,21 @@
 
 - name: firewalld open ssh
   sudo: yes
+  ignore_errors: yes
   firewalld:  service=ssh
               permanent=true
               state=enabled
 
 - name: firewalld open mdns
   sudo: yes
+  ignore_errors: yes
   firewalld:  service=mdns
               permanent=true
               state=enabled
 
 - name: enable firewalld
   sudo: yes
+  ignore_errors: yes
   service:  name=firewalld 
             enabled=yes
             state=started

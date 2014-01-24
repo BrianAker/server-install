@@ -17,21 +17,10 @@
     bind: bind
 
   roles:
-    - bootstrap
     - common
-    - { role: deploy }
+    - deploy
 
 - hosts: EL
-  gather_facts: no
-  roles:
-    - ntp
-
-- hosts: Fedora
-  gather_facts: no
-  roles:
-    - ntp
-
-- hosts: Ubuntu
   gather_facts: no
   roles:
     - ntp

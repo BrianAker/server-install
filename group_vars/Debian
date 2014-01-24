@@ -1,3 +1,4 @@
 ---
 apache: apache2
 bind: bind
+root_group: root

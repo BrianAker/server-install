@@ -1,20 +1,22 @@
 ---
 
+- name: yum remove software
+  sudo: yes
+  yum:  name={{ item }}
+        state=absent
+  with_items:
+    - BackupPC
+    - ansible
+
 - name: install fedora basic software
   yum: name={{ item }}  state=present
   sudo: yes
   with_items:
-    - denyhosts
+    - bind-utils
     - keychain
     - net-tools
     - system-config-network
     - yum-fastestmirror
-
-- name: start denyhosts
-  sudo: yes
-  service: name=denyhosts
-           state=restarted
-           enabled=yes
 
 - name: install updatesd
   sudo: yes

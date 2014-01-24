@@ -14,6 +14,12 @@
     - denyhosts
   when: ansible_distribution == 'Fedora'
 
+- name: /var/lib/denyhosts/allowed-hosts
+  copy: src=allowed-hosts
+        dest=/var/lib/denyhosts/allowed-hosts
+  notify:
+  - restart denyhosts
+
 - name: Make sure sketch can login
   sudo: yes
   lineinfile: dest=/etc/hosts.allow
@@ -34,11 +40,11 @@
 
 - name: start denyhosts
   sudo: yes
-  service: name=denyhosts
-           enabled=yes
+  service:  name=denyhosts
+            state=running
+            enabled=yes
 
 - name: start denyhosts
   sudo: yes
   service: name=denyhosts
            state=restarted
-

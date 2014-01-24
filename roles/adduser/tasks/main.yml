@@ -1,27 +1,21 @@
 ---
 
-- name: create user
+- name: "create user {{ username }}"
   sudo: yes
   user: name={{ username }}
         state=present
         shell=/bin/bash
-  when: ansible_distribution != 'MacOSX'
-
-- name: create ssh key
-  sudo: yes
-  user: name={{ username }}
         generate_ssh_key=yes
   when: ansible_distribution != 'MacOSX'
 
-- name: touch authorized_keys
+- name: "touch authorized_keys {{ username }}"
   sudo: yes
   sudo_user: "{{ username }}"
-  copy: src=files/authorized_keys
-        force=no
-        dest="~{{ username }}/.ssh/authorized_keys"
+  file: dest="~{{ username }}/.ssh/authorized_keys"
         mode=0600
+        state=touch
 
-- name: setup authorized_key from file
+- name: "setup authorized_key for {{ username }}"
   sudo: yes
   sudo_user: "{{ username }}"
   ignore_errors: yes
@@ -34,7 +28,7 @@
   file: path="~{{ username }}/.ssh/authorized_keys"
         mode=0600
 
-- name: add user to sshd AllowUsers
+- name: "add {{ username }} to sshd AllowUsers"
   sudo: yes
   lineinfile: dest={{ sshd_config_file }}
               regexp="^AllowUsers {{ username }}"
@@ -45,15 +39,15 @@
   sudo: yes
   file: path="/etc/sudoers.d" state=directory
         owner=root 
-        group="{{ ohai_root_group  }}"
+        group="{{ root_group  }}"
         mode=0750
 
-- name: write the user to the sudoers file
+- name: "write the {{ username }} to the sudoers file"
   sudo: yes
   template: src=sudoer.j2
             dest="/etc/sudoers.d/{{ username }}"
             owner=root 
-            group="{{ ohai_root_group }}"
+            group="{{ root_group }}"
             mode=0440
 #            validate='visudo -cs'
   when: is_admin
@@ -109,6 +103,13 @@
               state=present
               create=yes
   when: ansible_distribution != 'MacOSX'
+
+- name: install local pip for user
+  sudo: yes
+  sudo_user: "{{ username }}"
+  pip: name=pip
+       virtualenv="~{{ username }}/.python"
+       state=latest
 
 - name: install local pip packages for user
   sudo: yes

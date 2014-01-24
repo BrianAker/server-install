@@ -2,44 +2,52 @@
 
 - name: apt update dist
   sudo: yes
-  apt:  update_cache=yes cache_valid_time=3600 upgrade=dist
-  when: ansible_pkg_mgr == 'apt'
+  apt:  update_cache=yes
+        cache_valid_time=3600 
+        upgrade=dist
 
 - name: apt base software
   sudo: yes
-  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  apt:  update_cache=yes
+        cache_valid_time=3600
+        pkg={{ item }}
+        state=absent
+  with_items:
+    - ansible
+
+- name: apt base software
+  sudo: yes
+  apt:  update_cache=yes
+        cache_valid_time=3600
+        pkg={{ item }}
+        state=present
   with_items:
     - bzr
     - cron-apt
     - curl
-    - denyhosts
     - fakeroot
     - git
     - gnupg-agent
     - ifmetric
     - keychain
-    - lsb-release
     - make
-    - perl
     - pkg-config
     - python
     - python-dev
-    - python-software-properties
-    - ruby
-    - rubygems
-    - ruby-dev
     - sudo
     - tar
     - unattended-upgrades
     - update-manager-core
     - wget
 
-- name: apt install python-software-properties
+- name: apt install software-properties-common
   sudo: yes
-  apt:  update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
+  apt:  update_cache=yes
+        cache_valid_time=3600
+        pkg={{ item }}
+        state=present
   ignore_errors: yes
   with_items:
-    - python-software-properties
     - software-properties-common
   when: ansible_distribution == 'Debian'
 

@@ -20,6 +20,7 @@
       - Jinja2
       - MarkupSafe
       - PyYAML
+      - httplib2
       - ansible
       - argparse
       - ecdsa
@@ -28,7 +29,6 @@
       - oslo.config
       - paramiko
       - pbr
-      - pip
       - prettytable
       - pycrypto
       - python-keystoneclient

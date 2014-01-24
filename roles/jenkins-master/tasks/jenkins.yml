@@ -17,4 +17,4 @@
 - include: cli.yml
 
 # Install/update Jenkins plugins
-- include: plugins.yml
+#- include: plugins.yml

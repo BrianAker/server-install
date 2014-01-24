@@ -18,9 +18,9 @@ ALL_SCRIPTS:= $(wildcard *.sh)
 
 JENKINS_SLAVES=
 
-USER_EXISTS := $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
+USER_EXISTS:= $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 
-DIST_MAKEFILES := ubuntu.am fedora.am centos.mk freebsd.am osx.am
+DIST_MAKEFILES:=
 
 .PHONY: all show check install base_install deploy upgrade clean
 
