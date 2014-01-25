@@ -10,3 +10,4 @@
   sudo: yes
   apt:  pkg=ssh-import-id
         state=absent
+  tags: packages

@@ -6,3 +6,4 @@
         pkg={{ item }}
         state=present
   with_items: packages
+  tags: packages

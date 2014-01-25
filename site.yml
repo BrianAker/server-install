@@ -25,6 +25,16 @@
   roles:
     - ntp
 
+- hosts: Ubuntu
+  gather_facts: no
+  roles:
+    - rkhunter
+
+- hosts: Fedora
+  gather_facts: no
+  roles:
+    - rkhunter
+
 - hosts: MacOSX
   gather_facts: no
   roles:

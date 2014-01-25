@@ -8,6 +8,7 @@
               permanent=true
               state=enabled
   when: ansible_distribution == 'Fedora'
+  tags: config
 
 - name: Reconfigure SSH PasswordAuthentication no
   sudo: yes
@@ -17,6 +18,7 @@
               validate='/usr/sbin/sshd -T -f %s'
               state=present
   notify: set sshd for restart
+  tags: config
 
 - name: Reconfigure SSH PermitRootLogin no
   sudo: yes
@@ -26,6 +28,7 @@
               validate='/usr/sbin/sshd -T -f %s'
               state=present
   notify: set sshd for restart
+  tags: config
 
 - name: Reconfigure SSH AllowAgentForwarding yes
   sudo: yes
@@ -35,6 +38,7 @@
               validate='/usr/sbin/sshd -T -f %s'
               state=present
   notify: set sshd for restart
+  tags: config
 
 - name: Reconfigure SSH PermitEmptyPasswords no
   sudo: yes
@@ -44,6 +48,7 @@
               validate='/usr/sbin/sshd -T -f %s'
               state=present
   notify: set sshd for restart
+  tags: config
 
 - name: Reconfigure SSH to use .ssh/authorized_keys/
   sudo: yes
@@ -53,6 +58,7 @@
               state=present
               validate='/usr/sbin/sshd -T -f %s'
   notify: set sshd for restart
+  tags: config
 
 - name: enable sshd
   sudo: yes
