@@ -18,6 +18,7 @@
 
   roles:
     - common
+    - unattended-upgrades
     - deploy
 
 - hosts: EL

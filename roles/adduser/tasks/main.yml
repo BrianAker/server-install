@@ -44,7 +44,7 @@
   sudo: yes
   file: path="/etc/sudoers.d" state=directory
         owner=root 
-        group="{{ root_group  }}"
+        group="{{ root_group }}"
         mode=0750
 
 - name: "write the {{ username }} to the sudoers file"

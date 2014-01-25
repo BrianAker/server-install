@@ -5,6 +5,7 @@
   apt:  update_cache=yes
         cache_valid_time=3600 
         upgrade=dist
+  tags: packages
 
 - name: apt base software
   sudo: yes
@@ -14,6 +15,7 @@
         state=absent
   with_items:
     - ansible
+  tags: packages
 
 - name: apt base software
   sudo: yes
@@ -36,9 +38,9 @@
     - python-dev
     - sudo
     - tar
-    - unattended-upgrades
     - update-manager-core
     - wget
+  tags: packages
 
 - name: apt install software-properties-common
   sudo: yes
@@ -50,20 +52,4 @@
   with_items:
     - software-properties-common
   when: ansible_distribution == 'Debian'
-
-- name: Adjust APT update intervals
-  sudo: yes
-  copy: src=apt_periodic
-        dest=/etc/apt/apt.conf.d/10periodic
-
-- name: Make sure unattended-security-upgrades work
-  sudo: yes
-  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
-              regexp="-security"
-              line='"${distro_id}:${distro_codename}-security";'
-
-- name: Make sure unattended-updates work
-  sudo: yes
-  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
-              regexp="-updates"
-              line='"${distro_id}:${distro_codename}-updates";'
+  tags: packages

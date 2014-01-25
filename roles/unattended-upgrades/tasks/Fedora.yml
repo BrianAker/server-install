@@ -1,0 +1,26 @@
+---
+
+- name: install updatesd
+  sudo: yes
+  yum: name=yum-updatesd state=present
+
+- name: Reconfigure updatesd to install updates
+  sudo: yes
+  lineinfile: dest=/etc/yum/yum-updatesd.conf
+              regexp="^do_update"
+              line="do_update = yes"
+  notify: restart updatesd
+
+- name: Reconfigure updatesd to install updates
+  sudo: yes
+  lineinfile: dest=/etc/yum/yum-updatesd.conf
+              regexp="^do_download"
+              line="do_download = yes"
+  notify: restart updatesd
+
+- name: Reconfigure updatesd to install updates
+  sudo: yes
+  lineinfile: dest=/etc/yum/yum-updatesd.conf
+              regexp="^do_download_deps"
+              line="do_download_deps = yes"
+  notify: restart updatesd

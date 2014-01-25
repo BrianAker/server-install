@@ -3,6 +3,7 @@
 packages:
   - git
   - ntp
+  - openssh-server
   - perl
   - python
   - python-pip

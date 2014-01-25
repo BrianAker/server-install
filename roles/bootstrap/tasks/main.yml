@@ -11,7 +11,7 @@
   when: ansible_pkg_mgr == 'yum'
 
 - include: apt.yml
-  when: ansible_pkg_mgr == 'Debian'
+  when: ansible_pkg_mgr == 'apt'
 
 - include: MacOSX.yml
   when: ansible_distribution == 'MacOSX'

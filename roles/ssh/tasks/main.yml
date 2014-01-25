@@ -10,54 +10,20 @@
   when: ansible_distribution == 'Fedora'
   tags: config
 
-- name: Reconfigure SSH PasswordAuthentication no
+- name: configure OpenSSH
   sudo: yes
   lineinfile: dest={{ sshd_config_file }}
-              regexp="^PasswordAuthentication"
-              line="PasswordAuthentication no"
-              validate='/usr/sbin/sshd -T -f %s'
               state=present
-  notify: set sshd for restart
-  tags: config
-
-- name: Reconfigure SSH PermitRootLogin no
-  sudo: yes
-  lineinfile: dest={{ sshd_config_file }}
-              regexp="^PermitRootLogin"
-              line="PermitRootLogin no"
+              regexp='^#?{{ item.key }}'
+              line='{{ item.key }} {{ item.value }}'
               validate='/usr/sbin/sshd -T -f %s'
-              state=present
-  notify: set sshd for restart
-  tags: config
-
-- name: Reconfigure SSH AllowAgentForwarding yes
-  sudo: yes
-  lineinfile: dest={{ sshd_config_file }}
-              regexp="^AllowAgentForwarding"
-              line="AllowAgentForwarding yes"
-              validate='/usr/sbin/sshd -T -f %s'
-              state=present
-  notify: set sshd for restart
-  tags: config
-
-- name: Reconfigure SSH PermitEmptyPasswords no
-  sudo: yes
-  lineinfile: dest={{ sshd_config_file }}
-              regexp="^PermitEmptyPasswords"
-              line="PermitEmptyPasswords no"
-              validate='/usr/sbin/sshd -T -f %s'
-              state=present
-  notify: set sshd for restart
-  tags: config
-
-- name: Reconfigure SSH to use .ssh/authorized_keys/
-  sudo: yes
-  lineinfile: dest={{ sshd_config_file }}
-              regexp="^AuthorizedKeysFile"
-              line="AuthorizedKeysFile .ssh/authorized_keys"
-              state=present
-              validate='/usr/sbin/sshd -T -f %s'
-  notify: set sshd for restart
+  with_items:
+    - { key: 'PasswordAuthentication', value: 'no'}
+    - { key: 'PermitRootLogin', value: 'no'}
+    - { key: 'AllowAgentForwarding', value: 'yes'}
+    - { key: 'PermitEmptyPasswords', value: 'no'}
+    - { key: 'AuthorizedKeysFile', value: '.ssh/authorized_keys'}
+  register: sshd_should_restart
   tags: config
 
 - name: enable sshd
