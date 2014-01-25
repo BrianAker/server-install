@@ -1,5 +1,7 @@
 ---
 
+- include_vars: "{{ ansible_os_family }}.yml"
+
 - name: "create user {{ username }}"
   sudo: yes
   user: name={{ username }}
@@ -8,10 +10,10 @@
         generate_ssh_key=yes
   when: ansible_distribution != 'MacOSX'
 
-- name: "create bazaar plugin directory"
+- name: "create bazaar plugin directory for {{ username }}"
   sudo: yes
   sudo_user: "{{ username }}"
-  command: mkdir -p  ~/.bazaar/plugins
+  command: 'mkdir -p  /{{ base_user_home }}/{{ username }}/.bazaar/plugins'
 
 - name: "touch authorized_keys {{ username }}"
   sudo: yes

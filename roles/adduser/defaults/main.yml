@@ -5,3 +5,4 @@ pip_packages:
   - ssh-import-id
 
 root_group: root
+base_user_home: home
