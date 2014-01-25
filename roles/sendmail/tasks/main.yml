@@ -71,10 +71,7 @@
 
 - name: hosts.allow sendmail ALL
   sudo: yes
-  lineinfile: dest=/etc/hosts.allow
-              regexp="^sendmail: ALL"
-              line="sendmail: ALL"
-              state=present
+  lineinfile: "dest=/etc/hosts.allow regexp='^sendmail: ALL' line='sendmail: ALL' state=present"
 
 - name: make sendmail.cf
   sudo: yes

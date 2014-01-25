@@ -8,6 +8,11 @@
         generate_ssh_key=yes
   when: ansible_distribution != 'MacOSX'
 
+- name: "create bazaar plugin directory"
+  sudo: yes
+  sudo_user: "{{ username }}"
+  command: mkdir -p  ~/.bazaar/plugins
+
 - name: "touch authorized_keys {{ username }}"
   sudo: yes
   sudo_user: "{{ username }}"

@@ -8,7 +8,4 @@
 
 - name: hosts.allow bzr ALL
   sudo: yes
-  lineinfile: dest=/etc/hosts.allow
-              regexp="^bzr: ALL"
-              line="bzr: ALL"
-              state=present
+  lineinfile: "dest=/etc/hosts.allow regexp='^bzr: ALL' line='bzr: ALL' state=present"
