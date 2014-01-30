@@ -24,6 +24,26 @@ if [ -d /usr/local/sbin ]; then
   done
 fi
 
+# For OSX brew installs
+if [ -d /usr/local/opt/bison/bin ]; then
+  for x in "/usr/local/opt/bison/bin"; do
+    case ":$PATH:" in
+      *":$x:"*) :;; # already there
+      *) PATH="$x:$PATH";;
+    esac
+  done
+fi
+
+# For OSX brew installs
+if [ -d /usr/local/opt/flex/bin ]; then
+  for x in "/usr/local/opt/flex/bin"; do
+    case ":$PATH:" in
+      *":$x:"*) :;; # already there
+      *) PATH="$x:$PATH";;
+    esac
+  done
+fi
+
 if [ -f "$HOME/.perlrc" ]; then
   . $HOME/.perlrc
 fi
