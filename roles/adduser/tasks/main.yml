@@ -2,31 +2,26 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- name: "create user {{ username }}"
+- debug: msg="Adding user {{ username }}"
+
+- name: create user
   sudo: yes
-  user: name={{ username }}
+  user: name="{{ username }}"
         state=present
-        shell=/bin/bash
-        generate_ssh_key=yes
-  when: ansible_distribution != 'MacOSX'
+        shell="/bin/bash"
+        generate_ssh_key="yes"
+  when: "ansible_distribution != 'MacOSX'"
 
-- name: "create bazaar plugin directory for {{ username }}"
+- file: state=directory
+        path="~{{ username }}/.bazaar/plugins"
   sudo: yes
   sudo_user: "{{ username }}"
-  command: 'mkdir -p  /{{ base_user_home }}/{{ username }}/.bazaar/plugins'
 
-- name: "touch authorized_keys {{ username }}"
-  sudo: yes
-  sudo_user: "{{ username }}"
-  file: dest="~{{ username }}/.ssh/authorized_keys"
-        mode=0600
-        state=touch
-
-- name: "setup authorized_key for {{ username }}"
+- name: setup authorized_key
   sudo: yes
   sudo_user: "{{ username }}"
   ignore_errors: yes
-  authorized_key: user={{ username }}
+  authorized_key: user="{{ username }}"
                   key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + username) }}"
 
 - name: reset mode for authorized_keys
@@ -35,7 +30,7 @@
   file: path="~{{ username }}/.ssh/authorized_keys"
         mode=0600
 
-- name: "add {{ username }} to sshd AllowUsers"
+- name: update sshd AllowUsers
   sudo: yes
   lineinfile: dest={{ sshd_config_file }}
               regexp="^AllowUsers {{ username }}"
@@ -49,7 +44,7 @@
         group="{{ root_group }}"
         mode=0750
 
-- name: "write the {{ username }} to the sudoers file"
+- name: write sudoers file
   sudo: yes
   template: src=sudoer.j2
             dest="/etc/sudoers.d/{{ username }}"
@@ -115,6 +110,13 @@
   sudo: yes
   sudo_user: "{{ username }}"
   pip: name=pip
+       virtualenv="~{{ username }}/.python"
+       state=latest
+
+- name: install local pip for user
+  sudo: yes
+  sudo_user: "{{ username }}"
+  pip: name=virtualenv
        virtualenv="~{{ username }}/.python"
        state=latest
 

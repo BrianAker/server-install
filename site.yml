@@ -18,6 +18,7 @@
 
   roles:
     - common
+    - ssh
     - unattended-upgrades
     - deploy
 
@@ -40,6 +41,11 @@
   gather_facts: no
   roles:
     - osx
+      #
+# Rules for syslog servers
+- hosts: syslog
+  roles:
+    - syslog
 
 - include: mailman.yml
 - include: dnsservers.yml
