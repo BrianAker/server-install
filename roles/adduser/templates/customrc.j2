@@ -44,6 +44,16 @@ if [ -d /usr/local/opt/flex/bin ]; then
   done
 fi
 
+# For expanding MANPATH 
+if [ -d /usr/local/share/man ]; then
+  for x in "/usr/local/share/man"; do
+    case ":$MANPATH:" in
+      *":$x:"*) :;; # already there
+      *) MANPATH="$x:$MANPATH";;
+    esac
+  done
+fi
+
 if [ -f "$HOME/.perlrc" ]; then
   . $HOME/.perlrc
 fi

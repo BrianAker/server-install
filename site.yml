@@ -17,6 +17,7 @@
     bind: bind
 
   roles:
+    - facts
     - common
     - deploy
 

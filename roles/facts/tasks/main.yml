@@ -1,0 +1,10 @@
+---
+
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: MacOSX.yml
+  when: ansible_distribution == 'MacOSX'
