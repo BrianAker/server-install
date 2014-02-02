@@ -50,6 +50,8 @@
     - python-sphinx
     - readline
     - readline-devel
+    - sqlite
+    - sqlite-devel
     - valgrind
     - vim
     - zlib

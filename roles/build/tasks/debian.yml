@@ -19,8 +19,8 @@
     - flex
     - gdb 
     - gettext 
-    - gperf
     - gnupg-agent
+    - gperf
     - libboost-all-dev
     - libcurl4-openssl-dev
     - libevent-dev
@@ -28,7 +28,11 @@
     - libpcre3-dev
     - libprotobuf-dev
     - libreadline-dev
+    - libsqlite3-0
+    - libsqlite3-dev
     - libssl-dev
+    - libtokyocabinet-dev
+    - libtokyocabinet9
     - libtool
     - llvm
     - llvm-dev
@@ -41,6 +45,7 @@
     - openjdk-7-jre-lib
     - php5-mysql
     - protobuf-compiler
+    - sqlite3
     - uuid-dev
     - valgrind
     - vim

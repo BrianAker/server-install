@@ -1,2 +1,2 @@
 # This file is just for working with localhost
-localhost
+localhost ansible_connection=local
