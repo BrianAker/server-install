@@ -1,9 +1,12 @@
---
+---
 
 - name: configure remote syslog
   sudo: yes
-  firewalld:  port='514/udp'
+  firewalld:  port={{ item }}
               permanent=true
               state=enabled
-  when: anible_distribution == 'Fedora'
+  when: ansible_distribution == 'Fedora'
+  with_items:
+    - '514/udp'
+    - '514/tcp'
 

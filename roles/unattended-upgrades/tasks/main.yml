@@ -1,0 +1,10 @@
+---
+
+- include: Fedora.yml
+  when: ansible_distribution == 'Fedora'
+
+- include: apt.yml
+  when: ansible_pkg_mgr == 'apt'
+
+- include: RedHat.yml
+  when: ansible_distribution == 'Redhat'

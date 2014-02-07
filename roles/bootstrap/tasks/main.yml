@@ -15,4 +15,3 @@
         user_install=yes
         state=present
   with_items: gem_packages
-

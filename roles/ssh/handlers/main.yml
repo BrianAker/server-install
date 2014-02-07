@@ -3,7 +3,3 @@
   sudo: yes
   service:  name={{ service_sshd }}
             state=restarted
-
-- name: set sshd for restart
-  shell: /usr/bin/true
-  register: sshd_should_restart
