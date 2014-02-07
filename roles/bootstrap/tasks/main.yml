@@ -2,16 +2,17 @@
 
 - include_vars: "{{ ansible_distribution }}.yml"
 
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: MacOSX.yml
+  when: ansible_distribution == 'MacOSX'
+
 - gem:  name={{ item }}
         user_install=yes
         state=present
   with_items: gem_packages
 
-- include: yum.yml
-  when: ansible_pkg_mgr == 'yum'
-
-- include: apt.yml
-  when: ansible_pkg_mgr == 'Debian'
-
-- include: MacOSX.yml
-  when: ansible_distribution == 'MacOSX'

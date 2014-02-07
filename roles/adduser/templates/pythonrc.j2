@@ -1,6 +1,8 @@
 # {{ ansible_managed }}
 # Source global definitions
-if [ -d $HOME/.python/bin ]; then
+if [ -x $HOME/.python/bin/activate ]; then
+  . $HOME/.python/bin/activate
+elif [ -d $HOME/.python/bin ]; then
   for x in "$HOME/.python/bin"; do
     case ":$PATH:" in
       *":$x:"*) :;; # already there

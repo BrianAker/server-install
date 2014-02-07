@@ -2,6 +2,6 @@
 
 - name:       install avahi packages
   sudo:       yes
-  apt:        pkg={{item}}
+  apt:        pkg="{{ item }}"
               state=installed
-  with_items: avahi_packages
+  with_items: "{{ avahi_packages }}"

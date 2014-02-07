@@ -1,0 +1,6 @@
+---
+dependencies:
+  - { role: adduser, username: "{{ developer_username }}", is_admin: false, has_authorized_key: true }
+  - ssh
+  - { role: bzr, username: "{{ developer_username }}" }
+
