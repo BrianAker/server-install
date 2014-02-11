@@ -6,6 +6,7 @@ pip_packages:
   - httplib2
   - ansible
   - argparse
+  - bzr-bash-completion
   - ecdsa
   - iso8601
   - netaddr

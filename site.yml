@@ -17,11 +17,7 @@
     bind: bind
 
   roles:
-    - facts
     - common
-    - ssh
-    - unattended-upgrades
-    - deploy
 
 - hosts: EL
   gather_facts: no

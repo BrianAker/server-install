@@ -1,4 +1,6 @@
 ---
+allow_duplicates: no
+
 dependencies:
   - { role: bootstrap }
   - { role: rsyslog }

@@ -1,0 +1,20 @@
+---
+
+packages:
+  - aptitude
+  - git
+  - lsb-release
+  - ntp
+  - openssh-server
+  - perl
+  - python
+  - python-apt
+  - python-pip
+  - python-pycurl
+  - python-setuptools
+  - python-software-properties
+  - python-virtualenv
+  - ruby
+  - ruby-dev
+  - rubygems
+  - sudo
