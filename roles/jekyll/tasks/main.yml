@@ -1,0 +1,6 @@
+---
+
+- gem:  name={{ item }}
+        user_install=yes
+        state=present
+  with_items: jekyll

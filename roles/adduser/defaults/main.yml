@@ -1,7 +1,5 @@
 ---
 pip_packages:
-  - sphinx
-  - sphinxcontrib-googleanalytics
   - ssh-import-id
 
 root_group: root

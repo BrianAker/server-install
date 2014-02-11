@@ -26,6 +26,7 @@
     - apt: update_cache=yes
     - apt: upgrade=dist cache_valid_time=3600
     - command: apt-get autoremove -y
+    - command: apt-get clean
 
 - hosts: MacOSX
   gather_facts: no

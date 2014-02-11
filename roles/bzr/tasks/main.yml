@@ -1,0 +1,22 @@
+---
+
+- name: install bzr
+  sudo: yes
+  sudo_user: "{{ username }}"
+  pip: name={{ item }}
+       extra_args="--allow-all-external --allow-unverified {{ item }}"
+       virtualenv="~{{ username }}/.python"
+       state=latest
+  with_items: 
+    - bzr
+#   - bzr-rewrite
+
+- name: mkdir bazaar directory
+  sudo: yes
+  sudo_user: "{{ username }}"
+  file: path="{{ item }}"
+        state=directory
+        mode=0750
+  with_items: 
+    - "~/.bazaar"
+    - "~/.bazaar/plugins"

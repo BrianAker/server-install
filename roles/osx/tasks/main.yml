@@ -2,3 +2,12 @@
 
 - name: allow any nas to work with TimeMachine
   shell: defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1
+
+- name: apache to only listen on localhost
+  sudo: yes
+  lineinfile: dest="/etc/apache2/httpd.conf"
+              regexp="^Listen 80"
+              line="Listen localhost:80"
+              validate='apachectl -t'
+              state=present
+  tags: config

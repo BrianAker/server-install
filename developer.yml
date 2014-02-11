@@ -2,40 +2,5 @@
 
 # Rules for hosts that I do direct development on
 - hosts: developer
-  tasks:
-    - name: configure persistent firewalld for bzr server
-      sudo: yes
-      firewalld:  port='4155/tcp'
-                  permanent=true
-                  state=enabled
-      when: ansible_distribution == 'Fedora'
-
   roles:
-    - { role: adduser, username: brian, is_admin: false, has_authorized_key: true }
-    - ssh
-
-  vars:
-    pip_packages:
-      - Babel
-      - Jinja2
-      - MarkupSafe
-      - PyYAML
-      - httplib2
-      - ansible
-      - argparse
-      - ecdsa
-      - iso8601
-      - netaddr
-      - oslo.config
-      - paramiko
-      - pbr
-      - prettytable
-      - pycrypto
-      - python-keystoneclient
-      - pytz
-      - requests
-      - simplejson
-      - six
-      - sphinxcontrib-googleanalytics
-      - ssh-import-id
-      - wsgiref
+    - { role: developer, developer_username: brian }

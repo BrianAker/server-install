@@ -50,6 +50,8 @@
     - python-sphinx
     - readline
     - readline-devel
+    - sqlite
+    - sqlite-devel
     - valgrind
     - vim
     - zlib
@@ -64,6 +66,7 @@
     - clang-devel
     - cmake 
     - cppcheck
+    - ctags-etags
     - doxygen 
     - hiredis
     - hiredis-devel

@@ -1,0 +1,9 @@
+---
+
+allow_duplicates: no
+dependencies:
+  - { role: facts }
+  - { role: python }
+  - { role: deploy }
+  - { role: ssh }
+  - { role: unattended-upgrades }
