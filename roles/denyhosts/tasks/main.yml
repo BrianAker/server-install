@@ -15,25 +15,35 @@
   when: ansible_distribution == 'Fedora'
 
 - name: /var/lib/denyhosts/allowed-hosts
+  sudo: yes
   copy: src=allowed-hosts
         dest=/var/lib/denyhosts/allowed-hosts
   notify:
   - restart denyhosts
 
-- name: Make sure sketch can login
+- name: allow bastion hosts
   sudo: yes
   lineinfile: dest=/etc/hosts.allow
-              regexp="^sshd:sketch.haus"
-              line="sshd:sketch.haus"
+              regexp="^{{ item }}"
+              line="{{ item }}"
               mode=0700
               state=present
               create=yes
+  with_items:
+    - "sshd:sketch.haus"
+    - "sshd:10.0.3.21"
+    - "sshd:blackbird.haus"
+    - "50.197.78.105"
+    - "50.197.78.106"
+    - "50.197.78.108"
+    - "50.197.78.109"
+    - "50.197.78.110"
 
 - name: Make sure sketch can login
   sudo: yes
-  lineinfile: dest=/etc/hosts.allow
-              regexp="^sshd:10.0.3.21"
-              line="sshd:10.0.3.21"
+  lineinfile: dest=/etc/denyhosts.conf
+              regexp="^ALLOWED_HOSTS_HOSTNAME_LOOKUP="
+              line="ALLOWED_HOSTS_HOSTNAME_LOOKUP=YES"
               mode=0700
               state=present
               create=yes
