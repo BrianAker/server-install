@@ -16,6 +16,7 @@
     - default-jre 
     - default-jre-headless
     - devscripts
+    - exuberant-ctags
     - flex
     - gdb 
     - gettext 
