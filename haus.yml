@@ -2,4 +2,4 @@
 
 - hosts: haus
   roles:
-    - { role: avahi, avahi_service_name: ssh, avahi_service_type: _ssh._tcp, avahi_service_port: 22 }
+    - { role: avahi, avahi_service_name: ssh, avahi_service_type: _ssh._tcp, avahi_service_port: 22, when: "ansible_distribution == 'Fedora'" }

@@ -1,7 +1,10 @@
 ---
 
-- name:       install avahi packages
-  sudo:       yes
-  apt:        pkg="{{ item }}"
-              state=installed
-  with_items: "{{ avahi_packages }}"
+- name: install packages for Debian
+  sudo: yes
+  apt:  update_cache=yes
+        cache_valid_time=3600
+        pkg={{ item }}
+        state=present
+  with_items: avahi_packages
+  tags: packages

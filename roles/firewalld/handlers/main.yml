@@ -1,0 +1,6 @@
+---
+- name: restart firewalld
+  sudo: yes
+  service:  name=firewalld
+            state=restarted
+

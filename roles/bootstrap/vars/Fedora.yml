@@ -2,7 +2,6 @@
 
 packages:
   - git
-  - ntp
   - openssh-server
   - perl
   - python

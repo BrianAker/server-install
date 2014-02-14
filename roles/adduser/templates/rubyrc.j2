@@ -1,6 +1,11 @@
 #!/bin/bash
 # {{ ansible_managed }}
 
-if which ruby >/dev/null && which gem >/dev/null; then
+command_exists ()
+{
+  type "$1" &> /dev/null ;
+}
+
+if command_exists 'ruby' && command_exists 'gem'; then
   PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
 fi

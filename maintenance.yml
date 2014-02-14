@@ -28,6 +28,7 @@
     - command: apt-get autoremove -y
     - command: apt-get clean
     - command: apt-file update
+    - command: reboot
 
 - hosts: MacOSX
   gather_facts: no

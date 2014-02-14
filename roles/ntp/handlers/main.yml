@@ -2,12 +2,5 @@
 
 - name: restart ntpd
   sudo: yes
-  service:  name=ntpd
+  service:  name={{ ntp_service }}
             state=restarted
-  when: ansible_os_family == 'RedHat'
-
-- name: restart ntp
-  sudo: yes
-  service:  name=ntp
-            state=restarted
-  when: ansible_os_family == 'Debian'

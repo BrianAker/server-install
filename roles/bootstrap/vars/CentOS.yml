@@ -3,7 +3,6 @@
 packages:
   - git
   - libselinux-python
-  - ntp
   - openssh-server
   - perl
   - python

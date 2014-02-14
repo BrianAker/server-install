@@ -1,0 +1,6 @@
+---
+
+httpd_service: httpd
+httpd_packages:
+  - httpd
+  - httpd-tools

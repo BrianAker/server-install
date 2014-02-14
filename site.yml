@@ -54,3 +54,4 @@
 - include: remote.yml
 - include: bastion.yml
 - include: haus.yml
+- include: downloads.yml

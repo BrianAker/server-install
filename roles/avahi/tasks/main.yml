@@ -2,20 +2,14 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
-
-- include: Debian.yml
-  when: ansible_os_family == 'Debian'
+- include: ../../install_packages/tasks/main.yml packages=avahi_packages
 
 - name:       avahi config
   sudo:       yes
   template:   src=avahi-daemon.conf.j2 dest=/etc/avahi/avahi-daemon.conf owner=root group=root mode=0644
-  when:       ansible_distribution != 'MacOSX'
   notify:     [restart avahi]
 
 - name:       avahi services
   sudo:       yes
   template:   src=service.j2 dest=/etc/avahi/services/{{ avahi_service_name }}.service owner=root group=root mode=0644
-  when:       ansible_distribution != 'MacOSX'
   notify:     [restart avahi]

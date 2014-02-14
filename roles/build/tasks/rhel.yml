@@ -62,6 +62,7 @@
   yum:  name={{ item }}
         state=present
   with_items:
+    - auto-buildrequires
     - clang
     - clang-devel
     - cmake 

@@ -5,20 +5,7 @@
   yum: name={{ item }} state=present
   with_items:
     - firewalld
-
-- name: firewalld open ssh
-  sudo: yes
-  ignore_errors: yes
-  firewalld:  service=ssh
-              permanent=true
-              state=enabled
-
-- name: firewalld open mdns
-  sudo: yes
-  ignore_errors: yes
-  firewalld:  service=mdns
-              permanent=true
-              state=enabled
+  when: ansible_distribution == 'Fedora'
 
 - name: enable firewalld
   sudo: yes
@@ -26,3 +13,20 @@
   service:  name=firewalld 
             enabled=yes
             state=started
+  when: ansible_distribution == 'Fedora'
+
+- name: firewalld open ssh
+  sudo: yes
+  ignore_errors: yes
+  firewalld:  service=ssh
+              permanent=true
+              state=enabled
+  when: ansible_distribution == 'Fedora'
+
+- name: firewalld open mdns
+  sudo: yes
+  ignore_errors: yes
+  firewalld:  service=mdns
+              permanent=true
+              state=enabled
+  when: ansible_distribution == 'Fedora'

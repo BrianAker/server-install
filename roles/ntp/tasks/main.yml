@@ -1,26 +1,26 @@
 ---
+- include_vars: "{{ ansible_os_family }}.yml"
+
 - name: yum install ntp
   sudo: yes
   yum: name={{ item }} state=present
-  with_items:
-    - ntpdate
-    - ntp
+  with_items: ntp_packages
   when: ansible_os_family == 'RedHat'
 
 - name: apt install ntp
   sudo: yes
   apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
-  with_items:
-    - ntpdate
-    - ntp
+  with_items: ntp_packages
   when: ansible_os_family == 'Debian'
 
-- name: ntp is running and enabled
+- name: stop {{ ntp_service }}
   sudo: yes
-  service: name=ntpd state=running enabled=yes
-  when: ansible_os_family == 'RedHat'
+  service: name={{ ntp_service }} state=running enabled=yes
 
-- name: ntpd is running and enabled
+- name: Synchronize Clock with ntpdate
+  command: /usr/sbin/ntpdate -u {{ ntpserver }}
+  changed_when: False
+
+- name: start {{ ntp_service }}
   sudo: yes
-  service: name=ntp state=running enabled=yes
-  when: ansible_os_family == 'Debian'
+  service: name={{ ntp_service }} state=running enabled=yes

@@ -1,23 +1,26 @@
 ---
 - name: install apache
   sudo: yes
-  yum: name={{ item }} state=present
+  yum:  name={{ item }}
+        state=present
+  with_items: httpd_packages
+  when: ansible_distribution == 'Fedora'
+
+- name: enable apache service
+  sudo: yes
+  ignore_errors: yes
+  service:  name={{ httpd_service }}
+            enabled=yes
+            state=started
+  when: ansible_distribution == 'Fedora'
+
+- name: Configure Persistent FirewallD for http/https console
+  sudo: yes
+  firewalld:  service={{ item }}
+              permanent=true
+              state=enabled
   with_items:
-    - httpd
-  when: ansible_distribution == 'Fedora'
-
-- name: Configure Persistent FirewallD for http console
-  sudo: yes
-  firewalld:  service=http
-              permanent=true
-              state=enabled
-  notify: restart apache
-  when: ansible_distribution == 'Fedora'
-
-- name: Configure Persistent FirewallD for https console
-  sudo: yes
-  firewalld:  service=https
-              permanent=true
-              state=enabled
+    - http
+    - https
   notify: restart apache
   when: ansible_distribution == 'Fedora'

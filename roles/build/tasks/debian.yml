@@ -29,6 +29,8 @@
     - libpcre3-dev
     - libprotobuf-dev
     - libreadline-dev
+    - libsnack2
+    - libsnack2-dev 
     - libsqlite3-0
     - libsqlite3-dev
     - libssl-dev
@@ -46,6 +48,7 @@
     - openjdk-7-jre-lib
     - php5-mysql
     - protobuf-compiler
+    - python-tksnack
     - sqlite3
     - uuid-dev
     - valgrind
