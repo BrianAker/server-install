@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 # Source global definitions
-if [ -x $HOME/.python/bin/activate ]; then
+if [ -f $HOME/.python/bin/activate ]; then
   . $HOME/.python/bin/activate
 elif [ -d $HOME/.python/bin ]; then
   for x in "$HOME/.python/bin"; do
