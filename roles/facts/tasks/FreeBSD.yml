@@ -1,0 +1,9 @@
+---
+
+- set_fact: package_manager=pkgng
+
+- set_fact: root_group=wheel
+
+- set_fact: default_shell="/usr/local/bin/bash"
+
+- setup:

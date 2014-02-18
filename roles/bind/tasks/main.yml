@@ -5,7 +5,6 @@
   yum: name={{ item }} state=present
   with_items:
     - bind
-    - bind-chroot
     - bind-utils
   when: ansible_distribution == 'Fedora'
 
@@ -19,11 +18,13 @@
 - name: bind enable
   service:  name={{ bind }}
             enabled=yes
+  when: ansible_distribution == 'Fedora'
 
-- name: reconfigure ssh to use .ssh/authorized_keys/
+- name: reconfigure bind options
   sudo: yes
   lineinfile: dest=/etc/sysconfig/named
               regexp="^OPTIONS="
               line='OPTIONS="-4"'
               state=present
   notify: restart bind
+  when: ansible_distribution == 'Fedora'

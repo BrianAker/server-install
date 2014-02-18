@@ -24,13 +24,15 @@ DIST_MAKEFILES:=
 
 .PHONY: all show check install base_install deploy upgrade clean
 
-all: public_keys 
+all: public_keys files/pkg-pubkey.cert
 
 clean:
 	rm -f public_keys/brian public_keys/jenkins
 
 check:
 	@ansible-playbook site.yml --syntax-check
+	@ansible-playbook maintenance.yml --syntax-check
+	@ansible-playbook bootstrap_freebsd.yml --syntax-check
 
 public_keys: public_keys/brian public_keys/deploy public_keys/jenkins
 
@@ -39,6 +41,9 @@ public_keys/brian:
 
 public_keys/jenkins:
 	@ssh-import-id -o public_keys/jenkins d-ci
+
+files/pkg-pubkey.cert:
+	@curl -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
 install: all
 	ansible-playbook site.yml

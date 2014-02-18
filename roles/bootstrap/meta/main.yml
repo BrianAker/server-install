@@ -2,9 +2,11 @@
 
 allow_duplicates: no
 dependencies:
+  - { role: sudo }
+  - { role: python }
+  - { role: bash }
   - { role: facts }
   - { role: ntp }
-  - { role: python }
   - { role: deploy }
   - { role: ssh }
   - { role: unattended-upgrades }

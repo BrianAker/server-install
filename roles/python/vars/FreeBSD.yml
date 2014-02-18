@@ -1,0 +1,7 @@
+---
+
+packages:
+  - python27
+  - py27-pip
+  - py27-setuptools
+  - py27-virtualenv

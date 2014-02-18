@@ -8,7 +8,7 @@
   sudo: yes
   user: name="{{ username }}"
         state=present
-        shell="/bin/bash"
+        shell={{ default_shell }}
         generate_ssh_key="yes"
   when: "ansible_distribution != 'MacOSX'"
 
@@ -37,22 +37,20 @@
               line="AllowUsers {{ username }}"
               state=present
 
-- name: mkdir sudoers.d
-  sudo: yes
-  file: path="/etc/sudoers.d" state=directory
-        owner=root 
-        group="{{ root_group }}"
-        mode=0750
-
 - name: write sudoers file
   sudo: yes
   template: src=sudoer.j2
-            dest="/etc/sudoers.d/{{ username }}"
+            dest="{{ sudoers_d }}/{{ username }}"
             owner=root 
-            group="{{ root_group }}"
             mode=0440
+#           group="{{ root_group }}"
 #            validate='visudo -cs'
   when: is_admin
+
+- name: add user to wheel
+  user: name="{{ username }}" state=present groups=wheel
+  when: is_admin
+  when: "is_admin and ansible_distribution == 'FreeBSD'"
 
 - name: copy in customrc
   sudo: yes

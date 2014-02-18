@@ -1,2 +1,7 @@
 ---
+
 allow_duplicates: yes
+dependencies:
+  - { role: python }
+  - { role: facts }
+  - { role: sudo }

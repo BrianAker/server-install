@@ -3,3 +3,4 @@ pip_packages:
   - ssh-import-id
 
 root_group: root
+default_shell: /bin/bash

@@ -1,6 +1,6 @@
 ---
 
-- name: install packages for bootstrap RedHat
+- name: install packages for RedHat
   sudo: yes
   yum:  name={{ item }}
         state=present

@@ -19,11 +19,6 @@
   roles:
     - common
 
-- hosts: EL
-  gather_facts: no
-  roles:
-    - ntp
-
 - hosts: Ubuntu
   gather_facts: no
   roles:

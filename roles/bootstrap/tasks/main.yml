@@ -6,3 +6,4 @@
 
 - hostname: name="{{ ansible_hostname }}"
   sudo: yes
+  when: "ansible_distribution != 'FreeBSD'"

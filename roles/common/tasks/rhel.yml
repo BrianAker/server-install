@@ -28,6 +28,6 @@
 
 - name: set selinux
   sudo: yes
-  selinux: state=disabled
+  selinux: policy=targeted state=permissive
 # Older method.
 # lineinfile: dest=/etc/selinux/config regexp=^SELINUX= line=SELINUX=disabled

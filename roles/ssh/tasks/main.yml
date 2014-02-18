@@ -18,11 +18,12 @@
               line='{{ item.key }} {{ item.value }}'
               validate='/usr/sbin/sshd -T -f %s'
   with_items:
-    - { key: 'PasswordAuthentication', value: 'no'}
     - { key: 'PermitRootLogin', value: 'no'}
+    - { key: 'PasswordAuthentication', value: 'no'}
     - { key: 'AllowAgentForwarding', value: 'yes'}
     - { key: 'PermitEmptyPasswords', value: 'no'}
     - { key: 'AuthorizedKeysFile', value: '.ssh/authorized_keys'}
+  when: ansible_user_id != 'root'
   register: sshd_should_restart
   tags: config
 

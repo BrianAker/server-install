@@ -1,12 +1,6 @@
 ---
 
 packages:
-  - aptitude
-  - git
-  - lsb-release
-  - ntp
-  - openssh-server
-  - perl
   - python
   - python-apt
   - python-pip
@@ -14,7 +8,3 @@ packages:
   - python-setuptools
   - python-software-properties
   - python-virtualenv
-  - ruby
-  - ruby-dev
-  - rubygems
-  - sudo
