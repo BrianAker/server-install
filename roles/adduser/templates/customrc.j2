@@ -1,77 +1,41 @@
-#!/bin/bash
+# vim:ft=sh
 # {{ ansible_managed }}
-export EDITOR=vim
 
-if [ -x /usr/bin/keychain ]; then
-  /usr/bin/keychain --quiet
-fi
+if [ -z "$CUSTOMRC_INCLUDED" ]
+then
+  CUSTOMRC_INCLUDED=yes
+  if [ -x /usr/bin/keychain ]; then
+    /usr/bin/keychain --quiet
+  fi
 
-if [ -d /usr/local/bin ]; then
-  for x in "/usr/local/bin"; do
-    case ":$PATH:" in
-      *":$x:"*) :;; # already there
-      *) PATH="$x:$PATH";;
-    esac
-  done
-fi
+  if [ -f "$HOME/.brewrc" ]; then
+    . $HOME/.brewrc
+  fi
 
-if [ -d /usr/local/sbin ]; then
-  for x in "/usr/local/sbin"; do
-    case ":$PATH:" in
-      *":$x:"*) :;; # already there
-      *) PATH="$x:$PATH";;
-    esac
-  done
-fi
+  if [ -f "$HOME/.localrc" ]; then
+    . $HOME/.localrc
+  fi
 
-# For OSX brew installs
-if [ -d /usr/local/opt/bison/bin ]; then
-  for x in "/usr/local/opt/bison/bin"; do
-    case ":$PATH:" in
-      *":$x:"*) :;; # already there
-      *) PATH="$x:$PATH";;
-    esac
-  done
-fi
+  if [ -f "$HOME/.pkgngrc" ]; then
+    . $HOME/.pkgngrc
+  fi
 
-# For OSX brew installs
-if [ -d /usr/local/opt/flex/bin ]; then
-  for x in "/usr/local/opt/flex/bin"; do
-    case ":$PATH:" in
-      *":$x:"*) :;; # already there
-      *) PATH="$x:$PATH";;
-    esac
-  done
-fi
+  if [ -f "$HOME/.perlrc" ]; then
+    . $HOME/.perlrc
+  fi
 
-# For OSX brew installs
-if [ -d /usr/local/opt/gettext/bin ]; then
-  for x in "/usr/local/opt/gettext/bin"; do
-    case ":$PATH:" in
-      *":$x:"*) :;; # already there
-      *) PATH="$x:$PATH";;
-    esac
-  done
-fi
+  if [ -f "$HOME/.pythonrc" ]; then
+    . $HOME/.pythonrc
+  fi
 
-# For expanding MANPATH 
-if [ -d /usr/local/share/man ]; then
-  for x in "/usr/local/share/man"; do
-    case ":$MANPATH:" in
-      *":$x:"*) :;; # already there
-      *) MANPATH="$x:$MANPATH";;
-    esac
-  done
-fi
+  if [ -f "$HOME/.rubyrc" ]; then
+    . $HOME/.rubyrc
+  fi
 
-if [ -f "$HOME/.perlrc" ]; then
-  . $HOME/.perlrc
-fi
+  if [ -f "$HOME/.sbinrc" ]; then
+    . $HOME/.sbinrc
+  fi
 
-if [ -f "$HOME/.pythonrc" ]; then
-  . $HOME/.pythonrc
-fi
-
-if [ -f "$HOME/.rubyrc" ]; then
-  . $HOME/.rubyrc
+  VISUAL=vi
+  EDITOR=vi
 fi

@@ -1,0 +1,5 @@
+---
+- hosts: harden
+  roles:
+    - rkhunter
+    - { role: sshd, harden: True }

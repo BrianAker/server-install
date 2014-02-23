@@ -1,0 +1,15 @@
+# vim:ft=sh
+# {{ ansible_managed }}
+
+if [ -z "$SBINRC_INCLUDED" ]
+then
+  SBINRC_INCLUDED=yes
+  if [ -d /usr/sbin ]; then
+    for x in "/usr/sbin"; do
+      case ":$PATH:" in
+        *":$x:"*) :;; # already there
+        *) PATH="$x:$PATH";;
+      esac
+    done
+  fi
+fi

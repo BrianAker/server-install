@@ -1,0 +1,29 @@
+---
+
+- include_vars: "../../ssh/vars/{{ ansible_distribution }}.yml"
+
+- set_fact: ssh_protect=yes
+
+- name: configure OpenSSH
+  sudo: yes
+  lineinfile: dest={{ sshd_config_file }}
+              state=present
+              regexp='^#?{{ item.key }}'
+              line='{{ item.key }} {{ item.value }}'
+              validate='/usr/sbin/sshd -T -f %s'
+  with_items:
+    - { key: 'PermitRootLogin', value: 'no'}
+    - { key: 'PasswordAuthentication', value: 'no'}
+    - { key: 'AllowAgentForwarding', value: 'yes'}
+    - { key: 'PermitEmptyPasswords', value: 'no'}
+    - { key: 'AuthorizedKeysFile', value: '.ssh/authorized_keys'}
+  register: sshd_should_restart
+  tags: harden
+
+- name: restart sshd
+  sudo: yes
+  service:  name={{ service_sshd }}
+            state=restarted
+  when: sshd_should_restart and ansible_distribution != 'MacOSX'
+  notify: restart sshd
+  tags: restart

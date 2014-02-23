@@ -9,6 +9,7 @@
     - boost
     - byobu
     - curl-ca-bundle
+    - diffuse
     - gettext
     - gpg-agent
     - hub 

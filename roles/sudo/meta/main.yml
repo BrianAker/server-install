@@ -1,3 +1,5 @@
 ---
+allow_duplicates: yes
+dependencies:
+  - { role: sudo/base }
 
-allow_duplicates: no

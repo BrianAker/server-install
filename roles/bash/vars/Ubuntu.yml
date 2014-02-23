@@ -2,10 +2,3 @@
 
 packages:
   - bash
-  - python
-  - python-apt
-  - python-pip
-  - python-pycurl
-  - python-setuptools
-  - python-software-properties
-  - python-virtualenv

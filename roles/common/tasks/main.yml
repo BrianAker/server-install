@@ -1,6 +1,6 @@
 ---
 
-- include: rhel.yml
+- include: RedHat.yml
   when: ansible_os_family == 'RedHat'
 
 - include: Fedora.yml
@@ -12,5 +12,8 @@
 - include: Ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
 
-- include: osx.yml
+- include: MacOSX.yml
   when: ansible_distribution == 'MacOSX'
+
+- add_host: "name='{{ inventory_hostname }}' groups='harden'"
+

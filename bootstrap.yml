@@ -1,0 +1,6 @@
+---
+
+# Rulebook common to all hosts
+- hosts: all
+  roles:
+    - bootstrap

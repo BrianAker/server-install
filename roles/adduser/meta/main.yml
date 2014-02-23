@@ -4,4 +4,4 @@ allow_duplicates: yes
 dependencies:
   - { role: python }
   - { role: facts }
-  - { role: sudo }
+  - { role: sshd, sshd_allow_username: "{{ username }}" }

@@ -2,7 +2,6 @@
 
 # Host rules for bastion hosts
 - hosts: bastion
-  user: deploy
   roles:
     - fail2ban
     - denyhosts

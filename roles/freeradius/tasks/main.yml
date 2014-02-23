@@ -1,0 +1,9 @@
+---
+# tasks file for roles/freeradius
+- include_vars: "{{ ansible_distribution }}.yml"
+- include: ../../install_packages/tasks/main.yml packages=packages
+
+- service:  name=freeradius
+            enabled=yes
+            state=restarted
+  sudo: yes

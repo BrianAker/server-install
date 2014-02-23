@@ -15,22 +15,29 @@
       ignore_errors: yes
 
     - command: pkg2ng
-      when: installed_pkg.rc != 0
+      when: installed_pkg|success
 
-    - command: mkdir -p /usr/local/etc/pkg/repos creates=/usr/local/etc/pkg/repos
+    - file: state=directory
+            path=/usr/local/etc/pkg/repos
+            mode=0755
+            owner=root
+            group=wheel
 
     - copy: src=files/FreeBSD.conf dest=/usr/local/etc/pkg/repos owner=root group=wheel mode=0644
+      register: result
 
     - name: disable pkg_ commands
       command: chmod -x /usr/sbin/pkg_*
       ignore_errors: yes
 
     - command: pkg update 
+      when: result|success
 
     - command: pkg upgrade -y
+      when: result|success
 
     - name: install python for FreeBSD
-      pkgng:  name={{ item }}
+      pkgng:  name=python27
               state=present
-      with_items: python27
-      tags: packages
+      when: result|success
+      tags: install_packages

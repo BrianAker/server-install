@@ -3,37 +3,18 @@
 # Root ansible playbook
 - hosts: all
   tasks:
-    - name: Create groups by distribution and version
-      group_by: key={{ansible_distribution}}-{{ansible_distribution_version}}
-
     - name: Create groups by distribution
       group_by: key={{ansible_distribution}}
 
     - name: Create a distribution based OS family
       group_by: key={{ansible_os_family}}
 
-- hosts: RedHat
-  sudo: yes
-
-  tasks:
-    - name: upgrade all packages
-      command: /usr/bin/yum -y upgrade
+  roles:
+    - upgrade
 
 - hosts: Debian
   sudo: yes
-
   tasks:
-    - apt: update_cache=yes
-    - apt: upgrade=dist cache_valid_time=3600
-    - command: apt-get autoremove -y
-    - command: apt-get clean
     - command: apt-file update
+      tags: upgrade
     - command: reboot
-
-- hosts: MacOSX
-  gather_facts: no
-
-  tasks:
-    - command: /usr/local/bin/brew update
-    - command: /usr/local/bin/brew upgrade
-

@@ -11,6 +11,6 @@
 
 - name: install packages for Darwin
   homebrew: name={{ item }} 
-            state=present
+            state={{ default_package_state }}
   with_items: packages
-  tags: packages
+  tags: install_packages

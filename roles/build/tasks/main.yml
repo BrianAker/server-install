@@ -8,3 +8,6 @@
 
 - include: debian.yml
   when: ansible_os_family == 'Debian'
+
+- include: Fedora.yml
+  when: ansible_distribution == 'Fedora'

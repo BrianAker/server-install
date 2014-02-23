@@ -1,44 +1,9 @@
 ---
 
-# Root ansible playbook
-- hosts: all
-  tasks:
-    - name: Create groups by distribution and version
-      group_by: key={{ ansible_distribution }}-{{ ansible_distribution_version }}
-
-    - name: Create groups by distribution
-      group_by: key={{ ansible_distribution }}
-
-    - name: Create a distribution based OS family
-      group_by: key={{ ansible_os_family }}
-
-  vars:
-    sshd: sshd
-    bind: bind
-
-  roles:
-    - common
-
-- hosts: Ubuntu
-  gather_facts: no
-  roles:
-    - rkhunter
-
-- hosts: Fedora
-  gather_facts: no
-  roles:
-    - rkhunter
-
-- hosts: MacOSX
-  gather_facts: no
-  roles:
-    - osx
-      #
-# Rules for syslog servers
-- hosts: syslog
-  roles:
-    - syslog
-
+- include: all.yml
+- include: MacOSX.yml
+- include: harden.yml
+- include: syslog.yml
 - include: mailman.yml
 - include: dnsservers.yml
 - include: webservers.yml

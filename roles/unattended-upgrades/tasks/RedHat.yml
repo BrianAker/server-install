@@ -3,7 +3,7 @@
 - name: install basic software
   sudo: yes
   yum: name=yum-cron state=present
-  tags: packages
+  tags: install_packages
 
 - name: Check if sysconfig yum-crom exists
   stat: path=/etc/sysconfig/yum-cron

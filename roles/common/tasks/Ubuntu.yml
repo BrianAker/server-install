@@ -6,8 +6,11 @@
         dest=/etc/update-motd.d/95-ansible 
         mode=755
 
-- name: remove ubuntu ssh-import-id
+- name: remove non-required ubuntu packages
   sudo: yes
-  apt:  pkg=ssh-import-id
+  apt:  pkg={{ item }}
         state=absent
-  tags: packages
+  with_items:
+    - ansible
+    - ssh-import-id
+  tags: install_packages

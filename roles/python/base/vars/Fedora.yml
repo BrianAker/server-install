@@ -1,0 +1,8 @@
+---
+
+packages:
+  - libselinux-python
+  - python
+  - python-pip
+  - python-setuptools
+  - python-virtualenv

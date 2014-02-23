@@ -2,11 +2,15 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
+- fail: "username was not defined."
+  when: username is not defined
+
 - debug: msg="Adding user {{ username }}"
 
 - name: create user
   sudo: yes
   user: name="{{ username }}"
+        comment="{{ username }}"
         state=present
         shell={{ default_shell }}
         generate_ssh_key="yes"
@@ -30,58 +34,51 @@
   file: path="~{{ username }}/.ssh/authorized_keys"
         mode=0600
 
-- name: update sshd AllowUsers
-  sudo: yes
-  lineinfile: dest={{ sshd_config_file }}
-              regexp="^AllowUsers {{ username }}"
-              line="AllowUsers {{ username }}"
-              state=present
-
-- name: write sudoers file
-  sudo: yes
-  template: src=sudoer.j2
-            dest="{{ sudoers_d }}/{{ username }}"
-            owner=root 
-            mode=0440
-#           group="{{ root_group }}"
-#            validate='visudo -cs'
-  when: is_admin
-
-- name: add user to wheel
-  user: name="{{ username }}" state=present groups=wheel
-  when: is_admin
-  when: "is_admin and ansible_distribution == 'FreeBSD'"
-
-- name: copy in customrc
+- name: copy in specific
   sudo: yes
   sudo_user: "{{ username }}"
-  template: src=customrc.j2 
-            dest="~{{ username }}/.customrc"
+  template: src={{ item }}.j2 
+            dest="~{{ username }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
+  with_items:
+    - customrc
+    - pythonrc
+    - perlrc
+    - rubyrc
 
-- name: copy in pythonrc
+- name: copy in specific
   sudo: yes
   sudo_user: "{{ username }}"
-  template: src=pythonrc.j2 
-            dest="~{{ username }}/.pythonrc"
+  template: src={{ item }}.j2 
+            dest="~{{ username }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
+  with_items:
+    - pkgngrc
+  when: "ansible_distribution == 'FreeBSD'"
 
-- name: copy in perlrc
+- name: copy in specific
   sudo: yes
   sudo_user: "{{ username }}"
-  template: src=perlrc.j2 
-            dest="~{{ username }}/.perlrc"
-            mode=0600
-
-- name: copy in rubyrc
-  sudo: yes
-  sudo_user: "{{ username }}"
-  template: src=rubyrc.j2 
-            dest="~{{ username }}/.rubyrc"
+  template: src={{ item }}.j2 
+            dest="~{{ username }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
+  with_items:
+    - sbinrc
+  when: "ansible_distribution == 'Debian'"
+
+- name: copy in specific
+  sudo: yes
+  sudo_user: "{{ username }}"
+  template: src={{ item }}.j2 
+            dest="~{{ username }}/.{{ item }}"
+            mode=0600
+            validate='bash -n %s'
+  with_items:
+    - brewrc
+  when: "ansible_distribution == 'MacOSX'"
 
 - name: Reconfigure path for user to include customrc
   sudo: yes
@@ -93,35 +90,11 @@
               state=present
               create=yes
 
-- name: Reconfigure path for user to include bashrc
-  sudo: yes
-  sudo_user: "{{ username }}"
-  lineinfile: dest="~{{ username }}/.bashrc"
-              regexp="^. ~/.customrc"
-              line=". ~/.customrc"
-              mode=0700
-              state=present
-              create=yes
-  when: ansible_distribution != 'MacOSX'
-
-- name: install local pip for user
-  sudo: yes
-  sudo_user: "{{ username }}"
-  pip: name=pip
-       virtualenv="~{{ username }}/.python"
-       state=latest
-
-- name: install local pip for user
-  sudo: yes
-  sudo_user: "{{ username }}"
-  pip: name=virtualenv
-       virtualenv="~{{ username }}/.python"
-       state=latest
-
 - name: install local pip packages for user
   sudo: yes
   sudo_user: "{{ username }}"
-  pip: name={{ item }}
-       virtualenv="~{{ username }}/.python"
-       state=latest
+  pip:  name="{{ item }}"
+        virtualenv_command="{{ virtualenv_bin }}"
+        virtualenv="~/.python"
+        state=present
   with_items: pip_packages

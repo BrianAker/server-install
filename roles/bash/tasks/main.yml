@@ -7,4 +7,5 @@
 - file: src=/bin/{{ item }} dest=/usr/bin/{{ item}} owner=root state=link
   with_items:
     - bash
+  when: "ansible_distribution == 'FreeBSD'"
  

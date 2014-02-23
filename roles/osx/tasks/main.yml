@@ -11,3 +11,7 @@
               validate='apachectl -t'
               state=present
   tags: config
+
+- command: sudo launchctl unload -w  /System/Library/LaunchDaemons/com.apple.spindump.plist
+  when: is_itunes_player
+

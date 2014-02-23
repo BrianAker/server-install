@@ -1,0 +1,19 @@
+---
+
+- include_vars: "roles/sshd/vars/{{ ansible_distribution }}.yml"
+- include: ../../install_packages/tasks/main.yml packages=packages
+
+- name: "enable {{ service_sshd }} "
+  sudo: yes
+  service:  name={{ service_sshd }}
+            enabled=yes
+  when: ansible_distribution != 'MacOSX'
+  tags: enable
+
+- name: restart sshd
+  sudo: yes
+  service:  name={{ service_sshd }}
+            state=restarted
+            enabled=yes
+  when: ansible_distribution != 'MacOSX'
+  tags: restart

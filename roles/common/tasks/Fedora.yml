@@ -7,6 +7,7 @@
   with_items:
     - BackupPC
     - ansible
+  tags: install_packages
 
 - name: install fedora basic software
   yum: name={{ item }}  state=present
@@ -17,4 +18,4 @@
     - net-tools
     - system-config-network
     - yum-fastestmirror
-
+  tags: install_packages

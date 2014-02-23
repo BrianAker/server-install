@@ -1,3 +1,4 @@
 ---
 dependencies:
-  - { role: adduser, username: deploy, is_admin: True, has_authorized_key: False }
+  - { role: sudo, username: "{{ deploy_username }}"}
+  - { role: adduser, username: "{{ deploy_username }}", has_authorized_key: False }

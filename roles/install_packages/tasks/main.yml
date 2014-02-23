@@ -1,5 +1,8 @@
 ---
 
+- set_fact: 'default_package_state="installed"'
+  when: default_package_state is not defined
+
 - include: RedHat.yml
   when: ansible_os_family == 'RedHat'
 

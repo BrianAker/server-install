@@ -1,0 +1,66 @@
+# vim:ft=sh
+# {{ ansible_managed }}
+
+if [ -z "$BREWRC_INCLUDED" ]
+then
+  BREWRC_INCLUDED=yes
+  if [ -x /usr/local/bin/brew ]; then
+    if [ -d /usr/local/bin ]; then
+      for x in "/usr/local/bin"; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
+    fi
+
+    if [ -d /usr/local/sbin ]; then
+      for x in "/usr/local/sbin"; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
+    fi
+
+    # For OSX brew installs
+    if [ -d /usr/local/opt/bison/bin ]; then
+      for x in "/usr/local/opt/bison/bin"; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
+    fi
+
+    # For OSX brew installs
+    if [ -d /usr/local/opt/flex/bin ]; then
+      for x in "/usr/local/opt/flex/bin"; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
+    fi
+
+    # For OSX brew installs
+    if [ -d /usr/local/opt/gettext/bin ]; then
+      for x in "/usr/local/opt/gettext/bin"; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
+    fi
+
+    # For expanding MANPATH 
+    if [ -d /usr/local/share/man ]; then
+      for x in "/usr/local/share/man"; do
+        case ":$MANPATH:" in
+          *":$x:"*) :;; # already there
+          *) MANPATH="$x:$MANPATH";;
+        esac
+      done
+    fi
+  fi
+fi

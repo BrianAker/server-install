@@ -2,7 +2,6 @@
 
 packages:
   - git
-  - openssh-server
   - perl
   - redhat-lsb-core
   - ruby

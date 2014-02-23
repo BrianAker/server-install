@@ -1,0 +1,17 @@
+---
+- name: install deltarpm for Fedora
+  sudo: yes
+  yum:  name=deltarpm
+        state=latest
+  when: ansible_distribution == 'Fedora'
+  tags: install_packages
+
+- name: upgrade all packages
+  command: /usr/bin/yum reinstall -y fedora-release
+  sudo: yes
+  tags: upgrade
+
+- name: upgrade all packages
+  command: /usr/bin/yum -y upgrade
+  sudo: yes
+  tags: upgrade

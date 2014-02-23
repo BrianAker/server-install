@@ -5,7 +5,7 @@
   apt:  update_cache=yes
         cache_valid_time=3600 
         upgrade=dist
-  tags: packages
+  tags: install_packages
 
 - name: apt base software
   sudo: yes
@@ -15,7 +15,7 @@
         state=absent
   with_items:
     - ansible
-  tags: packages
+  tags: install_packages
 
 - name: apt base software
   sudo: yes
@@ -40,7 +40,7 @@
     - tar
     - update-manager-core
     - wget
-  tags: packages
+  tags: install_packages
 
 - name: apt install software-properties-common
   sudo: yes
@@ -52,4 +52,4 @@
   with_items:
     - software-properties-common
   when: ansible_distribution == 'Debian'
-  tags: packages
+  tags: install_packages

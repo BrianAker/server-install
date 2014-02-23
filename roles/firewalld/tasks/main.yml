@@ -2,10 +2,16 @@
 
 - name: install firewalld
   sudo: yes
-  yum: name={{ item }} state=present
-  with_items:
-    - firewalld
+  yum: name=firewalld state=present
   when: ansible_distribution == 'Fedora'
+
+- name: "enable {{ add_service }}"
+  sudo: yes
+  firewalld:  service={{ add_service }}
+              permanent=true
+              state=enabled
+  when: ansible_distribution == 'Fedora' and add_service is defined
+  tags: config
 
 - name: enable firewalld
   sudo: yes
@@ -14,19 +20,5 @@
             enabled=yes
             state=started
   when: ansible_distribution == 'Fedora'
+  tags: enable
 
-- name: firewalld open ssh
-  sudo: yes
-  ignore_errors: yes
-  firewalld:  service=ssh
-              permanent=true
-              state=enabled
-  when: ansible_distribution == 'Fedora'
-
-- name: firewalld open mdns
-  sudo: yes
-  ignore_errors: yes
-  firewalld:  service=mdns
-              permanent=true
-              state=enabled
-  when: ansible_distribution == 'Fedora'

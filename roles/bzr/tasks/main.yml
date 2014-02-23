@@ -1,16 +1,5 @@
 ---
 
-- name: install bzr
-  sudo: yes
-  sudo_user: "{{ username }}"
-  pip: name={{ item }}
-       extra_args="--allow-all-external --allow-unverified {{ item }}"
-       virtualenv="~{{ username }}/.python"
-       state=latest
-  with_items: 
-    - bzr
-#   - bzr-rewrite
-
 - name: mkdir bazaar directory
   sudo: yes
   sudo_user: "{{ username }}"
@@ -18,5 +7,24 @@
         state=directory
         mode=0750
   with_items: 
-    - "~/.bazaar"
     - "~/.bazaar/plugins"
+
+- get_url:  url="{{ item.url }}"
+            dest="{{ ansible.env.TMPDIR }}/{{ item.tarfile }}"
+  with_items:
+    - bazaar.bzr
+    - bazaar.bzr_rewrite
+
+- command:  tar xzf {{ item.tarfile }}
+            chdir="{{ ansible.env.TMPDIR }}"
+            creates="{{ ansible.env.TMPDIR }}/{{ item.project }}"
+  with_items:
+    - bazaar.bzr
+    - bazaar.bzr_rewrite
+
+- command:  python setup.py install
+            chdir="{{ ansible.env.TMPDIR }}/{{ item.project }}"
+            creates="{{ item.check }}"
+  with_items:
+    - bazaar.bzr
+    - bazaar.bzr_rewrite

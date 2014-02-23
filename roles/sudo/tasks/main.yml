@@ -1,35 +1,6 @@
 ---
 
-- include_vars: "{{ ansible_distribution }}.yml"
+- include_vars: "roles/sudo/base/vars/{{ ansible_distribution }}.yml"
 
-- include: ../../install_packages/tasks/main.yml packages=packages
-
-- name: mkdir sudoers.d
-  sudo: yes
-  file: path="{{ sudoers_d }}" state=directory
-        owner=root 
-        group="{{ root_group }}"
-        mode=0750
-
-- name: configure sudoers
-  sudo: yes
-  lineinfile: dest={{ sudoers_conf }}
-              state=present
-              regexp='^{{ item.key }}'
-              line='{{ item.key }} {{ item.value }}'
-  with_items:
-    - { key: '%wheel', value: 'ALL=(ALL) NOPASSWD: ALL'}
-    - { key: 'root', value: 'ALL=(ALL) ALL'}
-  when: ansible_user_id != 'root'
-  tags: config
-
-# #includedir /etc/sudoers.d
-- name: add include directory for sudoers
-  sudo: yes
-  lineinfile: dest="{{ sudoers_conf }}"
-              state=present
-              regexp='^{{ item.key }}'
-              line='{{ item.key }} {{ item.value }}'
-  with_items:
-    - { key: '#includedir', value: "{{ sudoers_d }}" }
-  tags: config
+- include: adduser.yml
+  when: username is defined

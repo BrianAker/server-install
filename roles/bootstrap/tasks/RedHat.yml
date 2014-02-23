@@ -5,4 +5,4 @@
   yum:  name={{ item }}
         state=present
   with_items: packages
-  tags: packages
+  tags: install_packages

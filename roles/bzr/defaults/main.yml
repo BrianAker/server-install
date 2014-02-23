@@ -1,0 +1,19 @@
+---
+
+bazaar:
+  bzr:
+    name: 'bzr'
+    version: '2.6.0'
+    project: "{{ bazaar.bzr.name }}-{{ bazaar.bzr.version }}"
+    tarfile: "{{ bazaar.bzr_rewrite.project }}.tar.gz"
+    url: "https://launchpad.net/bzr/2.6/{{ bazaar.bzr.version }}/+download/{{ bazaar.bzr.tarfile }}"
+    check: "~/.python/bin/bzr"
+    sha256sum: "0994797182eb828867eee81cccc79480bd2946c99304266bc427b902cf91dab0"
+  bzr_rewrite:
+    name: 'bzr-rewrite'
+    version: '0.6.3'
+    project: "{{ bazaar.bzr_rewrite.name }}-{{ bazaar.bzr_rewrite.version }}"
+    tarfile: "{{ bazaar.bzr_rewrite.project }}.tar.gz"
+    url: "https://launchpad.net/bzr-rewrite/trunk/{{ bazaar.bzr_rewrite.version }}/+download/{{ bazaar.bzr_rewrite.tarfile }}"
+    check: "~/.python/lib/python2.7/site-packages/bzrlib/plugins/rewrite"
+    sha256sum: "f4d0032a41a549a0bc3ac4248cd4599da859174ea33e56befcb095dd2c930794"

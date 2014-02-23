@@ -1,0 +1,5 @@
+---
+- name: restart sshd
+  sudo: yes
+  service:  name={{ service_sshd }}
+            state=restarted

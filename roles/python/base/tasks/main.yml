@@ -1,0 +1,9 @@
+---
+
+- include_vars: "{{ ansible_distribution }}.yml"
+
+- include: ../../../install_packages/tasks/main.yml packages=packages
+
+- include: MacOSX.yml
+  when: ansible_distribution == 'MacOSX'
+

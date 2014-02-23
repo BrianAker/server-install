@@ -5,7 +5,7 @@
   yum:  name=rkhunter
         state=present
   when: ansible_distribution == 'Fedora'
-  tags: packages
+  tags: install_packages
 
 - name: install rkhunter
   sudo: yes
@@ -14,4 +14,4 @@
         update_cache=yes
         cache_valid_time=3600
   when: ansible_distribution == 'Ubuntu'
-  tags: packages
+  tags: install_packages

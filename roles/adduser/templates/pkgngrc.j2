@@ -1,0 +1,37 @@
+# vim:ft=sh
+# {{ ansible_managed }}
+
+if [ -z "$PKGNGRC_INCLUDED" ]
+then
+  PKGNGRC_INCLUDED=yes
+  if [ -f /etc/freebsd-update.conf ]; then
+    if [ -f /usr/local/etc/pkg/repos/FreeBSD.conf ]; then
+      if [ -d /usr/local/bin ]; then
+        for x in "/usr/local/bin"; do
+          case ":$PATH:" in
+            *":$x:"*) :;; # already there
+            *) PATH="$x:$PATH";;
+          esac
+        done
+      fi
+
+      if [ -d /usr/local/sbin ]; then
+        for x in "/usr/local/sbin"; do
+          case ":$PATH:" in
+            *":$x:"*) :;; # already there
+            *) PATH="$x:$PATH";;
+          esac
+        done
+      fi
+
+      if [ -d /usr/local/share/man ]; then
+        for x in "/usr/local/share/man"; do
+          case ":$MANPATH:" in
+            *":$x:"*) :;; # already there
+            *) MANPATH="$x:$MANPATH";;
+          esac
+        done
+      fi
+    fi
+  fi
+fi

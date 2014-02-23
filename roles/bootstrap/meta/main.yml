@@ -1,12 +1,14 @@
 ---
-
+# We call sudo directly because we need it for some ansible calls.
 allow_duplicates: no
 dependencies:
+  - { role: resolv }
+  - { role: upgrade }
   - { role: sudo }
   - { role: python }
   - { role: bash }
   - { role: facts }
   - { role: ntp }
-  - { role: deploy }
-  - { role: ssh }
+  - { role: sshd }
+  - { role: deploy, deploy_username: deploy }
   - { role: unattended-upgrades }

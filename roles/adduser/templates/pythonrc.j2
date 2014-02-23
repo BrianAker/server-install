@@ -1,12 +1,18 @@
+# vim:ft=sh
 # {{ ansible_managed }}
-# Source global definitions
-if [ -f $HOME/.python/bin/activate ]; then
-  . $HOME/.python/bin/activate
-elif [ -d $HOME/.python/bin ]; then
-  for x in "$HOME/.python/bin"; do
-    case ":$PATH:" in
-      *":$x:"*) :;; # already there
-      *) PATH="$x:$PATH";;
-    esac
-  done
+ 
+if [ -z "$PYTHONRC_INCLUDED" ]
+then
+  PYTHONRC_INCLUDED=yes
+  VIRTUAL_ENV_DISABLE_PROMPT=yes
+  if [ -f $HOME/.python/bin/activate ]; then
+    . $HOME/.python/bin/activate
+  elif [ -d $HOME/.python/bin ]; then
+    for x in "$HOME/.python/bin"; do
+      case ":$PATH:" in
+        *":$x:"*) :;; # already there
+        *) PATH="$x:$PATH";;
+      esac
+    done
+  fi
 fi

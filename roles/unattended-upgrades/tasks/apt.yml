@@ -1,7 +1,7 @@
 ---
 - name: install unattended-upgrades
   apt: pkg=unattended-upgrades state=present
-  tags: packages
+  tags: install_packages
 
 - name: Adjust APT update intervals
   sudo: yes

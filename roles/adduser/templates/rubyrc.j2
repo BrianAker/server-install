@@ -1,11 +1,16 @@
-#!/bin/bash
+# vim:ft=sh
 # {{ ansible_managed }}
 
-command_exists ()
-{
-  type "$1" &> /dev/null ;
-}
+if [ -z "$RUBYRC_INCLUDED" ]
+then
+  RUBYRC_INCLUDED=yes
+  command_exists ()
+  {
+    type "$1" &> /dev/null ;
+  }
 
-if command_exists 'ruby' && command_exists 'gem'; then
-  PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+  if command_exists 'ruby' && command_exists 'gem'; then
+    PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+  fi
 fi
+

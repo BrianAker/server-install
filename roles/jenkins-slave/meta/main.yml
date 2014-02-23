@@ -1,3 +1,3 @@
 ---
 dependencies:
-  - { role: adduser, username: jenkins, is_admin: False, has_authorized_key: False }
+  - { role: adduser, username: jenkins, has_authorized_key: False }

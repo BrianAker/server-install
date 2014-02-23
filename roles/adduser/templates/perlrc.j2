@@ -1,17 +1,21 @@
-#!/bin/bash
+# vim:ft=sh
 # {{ ansible_managed }}
 
-PERL_LOCAL_INSTALL="$HOME/perl5"
-
-if [ -d "$PERL_LOCAL_INSTALL" ]; then
-  export PERL_LOCAL_INSTALL
-
-  export -n PERL5LIB
-  export -n PERL_MB_OPT
-  export -n PERL_LOCAL_LIB_ROOT
-  export -n PERL_MM_OPT
+if [ -z "$PERLRC_INCLUDED" ]
+then
+  PERLRC_INCLUDED=yes
+  PERL_LOCAL_INSTALL="$HOME/perl5"
 
   if [ -d "$PERL_LOCAL_INSTALL" ]; then
-    eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+    export PERL_LOCAL_INSTALL
+
+    export -n PERL5LIB
+    export -n PERL_MB_OPT
+    export -n PERL_LOCAL_LIB_ROOT
+    export -n PERL_MM_OPT
+
+    if [ -d "$PERL_LOCAL_INSTALL" ]; then
+      eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
+    fi
   fi
 fi

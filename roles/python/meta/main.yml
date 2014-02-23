@@ -1,4 +1,4 @@
 ---
-
-allow_duplicates: no
-
+allow_duplicates: yes
+dependencies:
+  - { role: python/base }

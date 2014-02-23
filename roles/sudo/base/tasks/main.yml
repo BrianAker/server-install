@@ -1,0 +1,36 @@
+---
+
+- include_vars: "{{ ansible_distribution }}.yml"
+
+- include: ../../../install_packages/tasks/main.yml packages=packages
+
+- name: mkdir sudoers.d
+  sudo: yes
+  file: path="{{ sudoers_d }}" state=directory
+        owner=root 
+        group="{{ root_group }}"
+        mode=0750
+
+- name: configure sudoers
+  sudo: yes
+  lineinfile: dest={{ sudoers_conf }}
+              state=present
+              regexp='^{{ item.key }}'
+              line='{{ item.key }} {{ item.value }}'
+              validate='visudo -cf %s'
+  with_items:
+    - { key: 'root', value: 'ALL=(ALL) ALL'}
+    - { key: '#includedir', value: "{{ sudoers_d }}" }
+  tags: config
+
+- name: configure sudoers
+  sudo: yes
+  lineinfile: dest={{ sudoers_conf }}
+              state=present
+              regexp='^{{ item.key }}'
+              line='{{ item.key }} {{ item.value }}'
+              validate='visudo -cf %s'
+  with_items:
+    - { key: '%wheel', value: 'ALL=(ALL) NOPASSWD: ALL'}
+  when: "ansible_distribution == 'FreeBSD'"
+  tags: config
