@@ -44,6 +44,16 @@ then
     fi
 
     # For OSX brew installs
+    if [ -d /usr/local/opt/gperf/bin ]; then
+      for x in "/usr/local/opt/gperf/bin"; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
+    fi
+
+    # For OSX brew installs
     if [ -d /usr/local/opt/gettext/bin ]; then
       for x in "/usr/local/opt/gettext/bin"; do
         case ":$PATH:" in

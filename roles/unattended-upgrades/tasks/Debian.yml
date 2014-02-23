@@ -1,5 +1,6 @@
 ---
 - name: install unattended-upgrades
+  sudo: yes
   apt: pkg=unattended-upgrades state=present
   tags: install_packages
 

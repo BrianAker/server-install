@@ -27,4 +27,4 @@
   sudo: yes
   user: name=ec2-user
         state=absent
-        remote=yes
+        remove=yes

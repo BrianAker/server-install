@@ -3,7 +3,9 @@
 - command: /usr/sbin/freebsd-update fetch
   sudo: yes
   ignore_errors: yes
+  register: result
 
 - command: /usr/sbin/freebsd-update install
   sudo: yes
   ignore_errors: yes
+  when: result|success
