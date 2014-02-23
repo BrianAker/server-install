@@ -3,7 +3,6 @@
 allow_duplicates: no
 dependencies:
   - { role: resolv }
-  - { role: bootstrap/FreeBSD, when: "ansible_distribution == 'FreeBSD'" }
   - { role: upgrade }
   - { role: sudo }
   - { role: python }
