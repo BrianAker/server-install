@@ -1,2 +1,4 @@
+---
+# vim:ft=yaml
 deploy_user: deploy
 root_group: root

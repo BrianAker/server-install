@@ -1,6 +1,0 @@
----
-
-- hosts: MacOSX
-  roles:
-    - osx
-      #

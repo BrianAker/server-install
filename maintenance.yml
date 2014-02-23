@@ -1,6 +1,5 @@
 ---
-
-# Root ansible playbook
+# Upgrade the fleet
 - hosts: all
   tasks:
     - name: Create groups by distribution

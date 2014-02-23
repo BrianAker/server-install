@@ -1,0 +1,9 @@
+---
+
+- command: /usr/sbin/freebsd-update fetch
+  sudo: yes
+  ignore_errors: yes
+
+- command: /usr/sbin/freebsd-update install
+  sudo: yes
+  ignore_errors: yes

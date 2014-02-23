@@ -1,5 +1,4 @@
 ---
-
 # Rules for mailman servers
 - hosts: mailman
   roles:

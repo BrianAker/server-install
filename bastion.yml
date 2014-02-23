@@ -1,5 +1,4 @@
 ---
-
 # Host rules for bastion hosts
 - hosts: bastion
   roles:

@@ -1,4 +1,5 @@
 ---
+# vim:ft=yaml
 apache: httpd
 bind: bind
 root_group: root

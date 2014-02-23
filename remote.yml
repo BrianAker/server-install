@@ -1,5 +1,4 @@
 ---
-
 # Host rules for remote hosts
 - hosts: remote
   roles:

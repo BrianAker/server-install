@@ -1,0 +1,6 @@
+Roughly:
+  install_packages
+  config
+  harden
+  enable
+  restart

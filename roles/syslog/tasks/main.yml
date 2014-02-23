@@ -1,5 +1,4 @@
 ---
-
 - name: configure remote syslog
   sudo: yes
   firewalld:  port={{ item }}

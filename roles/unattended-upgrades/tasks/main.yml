@@ -3,8 +3,8 @@
 - include: Fedora.yml
   when: ansible_distribution == 'Fedora'
 
-- include: apt.yml
-  when: ansible_pkg_mgr == 'apt'
+- include: Debian.yml
+  when: ansible_os_family == 'Redhat'
 
 - include: RedHat.yml
   when: ansible_distribution == 'Redhat'

@@ -1,12 +1,4 @@
 ---
-
-- name: apt update dist
-  sudo: yes
-  apt:  update_cache=yes
-        cache_valid_time=3600 
-        upgrade=dist
-  tags: install_packages
-
 - name: apt base software
   sudo: yes
   apt:  update_cache=yes

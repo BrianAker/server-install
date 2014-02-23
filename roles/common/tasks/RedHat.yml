@@ -1,5 +1,4 @@
 ---
-
 - name: Add epel repository
   sudo: yes
   yum: name=http://mirror.pnl.gov/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present

@@ -1,5 +1,4 @@
 ---
-
 # Rulebook common to all hosts
 - hosts: all
 #  tasks:

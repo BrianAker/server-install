@@ -1,0 +1,51 @@
+---
+#- raw: "pkg_info | grep -v 'pkg-' > /dev/null ; if $? pkg_add -r pkg; rehash ; pkg2ng; echo 'WITH_PKGNG=yes' >> /etc/make.conf; echo 'packagesite: http://pkgbeta.freebsd.org/freebsd%3A9%3Ax86%3A64/latest' >> /usr/local/etc/pkg.conf; pkg update ; pkg upgrade -y"
+#- command: echo 'WITH_PKGNG=yes' >> /etc/make.conf creates=/etc/make.conf
+#- copy: src=files/pkg-pubkey.cert dest=/usr/local/etc/pkg-pubkey.cert owner=root group=wheel mode=0644
+#- copy: src=files/pkg.conf dest=/usr/local/etc/pkg.conf owner=root group=wheel mode=0644
+#- command: pkg install -y python27 creates=/usr/local/bin/python2.7
+#- command: pkg_add -r pkg creates=/usr/local/sbin/pkg2ng
+- command: pkg_add -r pkg creates=/usr/sbin/pkg
+  register: installed_pkg
+
+#- command: pkg
+- command: pkg -y
+  ignore_errors: yes
+
+- command: pkg2ng
+  when: installed_pkg|success
+
+- file: state=directory
+        path=/usr/local/etc/pkg/repos
+        mode=0755
+        owner=root
+        group=wheel
+
+- copy: src=files/FreeBSD.conf dest=/usr/local/etc/pkg/repos owner=root group=wheel mode=0644
+  register: result
+
+- name: disable pkg_ commands
+  command: "chmod -x /usr/sbin/{{ item }}"
+  with_items:
+    - pkg_add
+    - pkg_create
+    - pkg_delete
+    - pkg_info
+    - pkg_updating
+    - pkg_version
+  ignore_errors: yes
+
+- command: pkg update 
+  when: result|success
+
+- command: pkg upgrade -y
+  when: result|success
+
+- name: install python for FreeBSD
+  pkgng:  name={{ item }}
+          state=present
+  with_items:
+    - python27
+    - sudo
+  when: result|success
+  tags: install_packages

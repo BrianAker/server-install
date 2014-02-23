@@ -1,6 +1,6 @@
 ---
 
-- set_fact: 'default_package_state="installed"'
+- set_fact: 'default_package_state="present"'
   when: default_package_state is not defined
 
 - include: RedHat.yml

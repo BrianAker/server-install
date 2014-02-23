@@ -1,5 +1,4 @@
 ---
-
 - homebrew: name=pkg-config
             state=present
   ignore_errors: yes

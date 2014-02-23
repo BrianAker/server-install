@@ -1,4 +1,5 @@
 ---
+allow_duplicates: no
 galaxy_info:
   author: Brian Aker
   description: Install FreeRADIUS

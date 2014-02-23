@@ -1,6 +1,15 @@
 ---
+- hosts: FreeBSD
+  gather_facts: no
+  tasks:
+    - include: roles/upgrade/tasks/FreeBSD.yml
+  roles:
+    - resolv
+    - bootstrap/FreeBSD
 
-# Rulebook common to all hosts
+# Rulebook used for bootstrapping a system.
 - hosts: all
   roles:
     - bootstrap
+
+- include: harden.yml

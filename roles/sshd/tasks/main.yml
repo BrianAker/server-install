@@ -1,19 +1,8 @@
 ---
-
-- include_vars: "roles/sshd/vars/{{ ansible_distribution }}.yml"
-
-- fail: "sshd_allow_username was not defined."
-  when: sshd_allow_username is not defined
+- include_vars: "{{ ansible_distribution }}.yml"
 
 - fail: "sshd_config_file was not defined."
   when: sshd_config_file is not defined
 
-- debug: msg="Adding user {{ sshd_allow_username }} with file {{ sshd_config_file }}"
-
-- name: update sshd AllowUsers
-  sudo: yes
-  lineinfile: dest={{ sshd_config_file }}
-              regexp="^AllowUsers {{ sshd_allow_username }}"
-              line="AllowUsers {{ sshd_allow_username }}"
-              state=present
-
+- include: adduser.yml
+  when: sshd_allow_username is defined

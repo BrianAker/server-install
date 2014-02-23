@@ -1,3 +1,4 @@
 ---
+# vim:ft=yaml
 apache: httpd
 root_group: wheel

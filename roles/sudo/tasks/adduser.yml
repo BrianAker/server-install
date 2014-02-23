@@ -13,7 +13,8 @@
             owner=root 
             mode=0440
             group="{{ root_group }}"
-#           validate='visudo -cf %s'
+            force=no
+  when: ansible_ssh_user == username
 
 # Fit it so deploy doesn't require tty
 - name: add include directory for sudoers
@@ -26,6 +27,7 @@
   with_items:
     - { key: "{{ username }}", value: 'ALL=(ALL) NOPASSWD:ALL'}
     - { key: "Defaults:{{ username }}", value: '!requiretty'}
+  when: ansible_ssh_user == username
 
 - name: add user to wheel
   sudo: yes

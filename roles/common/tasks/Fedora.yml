@@ -1,5 +1,4 @@
 ---
-
 - name: yum remove software
   sudo: yes
   yum:  name={{ item }}
@@ -7,6 +6,7 @@
   with_items:
     - BackupPC
     - ansible
+    - cloud-init
   tags: install_packages
 
 - name: install fedora basic software
@@ -19,3 +19,12 @@
     - system-config-network
     - yum-fastestmirror
   tags: install_packages
+
+- file: state=absent
+        path=/etc/sudoers.d/90-cloud-init-users
+
+- name: remove ec2-user user
+  sudo: yes
+  user: name=ec2-user
+        state=absent
+        remote=yes

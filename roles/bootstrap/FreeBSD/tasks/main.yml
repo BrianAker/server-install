@@ -1,0 +1,3 @@
+---
+- include: pkg_install.yml
+  when: ansible_ssh_user == 'root'

@@ -1,7 +1,10 @@
 ---
 
 - include_vars: "roles/sshd/vars/{{ ansible_distribution }}.yml"
-- include: ../../install_packages/tasks/main.yml packages=packages
+- include: ../../../install_packages/tasks/main.yml packages=packages
+
+- fail: "sshd_config_file was not defined."
+  when: sshd_config_file is not defined
 
 - name: "enable {{ service_sshd }} "
   sudo: yes
@@ -9,11 +12,3 @@
             enabled=yes
   when: ansible_distribution != 'MacOSX'
   tags: enable
-
-- name: restart sshd
-  sudo: yes
-  service:  name={{ service_sshd }}
-            state=restarted
-            enabled=yes
-  when: ansible_distribution != 'MacOSX'
-  tags: restart

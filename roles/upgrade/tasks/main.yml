@@ -7,3 +7,6 @@
 
 - include: MacOSX.yml
   when: ansible_distribution == 'MacOSX'
+
+- include: FreeBSD.yml
+  when: ansible_distribution == 'FreeBSD'

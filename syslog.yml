@@ -1,3 +1,4 @@
+---
 # Rules for syslog servers
 - hosts: syslog
   roles:

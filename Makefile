@@ -15,6 +15,8 @@ HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
 ALL_MAKEFILES:= $(wildcard *.am) 
 ALL_SCRIPTS:= $(wildcard *.sh) 
+ALL_PLAYBOOKS:= $(wildcard *.yml) 
+ANSIBLE_CHECK= ansible-playbook --syntax-check
 
 JENKINS_SLAVES=
 
@@ -29,10 +31,8 @@ all: public_keys files/pkg-pubkey.cert
 clean:
 	rm -f public_keys/brian public_keys/jenkins
 
-check:
-	@ansible-playbook site.yml --syntax-check
-	@ansible-playbook maintenance.yml --syntax-check
-	@ansible-playbook bootstrap_freebsd.yml --syntax-check
+check: bootstrap.yml maintenance.yml site.yml
+	$(foreach f,$^,$(ANSIBLE_CHECK) $(f);)
 
 public_keys: public_keys/brian public_keys/deploy public_keys/jenkins
 
