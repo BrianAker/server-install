@@ -2,3 +2,4 @@
 allow_duplicates: no
 dependencies:
   - { role: adduser, username: jenkins, has_authorized_key: False }
+  - { role: java }

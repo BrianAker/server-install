@@ -24,8 +24,6 @@
     - gperf
     - gpg
     - intltool 
-    - java-1.7.0-openjdk
-    - java-1.7.0-openjdk-devel
     - jython
     - libaio
     - libaio-devel

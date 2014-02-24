@@ -1,0 +1,38 @@
+---
+java:
+  - FreeBSD:
+      - packages:
+        - openjdk6
+
+  - MacOSX:
+      - packages:
+
+  - RedHat:
+      - packages:
+        - java-1.7.0-openjdk
+        - java-1.7.0-openjdk-devel
+
+  - Fedora:
+      - packages:
+        - java-1.7.0-openjdk
+        - java-1.7.0-openjdk-devel
+
+  - Debian:
+      - packages:
+        - default-jre 
+        - default-jre-headless
+        - default-jdk 
+        - openjdk-7-jdk
+        - openjdk-7-jre
+        - openjdk-7-jre-headless
+        - openjdk-7-jre-lib
+
+  - Ubuntu:
+      - packages:
+        - default-jre 
+        - default-jre-headless
+        - default-jdk 
+        - openjdk-7-jdk
+        - openjdk-7-jre
+        - openjdk-7-jre-headless
+        - openjdk-7-jre-lib

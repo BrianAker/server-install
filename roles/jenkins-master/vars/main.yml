@@ -6,16 +6,12 @@ jenkins:
     dependencies: # Jenkins dependencies
       - 'curl'
       - 'git'
-      - 'openjdk-6-jdk'
-      - 'openjdk-6-jre'
   rhel:
     repo: 'http://pkg.jenkins-ci.org/redhat/jenkins.repo'
     key: 'http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key'
     dependencies: # Jenkins dependencies
       - 'curl'
       - 'git'
-      - 'java-1.7.0-openjdk'
-      - 'java-1.7.0-openjdk-devel'
   dest: '/var/lib/jenkins'
   cli_dest: "/var/lib/jenkins/jenkins-cli.jar"
   updates_dest: "/var/lib/jenkins/updates_jenkins.json"
