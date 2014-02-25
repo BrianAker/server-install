@@ -1,17 +1,42 @@
 ---
-- name: install deltarpm for Fedora
+- command: yum clean expire-cache
+  when: expire_cache is defined
+
+- name: enable yum cache
+  lineinfile: dest=/etc/yum.conf
+              state=present
+              regexp='^#?{{ item.key }}'
+              line='{{ item.key }}={{ item.value }}'
+#             validate='/usr/bin/yum list'
+  with_items:
+    - { key: 'keepcache', value: '1'}
+  register: result
+  tags: setup
+
+- group_by: key={{ ansible_pkg_mgr }}
+  when: result|success
+
+- command: /usr/bin/yum makecache
   sudo: yes
-  yum:  name=deltarpm
-        state=latest
+  register: result
+  tags: upgrade
+
+- command: /usr/bin/yum list
+  when: result|success
+  sudo: yes
+  tags: upgrade
+
+- command: yum verify fedora-release
   when: ansible_distribution == 'Fedora'
-  tags: install_packages
+  ignore_errors: yes
+  register: returned
 
 - name: reinstall fedora-release
   command: /usr/bin/yum reinstall -y fedora-release
   sudo: yes
+  when: ansible_distribution == 'Fedora' and returned|success
   tags: upgrade
 
-- name: upgrade all packages
-  command: /usr/bin/yum -y upgrade
+- command: /usr/bin/yum -y upgrade
   sudo: yes
   tags: upgrade

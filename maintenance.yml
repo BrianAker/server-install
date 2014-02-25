@@ -1,6 +1,7 @@
 ---
 # Upgrade the fleet
 - hosts: all
+  name: Maintenance
   tasks:
     - name: Create groups by distribution
       group_by: key={{ansible_distribution}}
@@ -9,7 +10,7 @@
       group_by: key={{ansible_os_family}}
 
   roles:
-    - upgrade
+    - { role: upgrade, expire_cache=True }
 
 - hosts: Debian
   sudo: yes

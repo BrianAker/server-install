@@ -1,0 +1,3 @@
+---
+- name: Print content of variable
+  debug: msg="{{ passed }}"

@@ -1,8 +1,0 @@
----
-
-- name: install packages for FreeBSD
-  sudo: yes
-  pkgng:  name={{ item }}
-          state={{ default_package_state }}
-  with_items: packages
-  tags: install_packages

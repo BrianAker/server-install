@@ -1,0 +1,18 @@
+---
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat:
+    - rkhunter
+
+  Fedora:
+    - rkhunter
+
+  Debian:
+    - rkhunter
+
+  Ubuntu:
+    - rkhunter
+

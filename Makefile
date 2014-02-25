@@ -17,6 +17,7 @@ ALL_MAKEFILES:= $(wildcard *.am)
 ALL_SCRIPTS:= $(wildcard *.sh) 
 ALL_PLAYBOOKS:= $(wildcard *.yml) 
 ANSIBLE_CHECK= ansible-playbook --syntax-check
+CURL=curl --silent --show-error
 
 JENKINS_SLAVES=
 
@@ -26,7 +27,7 @@ DIST_MAKEFILES:=
 
 .PHONY: all show check install base_install deploy upgrade clean
 
-all: public_keys files/pkg-pubkey.cert
+all: public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6
 
 clean:
 	rm -f public_keys/brian public_keys/jenkins
@@ -43,7 +44,7 @@ public_keys/jenkins:
 	@ssh-import-id -o public_keys/jenkins d-ci
 
 files/pkg-pubkey.cert:
-	@curl -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
+	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
 install: all
 	ansible-playbook site.yml
@@ -69,6 +70,9 @@ show:
 	@echo "HOST_TYPE ${HOST_TYPE}"
 	@echo "HOST_UUID ${HOST_UUID}"
 	@echo "DISTRIBUTION: ${DISTRIBUTION}"
+
+roles/common/files/RPM-GPG-KEY-EPEL-6:
+	@$(CURL) -o $@ https://fedoraproject.org/static/A4D647E9.txt
 
 deploy: install
 

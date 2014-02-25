@@ -7,7 +7,7 @@
         state=absent
   with_items:
     - ansible
-  tags: install_packages
+  tags: package_install
 
 - name: apt base software
   sudo: yes
@@ -32,7 +32,7 @@
     - tar
     - update-manager-core
     - wget
-  tags: install_packages
+  tags: package_install
 
 - name: apt install software-properties-common
   sudo: yes
@@ -44,4 +44,4 @@
   with_items:
     - software-properties-common
   when: ansible_distribution == 'Debian'
-  tags: install_packages
+  tags: package_install

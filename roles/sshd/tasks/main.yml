@@ -1,5 +1,8 @@
 ---
-- include_vars: "{{ ansible_distribution }}.yml"
+- include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}.yml"
 
 - fail: "sshd_config_file was not defined."
   when: sshd_config_file is not defined

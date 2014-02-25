@@ -1,2 +1,4 @@
 ---
-allow_duplicates: no
+allow_duplicates: yes
+dependencies:
+  - { role: firewalld/base, when: ansible_distribution == 'Fedora' }

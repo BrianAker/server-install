@@ -1,0 +1,18 @@
+---
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - denyhosts
+
+  Debian:
+    - denyhosts
+
+  Ubuntu:
+    - denyhosts
+
+  CentOS: []

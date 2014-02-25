@@ -1,2 +1,19 @@
 ---
 # vars file for roles/freeradius
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora: []
+    - freeradius
+
+  Debian: []
+    - freeradius
+
+  Ubuntu:
+    - freeradius
+
+  CentOS: []

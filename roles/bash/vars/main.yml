@@ -1,0 +1,19 @@
+---
+packages:
+  Debian:
+    - bash
+
+  RedHat:
+    - bash
+
+  FreeBSD:
+    - bash
+
+  MacOSX:
+    - bash
+
+  Fedora:
+    - bash
+
+  CentOS:
+    - bash

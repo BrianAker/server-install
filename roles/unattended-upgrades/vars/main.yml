@@ -1,0 +1,13 @@
+---
+packages:
+  RedHat:
+    - yum-cron
+
+  Fedora:
+    - yum-updatesd
+
+  Debian:
+    - unattended-upgrades
+
+  Ubuntu:
+    - unattended-upgrades

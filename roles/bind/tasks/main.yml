@@ -1,5 +1,4 @@
 ---
-
 - name: install bind-chroot
   sudo: yes
   yum: name={{ item }} state=present

@@ -1,0 +1,4 @@
+---
+allow_duplicates: no
+dependencies:
+  - { role: install_packages, packages=packages, notify: restart firewalld }

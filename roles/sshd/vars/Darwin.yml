@@ -1,5 +1,3 @@
 ---
-
-packages:
 service_sshd: ssh
 sshd_config_file: /etc/sshd_config

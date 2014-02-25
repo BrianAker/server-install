@@ -10,13 +10,6 @@
     - sendmail-devel
   when: ansible_distribution == 'Fedora'
 
-- name: Configure Persistent FirewallD for smtp
-  sudo: yes
-  firewalld:  service=smtp
-              permanent=true
-              state=enabled
-  when: ansible_distribution == 'Fedora'
-
 - name: remove sendmail LOCAL_DOMAIN
   sudo: yes
   lineinfile: dest=/etc/mail/sendmail.mc

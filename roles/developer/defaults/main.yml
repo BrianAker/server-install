@@ -6,6 +6,7 @@ pip_packages:
   - PyYAML
   - httplib2
   - ansible
+  - pyrax
   - argparse
   - bzr-bash-completion
   - ecdsa

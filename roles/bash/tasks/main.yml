@@ -1,9 +1,4 @@
 ---
-
-- include_vars: "{{ ansible_distribution }}.yml"
-
-- include: ../../install_packages/tasks/main.yml packages=packages
-
 - file: src=/bin/{{ item }} dest=/usr/bin/{{ item}} owner=root state=link
   with_items:
     - bash

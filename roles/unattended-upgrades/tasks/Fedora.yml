@@ -1,9 +1,4 @@
 ---
-- name: install updatesd
-  sudo: yes
-  yum:  name=yum-updatesd
-        state=present
-
 - lineinfile: dest=/etc/yum/yum-updatesd.conf
               regexp="^do_update"
               line="do_update = yes"

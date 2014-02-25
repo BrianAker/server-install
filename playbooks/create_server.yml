@@ -1,0 +1,34 @@
+- name: Build a Cloud Server
+  hosts: all
+  gather_facts: False
+  tasks:
+    - name: Build Fedora Server
+      local_action:
+        module: rax
+        credentials: ~/.raxpub
+        name: ansible_fedora
+        key_name: zim
+        flavor: 2
+        image: 5ef987c7-0dda-4ebe-ae71-7f5c4a425faa
+        count: 1
+        wait: yes
+        state: present
+        networks:
+          - private
+          - public
+      register: rax
+    - name: Build CentOS Server
+      local_action:
+        module: rax
+        credentials: ~/.raxpub
+        name: ansible_centos
+        key_name: zim
+        flavor: 2
+        image: ea8fdf8a-c0e4-4a1f-b17f-f5a421cda051
+        count: 1
+        wait: yes
+        state: present
+        networks:
+          - private
+          - public
+      register: rax

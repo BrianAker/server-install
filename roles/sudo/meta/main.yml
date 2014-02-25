@@ -2,4 +2,3 @@
 allow_duplicates: yes
 dependencies:
   - { role: sudo/base }
-

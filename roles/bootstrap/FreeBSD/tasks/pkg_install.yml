@@ -9,8 +9,7 @@
   register: installed_pkg
 
 #- command: pkg
-- command: pkg -y
-  ignore_errors: yes
+- command: pkg -N
 
 - command: pkg2ng
   when: installed_pkg|success
@@ -48,4 +47,4 @@
     - python27
     - sudo
   when: result|success
-  tags: install_packages
+  tags: package_install

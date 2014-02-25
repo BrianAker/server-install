@@ -1,6 +1,7 @@
 ---
 # Rules for mailman servers
 - hosts: mailman
+  name: Mailman
   roles:
     - apache
     - mailman

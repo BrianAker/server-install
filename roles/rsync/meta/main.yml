@@ -1,0 +1,5 @@
+---
+allow_duplicates: no
+dependencies:
+  - { role: firewalld, add_port: '873/tcp' }
+  - { role: firewalld, add_port: '873/udp' }

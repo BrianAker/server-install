@@ -1,6 +1,7 @@
 ---
 # Host rules for Jenkins-ci slaves
 - hosts: slaves
+  name: Jenkins Slave
   roles:
     - build
     - jenkins-slave

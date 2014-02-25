@@ -1,4 +1,7 @@
 ---
+- name: Dump all vars
+  template: src=templates/dumpall.j2 dest=/tmp/upgrade.all
+
 - include: RedHat.yml
   when: ansible_os_family == 'RedHat'
 

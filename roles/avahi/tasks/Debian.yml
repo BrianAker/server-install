@@ -1,5 +1,4 @@
 ---
-
 - name: install packages for Debian
   sudo: yes
   apt:  update_cache=yes
@@ -7,4 +6,4 @@
         pkg={{ item }}
         state=present
   with_items: avahi_packages
-  tags: install_packages
+  tags: package_install

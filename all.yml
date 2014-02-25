@@ -1,12 +1,17 @@
 ---
-# Rulebook common to all hosts
 - hosts: all
-#  tasks:
+  name: Common setup
+
+  roles:
+    - common
+
+  tasks:
+    - name: Create groups by distribution
+      group_by: key={{ ansible_distribution }}
+
 #    - name: Create groups by distribution and version
 #      group_by: key={{ ansible_distribution }}-{{ ansible_distribution_version }}
 #
-#    - name: Create groups by distribution
-#      group_by: key={{ ansible_distribution }}
 #
 #    - name: Create a distribution based OS family
 #      group_by: key={{ ansible_os_family }}
@@ -15,5 +20,3 @@
 #    sshd: sshd
 #    bind: bind
 
-  roles:
-    - common

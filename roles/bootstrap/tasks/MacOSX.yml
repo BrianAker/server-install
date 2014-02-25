@@ -7,9 +7,3 @@
   ignore_errors: yes
   command:  /usr/local/bin/brew tap homebrew/dupes 
             creates=/usr/local/Library/Taps/homebrew-dupes
-
-- name: install packages for bootstrap Darwin
-  homebrew: name={{ item }} 
-            state=present
-  with_items: packages
-  tags: install_packages

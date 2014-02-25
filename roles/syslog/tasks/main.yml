@@ -1,11 +1,13 @@
 ---
-- name: configure remote syslog
+- name: enable remote host syslog
   sudo: yes
-  firewalld:  port={{ item }}
-              permanent=true
-              state=enabled
-  when: ansible_distribution == 'Fedora'
+  lineinfile: dest={{ syslog_config_file }}
+              state=present
+              regexp='^#{{ item }}'
+              line='{{ item }}'
+              validate='/sbin/rsyslogd -N1'
   with_items:
-    - '514/udp'
-    - '514/tcp'
-
+    - '$ModLoad imudp'
+    - '$UDPServerRun 514'
+  notify: restart syslog
+  tags: config

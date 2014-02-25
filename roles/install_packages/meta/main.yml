@@ -1,0 +1,8 @@
+---
+allow_duplicates: yes
+dependencies:
+  - { role: install_packages/check }
+  - { role: install_packages/yum, when: "ansible_os_family == 'RedHat'" }
+  - { role: install_packages/apt, when: "ansible_os_family == 'Debian'" }
+  - { role: install_packages/brew, when: "ansible_os_family == 'Darwin'" }
+  - { role: install_packages/pkgng, when: "ansible_os_family == 'FreeBSD'" }

@@ -1,0 +1,4 @@
+---
+allow_duplicates: no
+dependencies:
+  - { role: firewalld, add_service: smtp }

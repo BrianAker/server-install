@@ -1,7 +1,3 @@
 ---
-
-packages:
-  - sudo
-
 sudoers_conf: /usr/local/etc/sudoers
 sudoers_d: /usr/local/etc/sudoers.d

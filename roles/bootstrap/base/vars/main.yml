@@ -1,0 +1,45 @@
+---
+packages:
+  FreeBSD:
+    - git
+
+  MacOSX:
+    - wget
+
+  RedHat: []
+
+  Fedora:
+    - git
+    - perl
+    - redhat-lsb-core
+    - ruby
+    - ruby-devel
+    - rubygems
+
+  Debian:
+    - aptitude
+    - apt-file
+    - git
+    - lsb-release
+    - perl
+    - ruby
+    - ruby-dev
+    - rubygems
+
+  Ubuntu:
+    - aptitude
+    - apt-file
+    - git
+    - lsb-release
+    - perl
+    - ruby
+    - ruby-dev
+    - rubygems
+
+  CentOS:
+    - git
+    - perl
+    - redhat-lsb-core
+    - ruby
+    - ruby-devel
+    - rubygems

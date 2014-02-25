@@ -1,7 +1,5 @@
 ---
 allow_duplicates: no
-
 dependencies:
   - { role: bootstrap }
-  - { role: rsyslog }
-  - { role: firewalld }
+  - { role: install_packages }

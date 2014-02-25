@@ -1,14 +1,11 @@
 ---
-- name: install unattended-upgrades
-  sudo: yes
-  apt: pkg=unattended-upgrades state=present
-  tags: install_packages
-
 - name: Adjust APT update intervals
   sudo: yes
   copy: src=apt_periodic
         dest=/etc/apt/apt.conf.d/10periodic
-        owner=root group=root mode=0644
+        owner=root
+        group={{ root_group }}
+        mode=0644
 
 - name: Make sure unattended-security-upgrades work
   sudo: yes

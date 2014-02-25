@@ -1,17 +1,3 @@
 ---
-
-- name: install rkhunter
-  sudo: yes
-  yum:  name=rkhunter
-        state=present
-  when: ansible_distribution == 'Fedora'
-  tags: install_packages
-
-- name: install rkhunter
-  sudo: yes
-  apt:  pkg=rkhunter
-        state=present
-        update_cache=yes
-        cache_valid_time=3600
-  when: ansible_distribution == 'Ubuntu'
-  tags: install_packages
+- command: /usr/bin/rkhunter --config-check
+- command: /usr/bin/rkhunter --propupd

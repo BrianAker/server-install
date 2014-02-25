@@ -1,0 +1,30 @@
+---
+packages:
+  FreeBSD:
+    - ntpdate
+    - ntp
+
+  MacOSX: []
+
+  RedHat:
+    - ntpdate
+    - ntp
+
+  Fedora:
+    - ntpdate
+    - ntp
+
+  Debian:
+    - ntpdate
+    - ntp
+
+  Ubuntu:
+    - ntpdate
+    - ntp
+
+  CentOS:
+    - ntpdate
+    - ntp
+
+ntpserver: pool.ntp.org
+ntp_service: ntpd

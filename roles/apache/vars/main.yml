@@ -1,0 +1,18 @@
+---
+httpd_service: httpd
+packages:
+  Fedora:
+    - httpd
+    - httpd-tools
+
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Debian: []
+
+  Ubuntu: []
+
+  CentOS: []

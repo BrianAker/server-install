@@ -1,17 +1,8 @@
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-
-- name: yum install ntp
-  sudo: yes
-  yum: name={{ item }} state=present
-  with_items: ntp_packages
-  when: ansible_os_family == 'RedHat'
-
-- name: apt install ntp
-  sudo: yes
-  apt: update_cache=yes cache_valid_time=3600 pkg={{ item }} state=present
-  with_items: ntp_packages
-  when: ansible_os_family == 'Debian'
+- include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_os_family }}.yml"
 
 - name: stop {{ ntp_service }}
   sudo: yes

@@ -1,0 +1,14 @@
+<Directory "/var/www/{{ domain_name }}/html/">
+        DirectoryIndex index.html
+        Options Indexes FollowSymLinks ExecCGI
+        AllowOverride FileInfo
+        Order allow,deny
+        Allow from all
+</Directory>
+<VirtualHost *:80>
+        ServerAdmin {{ server_admin }}
+        DocumentRoot "/var/www/{{ domain_name }}/html/"
+        ServerName {{ domain_name }}
+        ServerAlias {{ domain_name }}
+        ErrorDocument 404 /index.html
+</VirtualHost>

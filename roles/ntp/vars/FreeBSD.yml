@@ -1,5 +1,2 @@
 ---
 ntp_service: ntpd
-ntp_packages:
-  - ntpdate
-  - ntp

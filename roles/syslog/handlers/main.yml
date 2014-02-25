@@ -1,0 +1,5 @@
+---
+- name: restart syslog
+  sudo: yes
+  service:  name={{ service_syslog }}
+            state=restarted

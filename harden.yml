@@ -1,5 +1,6 @@
 ---
 - hosts: harden
+  name: Harden
   roles:
     - rkhunter
     - sshd/harden

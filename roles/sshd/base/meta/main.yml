@@ -1,4 +1,5 @@
 ---
 allow_duplicates: no
 dependencies:
-  - { role: firewalld, service: ssh }
+  - { role: install_packages }
+  - { role: firewalld, add_service: ssh }

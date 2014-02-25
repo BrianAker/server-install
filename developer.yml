@@ -1,5 +1,6 @@
 ---
 # Rules for hosts that I do direct development on
 - hosts: developer
+  name: Developer
   roles:
     - { role: developer, developer_username: brian }

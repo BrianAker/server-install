@@ -1,7 +1,0 @@
----
-- name: install packages for RedHat
-  sudo: yes
-  yum:  name={{ item }}
-        state={{ default_package_state }}
-  with_items: packages
-  tags: install_packages

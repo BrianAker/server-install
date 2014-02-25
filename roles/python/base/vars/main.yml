@@ -1,0 +1,43 @@
+---
+packages:
+  FreeBSD:
+    - python27
+    - py27-pip
+    - py27-setuptools
+    - py27-virtualenv
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - libselinux-python
+    - python
+    - python-pip
+    - python-setuptools
+    - python-virtualenv
+
+  Debian:
+    - python
+    - python-apt
+    - python-pip
+    - python-pycurl
+    - python-setuptools
+    - python-software-properties
+    - python-virtualenv
+
+  Ubuntu:
+    - python
+    - python-apt
+    - python-pip
+    - python-pycurl
+    - python-setuptools
+    - python-software-properties
+    - python-virtualenv
+
+  Centos:
+    - libselinux-python
+    - python
+    - python-pip
+    - python-setuptools
+    - python-virtualenv

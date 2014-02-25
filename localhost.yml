@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  name: Localhost
   connection: local
   roles:
     - build

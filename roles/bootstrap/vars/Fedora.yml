@@ -1,9 +1,0 @@
----
-
-packages:
-  - git
-  - perl
-  - redhat-lsb-core
-  - ruby
-  - ruby-devel
-  - rubygems

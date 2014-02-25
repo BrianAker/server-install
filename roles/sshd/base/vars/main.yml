@@ -1,0 +1,21 @@
+---
+sshd_should_restart: False
+sshd_config_file: /etc/ssh/sshd_config
+
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat:
+    - openssh-server
+
+  Fedora:
+    - openssh-server
+
+  Debian:
+    - openssh-server
+
+  Ubuntu:
+    - openssh-server
+

@@ -1,0 +1,3 @@
+---
+- fail: "username was not defined."
+  when: username is not defined

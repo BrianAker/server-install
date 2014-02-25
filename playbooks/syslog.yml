@@ -1,0 +1,6 @@
+---
+# Rules for syslog servers
+- hosts: syslog
+  name: Syslog
+  roles:
+    - syslog

@@ -1,6 +1,6 @@
 ---
 - include: all.yml
-- include: syslog.yml
+- include: playbooks/syslog.yml
 - include: mailman.yml
 - include: dnsservers.yml
 - include: webservers.yml
@@ -13,6 +13,6 @@
 - include: haus.yml
 - include: downloads.yml
 
-
-  roles:
-    - sshd/harden
+# Need to be listed last
+- include: harden.yml
+- include: final.yml

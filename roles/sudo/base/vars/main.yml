@@ -1,0 +1,25 @@
+---
+packages:
+  FreeBSD:
+    - sudo
+
+  MacOSX: []
+
+  RedHat:
+    - sudo
+
+  Fedora:
+    - sudo
+
+  Debian:
+    - sudo
+
+  Ubuntu:
+    - sudo
+
+  CentOS:
+    - sudo
+
+sudoers_conf: /etc/sudoers
+sudoers_d: /etc/sudoers.d
+

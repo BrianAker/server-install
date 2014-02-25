@@ -1,4 +1,5 @@
 ---
 - hosts: downloads
+  name: Downloads
   roles:
     - download.tangent.org

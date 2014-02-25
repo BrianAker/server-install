@@ -1,2 +1,17 @@
 ---
+packages:
+  FreeBSD: []
 
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - yum-plugin-fastestmirror
+
+  CentOS:
+    - yum-plugin-fastestmirror
+
+  Debian: []
+
+  Ubuntu: []

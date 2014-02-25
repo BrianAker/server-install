@@ -1,8 +1,8 @@
 ---
-
-- include_vars: "{{ ansible_distribution }}.yml"
-
-- include: ../../../install_packages/tasks/main.yml packages=packages
+- include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}.yml"
 
 - name: mkdir sudoers.d
   sudo: yes

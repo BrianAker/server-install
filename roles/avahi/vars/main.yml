@@ -1,0 +1,22 @@
+---
+packages:
+  Debian:
+    - avahi-daemon
+    - libnss-mdns
+    - avahi-utils
+
+  RedHat:
+    - avahi
+    - avahi-dnsconfd
+    - avahi-tools
+    - nss-mdns
+    - nss-mdns
+    - nss-myhostname
+
+  FreeBSD: []
+
+  MacOSX: []
+
+  Fedora: []
+
+  CentOS: []
