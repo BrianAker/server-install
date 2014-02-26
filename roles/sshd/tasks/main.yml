@@ -4,8 +4,8 @@
     - files:
         - "{{ ansible_distribution }}.yml"
 
-- fail: "sshd_config_file was not defined."
-  when: sshd_config_file is not defined
-
 - include: adduser.yml
   when: sshd_allow_username is defined
+
+- include: harden.yml
+  when: harden is defined

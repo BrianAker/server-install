@@ -9,18 +9,3 @@ bzr_rewrite:
   version: '0.6.3'
   url: "https://launchpad.net/bzr-rewrite/trunk/{{ bazaar.bzr_rewrite.version }}/+download/{{ bazaar.bzr_rewrite.name }}-{{ bazaar.bzr_rewrite.version }}.tar.gz"
   sha256sum: "f4d0032a41a549a0bc3ac4248cd4599da859174ea33e56befcb095dd2c930794"
-
-packages:
-  FreeBSD: []
-
-  MacOSX: []
-
-  RedHat: []
-
-  Fedora: []
-
-  Debian: []
-
-  Ubuntu: []
-
-  CentOS: []

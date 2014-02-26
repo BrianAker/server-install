@@ -1,15 +1,2 @@
 ---
-packages:
-  FreeBSD: []
-
-  MacOSX: []
-
-  RedHat: []
-
-  Fedora: []
-
-  Debian: []
-
-  Ubuntu: []
-
-  CentOS: []
+# This file should stay empty of packages or it will block other packages from installing

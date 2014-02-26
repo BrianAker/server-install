@@ -1,3 +1,0 @@
----
-sshd_should_restart: False
-sshd_config_file: /etc/ssh/sshd_config

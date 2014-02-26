@@ -1,12 +1,4 @@
 ---
-- homebrew: name=pkg-config
-            state=present
-  ignore_errors: yes
-  with_items:
-    - pkg-config
-    - pwgen
-    - ssh-copy-id
-
 - homebrew: name=bzr
             state=absent
   ignore_errors: yes

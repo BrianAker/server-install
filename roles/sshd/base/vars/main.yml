@@ -19,3 +19,5 @@ packages:
   Ubuntu:
     - openssh-server
 
+  CentOS:
+    - openssh-server

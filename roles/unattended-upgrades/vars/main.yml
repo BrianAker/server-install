@@ -1,5 +1,9 @@
 ---
 packages:
+  MacOSX: []
+
+  FreeBSD: []
+
   RedHat:
     - yum-cron
 
@@ -11,3 +15,5 @@ packages:
 
   Ubuntu:
     - unattended-upgrades
+
+  CentOS: []

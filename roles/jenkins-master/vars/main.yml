@@ -15,18 +15,3 @@ jenkins:
   dest: '/var/lib/jenkins'
   cli_dest: "/var/lib/jenkins/jenkins-cli.jar"
   updates_dest: "/var/lib/jenkins/updates_jenkins.json"
-
-packages:
-  FreeBSD: []
-
-  MacOSX: []
-
-  RedHat: []
-
-  Fedora: []
-
-  Debian: []
-
-  Ubuntu: []
-
-  CentOS: []

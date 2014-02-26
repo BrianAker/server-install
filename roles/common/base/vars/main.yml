@@ -1,0 +1,82 @@
+---
+packages:
+  FreeBSD: []
+
+  MacOSX:
+    - pkg-config
+    - pwgen
+    - ssh-copy-id
+
+  RedHat: []
+
+  Fedora:
+    - '@minimal-environment'
+    - '@system-tools'
+    - bind-utils
+    - bzr
+    - curl
+    - fakeroot
+    - keychain
+    - make
+    - net-tools
+    - pkgconfig
+    - system-config-network
+    - tar
+    - traceroute
+    - vim
+    - wget
+    - yum-cron
+    - yum-plugin-fastestmirror
+
+  CentOS:
+    - '@minimal-environment'
+    - '@system-tools'
+    - bzr
+    - curl
+    - fakeroot
+    - make
+    - pkgconfig
+    - tar
+    - traceroute
+    - vim
+    - wget
+    - yum-cron
+    - yum-plugin-fastestmirror
+
+  Debian:
+    - software-properties-common
+    - bzr
+    - cron-apt
+    - curl
+    - fakeroot
+    - git
+    - gnupg-agent
+    - ifmetric
+    - keychain
+    - make
+    - pkg-config
+    - python
+    - python-dev
+    - sudo
+    - tar
+    - update-manager-core
+    - wget
+
+  Ubuntu:
+    - bzr
+    - cron-apt
+    - curl
+    - fakeroot
+    - git
+    - gnupg-agent
+    - ifmetric
+    - keychain
+    - make
+    - pkg-config
+    - python
+    - python-dev
+    - sudo
+    - tar
+    - update-manager-core
+    - wget
+

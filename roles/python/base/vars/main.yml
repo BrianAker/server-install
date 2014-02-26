@@ -35,7 +35,7 @@ packages:
     - python-software-properties
     - python-virtualenv
 
-  Centos:
+  CentOS:
     - libselinux-python
     - python
     - python-pip

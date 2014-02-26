@@ -1,5 +1,4 @@
 ---
-- command: rm -f /tmp/install_check.all
 #- name: Dump all vars
 #  template: src=templates/dumpall.j2 dest=/tmp/install_check.all
 #  ignore_errors: yes

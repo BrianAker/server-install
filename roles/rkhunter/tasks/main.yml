@@ -1,3 +1,6 @@
 ---
 - command: /usr/bin/rkhunter --config-check
+  sudo: yes
+
 - command: /usr/bin/rkhunter --propupd
+  sudo: yes

@@ -9,17 +9,6 @@
     - cloud-init
   tags: package_install
 
-- name: install fedora basic software
-  yum: name={{ item }}  state=present
-  sudo: yes
-  with_items:
-    - bind-utils
-    - keychain
-    - net-tools
-    - system-config-network
-    - yum-fastestmirror
-  tags: package_install
-
 - file: state=absent
         path=/etc/sudoers.d/90-cloud-init-users
 

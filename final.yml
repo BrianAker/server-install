@@ -3,8 +3,8 @@
   name: Final
 
   tasks:
-
     - name: restore keepcache
+      sudo: yes
       lineinfile: dest=/etc/yum.conf
                   state=present
                   regexp='^#?{{ item.key }}'

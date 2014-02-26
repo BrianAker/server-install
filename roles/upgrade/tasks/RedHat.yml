@@ -3,6 +3,7 @@
   when: expire_cache is defined
 
 - name: enable yum cache
+  sudo: yes
   lineinfile: dest=/etc/yum.conf
               state=present
               regexp='^#?{{ item.key }}'
@@ -12,9 +13,6 @@
     - { key: 'keepcache', value: '1'}
   register: result
   tags: setup
-
-- group_by: key={{ ansible_pkg_mgr }}
-  when: result|success
 
 - command: /usr/bin/yum makecache
   sudo: yes

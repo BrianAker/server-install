@@ -4,12 +4,17 @@ packages:
 
   MacOSX: []
 
-  RedHat: []
+  RedHat:
+    - fail2ban
 
-  Fedora: []
+  Fedora:
+    - fail2ban
 
-  Debian: []
+  Debian:
+    - fail2ban
 
-  Ubuntu: []
+  Ubuntu:
+    - fail2ban
 
-  CentOS: []
+  CentOS:
+    - fail2ban

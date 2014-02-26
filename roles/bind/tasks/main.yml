@@ -1,23 +1,9 @@
 ---
-- name: install bind-chroot
-  sudo: yes
-  yum: name={{ item }} state=present
-  with_items:
-    - bind
-    - bind-utils
-  when: ansible_distribution == 'Fedora'
-
-- name: Configure Persistent FirewallD for bind
-  sudo: yes
-  firewalld:  service=dns
-              permanent=true
-              state=enabled
-  when: ansible_distribution == 'Fedora'
-
 - name: bind enable
   service:  name={{ bind }}
             enabled=yes
   when: ansible_distribution == 'Fedora'
+  notify: restart bind
 
 - name: reconfigure bind options
   sudo: yes

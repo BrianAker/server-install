@@ -1,8 +1,6 @@
 ---
 
-- include_vars: "../../../sshd/vars/{{ ansible_distribution }}.yml"
-
-- name: configure OpenSSH
+- name: harden OpenSSH
   sudo: yes
   lineinfile: dest={{ sshd_config_file }}
               state=present
@@ -15,7 +13,6 @@
     - { key: 'AllowAgentForwarding', value: 'yes'}
     - { key: 'PermitEmptyPasswords', value: 'no'}
     - { key: 'AuthorizedKeysFile', value: '.ssh/authorized_keys'}
+  when: harden is True
   notify: restart sshd
   tags: harden
-
-- include: "../../../sshd/handlers/main.yml"

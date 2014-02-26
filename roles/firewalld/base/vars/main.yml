@@ -1,5 +1,4 @@
 ---
-bind: "bind"
 packages:
   FreeBSD: []
 
@@ -8,11 +7,12 @@ packages:
   RedHat: []
 
   Fedora:
-    - bind
-    - bind-utils
+    - firewalld
 
   Debian: []
 
   Ubuntu: []
 
   CentOS: []
+
+

@@ -1,5 +1,4 @@
 ---
-
 - name: create default hosts.allow
   sudo: yes
   copy: src=hosts.allow

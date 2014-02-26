@@ -4,7 +4,8 @@ packages:
 
   MacOSX: []
 
-  RedHat: []
+  RedHat:
+    - yum
 
   Fedora:
     - deltarpm
@@ -14,3 +15,6 @@ packages:
   Debian: []
 
   Ubuntu: []
+
+  CentOS:
+    - yum

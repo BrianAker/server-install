@@ -1,4 +1,5 @@
 ---
 allow_duplicates: no
 dependencies:
-  - sshd
+  - { role: install_packages }
+

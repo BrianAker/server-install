@@ -1,4 +1,5 @@
 ---
 allow_duplicates: no
 dependencies:
+  - { role: tcpwrappers }
   - { role: install_packages }

@@ -10,12 +10,6 @@
 
 # Rulebook used for bootstrapping a system.
 - hosts: all
-  pre_tasks:
-    - command: "rm -f /tmp/*.all"
-      sudo: yes
-    - name: Dump all vars
-      sudo: yes
-      template: src=templates/dumpall.j2 dest=/tmp/all.all
 
   roles:
     - bootstrap
