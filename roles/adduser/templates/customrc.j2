@@ -1,15 +1,14 @@
 # vim:ft=sh
-# {{ ansible_managed }}
 
 if [ -z "$CUSTOMRC_INCLUDED" ]
 then
   CUSTOMRC_INCLUDED=yes
-  if [ -x /usr/bin/keychain ]; then
-    /usr/bin/keychain --quiet
-  fi
-
   if [ -f "$HOME/.brewrc" ]; then
     . $HOME/.brewrc
+  fi
+
+  if [ -f "$HOME/.keychainrc" ]; then
+    . $HOME/.keychainrc
   fi
 
   if [ -f "$HOME/.localrc" ]; then

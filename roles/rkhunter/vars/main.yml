@@ -1,4 +1,5 @@
 ---
+rkhunter_conf: /etc/rkhunter.conf
 packages:
   FreeBSD: []
 

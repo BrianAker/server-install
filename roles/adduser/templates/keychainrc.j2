@@ -1,0 +1,13 @@
+# vim:ft=sh
+
+if [ -z "$BASH_ENV" ]
+then
+  if [ -z "$KEYCHAINRC_INCLUDED" ]
+  then
+    KEYCHAINRC_INCLUDED=yes
+    if [ -x /usr/bin/keychain ]; then
+      /usr/bin/keychain --quiet
+    fi
+  fi
+fi
+

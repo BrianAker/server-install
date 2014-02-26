@@ -8,4 +8,4 @@
   when: sshd_allow_username is defined
 
 - include: harden.yml
-  when: harden is defined
+  when: sshd_harden == True

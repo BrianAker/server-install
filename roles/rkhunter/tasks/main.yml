@@ -1,6 +1,31 @@
 ---
-- command: /usr/bin/rkhunter --config-check
+- name: set rkhunter options
+  sudo: yes
+  lineinfile: dest={{ rkhunter_conf }}
+              state=present
+              regexp='^#?{{ item }}'
+              line='{{ item }}'
+#             validate='/usr/bin/rkhunter --config-check'
+  with_items:
+    - 'ALLOWDEVFILE="/dev/shm/byobu.*"'
+    - 'XINETD_ALLOWED_SVC=/etc/xinetd.d/bazaar'
+  tags: config
+
+- name: set rkhunter keypair
+  sudo: yes
+  lineinfile: dest={{ rkhunter_conf }}
+              state=present
+              regexp='^#?{{ item.key }}'
+              line='{{ item.key }}={{ item.value }}'
+#             validate='/usr/bin/rkhunter --config-check'
+  with_items:
+    - { key: 'ALLOW_SSH_ROOT_USER', value: 'no'}
+  tags: config
+
+- command:  /usr/bin/rkhunter --config-check
   sudo: yes
 
-- command: /usr/bin/rkhunter --propupd
+- command:  /usr/bin/rkhunter --propupd
+            creates='/var/lib/rkhunter/db/rkhunter.dat'
   sudo: yes
+  tags: config

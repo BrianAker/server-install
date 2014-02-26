@@ -3,6 +3,7 @@
   when: sshd_allow_username is not defined
 
 - debug: msg="Adding user {{ sshd_allow_username }} with file {{ sshd_config_file }}"
+  when: sshd_allow_username is defined
 
 - name: update sshd AllowUsers
   sudo: yes

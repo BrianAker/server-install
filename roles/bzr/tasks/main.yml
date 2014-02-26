@@ -10,20 +10,20 @@
     - "~/.bazaar/plugins"
 
 - get_url:  url="{{ item.url }}"
-            dest="{{ ansible.env.TMPDIR }}/{{ item.tarfile }}"
+            dest="{{ env.TMPDIR }}/{{ item.tarfile }}"
   with_items:
     - bazaar.bzr
     - bazaar.bzr_rewrite
 
 - command:  tar xzf {{ item.tarfile }}
-            chdir="{{ ansible.env.TMPDIR }}"
-            creates="{{ ansible.env.TMPDIR }}/{{ item.project }}"
+            chdir="{{ env.TMPDIR }}"
+            creates="{{ env.TMPDIR }}/{{ item.project }}"
   with_items:
     - bazaar.bzr
     - bazaar.bzr_rewrite
 
 - command:  python setup.py install
-            chdir="{{ ansible.env.TMPDIR }}/{{ item.project }}"
+            chdir="{{ env.TMPDIR }}/{{ item.project }}"
             creates="{{ item.check }}"
   with_items:
     - bazaar.bzr

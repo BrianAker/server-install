@@ -2,6 +2,6 @@
 allow_duplicates: yes
 dependencies:
   - { role: adduser, username: "{{ developer_username }}", is_admin: false, has_authorized_key: true }
-  - { role: bzr, username: "{{ developer_username }}" }
+#  - { role: bzr, username: "{{ developer_username }}" }
   - { role: firewalld, add_port: '4155/tcp' }
 

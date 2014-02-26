@@ -3,4 +3,4 @@
   name: Harden
   roles:
     - rkhunter
-    - { role: sshd, harden=True }
+    - { role: sshd, sshd_harden: True }

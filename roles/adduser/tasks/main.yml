@@ -82,6 +82,17 @@
     - brewrc
   when: "ansible_distribution == 'MacOSX'"
 
+- name: copy in specific
+  sudo: yes
+  sudo_user: "{{ username }}"
+  template: src={{ item }}.j2 
+            dest="~{{ username }}/.{{ item }}"
+            mode=0600
+            validate='bash -n %s'
+  with_items:
+    - keychainrc
+  when: keychain == True
+
 - name: Reconfigure path for user to include customrc
   sudo: yes
   sudo_user: "{{ username }}"
