@@ -10,6 +10,7 @@
 - group:  name=wheel
           state=present
   sudo: yes
+  when: "ansible_distribution != 'MacOSX'"
 
 - name: mkdir sudoers.d
   sudo: yes

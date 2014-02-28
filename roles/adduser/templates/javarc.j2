@@ -1,0 +1,19 @@
+# vim:ft=sh
+
+if [ -z "$JAVARC_INCLUDED" ]
+then
+  JAVARC_INCLUDED=yes
+  if [ -d "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home" ]; then
+    JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+    export JAVA_HOME
+    if [ -d "$JAVA_HOME/bin" ]; then
+      for x in "$JAVA_HOME/bin"; do
+        case ":$PATH:" in
+          *":$x:"*) :;; # already there
+          *) PATH="$x:$PATH";;
+        esac
+      done
+    fi
+  fi
+fi
+

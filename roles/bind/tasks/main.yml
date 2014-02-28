@@ -2,7 +2,7 @@
 - name: bind enable
   service:  name={{ bind }}
             enabled=yes
-  when: ansible_distribution == 'Fedora'
+  when: ansible_distribution in ('Fedora')
   notify: restart bind
 
 - name: reconfigure bind options
@@ -12,4 +12,4 @@
               line='OPTIONS="-4"'
               state=present
   notify: restart bind
-  when: ansible_distribution == 'Fedora'
+  when: ansible_distribution in ('Fedora')

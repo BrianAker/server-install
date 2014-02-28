@@ -1,4 +1,4 @@
 ---
 - hostname: name="{{ ansible_hostname }}"
   sudo: yes
-  when: "ansible_distribution != 'FreeBSD'"
+  when: ansible_os_family in ('RedHat', 'Debian')

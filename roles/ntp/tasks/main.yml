@@ -7,22 +7,23 @@
         - "{{ ansible_os_family }}.yml"
       paths: "{{ inventory_dir }}/roles/ntp/vars/"
  
-- name: Dump all vars
-  template: src=templates/dumpall.j2 dest=/tmp/ntp_check.all
-  ignore_errors: yes
-
 - name: enable ntpd service
   sudo: yes
   service:  name={{ ntp_service }}
             enabled=yes
   notify: restart ntpd
+  when: "ansible_distribution != 'MacOSX'"
 
 - name: stop ntpd service
   sudo: yes
   service:  name={{ ntp_service }}
             state=stopped 
   notify: restart ntpd
+  when: ntp_service is defined
+  when: "ansible_distribution != 'MacOSX'"
 
 - name: Synchronize Clock with ntpdate
   command: /usr/sbin/ntpdate -u {{ ntpserver }}
   changed_when: False
+  when: ntp_service is defined
+  when: "ansible_distribution != 'MacOSX'"

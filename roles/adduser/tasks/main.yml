@@ -62,7 +62,7 @@
             validate='bash -n %s'
   with_items:
     - pkgngrc
-  when: "ansible_distribution == 'FreeBSD'"
+  when: ansible_distribution in ('FreeBSD')
 
 - name: copy in specific
   sudo: yes
@@ -73,9 +73,9 @@
             validate='bash -n %s'
   with_items:
     - sbinrc
-  when: "ansible_distribution == 'Debian'"
+  when: ansible_distribution in ('Debian')
 
-- name: copy in specific
+- name: copy in OSX specific
   sudo: yes
   sudo_user: "{{ username }}"
   template: src={{ item }}.j2 
@@ -84,7 +84,8 @@
             validate='bash -n %s'
   with_items:
     - brewrc
-  when: "ansible_distribution == 'MacOSX'"
+    - javarc
+  when: ansible_distribution in ('MacOSX')
 
 - name: copy in specific
   sudo: yes

@@ -1,4 +1,16 @@
 ---
+- stat: path=/Applications/Xcode.app
+  register: found_Xcode
+
+- fail: msg="You need to install Xcode"
+  when: found_Xcode.stat.isdir == false
+
+- stat: path=/Applications/Utilities/XQuartz.app
+  register: found_XQuartz
+
+- fail: msg="You need to install XQuartz"
+  when: found_XQuartz.stat.isdir == false
+
 - name: install brew
   command:  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)" 
             creates=/usr/local/bin/brew
