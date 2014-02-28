@@ -5,7 +5,14 @@ packages:
     - libnss-mdns
     - avahi-utils
 
-  RedHat:
+  RedHat: 
+    - avahi
+
+  FreeBSD: []
+
+  MacOSX: []
+
+  Fedora:
     - avahi
     - avahi-dnsconfd
     - avahi-tools
@@ -13,10 +20,5 @@ packages:
     - nss-mdns
     - nss-myhostname
 
-  FreeBSD: []
-
-  MacOSX: []
-
-  Fedora: []
-
-  CentOS: []
+  CentOS:
+    - avahi
