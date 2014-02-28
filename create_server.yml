@@ -32,3 +32,18 @@
           - private
           - public
       register: rax
+    - name: Build FreeBSD Server
+      local_action:
+        module: rax
+        credentials: ~/.raxpub
+        name: ansible_freebsd
+        key_name: zim
+        flavor: 2
+        image: fb624ffd-81c2-4217-8cd5-da32d32e85c4
+        count: 1
+        wait: yes
+        state: present
+        networks:
+          - private
+          - public
+      register: rax
