@@ -3,4 +3,3 @@ allow_duplicates: yes
 dependencies:
   - { role: python }
   - { role: facts }
-  - { role: sshd, sshd_allow_username: "{{ username }}" }

@@ -3,4 +3,4 @@
 - hosts: developer
   name: Developer
   roles:
-    - { role: developer, developer_username: brian, keychain: True }
+    - { role: developer, developer_username: brian, keychain: True, is_admin: True }

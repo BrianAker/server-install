@@ -1,5 +1,10 @@
 ---
-- include_vars: "roles/sshd/vars/{{ ansible_distribution }}.yml"
+- include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths: "{{ inventory_dir }}/roles/sshd/vars/"
 
 - fail: "sshd_config_file was not defined."
   when: sshd_config_file is not defined

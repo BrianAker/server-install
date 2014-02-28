@@ -1,8 +1,15 @@
 ---
-- include_vars: "{{ item }}"
+- name: include main sudo vars
+  include_vars: "{{ item }}"
   with_first_found:
     - files:
         - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths: "{{ inventory_dir }}/roles/sudo/vars/"
+
+- group:  name=wheel
+          state=present
+  sudo: yes
 
 - name: mkdir sudoers.d
   sudo: yes

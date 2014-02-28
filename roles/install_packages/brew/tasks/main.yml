@@ -1,5 +1,5 @@
 ---
-- name: install packages with brew for {{ ansible_distribution }}
+- name: install packages with brew
   homebrew: name={{ item }} 
             state={{ default_package_state }}
   with_items: packages[ansible_distribution]

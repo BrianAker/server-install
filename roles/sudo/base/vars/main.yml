@@ -19,7 +19,3 @@ packages:
 
   CentOS:
     - sudo
-
-sudoers_conf: /etc/sudoers
-sudoers_d: /etc/sudoers.d
-

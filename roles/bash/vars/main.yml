@@ -1,5 +1,8 @@
 ---
 packages:
+  Ubuntu:
+    - bash
+
   Debian:
     - bash
 

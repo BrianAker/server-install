@@ -1,5 +1,11 @@
 ---
-- include_vars: "roles/sudo/base/vars/{{ ansible_distribution }}.yml"
+- name: include vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths: "{{ inventory_dir }}/roles/sudo/vars/"
 
 - include: adduser.yml
   when: username is defined

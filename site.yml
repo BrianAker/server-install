@@ -1,13 +1,12 @@
 ---
-- include: all.yml
-- include: playbooks/syslog.yml
+- include: common.yml
+- include: syslog.yml
 - include: mailman.yml
 - include: dnsservers.yml
 - include: webservers.yml
 - include: jenkins-slaves.yml
 - include: jenkins-master.yml
 - include: developer.yml
-- include: localhost.yml
 - include: remote.yml
 - include: bastion.yml
 - include: haus.yml

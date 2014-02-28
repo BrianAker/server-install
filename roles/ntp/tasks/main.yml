@@ -1,17 +1,28 @@
 ---
-- include_vars: "{{ item }}"
+- name: include vars
+  include_vars: "{{ item }}"
   with_first_found:
     - files:
+        - "{{ ansible_distribution }}.yml"
         - "{{ ansible_os_family }}.yml"
+      paths: "{{ inventory_dir }}/roles/ntp/vars/"
+ 
+- name: Dump all vars
+  template: src=templates/dumpall.j2 dest=/tmp/ntp_check.all
+  ignore_errors: yes
 
-- name: stop {{ ntp_service }}
+- name: enable ntpd service
   sudo: yes
-  service: name={{ ntp_service }} state=running enabled=yes
+  service:  name={{ ntp_service }}
+            enabled=yes
+  notify: restart ntpd
+
+- name: stop ntpd service
+  sudo: yes
+  service:  name={{ ntp_service }}
+            state=stopped 
+  notify: restart ntpd
 
 - name: Synchronize Clock with ntpdate
   command: /usr/sbin/ntpdate -u {{ ntpserver }}
   changed_when: False
-
-- name: start {{ ntp_service }}
-  sudo: yes
-  service: name={{ ntp_service }} state=running enabled=yes

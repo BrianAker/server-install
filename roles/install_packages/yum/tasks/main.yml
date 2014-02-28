@@ -1,5 +1,5 @@
 ---
-- name: "install packages with yum for {{ ansible_distribution }}"
+- name: install packages with yum
   sudo: yes
   yum:  name={{ item }}
         state={{ default_package_state }}

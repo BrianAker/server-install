@@ -1,5 +1,4 @@
 ---
-
 - name: restart ntpd
   sudo: yes
   service:  name={{ ntp_service }}

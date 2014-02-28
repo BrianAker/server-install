@@ -1,5 +1,10 @@
 ---
 packages:
+  Ubuntu:
+    - avahi-daemon
+    - libnss-mdns
+    - avahi-utils
+
   Debian:
     - avahi-daemon
     - libnss-mdns

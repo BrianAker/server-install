@@ -27,4 +27,3 @@ packages:
     - ntp
 
 ntpserver: pool.ntp.org
-ntp_service: ntpd
