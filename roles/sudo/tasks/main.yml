@@ -9,3 +9,9 @@
 
 - include: adduser.yml
   when: username is defined
+
+- include: MacOSX.yml
+  when: "username is defined and ansible_distribution in ('MacOSX')"
+
+- include: FreeBSD.yml
+  when: "username is defined and ansible_distribution in ('FreeBSD')"

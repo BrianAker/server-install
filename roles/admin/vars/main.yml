@@ -1,0 +1,16 @@
+---
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - net-tools
+
+  Debian: []
+
+  Ubuntu: []
+
+  CentOS: []

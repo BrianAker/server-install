@@ -26,8 +26,3 @@
   with_items:
     - { key: "{{ username }}", value: 'ALL=(ALL) NOPASSWD:ALL'}
     - { key: "Defaults:{{ username }}", value: '!requiretty'}
-
-- name: add user to wheel
-  sudo: yes
-  user: name="{{ username }}" state=present groups=wheel append=yes
-  when: "ansible_distribution == 'FreeBSD'"

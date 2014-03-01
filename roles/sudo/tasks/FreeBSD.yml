@@ -1,0 +1,8 @@
+---
+- name: add user to wheel
+  sudo: yes
+  user: name="{{ username }}"
+        state=present
+        groups=wheel
+        append=yes
+  when: "ansible_distribution == 'FreeBSD'"

@@ -5,14 +5,20 @@
 #- copy: src=files/pkg.conf dest=/usr/local/etc/pkg.conf owner=root group=wheel mode=0644
 #- command: pkg install -y python27 creates=/usr/local/bin/python2.7
 #- command: pkg_add -r pkg creates=/usr/local/sbin/pkg2ng
-- command: pkg_add -r pkg creates=/usr/sbin/pkg
+- command:  pkg_add -r pkg
+            creates=/usr/sbin/pkg
   register: installed_pkg
 
 #- command: pkg
 - command: pkg -N
+  ignore_errors: True
+  register: result
+
+- command: pkg_add -r pkg
+  when: result|failed
 
 - command: pkg2ng
-  when: installed_pkg|success
+  when: result|failed
 
 - file: state=directory
         path=/usr/local/etc/pkg/repos
@@ -20,7 +26,11 @@
         owner=root
         group=wheel
 
-- copy: src=files/FreeBSD.conf dest=/usr/local/etc/pkg/repos owner=root group=wheel mode=0644
+- copy: src=files/FreeBSD.conf
+        dest=/usr/local/etc/pkg/repos
+        owner=root
+        group=wheel
+        mode=0644
   register: result
 
 - name: disable pkg_ commands
