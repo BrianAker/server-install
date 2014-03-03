@@ -1,7 +1,5 @@
 ---
-
 - name: restart mailman
   sudo: yes
   service:  name=mailman
             state=restarted
-            enabled=yes

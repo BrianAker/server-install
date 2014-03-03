@@ -1,0 +1,20 @@
+---
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat:
+    - rsync
+
+  Fedora:
+    - rsync
+
+  Debian:
+    - rsync
+
+  Ubuntu:
+    - rsync
+
+  CentOS:
+    - rsync

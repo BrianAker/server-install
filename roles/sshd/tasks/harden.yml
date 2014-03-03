@@ -12,5 +12,6 @@
     - { key: 'AllowAgentForwarding', value: 'yes'}
     - { key: 'PermitEmptyPasswords', value: 'no'}
     - { key: 'AuthorizedKeysFile', value: '.ssh/authorized_keys'}
+    - { key: 'Ciphers', value: 'aes128-ctr,aes192-ctr,aes256-ctr'}
   notify: restart sshd
   tags: harden

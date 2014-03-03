@@ -1,0 +1,8 @@
+---
+- group_by: key='inventory_name_is_ip'
+
+- name: check for ip address as inventory hostname
+  add_host: name={{ inventory_hostname }}
+            groups=inventory_name_is_ip
+  when: inventory_hostname == ansible_all_ipv4_addresses
+  register: is_ipaddress

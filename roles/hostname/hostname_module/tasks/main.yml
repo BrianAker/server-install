@@ -1,0 +1,9 @@
+---
+- name: Dump all vars
+  template: src=templates/dumpall.j2 dest=/tmp/hostname_check.all
+  ignore_errors: yes
+
+- name: set hostname
+  hostname: name="{{ inventory_hostname }}"
+  sudo: yes
+  when: is_ipaddress|skipped

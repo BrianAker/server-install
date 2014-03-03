@@ -1,0 +1,6 @@
+---
+allow_duplicates: no
+dependencies:
+  - { role: hostname/group }
+  - { role: hostname/MacOSX, when: ansible_distribution == 'MacOSX' }
+  - { role: hostname/hostname_module, when: "ansible_os_family in ('RedHat', 'Debian')" }

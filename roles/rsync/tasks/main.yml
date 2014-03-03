@@ -1,17 +1,11 @@
 ---
-
-- name: yum install rsync
-  sudo: yes
-  yum: name={{ item }} state=present
-  with_items:
-    - rsync
-  when: ansible_distribution == 'Fedora'
-
 - name: create rsync user
+  sudo: yes
   user: name=rsync
         generate_ssh_key=yes
         state=present 
         shell=/bin/bash
+  notify: restart rsyncd
 
 - name: create rsyncd.conf
   sudo: yes
@@ -19,6 +13,9 @@
         dest=/etc/rsyncd.conf
   notify: restart rsyncd
 
-- name: restart rsyncd
+- name: enable rsyncd
+  sudo: yes
   service:  name=rsyncd
+            state=started
             enabled=yes
+  notify: restart rsyncd

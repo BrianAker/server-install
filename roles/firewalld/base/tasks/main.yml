@@ -4,5 +4,6 @@
   ignore_errors: yes
   service:  name=firewalld 
             enabled=yes
+            state=started
   tags: enable
   notify: restart firewalld

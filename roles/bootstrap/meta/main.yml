@@ -14,3 +14,4 @@ dependencies:
   - { role: deploy, deploy_username: deploy }
   - { role: unattended-upgrades }
   - { role: bootstrap/base }
+  - { role: hostname }

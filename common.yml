@@ -3,6 +3,7 @@
   name: Common setup
 
   roles:
+    - hostname
     - common
 
   tasks:
@@ -19,4 +20,3 @@
 #  vars:
 #    sshd: sshd
 #    bind: bind
-

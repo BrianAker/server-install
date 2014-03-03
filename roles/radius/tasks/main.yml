@@ -16,7 +16,9 @@
 
 - name: enable radiusd
   sudo: yes
-  service: name=radiusd enabled=yes
+  service:  name=radiusd
+            state=started
+            enabled=yes
   when: ansible_distribution == 'Fedora'
 
 - name: start radiusd

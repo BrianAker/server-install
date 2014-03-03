@@ -1,10 +1,14 @@
 *swp
+*swo
 stamp-h1
 public_keys/*
 files/pkg-pubkey.cert
 ansible.log
-*swo
 hosts
 staging
 .openstackrc
 out
+out?*
+*.pyc
+test.yml
+roles/test

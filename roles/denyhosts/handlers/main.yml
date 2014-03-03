@@ -3,4 +3,3 @@
   sudo: yes
   service:  name=denyhosts
             state=restarted
-

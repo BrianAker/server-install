@@ -7,13 +7,6 @@
         - "{{ ansible_os_family }}.yml"
       paths: "{{ inventory_dir }}/roles/ntp/vars/"
  
-- name: enable ntpd service
-  sudo: yes
-  service:  name={{ ntp_service }}
-            enabled=yes
-  notify: restart ntpd
-  when: "ansible_distribution != 'MacOSX'"
-
 - name: stop ntpd service
   sudo: yes
   service:  name={{ ntp_service }}
@@ -27,3 +20,12 @@
   changed_when: False
   when: ntp_service is defined
   when: "ansible_distribution != 'MacOSX'"
+
+- name: enable ntpd service
+  sudo: yes
+  service:  name={{ ntp_service }}
+            enabled=yes
+            state=started
+  notify: restart ntpd
+  when: "ansible_distribution != 'MacOSX'"
+

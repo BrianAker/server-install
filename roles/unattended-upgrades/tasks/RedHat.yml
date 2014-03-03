@@ -13,6 +13,7 @@
               regexp="^CHECK_ONLY"
               line="CHECK_ONLY=no"
   when: check_yum_cron.stat.exists
+  notify: restart updatesd
 
 - name: Reconfigure yum-cron to not just download
   sudo: yes
@@ -20,6 +21,7 @@
               regexp="^DOWNLOAD_ONLY"
               line="DOWNLOAD_ONLY=no"
   when: check_yum_cron.stat.exists
+  notify: restart updatesd
 
 - name: Reconfigure yum-cron.conf to not just check
   sudo: yes
@@ -27,6 +29,7 @@
               regexp="^apply_updates"
               line="apply_updates=yes"
   when: check_yum_cron_conf.stat.exists
+  notify: restart updatesd
 
 - name: Reconfigure yum-cron.conf to not just download
   sudo: yes
@@ -34,10 +37,11 @@
               regexp="^download_only"
               line="download_only=no"
   when: check_yum_cron_conf.stat.exists
+  notify: restart updatesd
 
 - name: start yum-cron
   sudo: yes
-  service: name=yum-cron
-           state=restarted
-           enabled=yes
-
+  service:  name=yum-cron
+            enabled=yes
+            state=started
+  notify: restart updatesd

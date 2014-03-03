@@ -12,7 +12,6 @@
            enabled=yes 
            state=started
 
-
 # Install Jenkins cli
 - include: cli.yml
 

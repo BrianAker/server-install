@@ -1,6 +1,6 @@
 Roughly:
-  install_packages
-  config
-  harden
-  enable
-  restart
+  install_packagesa - this play will install all required packages.
+  config - this play handles all configuration.
+  harden - hardens, i.e. secures the setup.
+  enable - enables all services.
+  check  - this checkes the install.

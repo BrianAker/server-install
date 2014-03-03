@@ -2,6 +2,7 @@
 - name: bind enable
   service:  name={{ bind }}
             enabled=yes
+            state=started
   when: ansible_distribution in ('Fedora')
   notify: restart bind
 

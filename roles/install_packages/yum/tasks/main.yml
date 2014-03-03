@@ -3,5 +3,5 @@
   sudo: yes
   yum:  name={{ item }}
         state={{ default_package_state }}
-  with_items: packages[ansible_distribution]
+  with_items: packages[ansible_distribution] | default([])
   tags: package_install

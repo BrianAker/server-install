@@ -1,0 +1,16 @@
+---
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - Pound
+
+  Debian: []
+
+  Ubuntu: []
+
+  CentOS: []

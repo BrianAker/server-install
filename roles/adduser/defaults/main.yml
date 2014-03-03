@@ -1,6 +1,7 @@
 ---
 pip_packages:
   - autoenv
+  - passlib
 
 root_group: root
 default_shell: /bin/bash

@@ -1,13 +1,4 @@
 ---
-
-- name: yum install pound
-  sudo: yes
-  yum: name={{ item }} state=present
-  with_items:
-    - Pound
-  when: ansible_distribution == 'Fedora'
-  notify: restart Pound
-
 - name: create directory pound.conf.d
   sudo: yes
   file: dest=/etc/pound.conf.d
@@ -24,8 +15,9 @@
   when: ansible_distribution == 'Fedora'
   notify: restart Pound
 
-- name: restart Pound
+- name: enable Pound
   sudo: yes
   service:  name=pound
+            state=started
             enabled=yes
 

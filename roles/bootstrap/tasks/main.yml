@@ -1,4 +1,1 @@
 ---
-- hostname: name="{{ ansible_hostname }}"
-  sudo: yes
-  when: ansible_os_family in ('RedHat', 'Debian')

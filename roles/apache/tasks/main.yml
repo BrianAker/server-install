@@ -6,6 +6,7 @@
             owner=root 
             group=root 
             mode=0444
+  notify: restart apache
 
 - name: enable apache service
   sudo: yes
@@ -13,9 +14,5 @@
   service:  name={{ httpd_service }}
             enabled=yes
             state=started
-  when: ansible_distribution == 'Fedora'
-
-- name: make sure apache is running
-  sudo: yes
-  service: name=httpd state=running
-
+  when: "ansible_distribution in ('Fedora')"
+  notify: restart apache
