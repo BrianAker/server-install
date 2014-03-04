@@ -1,0 +1,16 @@
+---
+- command: "hostname {{ inventory_hostname }}"
+  sudo: yes
+  when: is_ipaddress|skipped
+  tags: config
+
+- name: set hostname in rc.local
+  sudo: yes
+  lineinfile: dest=/etc/rc.local
+              state=present
+              regexp='^#?{{ item.key }}='
+              line='{{ item.key }}="{{ item.value }}"'
+  with_items:
+    - { key: 'hostname', value: inventory_hostname }
+  when: is_ipaddress|skipped
+  tags: config

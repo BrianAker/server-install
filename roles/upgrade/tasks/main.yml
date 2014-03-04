@@ -1,12 +1,12 @@
 ---
 - include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat' and want_upgrade is defined
 
 - include: Debian.yml
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian' and want_upgrade is defined
 
 - include: MacOSX.yml
-  when: ansible_distribution == 'MacOSX'
+  when: ansible_distribution == 'MacOSX' and want_upgrade is defined
 
 - include: FreeBSD.yml
-  when: ansible_distribution == 'FreeBSD'
+  when: ansible_distribution == 'FreeBSD' and want_upgrade is defined

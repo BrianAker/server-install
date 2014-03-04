@@ -12,6 +12,6 @@
 - hosts: all
 
   roles:
-    - bootstrap
+    - { role: bootstrap, want_upgrade: True }
 
 - include: harden.yml

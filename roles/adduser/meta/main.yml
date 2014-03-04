@@ -1,5 +1,6 @@
 ---
 allow_duplicates: yes
 dependencies:
+  - { role: adduser/create_user }
   - { role: python }
   - { role: facts }
