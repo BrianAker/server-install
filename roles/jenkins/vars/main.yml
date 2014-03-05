@@ -1,4 +1,5 @@
 ---
+jenkins_remote_user: jenkins
 jenkins:
   deb:
     repo: 'deb http://pkg.jenkins-ci.org/debian binary/' # Jenkins repository

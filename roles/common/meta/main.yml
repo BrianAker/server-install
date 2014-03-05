@@ -2,4 +2,5 @@
 allow_duplicates: no
 dependencies:
   - { role: bootstrap }
+  - { role: facts }
   - { role: common/base }

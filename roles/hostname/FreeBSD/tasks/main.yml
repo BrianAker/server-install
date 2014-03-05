@@ -1,7 +1,7 @@
 ---
 - command: "hostname {{ inventory_hostname }}"
   sudo: yes
-  when: is_ipaddress|skipped
+  when: is_ipaddress|failed
   tags: config
 
 - name: set hostname in rc.local
@@ -12,5 +12,5 @@
               line='{{ item.key }}="{{ item.value }}"'
   with_items:
     - { key: 'hostname', value: inventory_hostname }
-  when: is_ipaddress|skipped
+  when: is_ipaddress|failed
   tags: config

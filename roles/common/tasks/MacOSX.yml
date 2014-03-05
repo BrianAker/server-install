@@ -3,6 +3,11 @@
             state=absent
   ignore_errors: yes
 
+- homebrew: name=ansible
+            state=absent
+  when: using_system_ansible|failed
+  ignore_errors: yes
+
 #    - bind
 #    - curl
 #    - git

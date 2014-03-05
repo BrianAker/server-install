@@ -1,5 +1,5 @@
-# vim:ft=yaml
 ---
+# vim:ft=yaml
 apache: apache2
 bind: named
 root_group: root

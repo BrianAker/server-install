@@ -1,0 +1,4 @@
+---
+- name: stop FreeBSD sendmail
+  command:  sh /etc/rc.sendmail stop
+            removes=/var/run/sendmail.pid

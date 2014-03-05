@@ -1,6 +1,14 @@
----
 # vim:ft=yaml
+---
+# Connection variables
+ansible_python_interpreter: /usr/local/bin/python2.7
+
+# FreeBSD specific locations
 apache: httpd
+base_user_home: home
+bind: named
+default_shell: '/bin/bash'
 root_group: wheel
 sudoer_d: /usr/local/etc/sudoers.d
 sudoers_conf: /usr/local/etc/sudoers
+virtualenv_bin: /usr/local/bin/virtualenv

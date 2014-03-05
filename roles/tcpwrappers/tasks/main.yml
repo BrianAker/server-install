@@ -4,7 +4,7 @@
   copy: src=hosts.allow
         dest=/etc/hosts.allow
         owner=root
-        group=root
+        group="{{ root_group }}"
         mode=644
         force=yes
 
@@ -13,6 +13,6 @@
   copy: src=hosts.deny
         dest=/etc/hosts.deny
         owner=root
-        group=root
+        group="{{ root_group }}"
         mode=644
         force=yes

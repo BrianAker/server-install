@@ -12,6 +12,16 @@
   roles:
     - { role: upgrade, expire_cache=True }
 
+  tasks:
+  - name: upgrade user packages
+    sudo: yes
+    sudo_user: "{{ item }}"
+    command: "pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U"
+    ignore_errors: yes
+    with_items:
+      - deploy
+      - jenkins
+
 - hosts: Debian
   sudo: yes
   tasks:

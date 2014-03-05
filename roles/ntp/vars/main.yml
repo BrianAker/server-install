@@ -1,7 +1,6 @@
 ---
 packages:
   FreeBSD:
-    - ntpdate
     - ntp
 
   MacOSX: []

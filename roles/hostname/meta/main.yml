@@ -1,6 +1,7 @@
 ---
 allow_duplicates: no
 dependencies:
+  - { role: facts }
   - { role: hostname/group }
   - { role: hostname/MacOSX, when: "ansible_distribution == 'MacOSX'" }
   - { role: hostname/FreeBSD, when: "ansible_distribution == 'FreeBSD'" }

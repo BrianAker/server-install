@@ -14,5 +14,13 @@
 - include: MacOSX.yml
   when: ansible_distribution == 'MacOSX'
 
-- add_host: "name='{{ inventory_hostname }}' groups='harden'"
+- add_host: "name='{{ inventory_hostname }}' groups='haus'"
+  when: inventory_hostname.find('haus')
 
+- add_host: "name='{{ inventory_hostname }}' groups='developer'"
+  when: inventory_hostname.find('haus')
+
+- add_host: "name='{{ inventory_hostname }}' groups='remote'"
+  when: inventory_hostname.find('cloud')
+
+- add_host: "name='{{ inventory_hostname }}' groups='harden'"

@@ -12,3 +12,4 @@ out?*
 *.pyc
 test.yml
 roles/test
+credentials

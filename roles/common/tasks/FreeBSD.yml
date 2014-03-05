@@ -1,0 +1,14 @@
+---
+- name: disable sendmail
+  sudo: yes
+  lineinfile: dest=/etc/rc.conf
+              state=present
+              regexp='^#?{{ item.key }}'
+              line='{{ item.key }}="{{ item.value }}"'
+  with_items:
+    - { key: 'sendmail_enable', value: 'NO'}
+    - { key: 'sendmail_submit_enable', value: 'NO'}
+    - { key: 'sendmail_outbound_enable', value: 'NO'}
+    - { key: 'sendmail_msp_queue_enable', value: 'NO'}
+  notify: stop FreeBSD sendmail
+  tags: harden

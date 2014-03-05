@@ -1,16 +1,16 @@
 ---
-- name: include vars
-  include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "{{ ansible_distribution }}.yml"
-        - "{{ ansible_os_family }}.yml"
-      paths: "{{ inventory_dir }}/roles/adduser/vars/"
-
 - fail: "username was not defined."
   when: username is not defined
 
 - debug: msg="Adding user {{ username }}"
+
+- set_fact: userpassword_dir="/{{ inventory_dir }}/credentials/{{ inventory_hostname }}/{{ username }}"
+
+- name: mkdir credentials hostname username
+  file: path="{{ userpassword_dir }}"
+        state=directory
+        mode=0700
+  delegate_to: localhost
 
 - name: create user
   sudo: yes
@@ -19,5 +19,6 @@
         state=present
         shell={{ default_shell }}
         generate_ssh_key="yes"
-  when: "ansible_distribution != 'MacOSX'"
-
+        password={{ item }}
+        update_password=always
+  with_password: "{{ userpassword_dir }}/userpassword encrypt=sha256_crypt"

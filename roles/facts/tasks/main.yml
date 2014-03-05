@@ -10,3 +10,13 @@
 
 - include: FreeBSD.yml
   when: ansible_distribution == 'FreeBSD'
+
+- command: which ansible
+  register: which_ansbile_result
+  sudo: yes
+  failed_when: which_ansbile_result.rc != 1 and which_ansbile_result.rc != 0
+
+- command: 'test "X{{ which_ansbile_result.stdout[0] }}" = "X/usr/bin/ansible"'
+  register: using_system_ansible
+  when: which_ansbile_result.stdout
+

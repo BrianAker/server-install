@@ -2,10 +2,10 @@
 - name: set hostname
   hostname: name="{{ inventory_hostname }}"
   sudo: yes
-  when: is_ipaddress|skipped
+  when: is_ipaddress|failed
 # when: inventory_hostname !=  groups['inventory_name_is_ip'][0]
 
 - name: set hostname
   command: scutil --set HostName {{ inventory_hostname }}
   sudo: yes
-  when: is_ipaddress|skipped
+  when: is_ipaddress|failed

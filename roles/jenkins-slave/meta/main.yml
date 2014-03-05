@@ -1,5 +1,6 @@
 ---
 allow_duplicates: no
 dependencies:
+  - { role: sshd, sshd_allow_username: jenkins }
   - { role: adduser, username: jenkins, has_authorized_key: False }
   - { role: java }

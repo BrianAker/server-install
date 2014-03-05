@@ -3,10 +3,9 @@
 - hosts: masters
   name: Jenkins Master
   roles:
-    - { role: adduser, username: brian, is_admin: True, has_authorized_key: False, keychain: True }
     - build
     - sshd
     - pound
-    - jenkins-master
+    - jenkins
     - tcpwrappers
     - bazaar

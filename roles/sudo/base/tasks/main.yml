@@ -14,9 +14,9 @@
 
 - name: mkdir sudoers.d
   sudo: yes
-  file: path="{{ sudoers_d }}" state=directory
-        owner=root 
-        group="{{ root_group }}"
+  sudo_user: root
+  file: path="{{ sudoers_d }}"
+        state=directory
         mode=0750
 
 - name: configure sudoers

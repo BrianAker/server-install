@@ -1,4 +1,0 @@
----
-base_user_home: home
-root_group: wheel
-virtualenv_bin: /usr/local/bin/virtualenv

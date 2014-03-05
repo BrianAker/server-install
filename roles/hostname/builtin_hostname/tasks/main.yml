@@ -2,4 +2,4 @@
 - name: set hostname
   hostname: name="{{ inventory_hostname }}"
   sudo: yes
-  when: is_ipaddress|skipped
+  when: is_ipaddress|failed

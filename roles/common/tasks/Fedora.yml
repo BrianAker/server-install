@@ -8,19 +8,11 @@
     - cloud-init
   tags: package_install
 
-- command: which ansible
-  register: which_ansbile_result
-  sudo: yes
-  failed_when: which_ansbile_result.rc != 1 and which_ansbile_result.rc != 0
-
-- set_fact: using_system_ansible=True
-  when: which_ansbile_result.stdout == "/usr/bin/ansible"
-
 - name: yum remove software
   sudo: yes
   yum:  name={{ item }}
         state=absent
-  when: using_system_ansible is not defined
+  when: using_system_ansible|failed
   with_items:
     - ansible
   tags: package_install
