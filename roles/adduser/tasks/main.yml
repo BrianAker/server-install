@@ -6,21 +6,9 @@
         - "{{ ansible_distribution }}.yml"
         - "{{ ansible_os_family }}.yml"
       paths: "{{ inventory_dir }}/roles/adduser/vars/"
- 
 
 - fail: "username was not defined."
   when: username is not defined
-
-- debug: msg="Adding user {{ username }}"
-
-- name: create user
-  sudo: yes
-  user: name="{{ username }}"
-        comment="{{ username }}"
-        state=present
-        shell={{ default_shell }}
-        generate_ssh_key="yes"
-  when: "ansible_distribution != 'MacOSX'"
 
 - file: state=directory
         path="~{{ username }}/.bazaar/plugins"
@@ -107,12 +95,3 @@
               mode=0700
               state=present
               create=yes
-
-- name: install local pip packages for user
-  sudo: yes
-  sudo_user: "{{ username }}"
-  pip:  name="{{ item }}"
-        virtualenv_command="{{ virtualenv_bin }}"
-        virtualenv="~/.python"
-        state=present
-  with_items: pip_packages

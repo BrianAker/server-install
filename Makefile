@@ -32,7 +32,7 @@ all: public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6
 clean:
 	rm -f public_keys/brian public_keys/jenkins
 
-check: bootstrap.yml maintenance.yml site.yml
+check: $(ALL_PLAYBOOKS)
 	$(foreach f,$^,$(ANSIBLE_CHECK) $(f);)
 
 public_keys: public_keys/brian public_keys/deploy public_keys/jenkins
