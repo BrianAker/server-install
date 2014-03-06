@@ -1,6 +1,7 @@
 - name: Build a Cloud Server
   hosts: all
   gather_facts: False
+
   tasks:
     - name: Build Fedora Server
       local_action:
@@ -17,6 +18,7 @@
           - private
           - public
       register: rax
+
     - name: Build CentOS Server
       local_action:
         module: rax
@@ -32,6 +34,7 @@
           - private
           - public
       register: rax
+
     - name: Build FreeBSD Server
       local_action:
         module: rax

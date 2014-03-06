@@ -7,10 +7,10 @@ packages:
 
   RedHat: []
 
-  Fedora: []
+  Fedora:
     - freeradius
 
-  Debian: []
+  Debian:
     - freeradius
 
   Ubuntu:
