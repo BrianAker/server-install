@@ -5,6 +5,7 @@
 - debug: msg="Adding user {{ username }}"
 
 - set_fact: userpassword_dir="/{{ inventory_dir }}/credentials/{{ inventory_hostname }}/{{ username }}"
+- set_fact: userpassword_command="{{ userpassword_dir}}/userpassword encrypt=sha256_crypt"
 
 - name: mkdir credentials hostname username
   file: path="{{ userpassword_dir }}"
@@ -21,4 +22,4 @@
         generate_ssh_key="yes"
         password={{ item }}
         update_password=always
-  with_password: "{{ userpassword_dir }}/userpassword encrypt=sha256_crypt"
+  with_password: userpassword_command

@@ -13,4 +13,7 @@ out?*
 test.yml
 roles/test
 credentials
-*/role.yml
+*role.yml
+patch
+*patch
+patch*

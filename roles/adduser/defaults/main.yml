@@ -2,6 +2,7 @@
 pip_packages:
   - autoenv
   - passlib
+  - pip-tools
 
 root_group: root
 default_shell: /bin/bash

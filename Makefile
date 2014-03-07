@@ -16,7 +16,16 @@ HOST_UUID:= `hostname | cut -d'-' -f2`
 ALL_MAKEFILES:= $(wildcard *.am) 
 ALL_SCRIPTS:= $(wildcard *.sh) 
 ALL_PLAYBOOKS:= $(wildcard *.yml) 
-ROLES:= $(wildcard roles/*) 
+
+
+#ROLES:= $(wildcard roles/*) 
+RAW_ROLES:=
+RAW_ROLES+= $(subst /tasks/main.yml,,$(wildcard roles/*/tasks/main.yml))
+RAW_ROLES+= $(subst /meta/main.yml,,$(wildcard roles/*/meta/main.yml))
+RAW_ROLES+= $(subst /tasks/main.yml,,$(wildcard roles/*/*/tasks/main.yml))
+RAW_ROLES+= $(subst /meta/main.yml,,$(wildcard roles/*/*/meta/main.yml))
+ROLES:= $(sort $(RAW_ROLES))
+
 ROLE_VARS:= $(addsuffix /vars/main.yml, $(ROLES))
 ROLE_DEFAULTS:= $(addsuffix /defaults/main.yml, $(ROLES))
 ROLE_TASKS:= $(addsuffix /tasks/main.yml, $(ROLES))
@@ -61,13 +70,11 @@ $(ROLE_FILES): support/main.yml
 
 $(ALL_ROLEBOOKS): support/role.yml
 	@cp $< $@
-	echo "  roles: [ $(subst roles/,,$(@D)) ]" >> $@
+	@echo "  roles: [ $(subst roles/,,$(@D)) ]" >> $@
 
 .PHONY: print
 print:
 	@echo $(ROLES)
-	@echo $(ROLE_META)
-	@echo $(ROLE_FILES)
 
 DIST_MAKEFILES:=
 
