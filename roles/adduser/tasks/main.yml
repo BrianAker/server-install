@@ -20,6 +20,12 @@
   file: path="~{{ username }}/.ssh/authorized_keys"
         mode=0600
 
+- file: path="~{{ username }}/.profile.d"
+        mode=0700
+        state=directory
+  sudo: yes
+  sudo_user: "{{ username }}"
+
 - name: copy in specific
   sudo: yes
   sudo_user: "{{ username }}"
@@ -64,6 +70,7 @@
             validate='bash -n %s'
   with_items:
     - brewrc
+    - localrc
     - javarc
   when: ansible_distribution in ('MacOSX')
 

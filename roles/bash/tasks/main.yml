@@ -1,6 +1,9 @@
 ---
-- file: src=/bin/{{ item }} dest=/usr/bin/{{ item}} owner=root state=link
-  with_items:
-    - bash
+- file: src=/usr/local/bin/{{ item }}
+        dest=/bin/{{ item }}
+        owner=root
+        state=file
+  with_first_found:
+    - /usr/bin/bash
+    - /usr/local/bin/bash
   when: "ansible_distribution == 'FreeBSD'"
- 

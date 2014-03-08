@@ -5,6 +5,8 @@ packages:
     - py27-pip
     - py27-setuptools
     - py27-virtualenv
+    - py27-passlib
+    - py27-dnspython
 
   MacOSX: []
 
@@ -13,6 +15,8 @@ packages:
   Fedora:
     - libselinux-python
     - python
+    - python-dns
+    - python-passlib
     - python-pip
     - python-setuptools
     - python-virtualenv
@@ -20,6 +24,9 @@ packages:
   Debian:
     - python
     - python-apt
+    - python-dns
+    - python-dnspython
+    - python-passlib
     - python-pip
     - python-pycurl
     - python-setuptools
@@ -29,6 +36,8 @@ packages:
   Ubuntu:
     - python
     - python-apt
+    - python-dns
+    - python-dnspython
     - python-pip
     - python-pycurl
     - python-setuptools
@@ -38,6 +47,8 @@ packages:
   CentOS:
     - libselinux-python
     - python
+    - python-dns
+    - python-passlib
     - python-pip
     - python-setuptools
     - python-virtualenv

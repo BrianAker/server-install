@@ -1,2 +1,22 @@
 ---
+- file: path="~{{ deploy_username }}/.ssh/environment"
+        state=absent
+        mode=0700
+  sudo: yes
+  sudo_user: "{{ deploy_username }}"
 
+- file: path="~{{ deploy_username }}/.ansible"
+        state=directory
+        mode=0700
+  sudo: yes
+  sudo_user: "{{ deploy_username }}"
+
+- name: pip install ansible plus packages
+  pip:  name="{{ item }}"
+        virtualenv_command="{{ virtualenv_bin }}"
+        virtualenv="~/.ansible"
+        state=present
+  with_lines:
+    - "cat {{ inventory_dir }}/files/pip/ansible.txt"
+  sudo: yes
+  sudo_user: "{{ deploy_username }}"

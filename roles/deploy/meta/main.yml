@@ -4,3 +4,4 @@ dependencies:
   - { role: sudo, username: "{{ deploy_username }}"}
   - { role: sshd, sshd_allow_username: "{{ deploy_username }}" }
   - { role: adduser, username: "{{ deploy_username }}", has_authorized_key: False }
+  - { role: python, pip_packages: pip_packages }

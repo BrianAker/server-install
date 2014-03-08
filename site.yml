@@ -1,4 +1,38 @@
 ---
+- hosts: all
+  name: Common setup
+# vars: virtualenv_bin=/usr/bin/virtualenv
+    
+#  tasks:
+#    - debug: var=ansible_env
+#
+#    - command: whoami
+#      register: whoami_result
+#      failed_when: whoami_result.stdout != "deploy"
+#      environment: 'BASH_ENV="~/.python/bin/activate"'
+#
+#    - command: whoami
+#      sudo: yes
+#      register: whoami_result
+#      failed_when: whoami_result.stdout != "root"
+#      environment: 'BASH_ENV="~/.python/bin/activate"'
+#
+#    - name: "guard for virtualenv"
+#      shell: echo $VIRTUAL_ENV
+#      register: command_result
+##     failed_when: command_result.stdout == ""
+#      environment: 'BASH_ENV="~/.python/bin/activate"'
+#
+#    - debug: var=command_result
+#
+##    - name: "guard for virtualenv"
+##      sudo: yes
+##      shell: echo $VIRTUAL_ENV
+##      register: command_result
+###     failed_when: command_result.stdout == ""
+##
+##    - debug: var=command_result
+
 - include: common.yml
 - include: syslog.yml
 - include: mailman.yml

@@ -19,4 +19,4 @@
 - command: 'test "X{{ which_ansbile_result.stdout[0] }}" = "X/usr/bin/ansible"'
   register: using_system_ansible
   when: which_ansbile_result.stdout
-
+  failed_when: using_system_ansible.rc != 1 and using_system_ansible.rc != 0

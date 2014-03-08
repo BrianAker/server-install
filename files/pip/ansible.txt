@@ -1,0 +1,5 @@
+ansible
+dnspython
+passlib
+pip-tools
+pyrax

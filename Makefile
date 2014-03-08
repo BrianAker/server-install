@@ -78,13 +78,14 @@ print:
 
 DIST_MAKEFILES:=
 
-.PHONY: all show check install base_install deploy upgrade clean
-
+.PHONY: all
 all: public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6 $(ROLE_META) $(ROLE_FILES) $(ALL_ROLEBOOKS)
 
+.PHONY: clean
 clean:
 	rm -f public_keys/brian public_keys/jenkins
 
+.PHONY: check
 check: all check-rolebooks check-playbook-am
 
 .PHONY: check-playbook
@@ -112,18 +113,23 @@ public_keys/jenkins:
 files/pkg-pubkey.cert:
 	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
+.PHONY: install
 install: all
 	ansible-playbook site.yml
 
+.PHONY: install-ansible-user
 install-ansible-user:
 	ansible-playbook site.yml --limit=localhost -s -i hosts
 
-upgrade:
+.PHONY: upgrade
+upgrade: all
 	ansible-playbook maintenance.yml
 
-localhost:
+.PHONY: localhost
+localhost: all
 	ansible-playbook site.yml --limit=localhost
 
+.PHONY: install-ansible
 install-ansible:
 	$(MAKE) install-virtualenv
 	virtualenv ~/.python
@@ -131,6 +137,7 @@ install-ansible:
 	. ~/.pythonrc
 	pip install ansible
 
+.PHONY: show
 show:
 	@echo "HOSTNAME ${HOSTNAME}"
 	@echo "HOST_TYPE ${HOST_TYPE}"
@@ -140,6 +147,7 @@ show:
 roles/common/files/RPM-GPG-KEY-EPEL-6:
 	@$(CURL) -o $@ https://fedoraproject.org/static/A4D647E9.txt
 
+.PHONY: deploy
 deploy: install
 
 .DEFAULT_GOAL:= all
