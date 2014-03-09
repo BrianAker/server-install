@@ -1,0 +1,5 @@
+---
+- fail: "adduser_name was not defined."
+  when: adduser_name is not defined
+
+- debug: msg="Adding user {{ adduser_name }}"
