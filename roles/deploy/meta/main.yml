@@ -1,7 +1,9 @@
 ---
 allow_duplicates: no
 dependencies:
-  - { role: sudo, username: "{{ deploy_username }}"}
+  - { role: deploy/validate }
+  - { role: sudoers, sudoers_user: "{{ deploy_username }}" }
   - { role: sshd, sshd_allow_username: "{{ deploy_username }}" }
-  - { role: adduser, username: "{{ deploy_username }}", has_authorized_key: False }
+  - { role: adduser, adduser_name: "{{ deploy_username }}" }
   - { role: python, pip_packages: pip_packages }
+  - { role: ansible, ansible_user: "{{ deploy_username }}" }

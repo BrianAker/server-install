@@ -17,3 +17,6 @@
 #- name: accept xcode license
 #  sudo: yes
 #  command: xcodebuild -license
+
+- name: allow any nas to work with TimeMachine
+  shell: defaults write com.apple.systempreferences TMShowUnsupportedNetworkVolumes 1

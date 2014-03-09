@@ -1,0 +1,33 @@
+---
+- name: include vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths: "{{ inventory_dir }}/roles/sudoers/vars/"
+
+- set_fact: sudoer_user_file='{{ sudoers_d }}/{{ sudoers_user }}'
+
+- debug: msg="Adding user {{ sudoers_user }} with file {{ sudoer_user_file }}"
+
+- name: write sudoers file
+  sudo: yes
+  copy:     src=sudoer
+            dest="{{ sudoer_user_file }}"
+            owner=root 
+            mode=0440
+            group="{{ root_group }}"
+            force=no
+
+# Fit it so deploy doesn't require tty
+- name: add include directory for sudoers
+  sudo: yes
+  lineinfile: state=present
+              dest="{{ sudoer_user_file }}"
+              regexp='^{{ item.key }}'
+              line='{{ item.key }} {{ item.value }}'
+              validate='visudo -cf %s'
+  with_items:
+    - { key: "{{ sudoers_user }}", value: 'ALL=(ALL) NOPASSWD:ALL'}
+    - { key: "Defaults:{{ sudoers_user }}", value: '!requiretty'}

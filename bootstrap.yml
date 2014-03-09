@@ -2,9 +2,9 @@
 - hosts: FreeBSD
   name: Bootstrap
   gather_facts: no
-  tasks:
-    - include: roles/upgrade/tasks/FreeBSD.yml
+
   roles:
+    - { role: upgrade/FreeBSD, want_upgrade: False }
     - resolv
     - bootstrap/FreeBSD
 

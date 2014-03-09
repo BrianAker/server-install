@@ -1,0 +1,3 @@
+---
+- fail: "sudoers_user was not defined."
+  when: "{{ sudoers_user }} is not defined"

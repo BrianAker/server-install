@@ -2,5 +2,6 @@
 allow_duplicates: yes
 dependencies:
   - { role: facts }
+  - { role: adduser/validate }
   - { role: adduser/create_user, when: "ansible_distribution != 'MacOSX'" }
-  - { role: python, python_user: "{{ username }}" }
+  - { role: python, python_user: "{{ adduser_name }}" }

@@ -1,36 +1,36 @@
 ---
-- fail: "username was not defined."
-  when: username is not defined
-
 - file: state=directory
-        path="~{{ username }}/.bazaar/plugins"
+        path="{{ item }}"
+  with_items:
+    - "~{{ adduser_name }}/.bazaar"
+    - "~{{ adduser_name }}/.bazaar/plugins"
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
 
 - name: setup authorized_key
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
   ignore_errors: yes
-  authorized_key: user="{{ username }}"
-                  key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + username) }}"
+  authorized_key: user="{{ adduser_name }}"
+                  key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + adduser_name) }}"
 
 - name: reset mode for authorized_keys
   sudo: yes
-  sudo_user: "{{ username }}"
-  file: path="~{{ username }}/.ssh/authorized_keys"
+  sudo_user: "{{ adduser_name }}"
+  file: path="~{{ adduser_name }}/.ssh/authorized_keys"
         mode=0600
 
-- file: path="~{{ username }}/.profile.d"
+- file: path="~{{ adduser_name }}/.profile.d"
         mode=0700
         state=directory
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
 
 - name: copy in specific
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
   template: src={{ item }}.j2 
-            dest="~{{ username }}/.{{ item }}"
+            dest="~{{ adduser_name }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -41,9 +41,9 @@
 
 - name: copy in specific
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
   template: src={{ item }}.j2 
-            dest="~{{ username }}/.{{ item }}"
+            dest="~{{ adduser_name }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -52,9 +52,9 @@
 
 - name: copy in specific
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
   template: src={{ item }}.j2 
-            dest="~{{ username }}/.{{ item }}"
+            dest="~{{ adduser_name }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -63,9 +63,9 @@
 
 - name: copy in OSX specific
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
   template: src={{ item }}.j2 
-            dest="~{{ username }}/.{{ item }}"
+            dest="~{{ adduser_name }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -76,9 +76,9 @@
 
 - name: copy in specific
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ adduser_name }}"
   template: src={{ item }}.j2 
-            dest="~{{ username }}/.{{ item }}"
+            dest="~{{ adduser_name }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -87,8 +87,8 @@
 
 - name: Reconfigure path for user to include customrc
   sudo: yes
-  sudo_user: "{{ username }}"
-  lineinfile: dest="~{{ username }}/.bash_profile"
+  sudo_user: "{{ adduser_name }}"
+  lineinfile: dest="~{{ adduser_name }}/.bash_profile"
               regexp="^. ~/.customrc"
               line=". ~/.customrc"
               mode=0700

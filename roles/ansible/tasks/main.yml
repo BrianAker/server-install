@@ -1,8 +1,21 @@
 # vim:ft=yaml
 ---
-- pip:  requirements=pip/ansible.txt
+- set_fact: ansible_dir="~{{ ansible_user }}/.ansible"
+
+- name: pip install ansible
+  pip:  name="{{ item }}"
         virtualenv_command="{{ virtualenv_bin }}"
-        virtualenv="~/.python"
+        virtualenv="{{ ansible_dir }}"
         state=present
+  with_lines:
+    - 'cat {{ inventory_dir }}/files/pip/ansible.txt'
   sudo: yes
-  sudo_user: "{{ deploy_username }}"
+  sudo_user: "{{ ansible_user }}"
+
+- name: install pyenv
+  sudo: yes
+  sudo_user: "{{ ansible_user }}"
+  template: src=pyenv.j2
+            dest="{{ ansible_dir }}/bin"
+            mode=0600
+            validate='bash -n %s'

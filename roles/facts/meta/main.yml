@@ -1,2 +1,7 @@
 ---
 allow_duplicates: no
+dependencies:
+  - { role: facts/RedHat, when: "ansible_os_family in ('RedHat')" }
+  - { role: facts/Debian, when: "ansible_os_family in ('Debian')" }
+  - { role: facts/MacOSX, when: "ansible_os_family in ('MacOSX')" }
+  - { role: facts/FreeBSD, when: "ansible_os_family in ('FreeBSD')" }

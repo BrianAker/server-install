@@ -1,8 +1,0 @@
----
-- name: add user to admin group
-  command: dscl . append /Groups/admin GroupMembership {{ username }}
-  sudo: yes
-
-- name: add user to wheel group
-  command: dscl . append /Groups/wheel GroupMembership {{ username }}
-  sudo: yes

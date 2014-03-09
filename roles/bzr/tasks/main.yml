@@ -2,7 +2,7 @@
 
 - name: mkdir bazaar directory
   sudo: yes
-  sudo_user: "{{ username }}"
+  sudo_user: "{{ bzr_username }}"
   file: path="{{ item }}"
         state=directory
         mode=0750

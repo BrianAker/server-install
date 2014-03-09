@@ -3,9 +3,9 @@
 allow_duplicates: no
 dependencies:
   - { role: resolv }
-  - { role: bootstrap/MacOSX, when: ansible_distribution == 'MacOSX' }
+  - { role: bootstrap/MacOSX, when: "ansible_distribution == 'MacOSX'" }
   - { role: upgrade }
-  - { role: sudo }
+  - { role: sudoers }
   - { role: python }
   - { role: bash }
   - { role: facts }

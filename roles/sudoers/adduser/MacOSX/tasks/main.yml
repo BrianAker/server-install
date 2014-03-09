@@ -1,0 +1,16 @@
+---
+- name: include vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths: "{{ inventory_dir }}/roles/sudoers/vars/"
+
+- name: add user to admin group
+  command: dscl . append /Groups/admin GroupMembership {{ sudoers_user }}
+  sudo: yes
+
+- name: add user to wheel group
+  command: dscl . append /Groups/wheel GroupMembership {{ sudoers_user }}
+  sudo: yes

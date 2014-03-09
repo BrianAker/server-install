@@ -1,0 +1,5 @@
+# vim:ft=yaml
+---
+- fail: "sudoers_d was not defined."
+  when: sudoers_d is not defined
+

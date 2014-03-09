@@ -1,6 +1,14 @@
 ---
 - hosts: all
-  name: Common setup
+  name: Site Play
+
+  tasks:
+  - name: create ansible_distribution group
+    action: group_by key={{ ansible_distribution }}
+
+  - name: create ansible_pkg_mgr group
+    action: group_by key={{ ansible_pkg_mgr }}
+
 # vars: virtualenv_bin=/usr/bin/virtualenv
     
 #  tasks:

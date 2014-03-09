@@ -1,18 +1,9 @@
 ---
 - name: install local pip packages for user
-  sudo: yes
-  sudo_user: "{{ python_user }}"
-  pip:  name="{{ item }}"
+  pip:  name={{ item }}
         virtualenv_command="{{ virtualenv_bin }}"
-        virtualenv="~/.python"
+        virtualenv="{{ pip_user_dir }}"
         state=present
   with_items: pip_packages
-
-- name: install pyenv
   sudo: yes
   sudo_user: "{{ python_user }}"
-  template: src=pyenv.j2 
-            dest="~{{ python_user }}/.python/bin/pyenv"
-            mode=0755
-            validate='bash -n %s'
-  when: pip_packages

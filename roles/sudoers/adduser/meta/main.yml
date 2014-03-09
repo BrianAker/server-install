@@ -1,0 +1,5 @@
+---
+allow_duplicates: yes
+dependencies:
+  - { role: sudoers/adduser/MacOSX, when: ansible_distribution in ('MacOSX') }
+  - { role: sudoers/adduser/FreeBSD, when: ansible_distribution in ('FreeBSD') }

@@ -2,3 +2,7 @@
 allow_duplicates: no
 dependencies:
   - { role: install_packages }
+  - { role: upgrade/RedHat, when: "ansible_os_family in ('RedHat') and want_upgrade == True" }
+  - { role: upgrade/Debian, when: "ansible_os_family in ('Debian') and want_upgrade == True" }
+  - { role: upgrade/MacOSX, when: "ansible_os_family in ('MacOSX') and want_upgrade == True" }
+  - { role: upgrade/FreeBSD, when: "ansible_os_family in ('FreeBSD') and want_upgrade == True" }

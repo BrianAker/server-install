@@ -1,16 +1,3 @@
 ---
 - hosts: yum
   name: Final
-
-  tasks:
-    - name: restore keepcache
-      sudo: yes
-      lineinfile: dest=/etc/yum.conf
-                  state=present
-                  regexp='^#?{{ item.key }}'
-                  line='{{ item.key }}={{ item.value }}'
-                  validate='/usr/bin/yum list'
-      with_items:
-        - { key: 'keepcache', value: '0'}
-      notify: restart sshd
-      tags: setup

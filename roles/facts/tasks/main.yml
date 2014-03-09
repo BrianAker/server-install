@@ -1,16 +1,4 @@
 ---
-- include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
-
-- include: Debian.yml
-  when: ansible_os_family == 'Debian'
-
-- include: MacOSX.yml
-  when: ansible_distribution == 'MacOSX'
-
-- include: FreeBSD.yml
-  when: ansible_distribution == 'FreeBSD'
-
 - command: which ansible
   register: which_ansbile_result
   sudo: yes

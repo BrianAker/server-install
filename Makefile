@@ -9,6 +9,12 @@ PKG_UPGRADE=
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 BASE_INSTALL_PATH= /usr/
 
+ROLE_FILES=
+ROLE_FILES+= $(ROLE_VARS)
+ROLE_FILES+= $(ROLE_DEFAULTS)
+ROLE_FILES+= $(ROLE_TASKS)
+ROLE_FILES+= $(ROLE_HANDLERS)
+
 srcdir= $(shell pwd)/
 HOSTNAME:= `hostname`
 HOST_TYPE:= `hostname | cut -d'-' -f1`
@@ -18,12 +24,12 @@ ALL_SCRIPTS:= $(wildcard *.sh)
 ALL_PLAYBOOKS:= $(wildcard *.yml) 
 
 
-#ROLES:= $(wildcard roles/*) 
-RAW_ROLES:=
-RAW_ROLES+= $(subst /tasks/main.yml,,$(wildcard roles/*/tasks/main.yml))
-RAW_ROLES+= $(subst /meta/main.yml,,$(wildcard roles/*/meta/main.yml))
-RAW_ROLES+= $(subst /tasks/main.yml,,$(wildcard roles/*/*/tasks/main.yml))
-RAW_ROLES+= $(subst /meta/main.yml,,$(wildcard roles/*/*/meta/main.yml))
+TASK_DIRS:= tasks defaults handlers meta
+SUB_ROLES:= base validate_input_parameters
+
+RAW_ROLES=
+RAW_ROLES+= $(foreach dir,$(TASK_DIRS),$(subst /$(dir),,$(shell find roles -type d -name '$(dir)')))
+RAW_ROLES+= $(foreach dir,$(SUB_ROLES),$(shell find roles -type d -name '$(dir)'))
 ROLES:= $(sort $(RAW_ROLES))
 
 ROLE_VARS:= $(addsuffix /vars/main.yml, $(ROLES))
@@ -32,14 +38,12 @@ ROLE_TASKS:= $(addsuffix /tasks/main.yml, $(ROLES))
 ROLE_HANDLERS:= $(addsuffix /handlers/main.yml, $(ROLES))
 ROLE_META:= $(addsuffix /meta/main.yml, $(ROLES))
 ALL_ROLEBOOKS= $(addsuffix /role.yml, $(ROLES))
+
 ANSIBLE_CHECK= ansible-playbook --syntax-check
 CURL=curl --silent --show-error
-
-ROLE_FILES=
-ROLE_FILES+= $(ROLE_VARS)
-ROLE_FILES+= $(ROLE_DEFAULTS)
-ROLE_FILES+= $(ROLE_TASKS)
-ROLE_FILES+= $(ROLE_HANDLERS)
+INSTALL= install -b
+MKDIR= mkdir -p
+TOUCH= touch -r
 
 JENKINS_SLAVES=
 
@@ -50,31 +54,32 @@ fill: $(ROLE_FILES)
 
 $(ROLE_META): support/meta.yml
 	@if test -f $@; then \
-	  touch -r $< $@; \
+	  $(TOUCH) $< $@; \
 	  git add --intent-to-add $@; \
 	else \
-	  mkdir -p $(@D); \
-	  cp $< $@; \
+	  $(MKDIR) $(@D); \
+	  $(INSTALL) $< $@; \
 	  git add --intent-to-add $@; \
 	fi
 
 $(ROLE_FILES): support/main.yml
 	@if test -f $@; then \
-	  touch -r $< $@; \
+	  $(TOUCH) $< $@; \
 	  git add --intent-to-add $@; \
 	else \
-	  mkdir -p $(@D); \
-	  cp $< $@; \
+	  $(MKDIR) $(@D); \
+	  $(INSTALL) $< $@; \
 	  git add --intent-to-add $@; \
 	fi
 
 $(ALL_ROLEBOOKS): support/role.yml
 	@cp $< $@
-	@echo "  roles: [ $(subst roles/,,$(@D)) ]" >> $@
+	@echo "  roles: [ '$(subst roles/,,$(@D))' ]" >> $@
 
 .PHONY: print
-print:
-	@echo $(ROLES)
+print: $(ROLE_FILES)
+	@roles='$(ROLE_FILES)'; \
+	for p in $$roles; do echo "$$p"; done
 
 DIST_MAKEFILES:=
 

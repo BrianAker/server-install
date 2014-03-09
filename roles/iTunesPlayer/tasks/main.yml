@@ -1,0 +1,3 @@
+---
+- command: sudo launchctl unload -w  /System/Library/LaunchDaemons/com.apple.spindump.plist
+  when: is_itunes_player
