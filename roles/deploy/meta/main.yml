@@ -5,5 +5,5 @@ dependencies:
   - { role: sudoers, sudoers_user: "{{ deploy_username }}" }
   - { role: sshd, sshd_allow_username: "{{ deploy_username }}" }
   - { role: adduser, adduser_name: "{{ deploy_username }}" }
-  - { role: python, pip_packages: pip_packages }
+  - { role: python }
   - { role: ansible, ansible_user: "{{ deploy_username }}" }

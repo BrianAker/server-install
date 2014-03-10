@@ -9,6 +9,7 @@ packages:
   RedHat: []
 
   Fedora:
+    - coreutils
     - git
     - perl
     - redhat-lsb-core
@@ -37,6 +38,7 @@ packages:
     - rubygems
 
   CentOS:
+    - coreutils
     - git
     - perl
     - redhat-lsb-core

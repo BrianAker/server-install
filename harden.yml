@@ -1,7 +1,0 @@
----
-- hosts: harden
-  name: Harden
-  roles:
-    - { role: rkhunter, when: "ansible_os_family in ('RedHat', 'Debian')" }
-    - { role: sshd, sshd_harden: True }
-    - { role: harden }

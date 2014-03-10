@@ -4,8 +4,7 @@
   gather_facts: no
 
   roles:
-    - { role: upgrade/FreeBSD, want_upgrade: False }
-    - resolv
+    - { role: upgrade/FreeBSD, want_upgrade: True }
     - bootstrap/FreeBSD
 
 # Rulebook used for bootstrapping a system.
@@ -13,5 +12,3 @@
 
   roles:
     - { role: bootstrap, want_upgrade: True }
-
-- include: harden.yml

@@ -1,7 +1,0 @@
----
-# Host rules for HTTP servers
-- hosts: webservers
-  name: Webserver
-  roles:
-    - apache
-#   - { role: apache/redirect, domainname_src: www.example.com  domainname_dest: example.com }

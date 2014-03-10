@@ -1,6 +1,6 @@
 # vim:ft=yaml
 ---
-- set_fact: ansible_dir="~{{ ansible_user }}/.ansible"
+- set_fact: ansible_dir="~/.ansible"
 
 - name: pip install ansible
   pip:  name="{{ item }}"
@@ -13,9 +13,9 @@
   sudo_user: "{{ ansible_user }}"
 
 - name: install pyenv
+  template: src=pyenv.j2
+            dest="{{ ansible_dir }}/bin/pyenv"
+            mode=0700
+            validate='bash -n %s'
   sudo: yes
   sudo_user: "{{ ansible_user }}"
-  template: src=pyenv.j2
-            dest="{{ ansible_dir }}/bin"
-            mode=0600
-            validate='bash -n %s'

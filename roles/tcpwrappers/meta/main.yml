@@ -1,4 +1,5 @@
 ---
 allow_duplicates: no
-dependencies: []
+dependencies:
+  - { role: facts }
 

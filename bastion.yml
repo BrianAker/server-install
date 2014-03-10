@@ -1,8 +1,0 @@
----
-# Host rules for bastion hosts
-- hosts: bastion
-  name: Bastion
-
-  roles:
-    - fail2ban
-    - denyhosts

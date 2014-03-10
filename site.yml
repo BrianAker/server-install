@@ -4,10 +4,13 @@
 
   tasks:
   - name: create ansible_distribution group
-    action: group_by key={{ ansible_distribution }}
+    group_by: key={{ ansible_distribution }}
 
   - name: create ansible_pkg_mgr group
-    action: group_by key={{ ansible_pkg_mgr }}
+    group_by: key={{ ansible_pkg_mgr }}
+
+  roles:
+    - common
 
 # vars: virtualenv_bin=/usr/bin/virtualenv
     
@@ -41,19 +44,84 @@
 ##
 ##    - debug: var=command_result
 
-- include: common.yml
-- include: syslog.yml
-- include: mailman.yml
-- include: dnsservers.yml
-- include: webservers.yml
-- include: jenkins-slaves.yml
-- include: jenkins-master.yml
-- include: developer.yml
-- include: remote.yml
-- include: bastion.yml
-- include: haus.yml
-- include: downloads.yml
+# Rules for mailman servers
+- hosts: mailman
+  name: Mailman
+  roles:
+    - apache
+    - mailman
+    - sendmail
+    - pound
+    - tcpwrappers
+ 
+# Host rules for HTTP servers
+- hosts: webservers
+  name: Webserver
+  roles:
+    - apache
+#   - { role: apache/redirect, domainname_src: www.example.com  domainname_dest: example.com }
+
+# Rules for syslog servers
+- hosts: syslog
+  name: Syslog
+  roles:
+    - syslog
+
+# Host rules for DNS servers
+- hosts: dnsservers
+  name: DNS
+  roles:
+    - bind
+
+# Host rules for Jenkins-ci slaves
+- hosts: slaves
+  name: Jenkins Slave
+  roles:
+    - build
+    - jenkins-slave
+ 
+# Host rules for Jenkins-ci masters
+- hosts: masters
+  name: Jenkins Master
+  roles:
+    - build
+    - sshd
+    - pound
+    - jenkins
+    - tcpwrappers
+    - bazaar
+
+# Host rules for remote hosts
+- hosts: remote
+  name: Remote
+  roles:
+    - tcpwrappers
+
+- hosts: haus
+  name: Haus
+  roles:
+    - { role: avahi, avahi_service_name: ssh, avahi_service_type: _ssh._tcp, avahi_service_port: 22, when: "ansible_distribution == 'Fedora'" }
+
+- hosts: downloads
+  name: Downloads
+  roles:
+    - download.tangent.org
+
+# Host rules for bastion hosts
+- hosts: bastion
+  name: Bastion
+
+  roles:
+    - fail2ban
+    - denyhosts
 
 # Need to be listed last
-- include: harden.yml
-- include: final.yml
+- hosts: harden
+  name: Harden
+  roles:
+    - { role: rkhunter, when: "ansible_os_family in ('RedHat', 'Debian')" }
+    - { role: sshd, sshd_harden: True }
+    - { role: harden }
+
+- include: developer.yml
+

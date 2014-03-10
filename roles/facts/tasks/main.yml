@@ -8,3 +8,8 @@
   register: using_system_ansible
   when: which_ansbile_result.stdout
   failed_when: using_system_ansible.rc != 1 and using_system_ansible.rc != 0
+
+- command: id -gn root
+  register: id_group_result
+
+- set_fact: root_group="{{ id_group_result.stdout }}"

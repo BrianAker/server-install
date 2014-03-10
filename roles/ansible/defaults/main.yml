@@ -1,2 +1,4 @@
 # vim:ft=yaml
 ---
+ansible_user: deploy
+virtualenv_bin: /usr/bin/virtualenv
