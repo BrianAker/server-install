@@ -1,7 +1,6 @@
----
-- name: Localhost
-  hosts: localhost
-  connection: local
+# Host rules for bastion hosts
+- name: Bastion
+  hosts: bastion
 
   vars_files:
      - "vars/{{ ansible_os_family }}"
@@ -9,4 +8,5 @@
      - "vars/Defaults"
 
   roles:
-    - build
+    - fail2ban
+    - denyhosts

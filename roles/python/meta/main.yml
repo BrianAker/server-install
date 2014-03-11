@@ -2,4 +2,4 @@
 allow_duplicates: yes
 dependencies:
   - { role: python/base }
-  - { role: python/pip, when: python_user is defined and pip_packages is defined }
+  - { role: python/pip, when: python_user is defined }

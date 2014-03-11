@@ -1,12 +1,13 @@
----
-- name: Localhost
-  hosts: localhost
-  connection: local
+# Host rules for Jenkins-ci slaves
+- name: Jenkins Slave
+  hosts: slaves
 
   vars_files:
      - "vars/{{ ansible_os_family }}"
      - "vars/{{ ansible_distribution }}"
      - "vars/Defaults"
 
+
   roles:
     - build
+    - jenkins-slave

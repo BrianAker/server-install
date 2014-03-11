@@ -1,0 +1,14 @@
+# Need to be listed last
+- name: Harden
+  hosts: harden
+
+  vars_files:
+     - "vars/{{ ansible_os_family }}"
+     - "vars/{{ ansible_distribution }}"
+     - "vars/Defaults"
+
+  roles:
+    - { role: rkhunter, when: "ansible_os_family in ('RedHat', 'Debian')" }
+    - { role: sshd, sshd_harden: True }
+    - { role: harden }
+

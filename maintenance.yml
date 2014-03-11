@@ -1,7 +1,13 @@
 ---
 # Upgrade the fleet
-- hosts: all
-  name: Maintenance
+- name: Maintenance
+  hosts: all
+
+  vars_files:
+     - "vars/{{ ansible_os_family }}"
+     - "vars/{{ ansible_distribution }}"
+     - "vars/Defaults"
+
   tasks:
     - name: Create groups by distribution
       group_by: key={{ansible_distribution}}

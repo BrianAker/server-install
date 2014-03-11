@@ -1,0 +1,12 @@
+# Machine in haus
+- name: Haus
+  hosts: haus
+
+  vars_files:
+     - "vars/{{ ansible_os_family }}"
+     - "vars/{{ ansible_distribution }}"
+     - "vars/Defaults"
+
+
+  roles:
+    - { role: avahi, avahi_service_name: ssh, avahi_service_type: _ssh._tcp, avahi_service_port: 22 }

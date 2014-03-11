@@ -1,0 +1,9 @@
+# vim:ft=yaml
+---
+apache: httpd
+base_user_home: home
+bind: named
+default_shell: '/bin/bash'
+sudoer_d: /etc/sudoers.d
+sudoers_conf: /etc/sudoers
+virtualenv_bin: /usr/bin/virtualenv

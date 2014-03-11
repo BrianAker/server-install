@@ -1,9 +1,5 @@
 ---
-pip_packages:
-  - autoenv
-  - passlib
-  - pip-tools
+pip_packages: []
 
-root_group: root
 default_shell: /bin/bash
 virtualenv_bin: /usr/bin/virtualenv

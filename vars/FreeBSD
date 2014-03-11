@@ -8,7 +8,6 @@ apache: httpd
 base_user_home: home
 bind: named
 default_shell: '/bin/bash'
-root_group: wheel
 sudoer_d: /usr/local/etc/sudoers.d
 sudoers_conf: /usr/local/etc/sudoers
 virtualenv_bin: /usr/local/bin/virtualenv

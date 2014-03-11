@@ -1,16 +1,5 @@
 ---
-- hosts: all
-  name: Site Play
-
-  tasks:
-  - name: create ansible_distribution group
-    group_by: key={{ ansible_distribution }}
-
-  - name: create ansible_pkg_mgr group
-    group_by: key={{ ansible_pkg_mgr }}
-
-  roles:
-    - common
+- include: common.yml
 
 # vars: virtualenv_bin=/usr/bin/virtualenv
     
@@ -44,84 +33,24 @@
 ##
 ##    - debug: var=command_result
 
-# Rules for mailman servers
-- hosts: mailman
-  name: Mailman
-  roles:
-    - apache
-    - mailman
-    - sendmail
-    - pound
-    - tcpwrappers
+- include: mailman.yml
+
+- include: syslog.yml
+
+- include: dnsservers.yml
+
+- include: slaves.yml
  
-# Host rules for HTTP servers
-- hosts: webservers
-  name: Webserver
-  roles:
-    - apache
-#   - { role: apache/redirect, domainname_src: www.example.com  domainname_dest: example.com }
+- include: masters.yml
 
-# Rules for syslog servers
-- hosts: syslog
-  name: Syslog
-  roles:
-    - syslog
+- include: remote.yml
 
-# Host rules for DNS servers
-- hosts: dnsservers
-  name: DNS
-  roles:
-    - bind
+- include: haus.yml
 
-# Host rules for Jenkins-ci slaves
-- hosts: slaves
-  name: Jenkins Slave
-  roles:
-    - build
-    - jenkins-slave
+- include: downloads.yml
+
+- include: bastion.yml
  
-# Host rules for Jenkins-ci masters
-- hosts: masters
-  name: Jenkins Master
-  roles:
-    - build
-    - sshd
-    - pound
-    - jenkins
-    - tcpwrappers
-    - bazaar
-
-# Host rules for remote hosts
-- hosts: remote
-  name: Remote
-  roles:
-    - tcpwrappers
-
-- hosts: haus
-  name: Haus
-  roles:
-    - { role: avahi, avahi_service_name: ssh, avahi_service_type: _ssh._tcp, avahi_service_port: 22, when: "ansible_distribution == 'Fedora'" }
-
-- hosts: downloads
-  name: Downloads
-  roles:
-    - download.tangent.org
-
-# Host rules for bastion hosts
-- hosts: bastion
-  name: Bastion
-
-  roles:
-    - fail2ban
-    - denyhosts
-
-# Need to be listed last
-- hosts: harden
-  name: Harden
-  roles:
-    - { role: rkhunter, when: "ansible_os_family in ('RedHat', 'Debian')" }
-    - { role: sshd, sshd_harden: True }
-    - { role: harden }
+- include: harden.yml
 
 - include: developer.yml
-

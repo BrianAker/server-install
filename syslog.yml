@@ -1,6 +1,12 @@
 ---
 # Rules for syslog servers
-- hosts: syslog
-  name: Syslog
+- name: Syslog
+  hosts: syslog
+
+  vars_files:
+     - "vars/{{ ansible_os_family }}"
+     - "vars/{{ ansible_distribution }}"
+     - "vars/Defaults"
+
   roles:
     - syslog

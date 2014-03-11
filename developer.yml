@@ -1,6 +1,12 @@
 ---
 # Rules for hosts that I do direct development on
-- hosts: developer
-  name: Developer
+- name: Developer
+  hosts: developer
+
+  vars_files:
+     - "vars/{{ ansible_os_family }}"
+     - "vars/{{ ansible_distribution }}"
+     - "vars/Defaults"
+
   roles:
     - { role: developer, developer_username: brian, keychain: True, is_admin: True }

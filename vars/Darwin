@@ -1,7 +1,6 @@
 # vim:ft=yaml
 ---
 apache: httpd
-root_group: wheel
 service_sshd: ssh
 sshd_config_file: /etc/sshd_config
 base_user_home: Users
