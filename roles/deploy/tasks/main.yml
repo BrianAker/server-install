@@ -1,5 +1,5 @@
 ---
-- file: path="~{{ deploy_username }}/.ssh/environment"
+- file: path="{{ User.home }}/.ssh/environment"
         state=absent
         mode=0700
   sudo: yes

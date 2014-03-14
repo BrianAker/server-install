@@ -1,13 +1,13 @@
 ---
-- command: which ansible
+- command: 'test "X`which ansible`" = "X/Users/brian/.python/bin/ansible"'
   register: which_ansbile_result
-  sudo: yes
-  failed_when: which_ansbile_result.rc != 1 and which_ansbile_result.rc != 0
+  failed_when: "which_ansbile_result.rc == 2"
+  changed_when: "which_ansbile_result.rc != 2"
 
-- command: 'test "X{{ which_ansbile_result.stdout[0] }}" = "X/usr/bin/ansible"'
-  register: using_system_ansible
-  when: which_ansbile_result.stdout
-  failed_when: using_system_ansible.rc != 1 and using_system_ansible.rc != 0
+- set_fact: using_system_ansible=True
+  when: which_ansbile_result.rc == 0
+
+- set_fact: using_system_ansible=False
 
 - command: id -gn root
   register: id_group_result

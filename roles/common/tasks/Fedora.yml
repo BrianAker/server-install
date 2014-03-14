@@ -8,11 +8,11 @@
     - cloud-init
   tags: package_install
 
-- name: yum remove software
+- name: yum remove system ansible
   sudo: yes
   yum:  name={{ item }}
         state=absent
-  when: using_system_ansible|failed
+  when: using_system_ansible == False
   with_items:
     - ansible
   tags: package_install

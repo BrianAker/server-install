@@ -1,6 +1,0 @@
----
-- name: install avahi packages
-  sudo: yes
-  yum:  name={{ item }}
-        state=installed
-  with_items: avahi_packages

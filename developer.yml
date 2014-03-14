@@ -9,4 +9,10 @@
      - "vars/Defaults"
 
   roles:
-    - { role: developer, developer_username: brian, keychain: True, is_admin: True }
+    - role: developer
+      User:
+        name: brian
+        shell: "{{ default_shell }}"
+        home: "/{{ base_user_home }}/brian"
+        keychain: True
+        id_admin: True

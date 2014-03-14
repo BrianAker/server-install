@@ -1,6 +1,10 @@
 ---
+- set_fact: profile_d="{{ User.home }}/.profile.d"
+  sudo: yes
+  sudo_user: "{{ adduser_name }}"
+
 - file: state=directory
-        path="~/.bazaar/plugins"
+        path="{{ User.home }}/.bazaar/plugins"
   sudo: yes
   sudo_user: "{{ adduser_name }}"
 
@@ -11,22 +15,21 @@
                   key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + adduser_name) }}"
 
 - name: reset mode for authorized_keys
+  file: path="{{ User.home }}/.ssh/authorized_keys"
+        mode=0600
   sudo: yes
   sudo_user: "{{ adduser_name }}"
-  file: path="~/.ssh/authorized_keys"
-        mode=0600
+  when: "'{{ inventory_hostname }}' != 'localhost'"
 
-- file: path="~/.profile.d"
-        mode=0700
+- file: path="{{ profile_d }}"
+        mode=0750
         state=directory
   sudo: yes
   sudo_user: "{{ adduser_name }}"
 
 - name: copy in specific
-  sudo: yes
-  sudo_user: "{{ adduser_name }}"
-  template: src={{ item }}.j2 
-            dest="~/.{{ item }}"
+  template: src="{{ item }}.j2"
+            dest="{{ profile_d }}/{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -34,34 +37,34 @@
     - pythonrc
     - perlrc
     - rubyrc
-
-- name: copy in specific
   sudo: yes
   sudo_user: "{{ adduser_name }}"
-  template: src={{ item }}.j2 
-            dest="~/.{{ item }}"
+
+- name: copy in specific
+  template: src="{{ item }}.j2"
+            dest="{{ profile_d }}/{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
     - pkgngrc
   when: ansible_distribution in ('FreeBSD')
-
-- name: copy in specific
   sudo: yes
   sudo_user: "{{ adduser_name }}"
-  template: src={{ item }}.j2 
-            dest="~/.{{ item }}"
+
+- name: copy in specific
+  template: src="{{ item }}.j2"
+            dest="{{ profile_d }}/{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
     - sbinrc
   when: ansible_distribution in ('Debian')
-
-- name: copy in OSX specific
   sudo: yes
   sudo_user: "{{ adduser_name }}"
-  template: src={{ item }}.j2 
-            dest="~/.{{ item }}"
+
+- name: copy in OSX specific
+  template: src="{{ item }}.j2"
+            dest="{{ profile_d }}/{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -69,24 +72,26 @@
     - localrc
     - javarc
   when: ansible_distribution in ('MacOSX')
-
-- name: copy in specific
   sudo: yes
   sudo_user: "{{ adduser_name }}"
-  template: src={{ item }}.j2 
-            dest="~/.{{ item }}"
+
+- name: copy in specific
+  template: src="{{ item }}.j2"
+            dest="{{ profile_d }}/{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
     - keychainrc
   when: keychain == True
-
-- name: Reconfigure path for user to include customrc
   sudo: yes
   sudo_user: "{{ adduser_name }}"
-  lineinfile: dest="~/.bash_profile"
+
+- name: Reconfigure path for user to include customrc
+  lineinfile: dest="{{ User.home }}/.bash_profile"
               regexp="^. ~/.customrc"
               line=". ~/.customrc"
               mode=0700
               state=present
               create=yes
+  sudo: yes
+  sudo_user: "{{ adduser_name }}"

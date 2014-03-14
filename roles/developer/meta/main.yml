@@ -2,9 +2,9 @@
 allow_duplicates: yes
 dependencies:
   - { role: developer/validate }
-  - { role: adduser, adduser_name: "{{ developer_username }}" }
-  - { role: python, python_user: "{{ developer_username }}" }
-#  - { role: bzr, username: "{{ developer_username }}" }
+  - { role: adduser, adduser_name: "{{ User.name }}" }
+  - { role: python, python_user: "{{ User.name }}" }
+#  - { role: bzr, username: "{{ User.name }}" }
   - { role: firewalld, add_port: '4155/tcp' }
-  - { role: sudoers, sudoers_user: "{{ developer_username }}" }
-  - { role: sshd, sshd_allow_username: "{{ developer_username }}" }
+  - { role: sudoers, sudoers_user: "{{ User.name }}" }
+  - { role: sshd, sshd_allow_username: "{{ User.name }}" }

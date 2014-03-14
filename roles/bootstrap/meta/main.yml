@@ -5,14 +5,14 @@ dependencies:
   - { role: resolv }
   - { role: bootstrap/FreeBSD, when: "ansible_distribution == 'FreeBSD'" }
   - { role: bootstrap/MacOSX, when: "ansible_distribution == 'MacOSX'" }
-  - { role: upgrade }
-  - { role: sudoers }
-  - { role: python }
-  - { role: bash }
-  - { role: facts }
-  - { role: ntp }
-  - { role: sshd }
-  - { role: deploy, deploy_username: deploy }
-  - { role: unattended-upgrades }
-  - { role: bootstrap/base }
+#  - { role: upgrade }
+#  - { role: sudoers }
+#  - { role: python }
+#  - { role: bash }
+#  - { role: facts }
+#  - { role: ntp }
+#  - { role: sshd }
+#  - { role: deploy, deploy_username: deploy }
+#  - { role: unattended-upgrades }
+#  - { role: bootstrap/base }
 # - { role: hostname }

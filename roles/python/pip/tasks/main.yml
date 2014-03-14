@@ -1,9 +1,9 @@
 ---
 - name: install local pip packages for user
-  pip:  name={{ item }}
+  sudo: yes
+  sudo_user: "{{ User.name }}"
+  pip:  name="{{ item }}"
         virtualenv_command="{{ virtualenv_bin }}"
-        virtualenv="{{ pip_user_dir }}"
+        virtualenv="{{ User.home }}/{{ pip_user_dir }}"
         state=present
   with_items: pip_packages
-  sudo: yes
-  sudo_user: "{{ python_user }}"

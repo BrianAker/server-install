@@ -1,4 +1,4 @@
 ---
 - template: src=resolv.conf.j2 dest=/etc/resolv.conf
-  when: broken_dns is defined
+  when: broken_dns is defined and broken_dns == true
   sudo: yes

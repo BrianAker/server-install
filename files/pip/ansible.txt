@@ -1,5 +1,8 @@
-ansible
-dnspython
+Jinja2==2.7.2
+PyYAML==3.10
+ansible==1.5.2
+dnspython==1.11.1
+httplib2==0.8
+pip-tools==0.3.4
 passlib
-pip-tools
 pyrax

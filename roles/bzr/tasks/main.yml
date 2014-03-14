@@ -3,11 +3,11 @@
 - name: mkdir bazaar directory
   sudo: yes
   sudo_user: "{{ bzr_username }}"
-  file: path="{{ item }}"
+  file: path="{{ User.home }}/{{ item }}"
         state=directory
         mode=0750
   with_items: 
-    - "~/.bazaar/plugins"
+    - ".bazaar/plugins"
 
 - get_url:  url="{{ item.url }}"
             dest="{{ env.TMPDIR }}/{{ item.tarfile }}"

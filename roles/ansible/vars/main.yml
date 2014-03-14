@@ -1,2 +1,26 @@
 # vim:ft=yaml
 ---
+packages:
+  FreeBSD:
+    - libyaml
+
+  MacOSX:
+    - libyaml
+
+  RedHat:
+    - libyaml
+    - libyaml-devel
+
+  Fedora:
+    - libyaml
+    - libyaml-devel
+
+  Debian:
+    - libyaml-dev
+
+  Ubuntu:
+    - libyaml-dev
+
+  CentOS:
+    - libyaml
+    - libyaml-devel
