@@ -15,4 +15,5 @@
         shell: "{{ default_shell }}"
         home: "/{{ base_user_home }}/brian"
         keychain: True
-        id_admin: True
+        is_admin: True
+        is_remote: True

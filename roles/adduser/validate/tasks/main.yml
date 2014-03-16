@@ -1,8 +1,11 @@
 ---
-- debug: msg="Adding user {{ adduser_name }}"
+- debug: msg="Adding user {{ User.name }}"
 
-- fail: "adduser_name was not defined."
-  when: adduser_name is not defined
+- fail: "User was not defined."
+  when: User is not defined
+
+- fail: "User.name was not defined."
+  when: User.name is not defined
 
 - fail: "default_shell was not defined."
   when: default_shell is not defined

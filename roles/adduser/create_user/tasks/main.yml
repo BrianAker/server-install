@@ -1,5 +1,5 @@
 ---
-- set_fact: userpassword_dir="/{{ inventory_dir }}/credentials/{{ inventory_hostname }}/{{ adduser_name }}"
+- set_fact: userpassword_dir="/{{ inventory_dir }}/credentials/{{ inventory_hostname }}/{{ User.name }}"
 - set_fact: userpassword_command="{{ userpassword_dir}}/userpassword encrypt=sha256_crypt"
 
 - name: mkdir credentials hostname username
@@ -10,11 +10,14 @@
 
 - name: create user
   sudo: yes
-  user: name="{{ adduser_name }}"
-        comment="{{ adduser_name }}"
+  user: name="{{ User.name }}"
+        comment="{{ User.name }}"
         state=present
         shell={{ default_shell }}
         generate_ssh_key="yes"
         password={{ item }}
         update_password=always
   with_password: userpassword_command
+
+- stat: path="{{ User.home }}" get_md5=no
+  register: chech_home_directory

@@ -5,7 +5,7 @@
   when: is_ipaddress|failed
 # when: inventory_hostname !=  groups['inventory_name_is_ip'][0]
 
-- name: set hostname
+- name: set hostname (perm)
   command: scutil --set HostName {{ inventory_hostname }}
   sudo: yes
   when: is_ipaddress|failed

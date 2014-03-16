@@ -10,4 +10,5 @@
 
   roles:
     - build
-    - { role: developer, developer_username: brian, keychain: True, is_admin: True }
+
+- include: developer.yml

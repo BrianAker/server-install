@@ -7,8 +7,5 @@
         - "{{ ansible_os_family }}.yml"
       paths: "{{ inventory_dir }}/roles/sshd/vars/"
 
-- include: adduser.yml
-  when: sshd_allow_username is defined
-
 - include: harden.yml
   when: sshd_harden == True

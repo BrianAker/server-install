@@ -1,5 +1,4 @@
 ---
-allow_duplicates: yes
+allow_duplicates: no
 dependencies:
   - { role: sudoers/base }
-  - { role: sudoers/adduser, when: sudoers_user is defined }

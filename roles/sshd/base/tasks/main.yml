@@ -6,13 +6,10 @@
         - "{{ ansible_os_family }}.yml"
       paths: "{{ inventory_dir }}/roles/sshd/vars/"
 
-- fail: "sshd_config_file was not defined."
-  when: sshd_config_file is not defined
-
 - name: "enable {{ service_sshd }} "
   sudo: yes
-  service:  name={{ service_sshd }}
+  service:  name="{{ service_sshd }}"
             state=started
             enabled=yes
-  when: ansible_distribution != 'MacOSX'
+  when: "ansible_distribution != 'MacOSX'"
   tags: enable

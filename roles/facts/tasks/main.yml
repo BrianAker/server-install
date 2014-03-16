@@ -1,5 +1,5 @@
 ---
-- command: 'test "X`which ansible`" = "X/Users/brian/.python/bin/ansible"'
+- command: 'test "X`which ansible`" = "X/usr/bin/ansible"'
   register: which_ansbile_result
   failed_when: "which_ansbile_result.rc == 2"
   changed_when: "which_ansbile_result.rc != 2"

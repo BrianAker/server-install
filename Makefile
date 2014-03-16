@@ -15,7 +15,7 @@ ROLE_FILES+= $(ROLE_DEFAULTS)
 ROLE_FILES+= $(ROLE_TASKS)
 ROLE_FILES+= $(ROLE_HANDLERS)
 
-srcdir= $(shell pwd)/
+srcdir= $(shell pwd)
 HOSTNAME:= `hostname`
 HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
@@ -44,6 +44,7 @@ CURL=curl --silent --show-error
 INSTALL= install -b
 MKDIR= mkdir -p
 TOUCH= touch -r
+dirstamp= .dirstamp
 
 JENKINS_SLAVES=
 
@@ -83,12 +84,34 @@ print: $(ROLE_FILES)
 
 DIST_MAKEFILES:=
 
+.PHONY: bin
+bin: .ansible/bin/ssh-import-id .ansible/bin/ansible
+
+.ansible/bin/ssh-import-id: .ansible/$(dirstamp)
+	@pip install -r files/pip/ansible.txt
+	@touch $@
+
+.ansible/bin/ansible: .ansible/$(dirstamp)
+	@pip install -r files/pip/ansible.txt
+	@touch $@
+
+.ansible/$(dirstamp):
+	virtualenv .ansible
+	. .ansible/bin/activate && $(MAKE) $(MAKECMDGOALS)
+	@echo ". .ansible/bin/activate"
+	@touch $@
+
 .PHONY: all
-all: public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6 $(ROLE_META) $(ROLE_FILES) $(ALL_ROLEBOOKS)
+all: bin public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6 $(ROLE_META) $(ROLE_FILES) $(ALL_ROLEBOOKS)
 
 .PHONY: clean
 clean:
-	rm -f public_keys/brian public_keys/jenkins
+	@rm -f public_keys/brian public_keys/jenkins
+	@find roles | grep role.yml | xargs rm
+
+.PHONY: distclean
+distclean: clean
+	rm -rf .ansible
 
 .PHONY: check
 check: all check-rolebooks check-playbook-am

@@ -1,0 +1,6 @@
+# vim:ft=yaml
+---
+- user: name=User.name
+        state=absent
+  when: "ansible_distribution != 'MacOSX'"
+  sudo: yes

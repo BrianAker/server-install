@@ -1,4 +1,4 @@
 ---
-- fail: "deploy_username was not defined."
-  when: deploy_username is not defined
+- fail: "User.name was not defined."
+  when: User.name is not defined
 

@@ -7,9 +7,9 @@
         - "{{ ansible_os_family }}.yml"
       paths: "{{ inventory_dir }}/roles/sudoers/vars/"
 
-- set_fact: sudoer_user_file='{{ sudoers_d }}/{{ sudoers_user }}'
+- set_fact: sudoer_user_file='{{ sudoers_d }}/{{ User.name }}'
 
-- debug: msg="Adding user {{ sudoers_user }} with file {{ sudoer_user_file }}"
+- debug: msg="Adding user {{ User.name }} with file {{ sudoer_user_file }}"
 
 - name: write sudoers file
   sudo: yes
@@ -29,5 +29,5 @@
               line='{{ item.key }} {{ item.value }}'
               validate='visudo -cf %s'
   with_items:
-    - { key: "{{ sudoers_user }}", value: 'ALL=(ALL) NOPASSWD:ALL'}
-    - { key: "Defaults:{{ sudoers_user }}", value: '!requiretty'}
+    - { key: "{{ User.name }}", value: 'ALL=(ALL) NOPASSWD:ALL'}
+    - { key: "Defaults:{{ User.name }}", value: '!requiretty'}

@@ -37,7 +37,7 @@
 
 - include: syslog.yml
 
-- include: dnsservers.yml
+#- include: dnsservers.yml
 
 - include: slaves.yml
  

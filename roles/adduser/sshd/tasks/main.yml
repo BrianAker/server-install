@@ -1,0 +1,27 @@
+---
+- name: include vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ ansible_distribution }}.yml"
+        - "{{ ansible_os_family }}.yml"
+      paths: "{{ inventory_dir }}/roles/sshd/vars/"
+
+
+- debug: msg="Adding user {{ User.name }} with file {{ sshd_config_file }}"
+  when: User.name is defined
+
+- name: update sshd AllowUsers
+  sudo: yes
+  lineinfile: dest={{ sshd_config_file }}
+              regexp="^AllowUsers {{ User.name }}"
+              line="AllowUsers {{ User.name }}"
+              state=present
+  notify: restart sshd
+
+- name: remove sshd AllowUsers User.name
+  sudo: yes
+  lineinfile: dest={{ sshd_config_file }}
+              regexp="AllowUsers User.name"
+              state=absent
+  notify: restart sshd

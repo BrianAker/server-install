@@ -6,3 +6,4 @@ httplib2==0.8
 pip-tools==0.3.4
 passlib
 pyrax
+ssh-import-id
