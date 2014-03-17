@@ -1,31 +1,31 @@
 ---
 - set_fact: profile_d="{{ User.home }}/.profile.d"
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - file: state=directory
         path="{{ User.home }}/.bazaar/plugins"
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - name: setup authorized_key
   sudo: yes
   ignore_errors: yes
-  authorized_key: user="{{ adduser_name }}"
-                  key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + adduser_name) }}"
+  authorized_key: user="{{ User.name }}"
+                  key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + User.name) }}"
 
 - name: reset mode for authorized_keys
   file: path="{{ User.home }}/.ssh/authorized_keys"
         mode=0600
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
   when: "'{{ inventory_hostname }}' != 'localhost'"
 
 - file: path="{{ profile_d }}"
         mode=0750
         state=directory
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -38,7 +38,7 @@
     - perlrc
     - rubyrc
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -49,7 +49,7 @@
     - pkgngrc
   when: ansible_distribution in ('FreeBSD')
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -60,7 +60,7 @@
     - sbinrc
   when: ansible_distribution in ('Debian')
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - name: copy in OSX specific
   template: src="{{ item }}.j2"
@@ -73,7 +73,7 @@
     - javarc
   when: ansible_distribution in ('MacOSX')
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -84,7 +84,7 @@
     - keychainrc
   when: keychain == True
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"
 
 - name: Reconfigure path for user to include customrc
   lineinfile: dest="{{ User.home }}/.bash_profile"
@@ -94,4 +94,4 @@
               state=present
               create=yes
   sudo: yes
-  sudo_user: "{{ adduser_name }}"
+  sudo_user: "{{ User.name }}"

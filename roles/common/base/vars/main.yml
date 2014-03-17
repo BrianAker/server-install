@@ -20,6 +20,7 @@ packages:
     - make
     - net-tools
     - pkgconfig
+    - rsyslog
     - system-config-network
     - tar
     - traceroute
@@ -36,6 +37,7 @@ packages:
     - fakeroot
     - make
     - pkgconfig
+    - rsyslog
     - tar
     - traceroute
     - vim

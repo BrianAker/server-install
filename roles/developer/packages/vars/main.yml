@@ -1,0 +1,17 @@
+# vim:ft=yaml
+---
+packages:
+  FreeBSD: []
+
+  MacOSX:
+    - libqrencode 
+
+  RedHat: []
+
+  Fedora: []
+
+  Debian: []
+
+  Ubuntu: []
+
+  CentOS: []

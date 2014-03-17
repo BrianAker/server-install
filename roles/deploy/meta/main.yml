@@ -4,6 +4,6 @@ dependencies:
   - { role: deploy/validate }
 #  - { role: sudoers, sudoers_user: "{{ User.name }}" }
   - { role: sshd }
-  - { role: adduser, adduser_name: "{{ User.name }}" }
+  - { role: adduser }
   - { role: python }
   - { role: ansible, ansible_user: "{{ User.name }}" }

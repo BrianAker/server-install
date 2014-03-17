@@ -1,7 +1,12 @@
-# vim:ft=automake
-#
+# vim:ft=make
 
 .SUFFIXES:
+
+BUILD:=
+CHECK:=
+DISTCLEAN:=
+MAINTAINERCLEAN:=
+PREREQ:=
 
 PKG_INSTALLER=
 PKG_UPDATE=
@@ -15,14 +20,15 @@ ROLE_FILES+= $(ROLE_DEFAULTS)
 ROLE_FILES+= $(ROLE_TASKS)
 ROLE_FILES+= $(ROLE_HANDLERS)
 
-srcdir= $(shell pwd)
 HOSTNAME:= `hostname`
 HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
-ALL_MAKEFILES:= $(wildcard *.am) 
 ALL_SCRIPTS:= $(wildcard *.sh) 
-ALL_PLAYBOOKS:= $(wildcard *.yml) 
 
+include aux/common.mk
+include aux/pip.mk
+include aux/ansible.mk
+include aux/git.mk
 
 TASK_DIRS:= tasks defaults handlers meta
 SUB_ROLES:= base validate_input_parameters
@@ -37,28 +43,20 @@ ROLE_DEFAULTS:= $(addsuffix /defaults/main.yml, $(ROLES))
 ROLE_TASKS:= $(addsuffix /tasks/main.yml, $(ROLES))
 ROLE_HANDLERS:= $(addsuffix /handlers/main.yml, $(ROLES))
 ROLE_META:= $(addsuffix /meta/main.yml, $(ROLES))
-ALL_ROLEBOOKS= $(addsuffix /role.yml, $(ROLES))
 
-ANSIBLE_CHECK= ansible-playbook --syntax-check
-CURL=curl --silent --show-error
-INSTALL= install -b
-MKDIR= mkdir -p
-TOUCH= touch -r
-dirstamp= .dirstamp
+ROLEBOOKS+= $(addsuffix /role.yml, $(ROLES))
+PLAYBOOKS+= $(wildcard *.yml) 
 
 JENKINS_SLAVES=
 
 USER_EXISTS:= $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
-
-.PHONY: fill
-fill: $(ROLE_FILES)
 
 $(ROLE_META): support/meta.yml
 	@if test -f $@; then \
 	  $(TOUCH) $< $@; \
 	  git add --intent-to-add $@; \
 	else \
-	  $(MKDIR) $(@D); \
+	  $(MKDIR_P) $(@D); \
 	  $(INSTALL) $< $@; \
 	  git add --intent-to-add $@; \
 	fi
@@ -68,109 +66,74 @@ $(ROLE_FILES): support/main.yml
 	  $(TOUCH) $< $@; \
 	  git add --intent-to-add $@; \
 	else \
-	  $(MKDIR) $(@D); \
+	  $(MKDIR_P) $(@D); \
 	  $(INSTALL) $< $@; \
 	  git add --intent-to-add $@; \
 	fi
 
-$(ALL_ROLEBOOKS): support/role.yml
+$(ROLEBOOKS): support/role.yml $(ROLE_FILES) $(ROLE_META)
 	@cp $< $@
 	@echo "  roles: [ '$(subst roles/,,$(@D))' ]" >> $@
 
-.PHONY: print
-print: $(ROLE_FILES)
-	@roles='$(ROLE_FILES)'; \
-	for p in $$roles; do echo "$$p"; done
+BUILD+= $(ROLEBOOKS)
 
 DIST_MAKEFILES:=
 
-.PHONY: bin
-bin: .ansible/bin/ssh-import-id .ansible/bin/ansible
-
-.ansible/bin/ssh-import-id: .ansible/$(dirstamp)
-	@pip install -r files/pip/ansible.txt
-	@touch $@
-
-.ansible/bin/ansible: .ansible/$(dirstamp)
-	@pip install -r files/pip/ansible.txt
-	@touch $@
-
-.ansible/$(dirstamp):
-	virtualenv .ansible
-	. .ansible/bin/activate && $(MAKE) $(MAKECMDGOALS)
-	@echo ". .ansible/bin/activate"
-	@touch $@
-
 .PHONY: all
-all: bin public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6 $(ROLE_META) $(ROLE_FILES) $(ALL_ROLEBOOKS)
+all: $(ROLE_FILES) $(ROLE_META) $(BUILD) public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6
 
 .PHONY: clean
 clean:
+	@rm -rf $(BUILD)
 	@rm -f public_keys/brian public_keys/jenkins
 	@find roles | grep role.yml | xargs rm
 
 .PHONY: distclean
-distclean: clean
-	rm -rf .ansible
+distclean: clean distclean-am
+
+.PHONY: distclean-am
+distclean-am:
+	@rm -rf $(PREREQ)
+	@rm -rf $(DISTCLEAN)
+
+.PHONY: maintainer-clean
+maintainer-clean: distclean
+	@rm -rf $(MAINTAINERCLEAN)
+
+.PHONY: print_check
+print_check:
+	@echo "$(CHECK)"
+	@echo "$(ROLEBOOKS)"
 
 .PHONY: check
-check: all check-rolebooks check-playbook-am
-
-.PHONY: check-playbook
-check-playbook: check-playbook-am
-
-.PHONY: check-playbook-am
-check-playbook-am: $(ALL_PLAYBOOKS)
-	$(foreach f,$^,$(ANSIBLE_CHECK) $(f);)
-
-.PHONY: check-rolebooks
-check-rolebooks: $(ALL_ROLEBOOKS) $(ROLE_FILES) $(ROLE_META) check-rolebooks-am
-
-.PHONY: check-rolebooks-am
-check-rolebooks-am: $(ALL_ROLEBOOKS)
-	$(foreach f,$^,$(ANSIBLE_CHECK) $(f);)
+check: all $(CHECK)
 
 public_keys: public_keys/brian public_keys/deploy public_keys/jenkins
 
 public_keys/brian:
-	@ssh-import-id -o public_keys/brian brianaker
+	@$(SSH_IMPORT_ID) -o public_keys/brian brianaker
 
 public_keys/jenkins:
-	@ssh-import-id -o public_keys/jenkins d-ci
+	@$(SSH_IMPORT_ID) -o public_keys/jenkins d-ci
 
 files/pkg-pubkey.cert:
 	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
 .PHONY: install
 install: all
-	ansible-playbook site.yml
+	$(ANSIBLE_PLAYBOOK) site.yml -u deploy
 
 .PHONY: install-ansible-user
 install-ansible-user:
-	ansible-playbook site.yml --limit=localhost -s -i hosts
+	$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost -s -i hosts
 
 .PHONY: upgrade
 upgrade: all
-	ansible-playbook maintenance.yml
+	$(ANSIBLE_PLAYBOOK) maintenance.yml
 
 .PHONY: localhost
 localhost: all
-	ansible-playbook site.yml --limit=localhost
-
-.PHONY: install-ansible
-install-ansible:
-	$(MAKE) install-virtualenv
-	virtualenv ~/.python
-	cp templates/pythonrc ~/.pythonrc
-	. ~/.pythonrc
-	pip install ansible
-
-.PHONY: show
-show:
-	@echo "HOSTNAME ${HOSTNAME}"
-	@echo "HOST_TYPE ${HOST_TYPE}"
-	@echo "HOST_UUID ${HOST_UUID}"
-	@echo "DISTRIBUTION: ${DISTRIBUTION}"
+	$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost
 
 roles/common/files/RPM-GPG-KEY-EPEL-6:
 	@$(CURL) -o $@ https://fedoraproject.org/static/A4D647E9.txt

@@ -2,5 +2,5 @@
 allow_duplicates: no
 dependencies:
   - { role: sshd }
-  - { role: adduser, adduser_name: User.name }
+  - { role: adduser }
   - { role: java }

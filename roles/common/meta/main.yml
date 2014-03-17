@@ -4,3 +4,4 @@ dependencies:
   - { role: bootstrap }
   - { role: facts }
   - { role: common/base }
+  - { role: common/Fedora, when: ansible_distribution == 'Fedora' }
