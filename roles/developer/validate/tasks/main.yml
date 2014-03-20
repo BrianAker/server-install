@@ -1,6 +1,3 @@
 ---
 - fail: "User was not defined."
   when: User is not defined
-
-- fail: "User.home was not defined."
-  when: User.home is not defined

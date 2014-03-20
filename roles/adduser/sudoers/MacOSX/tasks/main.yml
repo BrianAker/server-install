@@ -8,9 +8,9 @@
       paths: "{{ inventory_dir }}/roles/sudoers/vars/"
 
 - name: add user to admin group
-  command: dscl . append /Groups/admin GroupMembership {{ sudoers_user }}
+  command: dscl . append /Groups/admin GroupMembership {{ User.name }}
   sudo: yes
 
 - name: add user to wheel group
-  command: dscl . append /Groups/wheel GroupMembership {{ sudoers_user }}
+  command: dscl . append /Groups/wheel GroupMembership {{ User.name }}
   sudo: yes

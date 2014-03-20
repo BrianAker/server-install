@@ -1,4 +1,5 @@
 # Host rules for remote hosts
+---
 - name: Remote
   hosts: remote
 

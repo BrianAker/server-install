@@ -1,10 +1,6 @@
 ---
-- set_fact: profile_d="{{ User.home }}/.profile.d"
-  sudo: yes
-  sudo_user: "{{ User.name }}"
-
 - file: state=directory
-        path="{{ User.home }}/.bazaar/plugins"
+        path="{{ user_homedir }}/.bazaar/plugins"
   sudo: yes
   sudo_user: "{{ User.name }}"
 
@@ -15,7 +11,7 @@
                   key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + User.name) }}"
 
 - name: reset mode for authorized_keys
-  file: path="{{ User.home }}/.ssh/authorized_keys"
+  file: path="{{ user_homedir }}/.ssh/authorized_keys"
         mode=0600
   sudo: yes
   sudo_user: "{{ User.name }}"
@@ -27,13 +23,22 @@
   sudo: yes
   sudo_user: "{{ User.name }}"
 
-- name: copy in specific
+- name: copy in customrc
   template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}"
+            dest="{{ user_homedir }}/.{{ item }}"
             mode=0600
             validate='bash -n %s'
   with_items:
     - customrc
+  sudo: yes
+  sudo_user: "{{ User.name }}"
+
+- name: copy in specific
+  template: src="{{ item }}.j2"
+            dest="{{ profile_d }}/{{ item }}.sh"
+            mode=0600
+            validate='bash -n %s'
+  with_items:
     - pythonrc
     - perlrc
     - rubyrc
@@ -42,7 +47,7 @@
 
 - name: copy in specific
   template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}"
+            dest="{{ profile_d }}/{{ item }}.sh"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -53,7 +58,7 @@
 
 - name: copy in specific
   template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}"
+            dest="{{ profile_d }}/{{ item }}.sh"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -64,7 +69,7 @@
 
 - name: copy in OSX specific
   template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}"
+            dest="{{ profile_d }}/{{ item }}.sh"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -77,7 +82,7 @@
 
 - name: copy in specific
   template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}"
+            dest="{{ profile_d }}/{{ item }}.sh"
             mode=0600
             validate='bash -n %s'
   with_items:
@@ -87,11 +92,12 @@
   sudo_user: "{{ User.name }}"
 
 - name: Reconfigure path for user to include customrc
-  lineinfile: dest="{{ User.home }}/.bash_profile"
-              regexp="^. ~/.customrc"
-              line=". ~/.customrc"
+  lineinfile: dest="{{ user_homedir }}/.bash_profile"
+              regexp="customrc"
+              line="if [ -f '.customrc' ]; then . '.customrc'; fi"
               mode=0700
               state=present
+              backrefs=yes
               create=yes
   sudo: yes
   sudo_user: "{{ User.name }}"

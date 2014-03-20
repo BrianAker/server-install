@@ -3,41 +3,6 @@
 if [ -z "$CUSTOMRC_INCLUDED" ]
 then
   CUSTOMRC_INCLUDED=yes
-  if [ -f "$HOME/.brewrc" ]; then
-    . $HOME/.brewrc
-  fi
-
-  if [ -f "$HOME/.javarc" ]; then
-    . $HOME/.javarc
-  fi
-
-  if [ -f "$HOME/.keychainrc" ]; then
-    . $HOME/.keychainrc
-  fi
-
-  if [ -f "$HOME/.localrc" ]; then
-    . $HOME/.localrc
-  fi
-
-  if [ -f "$HOME/.pkgngrc" ]; then
-    . $HOME/.pkgngrc
-  fi
-
-  if [ -f "$HOME/.perlrc" ]; then
-    . $HOME/.perlrc
-  fi
-
-  if [ -f "$HOME/.pythonrc" ]; then
-    . $HOME/.pythonrc
-  fi
-
-  if [ -f "$HOME/.rubyrc" ]; then
-    . $HOME/.rubyrc
-  fi
-
-  if [ -f "$HOME/.sbinrc" ]; then
-    . $HOME/.sbinrc
-  fi
 
   if [ -d "$HOME/.profile.d" ]; then
     for i in "$HOME/.profile.d/*.sh" ; do
@@ -51,6 +16,8 @@ then
     done
   fi
 
-  VISUAL=vi
-  EDITOR=vi
+  if [ ! -v PS1 ]; then
+    VISUAL=vi
+    EDITOR=vi
+  fi
 fi

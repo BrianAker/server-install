@@ -1,0 +1,43 @@
+# vim:ft=yaml
+---
+- file: state=directory
+        path="/etc/auto.master.d"
+        owner=root
+  sudo: yes
+
+- name: Add autofs nfs support
+  template: src="{{ item }}.j2"
+            dest="/etc/auto.master.d/{{ item }}"
+            mode=0644
+  with_items:
+    - nfs.autofs
+  sudo: yes
+  notify:
+    - reload autofs
+    - restart autofs
+
+
+- name: Add etc auto.nfs
+  template: src="{{ item }}.j2"
+            dest="/etc/{{ item }}"
+            mode=0644
+  with_items:
+    - auto.nfs
+  sudo: yes
+  notify:
+    - reload autofs
+    - restart autofs
+
+- name: nfs-commons
+  lineinfile: dest="/etc/default/nfs-common"
+              state=present
+              regexp='^#?{{ item.key }}'
+              line='{{ item.key }}={{ item.value }}'
+  with_items:
+    - { key: 'NEED_IDMAPD', value: 'yes'}
+    - { key: 'NEED_GSSD', value: 'no'}
+  sudo: yes
+  tags: config
+  notify:
+    - reload autofs
+    - restart autofs

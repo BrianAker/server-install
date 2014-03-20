@@ -1,0 +1,18 @@
+# vim:ft=yaml
+---
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - wmdocker
+    - docker-io
+
+  Debian: []
+
+  Ubuntu: []
+
+  CentOS: []

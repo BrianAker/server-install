@@ -1,7 +1,0 @@
-- fail: "{{ item }} was not defined."
-  when: item is not defined
-  with_items:
-    - User
-    - pip_user_dir
-    - python_user
-    - virtualenv_bin

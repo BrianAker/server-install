@@ -1,0 +1,5 @@
+---
+allow_duplicates: no
+dependencies:
+  - { role: docker/packages }
+  - { role: docker/Fedora, when: ansible_distribution == 'Fedora' }

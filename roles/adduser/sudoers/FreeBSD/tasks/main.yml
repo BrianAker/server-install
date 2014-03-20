@@ -8,7 +8,7 @@
       paths: "{{ inventory_dir }}/roles/sudoers/vars/"
 
 - name: add user to wheel
-  user: name="{{ sudoers_user }}"
+  user: name="{{ User.name }}"
         state=present
         groups=wheel
         append=yes

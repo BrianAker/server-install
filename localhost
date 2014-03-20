@@ -1,2 +1,2 @@
 # This file is just for working with localhost
-localhost ansible_connection=local
+localhost ansible_connection=local ansible_python_interpreter=.ansible/bin/python

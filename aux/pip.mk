@@ -16,4 +16,8 @@ define pip_install_r
 $(shell . $(PIP_BIN_DIR)/activate && $(PIP_BIN_DIR)/pip install -r $1)
 endef
 
+define pip_upgrade_r
+$(shell . $(PIP_BIN_DIR)/activate && $(PIP_BIN_DIR)/pip install --upgrade -r $1)
+endef
+
 MAINTAINERCLEAN+= $(PIP_DIR)

@@ -5,5 +5,4 @@ dependencies:
   - { role: developer/packages }
   - { role: adduser }
   - { role: python, python_user: "{{ User.name }}" }
-#  - { role: bzr, username: "{{ User.name }}" }
   - { role: firewalld, add_port: '4155/tcp' }

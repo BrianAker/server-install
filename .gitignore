@@ -20,3 +20,4 @@ stamp-h1
 test.yml
 userpassword_command
 .ansible
+aux/ansible

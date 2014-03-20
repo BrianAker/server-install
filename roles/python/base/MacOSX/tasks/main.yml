@@ -1,6 +1,0 @@
----
-- easy_install: name=pip
-                executable=/usr/bin/easy_install
-
-- pip:  name=virtualenv
-        executable=/usr/local/bin/pip

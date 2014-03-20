@@ -1,6 +1,6 @@
 # vim:ft=yaml
 ---
-- set_fact: ansible_dir="{{ User.home }}/.ansible"
+- set_fact: ansible_dir="{{ user_homedir }}/.ansible"
   sudo: yes
   sudo_user: "{{ User.name }}"
 

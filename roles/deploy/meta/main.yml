@@ -2,7 +2,6 @@
 allow_duplicates: no
 dependencies:
   - { role: deploy/validate }
-#  - { role: sudoers, sudoers_user: "{{ User.name }}" }
   - { role: sshd }
   - { role: adduser }
   - { role: python }

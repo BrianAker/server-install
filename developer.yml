@@ -13,7 +13,6 @@
       User:
         name: brian
         shell: "{{ default_shell }}"
-        home: "/{{ base_user_home }}/brian"
         keychain: True
         is_admin: True
         is_remote: True

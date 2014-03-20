@@ -5,6 +5,7 @@ dependencies:
   - { role: adduser/validate }
   - { role: adduser/base }
   - { role: adduser/create_user, when: "ansible_distribution != 'MacOSX'" }
+  - { role: adduser/fill  }
   - { role: python, python_user: "{{ User.name }}" }
   - { role: sshd }
   - { role: adduser/sshd, when: User.is_remote }

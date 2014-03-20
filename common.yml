@@ -19,7 +19,6 @@
       User:
         name: deploy
         shell: "{{ default_shell }}"
-        home: "/{{ base_user_home }}/deploy"
         keychain: True
         is_admin: True
         is_remote: True

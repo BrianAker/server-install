@@ -1,6 +1,7 @@
 # vim:ft=make
 
 .SUFFIXES:
+.SUFFIXES:
 
 BUILD:=
 CHECK:=
@@ -15,7 +16,6 @@ PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 BASE_INSTALL_PATH= /usr/
 
 ROLE_FILES=
-ROLE_FILES+= $(ROLE_VARS)
 ROLE_FILES+= $(ROLE_DEFAULTS)
 ROLE_FILES+= $(ROLE_TASKS)
 ROLE_FILES+= $(ROLE_HANDLERS)
@@ -51,6 +51,16 @@ JENKINS_SLAVES=
 
 USER_EXISTS:= $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 
+$(ROLE_VARS): support/vars.yml
+	@if test -f $@; then \
+	  $(TOUCH) $< $@; \
+	  git add --intent-to-add $@; \
+	else \
+	  $(MKDIR_P) $(@D); \
+	  $(INSTALL) $< $@; \
+	  git add --intent-to-add $@; \
+	fi
+
 $(ROLE_META): support/meta.yml
 	@if test -f $@; then \
 	  $(TOUCH) $< $@; \
@@ -71,7 +81,7 @@ $(ROLE_FILES): support/main.yml
 	  git add --intent-to-add $@; \
 	fi
 
-$(ROLEBOOKS): support/role.yml $(ROLE_FILES) $(ROLE_META)
+$(ROLEBOOKS): support/role.yml $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS)
 	@cp $< $@
 	@echo "  roles: [ '$(subst roles/,,$(@D))' ]" >> $@
 
@@ -80,7 +90,7 @@ BUILD+= $(ROLEBOOKS)
 DIST_MAKEFILES:=
 
 .PHONY: all
-all: $(ROLE_FILES) $(ROLE_META) $(BUILD) public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6
+all: $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD) public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6
 
 .PHONY: clean
 clean:

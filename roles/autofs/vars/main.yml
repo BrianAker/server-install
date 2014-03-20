@@ -1,0 +1,18 @@
+# vim:ft=yaml
+---
+packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora: []
+
+  Debian:
+    - autofs
+
+  Ubuntu:
+    - autofs
+
+  CentOS: []

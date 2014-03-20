@@ -14,7 +14,6 @@
       User:
         name: jenkins
         shell: "{{ default_shell }}"
-        home: "/{{ base_user_home }}/jenkins"
         keychain: True
         is_admin: False
         is_remote: True

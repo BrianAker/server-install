@@ -1,9 +1,9 @@
 Jinja2==2.7.2
 PyYAML==3.10
-ansible==1.5.2
+ansible==1.5.3
 dnspython==1.11.1
 httplib2==0.8
 pip-tools==0.3.4
-passlib
-pyrax
-ssh-import-id
+passlib==1.6.2
+pyrax==1.7.0
+ssh-import-id==3.21

@@ -1,7 +1,6 @@
 # vim:ft=yaml
 ---
 apache: httpd
-base_user_home: home
 bind: named
 default_shell: '/bin/bash'
 sudoer_d: /etc/sudoers.d

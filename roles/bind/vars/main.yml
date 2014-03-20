@@ -11,8 +11,10 @@ packages:
     - bind
     - bind-utils
 
-  Debian: []
+  Debian:
+    - dnsutils
 
-  Ubuntu: []
+  Ubuntu:
+    - dnsutils
 
   CentOS: []

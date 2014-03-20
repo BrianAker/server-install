@@ -1,0 +1,10 @@
+# vim:ft=yaml
+---
+- name: reload autofs
+  command: reload autofs
+  sudo: yes
+
+- name: restart autofs
+  sudo: yes
+  service:  name=autofs
+            state=restarted

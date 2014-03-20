@@ -18,6 +18,3 @@
         password={{ item }}
         update_password=always
   with_password: userpassword_command
-
-- stat: path="{{ User.home }}" get_md5=no
-  register: chech_home_directory

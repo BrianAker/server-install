@@ -33,6 +33,7 @@ packages:
     - '@minimal-environment'
     - '@system-tools'
     - bzr
+    - bind-utils
     - curl
     - fakeroot
     - make
@@ -50,6 +51,7 @@ packages:
     - bzr
     - cron-apt
     - curl
+    - dnsutils
     - fakeroot
     - git
     - gnupg-agent
@@ -68,6 +70,7 @@ packages:
     - bzr
     - cron-apt
     - curl
+    - dnsutils
     - fakeroot
     - git
     - gnupg-agent

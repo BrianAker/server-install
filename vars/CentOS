@@ -2,4 +2,3 @@
 ---
 service_sshd: sshd
 sshd_config_file: /etc/ssh/sshd_config
-base_user_home: home
