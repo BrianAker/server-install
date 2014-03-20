@@ -1,0 +1,3 @@
+# vim:ft=yaml
+---
+pip_user_dir: ".python"

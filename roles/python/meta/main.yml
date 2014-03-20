@@ -1,0 +1,6 @@
+---
+allow_duplicates: yes
+dependencies:
+  - { role: python/base }
+  - { role: python/FreeBSD }
+  - { role: python/pip, when: python_user is defined }
