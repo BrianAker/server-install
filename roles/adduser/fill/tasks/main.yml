@@ -1,14 +1,17 @@
 ---
 - command: "echo ~{{ User.name }}"
   register: homedir
-
-- debug:
-    var: homedir
+  tags:
+    - shellconf
 
 - set_fact: 
     user_homedir: "{{ homedir.stdout }}"
   when: homedir.stdout
+  tags:
+    - shellconf
 
 - set_fact: 
     profile_d: "{{ user_homedir }}/.profile.d"
+  tags:
+    - shellconf
 

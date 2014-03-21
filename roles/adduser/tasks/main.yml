@@ -22,6 +22,8 @@
         state=directory
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
 
 - name: copy in customrc
   template: src="{{ item }}.j2"
@@ -32,6 +34,8 @@
     - customrc
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -44,6 +48,8 @@
     - rubyrc
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -55,6 +61,8 @@
   when: ansible_distribution in ('FreeBSD')
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -66,6 +74,8 @@
   when: ansible_distribution in ('Debian')
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
 
 - name: copy in OSX specific
   template: src="{{ item }}.j2"
@@ -79,6 +89,8 @@
   when: ansible_distribution in ('MacOSX')
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
 
 - name: copy in specific
   template: src="{{ item }}.j2"
@@ -90,6 +102,8 @@
   when: keychain == True
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
 
 - name: Reconfigure path for user to include customrc
   lineinfile: dest="{{ user_homedir }}/.bash_profile"
@@ -101,3 +115,5 @@
               create=yes
   sudo: yes
   sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf

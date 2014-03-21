@@ -16,7 +16,7 @@ then
     done
   fi
 
-  if [ ! -v PS1 ]; then
+  if [ -z "$PS1" ]; then
     VISUAL=vi
     EDITOR=vi
   fi

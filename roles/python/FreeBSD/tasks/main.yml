@@ -3,11 +3,11 @@
   register: python_result
   ignore_errors: True
 
-- file: src={{ item }}
-        dest=/usr/bin/python
+- file: src=/usr/local/{{ item }}
+        dest=/{{ item }}
         state=link
-  with_first_found:
-    - /usr/local/bin/python2.7
-    - /usr/local/bin/python
+  with_items:
+    - bin/python2.7
+    - bin/python
   when: python_result|failed
   sudo: yes
