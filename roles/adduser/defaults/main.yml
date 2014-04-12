@@ -1,5 +1,2 @@
 ---
-pip_packages: []
-
 default_shell: /bin/bash
-virtualenv_bin: /usr/bin/virtualenv

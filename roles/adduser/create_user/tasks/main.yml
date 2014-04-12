@@ -1,5 +1,5 @@
 ---
-- set_fact: userpassword_dir="/{{ inventory_dir }}/credentials/{{ inventory_hostname }}/{{ User.name }}"
+- set_fact: userpassword_dir="credentials/{{ inventory_hostname }}/{{ User.name }}"
 - set_fact: userpassword_command="{{ userpassword_dir}}/userpassword encrypt=sha256_crypt"
 
 - name: mkdir credentials hostname username

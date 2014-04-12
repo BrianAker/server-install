@@ -7,7 +7,7 @@ BUILD:=
 CHECK:=
 DISTCLEAN:=
 MAINTAINERCLEAN:=
-PREREQ:=
+PREREQ=
 
 PKG_INSTALLER=
 PKG_UPDATE=
@@ -89,13 +89,10 @@ BUILD+= $(ROLEBOOKS)
 
 DIST_MAKEFILES:=
 
-.PHONY: all
-all: $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD) public_keys files/pkg-pubkey.cert roles/common/files/RPM-GPG-KEY-EPEL-6
-
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD)
-	@rm -f public_keys/brian public_keys/jenkins
+	@rm -f roles/adduser/files/public_keys/brian roles/adduser/files/public_keys/jenkins
 	@find roles | grep role.yml | xargs rm
 
 .PHONY: distclean
@@ -118,14 +115,24 @@ print_check:
 .PHONY: check
 check: all $(CHECK)
 
-public_keys: public_keys/brian public_keys/deploy public_keys/jenkins
+PREREQ+= public_keys/$(dirstamp)
+public_keys/$(dirstamp):
+	@$(MKDIR_P) $(@D)
+	@$(TOUCH) $@
 
-public_keys/brian:
-	@$(SSH_IMPORT_ID) -o public_keys/brian brianaker
+PREREQ+= public_keys/deploy
+public_keys/deploy: public_keys/$(dirstamp)
+	@cp ~/.ssh/id_rsa.pub $@
 
-public_keys/jenkins:
-	@$(SSH_IMPORT_ID) -o public_keys/jenkins d-ci
+PREREQ+= public_keys/brian
+public_keys/brian: public_keys/$(dirstamp)
+	@$(SSH_IMPORT_ID) -o $@ brianaker
 
+PREREQ+= public_keys/jenkins
+public_keys/jenkins: public_keys/$(dirstamp)
+	@$(SSH_IMPORT_ID) -o $@ d-ci
+
+PREREQ+= files/pkg-pubkey.cert
 files/pkg-pubkey.cert:
 	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
@@ -135,7 +142,7 @@ install: all
 
 .PHONY: install-ansible-user
 install-ansible-user:
-	$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost -s -i hosts
+	$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost -s
 
 .PHONY: upgrade
 upgrade: all
@@ -143,13 +150,15 @@ upgrade: all
 
 .PHONY: localhost
 localhost: all
-	$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost
+	$(ANSIBLE_PLAYBOOK) site.yml -i inventory/localhost
 
 roles/common/files/RPM-GPG-KEY-EPEL-6:
 	@$(CURL) -o $@ https://fedoraproject.org/static/A4D647E9.txt
 
 .PHONY: deploy
 deploy: install
+
+all: $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD) roles/common/files/RPM-GPG-KEY-EPEL-6
 
 .DEFAULT_GOAL:= all
 

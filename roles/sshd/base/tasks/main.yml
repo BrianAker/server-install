@@ -1,11 +1,4 @@
 ---
-- include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "{{ ansible_distribution }}.yml"
-        - "{{ ansible_os_family }}.yml"
-      paths: "{{ inventory_dir }}/roles/sshd/vars/"
-
 - name: "enable {{ service_sshd }} "
   sudo: yes
   service:  name="{{ service_sshd }}"

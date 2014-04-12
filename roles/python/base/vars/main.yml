@@ -1,9 +1,9 @@
 ---
 packages:
   FreeBSD:
-    - python27
+#   - python27
     - py27-pip
-    - py27-setuptools
+#   - py27-setuptools
     - py27-virtualenv
     - py27-passlib
     - py27-dnspython

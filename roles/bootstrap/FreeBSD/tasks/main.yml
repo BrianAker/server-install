@@ -1,3 +1,22 @@
 ---
-- include: pkg_install.yml
-  when: ansible_ssh_user == 'root'
+#- include: pkg_install.yml
+#  when: ansible_ssh_user == 'root'
+
+- raw: pkg update 
+
+- raw: pkg clean -y
+
+- raw: pkg delete -y -R devel/py-pip python2 python27 py27-setuptool devel/py-setuptools27
+  ignore_errors: yes
+
+- raw: rm -rf /usr/local/lib/python2.7
+
+- raw: pkg upgrade -y
+
+- raw: pkg install -y python27
+  tags: package_install
+
+- raw: ln -s /usr/local/bin/python2.7 /usr/local/bin/python || true
+  tags: package_install
+
+#- raw: echo "export PYTHONPATH=`/usr/local/bin/python-config --prefix`" >> .profile

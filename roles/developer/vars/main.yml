@@ -1,1 +1,2 @@
 ---
+pip_file: "{{ srcdir }}/roles/developer/files/pip/developer.txt"

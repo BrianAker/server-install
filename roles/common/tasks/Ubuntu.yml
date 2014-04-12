@@ -12,12 +12,3 @@
   with_items:
     - ssh-import-id
   tags: package_install
-
-- name: remove non-required ubuntu packages
-  sudo: yes
-  apt:  pkg={{ item }}
-        state=absent
-  with_items:
-    - ansible
-  tags: package_install
-  when: using_system_ansible == False

@@ -3,6 +3,12 @@ allow_duplicates: no
 dependencies:
   - { role: deploy/validate }
   - { role: sshd }
-  - { role: adduser }
+  - role: adduser
+    User:
+      name: deploy
+      shell: "{{ default_shell }}"
+      keychain: True
+      is_admin: True
+      is_remote: True
   - { role: python }
-  - { role: ansible, ansible_user: "{{ User.name }}" }
+#  - { role: ansible, ansible_user: "{{ User.name }}" }

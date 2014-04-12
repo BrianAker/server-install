@@ -10,7 +10,7 @@
         virtualenv="{{ ansible_dir }}"
         state=present
   with_file: 
-    - "{{ inventory_dir }}/files/pip/ansible.txt"
+    - "../../files/pip/ansible.txt"
 #  with_lines:
 #    - 'cat {{ inventory_dir }}/files/pip/ansible.txt'
   sudo: yes

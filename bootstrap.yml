@@ -1,19 +1,18 @@
 ---
-- name: Bootstrap
-  hosts: FreeBSD
-  gather_facts: no
-
+# Rulebook used for bootstrapping a system.
+#- name: Bootstrap
+#  hosts: FreeBSD
+#  gather_facts: no
+#  remote_user: root
+#
+#  roles:
+#    - bootstrap/FreeBSD
+#
+- hosts: all
   vars_files:
      - "vars/{{ ansible_os_family }}"
      - "vars/{{ ansible_distribution }}"
      - "vars/Defaults"
-
-  roles:
-    - { role: upgrade/FreeBSD, want_upgrade: True }
-    - bootstrap/FreeBSD
-
-# Rulebook used for bootstrapping a system.
-- hosts: all
 
   roles:
     - role: bootstrap

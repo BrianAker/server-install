@@ -3,6 +3,5 @@ allow_duplicates: yes
 dependencies:
   - { role: developer/validate }
   - { role: developer/packages }
-  - { role: adduser }
-  - { role: python, python_user: "{{ User.name }}" }
+  - { role: adduser, pip_package_file: "{{ pip_file }}" }
   - { role: firewalld, add_port: '4155/tcp' }

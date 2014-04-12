@@ -1,12 +1,4 @@
 ---
-- name: include vars
-  include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "{{ ansible_distribution }}.yml"
-        - "{{ ansible_os_family }}.yml"
-      paths: "{{ inventory_dir }}/roles/sudoers/vars/"
-
 - set_fact: sudoer_user_file='{{ sudoers_d }}/{{ User.name }}'
 
 - debug: msg="Adding user {{ User.name }} with file {{ sudoer_user_file }}"

@@ -43,18 +43,3 @@
     - pkg_updating
     - pkg_version
   ignore_errors: yes
-
-- command: pkg update 
-  when: result|success
-
-- command: pkg upgrade -y
-  when: result|success
-
-- name: install python for FreeBSD
-  pkgng:  name={{ item }}
-          state=present
-  with_items:
-    - python27
-    - sudo
-  when: result|success
-  tags: package_install

@@ -8,7 +8,7 @@
   sudo: yes
   ignore_errors: yes
   authorized_key: user="{{ User.name }}"
-                  key="{{ lookup('file', '/' + inventory_dir + '/public_keys/' + User.name) }}"
+                  key="{{ lookup('file', srcdir + '/public_keys/' + User.name) }}"
 
 - name: reset mode for authorized_keys
   file: path="{{ user_homedir }}/.ssh/authorized_keys"
@@ -100,6 +100,13 @@
   with_items:
     - keychainrc
   when: keychain == True
+  sudo: yes
+  sudo_user: "{{ User.name }}"
+  tags:
+    - shellconf
+
+- file: path="{{ user_homedir }}/.bash_profile"
+        state=touch
   sudo: yes
   sudo_user: "{{ User.name }}"
   tags:

@@ -5,9 +5,6 @@
 - include: Fedora.yml
   when: ansible_distribution == 'Fedora'
 
-- include: debian.yml
-  when: ansible_os_family == 'Debian'
-
 - include: Ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
 

@@ -7,6 +7,7 @@
               line='{{ item.key }} {{ item.value }}'
               validate='/usr/sbin/sshd -T -f %s'
   with_items:
+    - { key: 'MaxAuthTries', value: '1'}
     - { key: 'PermitRootLogin', value: 'no'}
     - { key: 'PasswordAuthentication', value: 'no'}
     - { key: 'AllowAgentForwarding', value: 'yes'}

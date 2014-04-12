@@ -1,0 +1,10 @@
+---
+- command: 'test "X`which ansible`" = "X/usr/bin/ansible"'
+  register: which_ansbile_result
+  failed_when: "which_ansbile_result.rc == 2"
+  changed_when: "which_ansbile_result.rc != 2"
+
+- set_fact: using_system_ansible=True
+  when: which_ansbile_result.rc == 0
+
+- set_fact: using_system_ansible=False

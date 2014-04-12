@@ -8,6 +8,15 @@
         state=directory
   when: ansible_distribution == 'Fedora'
 
+- name: create socket directory
+  sudo: yes
+  file: dest=/etc/pound.conf.d
+        mode=644
+        owner=root
+        group=root
+        state=directory
+  when: ansible_distribution == 'Fedora'
+
 - name: create pound.cfg
   sudo: yes
   copy: src=pound.cfg
@@ -20,4 +29,3 @@
   service:  name=pound
             state=started
             enabled=yes
-
