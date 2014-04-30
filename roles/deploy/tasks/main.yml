@@ -1,6 +1,1 @@
 ---
-- file: path="{{ user_homedir }}/.ssh/environment"
-        state=absent
-        mode=0700
-  sudo: yes
-  sudo_user: "{{ deploy_username }}"

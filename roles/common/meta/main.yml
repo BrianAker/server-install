@@ -3,5 +3,5 @@ allow_duplicates: no
 dependencies:
   - { role: facts }
   - { role: common/base }
-  - { role: deploy, deploy_username: deploy }
+  - { role: deploy }
   - { role: common/Fedora, when: ansible_distribution == 'Fedora' }

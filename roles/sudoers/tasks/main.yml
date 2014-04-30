@@ -1,2 +1,33 @@
-# vim:ft=yaml
----
+--- # vim:ft=yaml
+- group:  name=wheel
+          state=present
+  when: "ansible_distribution != 'MacOSX'"
+  sudo: yes
+
+- name: mkdir sudoers.d
+  file: path="{{ sudoers_d }}"
+        state=directory
+        owner=root
+        group="{{ root_group }}"
+        mode=0750
+  sudo: yes
+
+- file: dest={{ sudoers_conf }}
+        state=touch
+        owner=root
+        group="{{ root_group }}"
+        mode=0440
+  sudo: yes
+
+- name: configure sudoers
+  lineinfile: dest={{ sudoers_conf }}
+              state=present
+              regexp='^{{ item.key }}'
+              line='{{ item.key }} {{ item.value }}'
+              validate='visudo -cf %s'
+  with_items:
+    - { key: 'root', value: 'ALL=(ALL) ALL'}
+    - { key: '#includedir', value: "{{ sudoers_d }}" }
+    - { key: '%wheel', value: 'ALL=(ALL) NOPASSWD: ALL'}
+  tags: config
+  sudo: yes

@@ -1,5 +1,4 @@
 ---
 allow_duplicates: no
 dependencies:
-  - { role: sudoers/facts }
   - { role: sudoers/base }

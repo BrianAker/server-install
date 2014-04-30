@@ -9,9 +9,3 @@
   when: homedir.stdout
   tags:
     - shellconf
-
-- set_fact: 
-    profile_d: "{{ user_homedir }}/.profile.d"
-  tags:
-    - shellconf
-

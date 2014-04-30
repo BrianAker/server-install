@@ -1,6 +1,9 @@
 # vim:ft=dosini
 jump.tangent.org
 
+[dhcp]
+dhcp.haus ansible_ssh_host=10.0.1.101
+
 [MacOSX]
 go.haus
 aloha.haus

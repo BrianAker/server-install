@@ -1,4 +1,0 @@
----
-- fail: "User.name was not defined."
-  when: User.name is not defined
-

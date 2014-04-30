@@ -136,12 +136,18 @@ PREREQ+= files/pkg-pubkey.cert
 files/pkg-pubkey.cert:
 	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
+PREREQ+= roles/pdellaert.dhcp_server/$(dirstamp)
+
+roles/pdellaert.dhcp_server/$(dirstamp):
+	ansible-galaxy install pdellaert.dhcp_server
+	@$(TOUCH) $@
+
 .PHONY: install
 install: all
 	$(ANSIBLE_PLAYBOOK) site.yml -u deploy
 
 .PHONY: install-ansible-user
-install-ansible-user:
+install-ansible-user: inventory/localhost
 	$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost -s
 
 .PHONY: upgrade
@@ -149,7 +155,7 @@ upgrade: all
 	$(ANSIBLE_PLAYBOOK) maintenance.yml
 
 .PHONY: localhost
-localhost: all
+localhost: all inventory/localhost
 	$(ANSIBLE_PLAYBOOK) site.yml -i inventory/localhost
 
 roles/common/files/RPM-GPG-KEY-EPEL-6:

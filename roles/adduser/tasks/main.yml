@@ -4,6 +4,11 @@
   sudo: yes
   sudo_user: "{{ User.name }}"
 
+- set_fact: 
+    profile_d: "{{ user_homedir }}/.profile.d"
+  tags:
+    - shellconf
+
 - name: setup authorized_key
   sudo: yes
   ignore_errors: yes

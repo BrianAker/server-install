@@ -7,5 +7,6 @@
 - command: pwd
   register: srcdir
   connection: local
+  sudo: no
 
 - set_fact: srcdir="{{ srcdir.stdout }}"
