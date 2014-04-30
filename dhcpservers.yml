@@ -1,0 +1,21 @@
+# Host rules for HTTP servers
+- name: DHCP Server
+  hosts: dhcp
+  sudo: yes
+
+  vars_files:
+     - "vars/{{ ansible_os_family }}"
+     - "vars/{{ ansible_distribution }}"
+     - "vars/Defaults"
+
+  roles:
+    - { role: vlan, vlan_interface: em2, vlan: 20, vlan_ipaddress: 172.27.20.6, vlan_netmask: 255.255.255.0  }
+    - { role: vlan, vlan_interface: em2, vlan: 30, vlan_ipaddress: 172.27.30.6, vlan_netmask: 255.255.255.0  }
+    - { role: vlan, vlan_interface: em2, vlan: 90, vlan_ipaddress: 172.27.90.6, vlan_netmask: 255.255.255.0  }
+    - { role: vlan, vlan_interface: em2, vlan: 99, vlan_ipaddress: 172.27.99.6, vlan_netmask: 255.255.255.0  }
+    - pdellaert.dhcp_server
+
+  tasks:
+    - firewalld: service=dhcp permanent=true state=enabled
+    - firewalld: port=67/udp permanent=true state=enabled
+    - firewalld: port=68/udp permanent=true state=enabled

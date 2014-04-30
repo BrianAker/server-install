@@ -1,0 +1,25 @@
+---
+- set_fact: 
+    __vlan_ansible_var_name: "ansible_{{ vlan_interface }}['macaddress']"
+
+- set_fact: 
+    __vlan_macaddr: "{{ ${__vlan_ansible_var_name} }}"
+
+- debug:
+    var: __vlan_macaddr
+
+- name: reconfigure vlan interface
+  template: src="ifcfg.j2"
+            dest="/etc/sysconfig/network-scripts/ifcfg-{{ vlan_interface }}"
+            mode=0644
+            validate='bash -n %s'
+  notify: restart network
+  sudo: yes
+
+- name: create vlan
+  template: src="vlan.j2"
+            dest="/etc/sysconfig/network-scripts/ifcfg-{{ vlan_interface }}.{{ vlan }}"
+            mode=0644
+            validate='bash -n %s'
+  notify: restart network
+  sudo: yes
