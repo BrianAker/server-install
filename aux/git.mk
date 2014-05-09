@@ -1,4 +1,7 @@
 # vim:ft=make
+#
+#GIT_ADD= git add --intent-to-add
+GIT_ADD= true
 
 .git/hooks/$(dirstamp):
 	@$(MKDIR_P) .git/hooks

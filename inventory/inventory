@@ -1,8 +1,9 @@
 # vim:ft=dosini
-jump.tangent.org
+dhcp.haus ansible_ssh_host=172.27.0.6
+sketch.haus ansible_ssh_host=172.27.20.16
 
 [dhcp]
-dhcp.haus ansible_ssh_host=10.0.1.101
+dhcp.haus
 
 [MacOSX]
 go.haus
@@ -66,7 +67,8 @@ soup.haus
 up.haus
 
 [syslog]
-#sketch.haus
+sketch.haus
+dhcp.haus
 
 [harden]
 atom.haus

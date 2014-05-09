@@ -5,7 +5,7 @@
               state=present
               regexp='^#{{ item }}'
               line='{{ item }}'
-              validate='/sbin/rsyslogd -N1'
+              validate='/sbin/rsyslogd -N1 -f %s'
   with_items:
     - '$ModLoad imudp'
     - '$UDPServerRun 514'

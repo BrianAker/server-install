@@ -2,3 +2,4 @@
 allow_duplicates: no
 dependencies:
   - { role: install_packages }
+  - { role: firewalld, add_service: ntp }

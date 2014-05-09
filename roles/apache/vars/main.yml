@@ -2,8 +2,7 @@
 httpd_service: httpd
 packages:
   Fedora:
-    - httpd
-    - httpd-tools
+    - tftp
 
   FreeBSD: []
 

@@ -54,31 +54,31 @@ USER_EXISTS:= $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
 $(ROLE_VARS): support/vars.yml
 	@if test -f $@; then \
 	  $(TOUCH) $< $@; \
-	  git add --intent-to-add $@; \
+	  $(GIT_ADD) $@; \
 	else \
 	  $(MKDIR_P) $(@D); \
 	  $(INSTALL) $< $@; \
-	  git add --intent-to-add $@; \
+	  $(GIT_ADD) $@; \
 	fi
 
 $(ROLE_META): support/meta.yml
 	@if test -f $@; then \
 	  $(TOUCH) $< $@; \
-	  git add --intent-to-add $@; \
+	  $(GIT_ADD) $@; \
 	else \
 	  $(MKDIR_P) $(@D); \
 	  $(INSTALL) $< $@; \
-	  git add --intent-to-add $@; \
+	  $(GIT_ADD) $@; \
 	fi
 
 $(ROLE_FILES): support/main.yml
 	@if test -f $@; then \
 	  $(TOUCH) $< $@; \
-	  git add --intent-to-add $@; \
+	  $(GIT_ADD) $@; \
 	else \
 	  $(MKDIR_P) $(@D); \
 	  $(INSTALL) $< $@; \
-	  git add --intent-to-add $@; \
+	  $(GIT_ADD) $@; \
 	fi
 
 $(ROLEBOOKS): support/role.yml $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS)
