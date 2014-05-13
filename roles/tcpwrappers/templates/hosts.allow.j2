@@ -1,0 +1,6 @@
+# Ansible controlled
+{% if hosts_allow %}
+{% for hosts in hosts_allow %}
+{{ hosts }}
+{% endfor %}
+{% endif %}

@@ -1,0 +1,21 @@
+# Controlled by Ansible
+User "{{ pound_user }}"
+Group "{{ pound_group }}"
+
+LogLevel {{ pound_log_level }}
+Control "{{ pound_control_file }}"
+
+ListenHTTPS
+  Address {{ pound_listen_https_address }}
+  Port    {{ pound_listen_https_port }}
+  Cert    "{{ pound_pem }}"
+End
+
+Service
+  BackEnd
+{% for server, value in pound_backend_servers.iteritems() %}
+    Address {{ server }}
+    Port  {{ value.port }}
+{%- endfor %} 
+  End
+End

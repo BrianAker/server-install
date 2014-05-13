@@ -27,7 +27,7 @@ centos.cloud
 freebsd.cloud
 
 [masters]
-#sketch.haus
+sketch.haus
 
 [dbservers]
 

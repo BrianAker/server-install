@@ -1,31 +1,38 @@
 ---
+- name: create pound user
+  user:
+    name: "{{ pound_user }}"
+    group: "{{ pound_group }}"
+    system: yes
+    state: present
+
 - name: create directory pound.conf.d
   sudo: yes
-  file: dest=/etc/pound.conf.d
-        mode=644
+  file: dest="{{ pound_include_directory }}"
+        mode=750
         owner=root
         group=root
         state=directory
-  when: ansible_distribution == 'Fedora'
 
-- name: create socket directory
+- name: create socket file
   sudo: yes
-  file: dest=/etc/pound.conf.d
-        mode=644
-        owner=root
-        group=root
-        state=directory
-  when: ansible_distribution == 'Fedora'
+  file: dest="{{ pound_control_file }}"
+        mode=640
+        owner="{{ pound_user }}"
+        group="{{ pound_group }}"
+        state=touch
 
 - name: create pound.cfg
   sudo: yes
-  copy: src=pound.cfg
-        dest=/etc/pound.conf.d/pound.cfg
-  when: ansible_distribution == 'Fedora'
+  template: src=pound.cfg.j2
+            dest=/etc/pound.cfg
+            owner=root
+            group=root
+            mode=640
   notify: restart Pound
 
 - name: enable Pound
   sudo: yes
-  service:  name=pound
-            state=started
-            enabled=yes
+  service:  
+    name: pound
+    enabled: yes

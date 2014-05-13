@@ -9,7 +9,7 @@
      - "vars/Defaults"
 
   roles:
-    - pdellaert.dhcp_server
+    - dhcp_server
 
   tasks:
     - firewalld: service=dhcp permanent=true state=enabled

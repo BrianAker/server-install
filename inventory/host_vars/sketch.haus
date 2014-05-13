@@ -1,5 +1,5 @@
 --- # vim:ft=yaml
-deploy_username: deploy
+bind: bind
 
 hosts_allow:
   - 'ALL:localhost'
@@ -25,3 +25,19 @@ hosts_allow:
 
 hosts_deny:
   - 'ALL:ALL'
+
+pound_user: pound
+pound_group: pound
+
+pound_listen_https_address: "{{ ansible_default_ipv4.address }}"
+pound_listen_https_port: 443
+pound_pem: /etc/pki/tls/certs/ci.tangent.org.pem
+
+pound_log_level: 1
+pound_control_file: /var/lib/pound/pound.cfg
+
+pound_include_directory: /etc/pound.conf.d/
+
+pound_backend_servers:
+  127.0.0.1:
+    port: 8080

@@ -1,4 +1,0 @@
-# vim:ft=yaml
----
-- fail: "sshd_config_file was not defined."
-  when: sshd_config_file is not defined

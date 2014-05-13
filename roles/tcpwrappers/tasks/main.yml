@@ -1,18 +1,12 @@
 ---
-- name: create default hosts.allow
+- name: create default hosts allow and deny files
   sudo: yes
-  copy: src=hosts.allow
-        dest=/etc/hosts.allow
-        owner=root
-        group="{{ root_group }}"
-        mode=644
-        force=yes
-
-- name: create default hosts.deny
-  sudo: yes
-  copy: src=hosts.deny
-        dest=/etc/hosts.deny
-        owner=root
-        group="{{ root_group }}"
-        mode=644
-        force=yes
+  template: src="{{ item }}.j2"
+            dest="/etc/{{ item }}"
+            owner=root
+            group="{{ root_group }}"
+            mode=644
+            force=yes
+  with_items:
+    - hosts.allow
+    - hosts.deny

@@ -1,3 +1,4 @@
+*.dump
 *.pyc
 *patch
 *role.yml

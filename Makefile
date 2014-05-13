@@ -160,6 +160,7 @@ localhost: all inventory/localhost
 
 roles/common/files/RPM-GPG-KEY-EPEL-6:
 	@$(CURL) -o $@ https://fedoraproject.org/static/A4D647E9.txt
+	@$(ANSIBLE_PLAYBOOK) site.yml --tags=makeconf
 
 .PHONY: deploy
 deploy: install
