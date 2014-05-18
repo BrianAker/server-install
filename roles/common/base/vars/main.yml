@@ -17,6 +17,7 @@ packages:
     - curl
     - fakeroot
     - keychain
+    - lldpad
     - make
     - net-tools
     - pkgconfig
@@ -76,6 +77,7 @@ packages:
     - gnupg-agent
     - ifmetric
     - keychain
+    - lldpad
     - make
     - pkg-config
     - python

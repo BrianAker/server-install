@@ -118,7 +118,8 @@
     - shellconf
 
 - name: Reconfigure path for user to include customrc
-  lineinfile: dest="{{ user_homedir }}/.bash_profile"
+  lineinfile: | 
+              dest="{{ user_homedir }}/.bash_profile"
               regexp="customrc"
               line="if [ -f '.customrc' ]; then . '.customrc'; fi"
               mode=0700

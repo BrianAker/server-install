@@ -1,20 +1,21 @@
 ---
-- set_fact: userpassword_dir="credentials/{{ inventory_hostname }}/{{ User.name }}"
-- set_fact: userpassword_command="{{ userpassword_dir}}/userpassword encrypt=sha256_crypt"
+- set_fact: userpassword_dir="{{ inventory_dir }}/credentials/{{ inventory_hostname }}"
+- set_fact: userpassword_command="{{ userpassword_dir}}/{{ User.name }} encrypt=sha256_crypt"
 
 - name: mkdir credentials hostname username
-  file: path="{{ userpassword_dir }}"
+  file: path="{{ userpassword_dir  }}"
         state=directory
         mode=0700
   delegate_to: localhost
 
 - name: create user
   sudo: yes
+  sudo_user: root
   user: name="{{ User.name }}"
         comment="{{ User.name }}"
         state=present
         shell={{ default_shell }}
         generate_ssh_key="yes"
         password={{ item }}
-        update_password=always
+        update_password=on_create
   with_password: userpassword_command

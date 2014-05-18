@@ -1,0 +1,25 @@
+pip_packages:
+  - Babel
+  - Jinja2
+  - MarkupSafe
+  - PyYAML
+  - httplib2
+  - ansible
+  - argparse
+  - bzr-bash-completion
+  - ecdsa
+  - iso8601
+  - netaddr
+  - oslo.config
+  - paramiko
+  - pbr
+  - prettytable
+  - pycrypto
+  - python-keystoneclient
+  - pytz
+  - requests
+  - simplejson
+  - six
+  - sphinxcontrib-googleanalytics
+  - ssh-import-id
+  - wsgiref

@@ -36,7 +36,8 @@
   - name: upgrade user packages
     sudo: yes
     sudo_user: "{{ item }}"
-    command: pip-review --auto
+    raw: pip freeze | awk -F'==' '{ print $1 }' | xargs pip install --upgrade
+    ignore_errors: yes
     with_items:
       - deploy
       - jenkins

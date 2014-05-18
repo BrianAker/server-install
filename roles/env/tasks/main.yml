@@ -1,0 +1,6 @@
+---
+- command: "echo $HOME $USER {{ sudo_user }}"
+  register: result
+  sudo: yes
+
+- debug: var=result

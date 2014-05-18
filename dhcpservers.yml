@@ -10,11 +10,8 @@
 
   roles:
     - dhcp_server
-
-  tasks:
-    - firewalld: service=dhcp permanent=true state=enabled
-    - firewalld: port=67/udp permanent=true state=enabled
-    - firewalld: port=68/udp permanent=true state=enabled
+    - { role: firewalld, add_port: 67/udp }
+    - { role: firewalld, add_port: 68/udp }
 
 #    - { role: vlan, vlan_interface: em2, vlan: 20, vlan_ipaddress: 172.27.20.6, vlan_netmask: 255.255.255.0  }
 #    - { role: vlan, vlan_interface: em2, vlan: 30, vlan_ipaddress: 172.27.30.6, vlan_netmask: 255.255.255.0  }
