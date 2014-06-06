@@ -24,5 +24,3 @@ packages:
   CentOS:
     - ntpdate
     - ntp
-
-ntpserver: pool.ntp.org

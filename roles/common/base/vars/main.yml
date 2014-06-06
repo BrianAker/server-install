@@ -1,6 +1,7 @@
 ---
-packages:
-  FreeBSD: []
+common_packages:
+  FreeBSD:
+    - bash
 
   MacOSX:
     - pkg-config
@@ -12,9 +13,11 @@ packages:
   Fedora:
     - '@minimal-environment'
     - '@system-tools'
+    - bash
     - bind-utils
     - bzr
     - curl
+    - etckeeper
     - fakeroot
     - keychain
     - lldpad
@@ -33,9 +36,11 @@ packages:
   CentOS:
     - '@minimal-environment'
     - '@system-tools'
+    - bash
     - bzr
     - bind-utils
     - curl
+    - etckeeper
     - fakeroot
     - make
     - pkgconfig
@@ -49,10 +54,12 @@ packages:
 
   Debian:
     - software-properties-common
+    - bash
     - bzr
     - cron-apt
     - curl
     - dnsutils
+    - etckeeper
     - fakeroot
     - git
     - gnupg-agent
@@ -68,10 +75,12 @@ packages:
     - wget
 
   Ubuntu:
+    - bash
     - bzr
     - cron-apt
     - curl
     - dnsutils
+    - etckeeper
     - fakeroot
     - git
     - gnupg-agent

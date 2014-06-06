@@ -21,8 +21,6 @@ soup.haus
 up.haus
 go.haus
 aloha.haus
-atom.haus
-centos.cloud
 
 [masters]
 sketch.haus
@@ -35,7 +33,6 @@ gaz.haus
 
 [webservers]
 ns6.tangent.org
-web1.cloud
 
 [downloads]
 ns6.tangent.org
@@ -43,21 +40,18 @@ ns6.tangent.org
 [mailman]
 
 [developer]
-atom.haus
 gaz.haus
 soup.haus
-#sketch.haus
+sketch.haus
 up.haus
 
 [remote]
-centos.cloud
 gaz.haus
 ns6.tangent.org
 
 [haus]
 aloha.haus
-atom.haus
-gaz.haus
+dhcp.haus
 gaz.haus
 go.haus
 sketch.haus
@@ -66,17 +60,13 @@ up.haus
 
 [syslog]
 sketch.haus
-dhcp.haus
+gaz.haus
 
 [harden]
-atom.haus
 ns6.tangent.org
-web1.cloud
 
 [autofs]
 up.haus
 
 [bastion]
-atom.haus
 ns6.tangent.org
-web1.cloud

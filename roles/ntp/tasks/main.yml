@@ -1,26 +1,4 @@
 ---
-- name: include vars
-  include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - "{{ ansible_distribution }}.yml"
-        - "{{ ansible_os_family }}.yml"
-      paths: "../vars/"
- 
-- name: stop ntpd service
-  sudo: yes
-  service:  name={{ ntp_service }}
-            state=stopped 
-  notify: restart ntpd
-  when: ntp_service is defined
-  when: "ansible_distribution != 'MacOSX'"
-
-- name: Synchronize Clock with ntpdate
-  command: /usr/sbin/ntpdate -u {{ ntpserver }}
-  changed_when: False
-  when: ntp_service is defined
-  when: "ansible_distribution != 'MacOSX'"
-
 - name: enable ntpd service
   sudo: yes
   service:  name={{ ntp_service }}
@@ -28,4 +6,3 @@
             state=started
   notify: restart ntpd
   when: "ansible_distribution != 'MacOSX'"
-

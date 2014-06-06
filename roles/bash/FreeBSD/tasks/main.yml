@@ -1,8 +1,0 @@
----
-- file: src={{ item }}
-        dest=/bin/bash
-        state=link
-  with_first_found:
-    - /usr/bin/bash
-    - /usr/local/bin/bash
-  sudo: yes

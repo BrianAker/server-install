@@ -14,6 +14,9 @@
      - "vars/{{ ansible_distribution }}"
      - "vars/Defaults"
 
+  tasks:
+    - group_by: key={{ ansible_distribution }}
+
   roles:
     - role: bootstrap
     - role: sudoers
@@ -25,3 +28,7 @@
     - role: unattended-upgrades
     - role: bootstrap/base
     - role: upgrade
+
+#- hosts: MacOSX
+#  tasks:
+#    command: fdesetup authrestart

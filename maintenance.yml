@@ -3,48 +3,33 @@
 - name: Maintenance
   hosts: all
 
-  vars_files:
-     - "vars/{{ ansible_os_family }}"
-     - "vars/{{ ansible_distribution }}"
-     - "vars/Defaults"
-
   tasks:
     - name: Create groups by distribution
-      group_by: key={{ansible_distribution}}
+      group_by: key={{ansible_pkg_mgr}}
 
-    - name: Create a distribution based OS family
-      group_by: key={{ansible_os_family}}
-
-  roles:
-    - { role: upgrade, expire_cache=True }
-
+- hosts: yum
   tasks:
-  - command: which pip
+  - command: /usr/bin/yum -y upgrade
     sudo: yes
-    sudo_user: deploy
-    register: which_pip_result
+    tags: upgrade
 
-  - debug: var=which_pip_result
-
-  - command: which pip
-    sudo: yes
-    sudo_user: root
-    register: which_pip_result
-
-  - debug: var=which_pip_result
-
-  - name: upgrade user packages
-    sudo: yes
-    sudo_user: "{{ item }}"
-    raw: pip freeze | awk -F'==' '{ print $1 }' | xargs pip install --upgrade
-    ignore_errors: yes
-    with_items:
-      - deploy
-      - jenkins
-
-- hosts: Debian
-  sudo: yes
+- hosts: apt
   tasks:
-    - command: apt-file update
-      tags: upgrade
-    - command: reboot
+  - apt: update_cache=yes
+    sudo: yes
+    tags: upgrade
+
+  - apt: upgrade=dist cache_valid_time=3600
+    sudo: yes
+    tags: upgrade
+
+  - command: apt-get autoremove -y
+    sudo: yes
+    tags: upgrade
+
+  - command: apt-get clean
+    sudo: yes
+    tags: upgrade
+
+  - command: shutdown -r now
+    sudo: yes

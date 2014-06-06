@@ -3,7 +3,7 @@
   sudo: yes
   apt:  update_cache=yes
         cache_valid_time=3600
-        pkg={{ item }}
+        name={{ item }}
         state={{ default_package_state }}
   with_items: packages[ansible_distribution]
   when: packages is defined and packages[ansible_distribution] is defined

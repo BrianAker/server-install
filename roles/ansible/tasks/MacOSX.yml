@@ -1,5 +1,5 @@
 ---
 - homebrew: name=ansible
             state=absent
-  when: using_system_ansible == False
+  when: using_system_ansible is defined
   ignore_errors: yes

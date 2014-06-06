@@ -136,10 +136,10 @@ PREREQ+= files/pkg-pubkey.cert
 files/pkg-pubkey.cert:
 	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
-PREREQ+= roles/pdellaert.dhcp_server/$(dirstamp)
+PREREQ+= roles/jnv.unattended-upgrades/README.md
 
-roles/pdellaert.dhcp_server/$(dirstamp):
-	ansible-galaxy install pdellaert.dhcp_server
+roles/jnv.unattended-upgrades/README.md:
+	ansible-galaxy install jnv.unattended-upgrades
 	@$(TOUCH) $@
 
 .PHONY: install

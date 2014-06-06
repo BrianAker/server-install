@@ -12,7 +12,8 @@
   when: found_XQuartz.stat.isdir == false
 
 - name: install brew
-  command:  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)" 
+  command: | 
+            'ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"'
             creates=/usr/local/bin/brew
 
 - name: tap brew dupes

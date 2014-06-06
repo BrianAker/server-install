@@ -11,6 +11,9 @@
   - name: create ansible_distribution group
     group_by: key={{ ansible_distribution }}
 
+  - name: create ansible_distribution group
+    group_by: key={{ ansible_os_family }}
+
   - name: create ansible_pkg_mgr group
     group_by: key={{ ansible_pkg_mgr }}
 
@@ -22,3 +25,32 @@
         keychain: True
         is_admin: True
         is_remote: True
+
+- hosts: Debian 
+  roles:
+  - role: jnv.unattended-upgrades
+    unattended_allowed_origins: [security, updates]
+
+- hosts: RedHat
+  roles:
+  - role: yum-cron
+
+- hosts: apt 
+  tasks:
+  - name: install packages with apt
+    sudo: yes
+    apt:  update_cache=yes
+          cache_valid_time=3600
+          name={{ item }}
+          state=present
+    with_items: packages[apt_packages] | default([])
+    tags: package_install
+
+- hosts: yum
+  tasks:
+  - name: install packages with yum
+    sudo: yes
+    yum:  name={{ item }}
+          state=present
+    with_items: packages[yum_packages] | default([])
+    tags: package_install

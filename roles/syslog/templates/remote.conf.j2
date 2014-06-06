@@ -1,0 +1,14 @@
+{% if syslog_remote_log is defined %}
+# Provides UDP syslog reception
+$ModLoad imudp
+$UDPServerRun 514
+
+# Provides TCP syslog reception
+$ModLoad imtcp
+$InputTCPServerRun 514
+
+#rsyslog remote configuration file
+$template RemoteTemplate,"%timegenerated% %FROMHOST% %HOSTNAME% %syslogtag%%msg:::drop-last-lf%\n"
+
+:fromhost-ip, !isequal, "127.0.0.1" {{ syslog_remote_log }};RemoteTemplate
+{% endif %}

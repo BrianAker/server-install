@@ -1,13 +1,8 @@
 ---
-- name: enable remote host syslog
-  sudo: yes
-  lineinfile: dest={{ syslog_config_file }}
-              state=present
-              regexp='^#{{ item }}'
-              line='{{ item }}'
-              validate='/sbin/rsyslogd -N1 -f %s'
-  with_items:
-    - '$ModLoad imudp'
-    - '$UDPServerRun 514'
-  notify: restart syslog
-  tags: config
+- template: src=remote.conf.j2 dest=/etc/rsyslog.d/remote.conf
+            validate='/sbin/rsyslogd -N1 -f %s'
+  when: syslog_remote_log is defined
+
+- template: src=logrotate.j2 dest=/etc/logrotate.d/remote_syslog
+            validate='/usr/sbin/logrotate -d %s'
+  when: syslog_remote_log is defined

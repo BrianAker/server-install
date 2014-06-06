@@ -25,3 +25,11 @@ hosts_allow:
 
 hosts_deny:
   - 'ALL:ALL'
+
+remove_packages:
+- yum:
+  - denyhosts
+- apt:
+  - denyhosts
+
+ntpserver: pool.ntp.org

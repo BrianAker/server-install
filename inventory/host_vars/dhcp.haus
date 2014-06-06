@@ -1,28 +1,24 @@
 dhcp_interfaces: em2
 dhcp_common_domain: haus
 dhcp_common_nameservers: 172.27.0.254
-dhcp_common_default_lease_time: 600
-dhcp_common_max_lease_time: 7200
+dhcp_common_default_lease_time: 7200
+dhcp_common_max_lease_time: 14400
 dhcp_common_ddns_update_style: none
 dhcp_common_authoritative: true
+dhcp_common_deny_duplicates: true
 dhcp_common_log_facility: local5
-dhcp_tz_posix_string: PDT
-
-dog:
-- - a
-  - b
-- - a
-  - b
+dhcp_common_ntp: 172.27.31.6
+dhcp_tz_posix_string: UTC
+dhcp_common_use_host_decl_names: true
 
 dhcp_subnets:
-- base: 172.27.1.0
-  netmask: 255.255.255.0
-
 - base: 172.27.20.0
   netmask: 255.255.255.0
   range_start: 172.27.20.50
-  range_end: 172.27.20.200
+  range_end: 172.27.20.100
   routers: 172.27.20.1
+  default_lease_time: 7200
+  max_lease_time: 14400
 
 - base: 172.27.25.0
   netmask: 255.255.255.0
@@ -33,50 +29,47 @@ dhcp_subnets:
 - base: 172.27.30.0
   netmask: 255.255.255.0
   range_start: 172.27.30.50
-  range_end: 172.27.30.200
+  range_end: 172.27.30.100
   routers: 172.27.30.1
+  default_lease_time: 7200
+  max_lease_time: 14400
 
 - base: 172.27.31.0
   netmask: 255.255.255.0
   range_start: 172.27.31.50
-  range_end: 172.27.31.200
+  range_end: 172.27.31.100
   routers: 172.27.31.1
 
 - base: 172.27.90.0
   netmask: 255.255.255.0
   range_start: 172.27.90.50
-  range_end: 172.27.90.200
+  range_end: 172.27.90.100
   routers: 172.27.90.1
+  default_lease_time: 7200
+  max_lease_time: 14400
 
 - base: 172.27.99.0
   netmask: 255.255.255.0
   range_start: 172.27.99.50
-  range_end: 172.27.99.200
+  range_end: 172.27.99.100
   routers: 172.27.99.1
+  default_lease_time: 14400
+  max_lease_time: 14400
 
-cp_hosts:
+dhcp_hosts:
 - name: aloha
-  host_name: aloha
   mac_address: 00:26:b0:ec:c0:2a
   fixed_address: 172.27.30.3
 
-- name: go
-  host_name: go
-  mac_address: c4:2c:03:0d:65:ed
-  fixed_address: 172.27.30.4
-
 - name: haus
-  host_name: haus
   mac_address: 3c:07:54:58:56:f0
   fixed_address: 172.27.30.5
 
 - name: blackbird
-  host_name: blackbird
   mac_address: 10:dd:b1:99:a2:d0
   fixed_address: 172.27.30.12
 
 - name: office
-  host_name: office
   mac_address: 00:1f:f3:03:d5:e4
   fixed_address: 172.27.30.13
 
@@ -124,19 +117,51 @@ cp_hosts:
   mac_address: 00:24:e4:04:d7:70
   fixed_address: 172.27.30.25
 
-Now begins build boxes
+- name: ipcam-000DC5D4621E-1
+  mac_address: 00:12:7b:58:cb:a3
+  fixed_address: 172.27.30.26
+
+- name: xbox
+  mac_address: 7c:1e:52:43:7c:d5
+  fixed_address: 172.27.30.27
+
+- name: Marks-MacBook
+  mac_address: 60:c5:47:9a:e6:5a
+  fixed_address: 172.27.30.28
+
+- name: ZorkCommander
+  mac_address: 64:a3:cb:65:40:96
+  fixed_address: 172.27.30.30
+
+- name: JoeKimbrosiMac
+  mac_address: c8:2a:14:1e:e7:59
+  fixed_address: 172.27.30.31
+
+- name: Yazz-MBP-HP
+  mac_address: 10:40:f3:ae:90:38
+  fixed_address: 172.27.30.32
+
+# Service addresses
+#- name: aloha-service
+#  mac_address: 00:26:b0:ec:c0:2a
+#  fixed_address: 172.27.31.3
+
+#- name: go-service
+#  mac_address: c4:2c:03:0d:65:ed
+#  fixed_address: 172.27.31.4
+
+
+# Now begins build boxes
 
 - name: nad2
   mac_address: 00:1f:33:ea:a2:ad
   fixed_address: 172.27.20.11
 
 - name: sketch
-  host_name: sketch
   mac_address: 00:25:90:97:86:e4
   fixed_address: 172.27.20.16
 
 - name: gaz-eth0
-  host_name: gaz-eth0
   mac_address: 00:22:19:d2:fd:73
   fixed_address: 172.27.20.18
 
@@ -161,7 +186,6 @@ Now begins build boxes
   fixed_address: 172.27.20.22
 
 - name: soup
-  host_name: soup
   mac_address: 00:25:90:58:6a:36
   fixed_address: 172.27.20.28
 
@@ -174,7 +198,6 @@ Now begins build boxes
   fixed_address: 172.27.20.30
 
 - name: up
-  host_name: up
   mac_address: 00:25:90:d5:1e:2a
   fixed_address: 172.27.20.42
 
@@ -199,14 +222,13 @@ Now begins build boxes
 
 - name: basement-power
   mac_address: 00:c0:b7:65:c9:f9
-  fixed_address: 172.27.90.70
+  fixed_address: 172.27.90.18
 
 - name: upstairs-power
   mac_address: 00:c0:b7:66:24:d9
-  fixed_address: 172.27.90.71
+  fixed_address: 172.27.90.19
 
 - name: atom
-  host_name: atom
   mac_address: 00:25:90:c9:82:76
 
 - name: atom-ipmi
@@ -235,6 +257,26 @@ Now begins build boxes
   mac_address: 20:e5:2a:68:96:26
   fixed_address: 172.27.99.5
 
-- name: teapot
+- name: teacup
   mac_address: 00:8e:f2:fb:b6:3d
   fixed_address: 172.27.99.13
+
+- name: wap38c2c0
+  mac_address: 18:9c:5d:38:c2:c0
+  fixed_address: 172.27.99.15
+
+- name: wapee6e20
+  mac_address: 54:78:1a:ee:6e:20
+  fixed_address: 172.27.99.16
+
+- name: go
+  mac_address: c4:2c:03:0d:65:ed
+  fixed_address: 172.27.99.20
+
+
+
+yum_packages:
+- crypto-utils
+- mod_ssl
+- openssl
+- php

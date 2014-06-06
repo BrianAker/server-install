@@ -8,7 +8,9 @@ packages:
 
   RedHat: []
 
-  Fedora: []
+  Fedora:
+  - indent
+  - diffuse
 
   Debian: []
 

@@ -1,6 +1,0 @@
----
-# handler for dns
-- name: restart bind
-  sudo:     yes
-  service:  name={{ bind }}
-            state=restarted

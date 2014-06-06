@@ -41,3 +41,5 @@ pound_include_directory: /etc/pound.conf.d/
 pound_backend_servers:
   127.0.0.1:
     port: 8080
+
+syslog_remote_log: /var/log/remote

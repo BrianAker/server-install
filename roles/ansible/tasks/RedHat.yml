@@ -3,7 +3,7 @@
   sudo: yes
   yum:  name={{ item }}
         state=absent
-  when: using_system_ansible == False
+  when: using_system_ansible is defined
   with_items:
     - ansible
   tags: package_install

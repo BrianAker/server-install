@@ -5,9 +5,6 @@
 - set_fact: 
     __vlan_macaddr: "{{ ${__vlan_ansible_var_name} }}"
 
-- debug:
-    var: __vlan_macaddr
-
 - name: reconfigure vlan interface
   template: src="ifcfg.j2"
             dest="/etc/sysconfig/network-scripts/ifcfg-{{ vlan_interface }}"

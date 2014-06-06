@@ -1,4 +1,5 @@
 ---
 allow_duplicates: no
 dependencies:
-  - { role: install_packages }
+  - role: install_packages
+    packages: *common_packages

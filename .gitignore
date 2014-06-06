@@ -22,4 +22,6 @@ test.yml
 userpassword_command
 .ansible
 aux/ansible
+roles/jnv.unattended-upgrades
 roles/pdellaert.dhcp_server
+roles/yum-cron
