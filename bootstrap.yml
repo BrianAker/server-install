@@ -21,7 +21,6 @@
     - role: bootstrap
     - role: sudoers
     - role: python
-    - role: bash
     - role: ntp
     - role: sshd
     - role: deploy

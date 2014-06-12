@@ -61,6 +61,10 @@ dhcp_hosts:
   mac_address: 00:26:b0:ec:c0:2a
   fixed_address: 172.27.30.3
 
+- name: go
+  mac_address: c4:2c:03:0d:65:ed
+  fixed_address: 172.27.30.4
+
 - name: haus
   mac_address: 3c:07:54:58:56:f0
   fixed_address: 172.27.30.5
@@ -268,12 +272,6 @@ dhcp_hosts:
 - name: wapee6e20
   mac_address: 54:78:1a:ee:6e:20
   fixed_address: 172.27.99.16
-
-- name: go
-  mac_address: c4:2c:03:0d:65:ed
-  fixed_address: 172.27.99.20
-
-
 
 yum_packages:
 - crypto-utils

@@ -1,8 +1,8 @@
 ---
 - name: Dump all vars
-  template: src=dumpall.j2 dest="./{{ inventory_hostname }}.dump"
+  template: src=dumpall.j2 dest="/tmp/{{ inventory_hostname }}.dump"
   ignore_errors: yes
   connection: local
 
 - debug:
-    msg: "Dumping to: './{{ inventory_hostname }}.dump'"
+    msg: "Dumping to: '/tmp/{{ inventory_hostname }}.dump'"
