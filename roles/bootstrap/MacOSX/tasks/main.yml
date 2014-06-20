@@ -16,7 +16,5 @@
             'ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"'
             creates=/usr/local/bin/brew
 
-- name: tap brew dupes
+- homebrew_tap: tap=homebrew/dupes state=present
   ignore_errors: yes
-  command:  /usr/local/bin/brew tap homebrew/dupes 
-            creates=/usr/local/Library/Taps/homebrew-dupes

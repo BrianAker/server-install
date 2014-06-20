@@ -11,9 +11,3 @@
   roles:
     - build
     - role: jenkins-slave
-      User:
-        name: jenkins
-        shell: "{{ default_shell }}"
-        keychain: True
-        is_admin: False
-        is_remote: True
