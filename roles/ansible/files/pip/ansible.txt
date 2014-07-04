@@ -6,4 +6,3 @@ httplib2==0.8
 pip-tools==0.3.4
 passlib==1.6.2
 pyrax==1.7.0
-ssh-import-id==3.21

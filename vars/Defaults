@@ -1,5 +1,4 @@
-# vim:ft=yaml
----
+--- # vim:ft=yaml
 apache: httpd
 bind: named
 default_shell: '/bin/bash'

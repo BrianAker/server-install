@@ -1,5 +1,5 @@
-# vim:ft=yaml
----
+--- # vim:ft=yaml
+
 - include: RedHat.yml
   when: ansible_os_family == 'RedHat'
 
@@ -8,3 +8,6 @@
 
 - include: MacOSX.yml
   when: ansible_distribution == 'MacOSX'
+
+- include: adduser.yml
+  when: User is defined

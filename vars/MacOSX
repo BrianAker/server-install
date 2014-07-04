@@ -1,5 +1,4 @@
-# vim:ft=yaml
----
+--- # vim:ft=yaml
 apache: httpd
 bind: named
 service_sshd: ssh

@@ -1,0 +1,20 @@
+---
+# Upgrade the fleet
+- name: Remove Packages
+  hosts: all
+
+  tasks:
+    - name: Create groups by distribution
+      group_by: key={{ansible_pkg_mgr}}
+
+- hosts: yum
+  sudo: yes
+  tasks:
+    - command: yum erase -y {{ item }}
+      with_items: remove
+
+- hosts: apt
+  sudo: yes
+  tasks:
+    - command: apt-get purge -y {{ item }}
+      with_items: remove

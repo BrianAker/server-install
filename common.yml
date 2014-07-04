@@ -35,6 +35,36 @@
   roles:
   - role: yum-cron
 
+- hosts: Fedora
+  tasks:
+  - name: install packages with yum
+    yum:  name={{ item }}
+          state=present
+    with_items:
+    - tuned
+    - tuned-utils
+    sudo: yes
+    tags: package_install
+  service: >
+            name=tuned
+            state=started
+            enabled=yes
+
+- hosts: Ubuntu
+  tasks:
+  - apt:  update_cache=yes
+          cache_valid_time=3600
+          name={{ item }}
+          state=present
+    with_items:
+    - powertop
+    - pm-utils
+    sudo: yes
+    tags: package_install
+
+  - command: pm-powersave true
+    sudo: yes
+
 - hosts: apt 
   tasks:
   - name: install packages with apt

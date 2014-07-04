@@ -1,4 +1,3 @@
-# vim:ft=yaml
----
+--- # vim:ft=yaml
 service_sshd: sshd
 sshd_config_file: /etc/ssh/sshd_config

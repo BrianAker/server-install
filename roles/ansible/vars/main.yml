@@ -20,6 +20,12 @@ packages:
 
   Ubuntu:
     - libyaml-dev
+    - python-dev
+    - python-jinja2
+    - python-paramiko
+    - python-pip
+    - python-yaml
+    
 
   CentOS:
     - libyaml
