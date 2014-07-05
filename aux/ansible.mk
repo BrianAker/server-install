@@ -11,7 +11,7 @@ ANSIBLE_PIP_REQUIREMENTS:= aux/ansible/pip.txt
 
 $(ANSIBLE_PIP_REQUIREMENTS):
 	$(MKDIR_P) $(@D)
-	$(CURL) -o $@ https://raw.github.com/BrianAker/server-install/master/files/pip/ansible.txt
+	$(CURL) -o $@ https://gist.githubusercontent.com/BrianAker/e58417dac282131d2e2a/raw/a62020cbebae51244c128d680724d4b5e7f2b795/ansible-requirements
 
 PREREQ+= $(ANSIBLE)
 

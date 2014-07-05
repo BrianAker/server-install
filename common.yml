@@ -45,10 +45,10 @@
     - tuned-utils
     sudo: yes
     tags: package_install
-  service: >
-            name=tuned
-            state=started
-            enabled=yes
+  - service: >
+              name=tuned
+              state=started
+              enabled=yes
 
 - hosts: Ubuntu
   tasks:
