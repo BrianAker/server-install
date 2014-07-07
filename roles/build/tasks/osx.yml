@@ -7,7 +7,6 @@
     - automake
     - boost
     - byobu
-    - curl-ca-bundle
     - diffuse
     - gettext
     - gpg-agent
@@ -16,14 +15,11 @@
     - libevent
     - libmemcached
     - libtool
-    - macvim
     - mysql
     - pcre
     - protobuf
     - splint
     - swig
-#   - valgrind
-    - vim 
     - vpnc 
 
 # This is because not everything will install
