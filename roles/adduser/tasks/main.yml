@@ -91,6 +91,7 @@
     - brewrc
     - localrc
     - javarc
+    - configurerc
   when: ansible_distribution in ('MacOSX')
   sudo: yes
   sudo_user: "{{ User.name }}"
