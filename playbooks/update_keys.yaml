@@ -1,0 +1,14 @@
+--- # Update keys
+- name: Update Keys
+  hosts: all
+
+  tasks:
+  - command: "ssh-import-id-lp {{ launchpad_user }}"
+    sudo: yes
+    remote_user: "{{ deploy_username }}"
+    when: launchpad_user is defined
+
+  - command: "ssh-import-id-gh {{ github_user }}"
+    sudo: yes
+    remote_user: "{{ deploy_username }}"
+    when: github_user is defined
