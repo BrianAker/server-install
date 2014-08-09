@@ -12,6 +12,7 @@ packages:
     - coreutils
     - git
     - perl
+    - libselinux-python
     - redhat-lsb-core
     - ruby
     - ruby-devel
@@ -41,6 +42,7 @@ packages:
     - coreutils
     - git
     - perl
+    - libselinux-python
     - redhat-lsb-core
     - ruby
     - ruby-devel

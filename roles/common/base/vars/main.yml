@@ -40,7 +40,6 @@ packages:
     - bzr
     - bind-utils
     - curl
-    - etckeeper
     - fakeroot
     - make
     - pkgconfig

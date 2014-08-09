@@ -47,8 +47,4 @@ packages:
   CentOS:
     - libselinux-python
     - python
-    - python-dns
-    - python-passlib
-    - python-pip
     - python-setuptools
-    - python-virtualenv
