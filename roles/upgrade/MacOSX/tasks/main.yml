@@ -1,8 +1,0 @@
----
-- command: /usr/local/bin/brew update
-  sudo: yes
-  tags: upgrade
-
-- command: /usr/local/bin/brew upgrade
-  sudo: yes
-  tags: upgrade

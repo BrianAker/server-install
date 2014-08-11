@@ -1,1 +1,38 @@
 ---
+- command: /usr/bin/yum -y upgrade
+  sudo: yes
+  tags: upgrade
+  when: "ansible_pkg_mgr == 'yum'"
+
+- apt: update_cache=yes
+  sudo: yes
+  tags: upgrade
+  when: "ansible_pkg_mgr == 'apt'"
+
+- apt: upgrade=dist cache_valid_time=3600
+  sudo: yes
+  tags: upgrade
+  when: "ansible_pkg_mgr == 'apt'"
+
+- command: apt-get autoremove -y
+  sudo: yes
+  tags: upgrade
+  when: "ansible_pkg_mgr == 'apt'"
+
+- command: apt-get clean
+  sudo: yes
+  tags: upgrade
+  when: "ansible_pkg_mgr == 'apt'"
+
+- command: /usr/local/bin/brew update
+  sudo: yes
+  tags: upgrade
+  when: "ansible_distribution == 'MacOSX'"
+
+- command: /usr/local/bin/brew upgrade
+  sudo: yes
+  tags: upgrade
+  when: "ansible_distribution == 'MacOSX'"
+
+- raw: pkg upgrade -y
+  when: "ansible_distribution == 'FreeBSD'"

@@ -1,2 +1,9 @@
 ---
-ntp_service: ntpd
+ntp_service:
+  CentOS: ntpd
+  Debian: ntp
+  Fedora: ntpd
+  FreeBSD: ntpd
+  MacOSX: ntp
+  RedHat: ntpd
+  Ubuntu: ntp

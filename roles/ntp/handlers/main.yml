@@ -1,5 +1,6 @@
 ---
 - name: restart ntpd
   sudo: yes
-  service:  name={{ ntp_service }}
-            state=restarted
+  service:
+    name: "{{ ntp_service[ansible_distribution] }}"
+    state: restarted

@@ -36,7 +36,6 @@ packages:
     - perl
     - ruby
     - ruby-dev
-    - rubygems
 
   CentOS:
     - coreutils

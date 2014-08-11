@@ -1,8 +1,37 @@
 ---
+- debug:
+    var: ntp_service[ansible_distribution]
+
+- name: yum install ntp
+  sudo: yes
+  yum: 
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - ntpdate
+    - ntp
+  when: ansible_os_family == 'RedHat'
+  notify: restart ntpd
+
+- name: apt install ntp
+  sudo: yes
+  apt: 
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600 
+    state: latest
+  with_items:
+    - ntpdate
+    - ntp
+  when: ansible_os_family == 'Debian'
+  notify: restart ntp
+
+
 - name: enable ntpd service
   sudo: yes
-  service:  name={{ ntp_service }}
-            enabled=yes
-            state=started
+  service:  
+    name: "{{ ntp_service[ansible_distribution] }}"
+    enabled: yes
+    state: started
   notify: restart ntpd
-  when: "ansible_distribution != 'MacOSX'"
+  when: "ansible_os_family in ('RedHat', 'Debian')"
