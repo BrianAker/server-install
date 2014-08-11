@@ -26,7 +26,6 @@
   when: ansible_os_family == 'Debian'
   notify: restart ntp
 
-
 - name: enable ntpd service
   sudo: yes
   service:  

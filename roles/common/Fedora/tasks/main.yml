@@ -1,8 +1,0 @@
-# vim:ft=yaml
----
-- name: enable rsyslog
-  sudo: yes
-  service:  name=rsyslog
-            state=started
-            enabled=yes
-  tags: enable

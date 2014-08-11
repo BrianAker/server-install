@@ -1,15 +1,15 @@
 ---
-#- include: RedHat.yml
-#  when: ansible_os_family == 'RedHat'
-#
-#- include: Fedora.yml
-#  when: ansible_distribution == 'Fedora'
-#
-#- include: Ubuntu.yml
-#  when: ansible_distribution == 'Ubuntu'
-#
-#- include: MacOSX.yml
-#  when: ansible_distribution == 'MacOSX'
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+ 
+- include: Fedora.yml
+  when: ansible_distribution == 'Fedora'
+ 
+- include: Ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+ 
+- include: MacOSX.yml
+  when: ansible_distribution == 'MacOSX'
 #
 #- add_host: "name='{{ inventory_hostname }}' groups='haus'"
 #  when: inventory_hostname.find('haus')
@@ -21,3 +21,21 @@
 #  when: inventory_hostname.find('cloud')
 #
 #- add_host: "name='{{ inventory_hostname }}' groups='harden'"
+
+- name: "yum install {{ common_packages[ansible_distribution] }}"
+  sudo: yes
+  yum: 
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ common_packages[ansible_distribution] }}"
+  when: "ansible_pkg_mgr == 'yum'"
+
+- name: "apt-get install {{ common_packages[ansible_distribution] }}"
+  sudo: yes
+  apt: 
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600 
+    state: present
+  with_items: "{{ common_packages[ansible_distribution] }}"
+  when: "ansible_pkg_mgr == 'apt'"
