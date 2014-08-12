@@ -1,5 +1,3 @@
 ---
 allow_duplicates: no
-dependencies:
-#  - { role: facts }
-  - { role: common/base }
+dependencies: []

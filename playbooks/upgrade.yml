@@ -1,0 +1,52 @@
+--- # Upgrade the fleet
+- name: Upgrade
+  hosts: all
+
+  roles:
+  tasks:
+    - name: Create groups by ansible_pkg_mgr
+      group_by: key={{ ansible_pkg_mgr }}
+
+    - name: Create groups by ansible_distribution
+      group_by: key={{ ansible_distribution }}
+
+- hosts: yum
+  tasks:
+  - command: /usr/bin/yum -y upgrade
+    sudo: yes
+    tags: upgrade
+
+- hosts: apt
+  tasks:
+  - apt: update_cache=yes
+    sudo: yes
+    tags: upgrade
+
+  - apt: upgrade=dist cache_valid_time=3600
+    sudo: yes
+    tags: upgrade
+
+  - command: apt-get autoremove -y
+    sudo: yes
+    tags: upgrade
+
+  - command: apt-get clean
+    sudo: yes
+    tags: upgrade
+
+  - command: shutdown -r now
+    sudo: yes
+
+- hosts: MacOSX
+  tasks:
+  - command: /usr/local/bin/brew update
+    sudo: yes
+    tags: upgrade
+
+  - command: /usr/local/bin/brew upgrade
+    sudo: yes
+    tags: upgrade
+
+- hosts: FreeBSD
+  tasks:
+  - raw: pkg upgrade -y

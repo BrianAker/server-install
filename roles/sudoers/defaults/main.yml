@@ -1,2 +1,21 @@
-# vim:ft=yaml
----
+--- # vim:ft=yaml
+sudo_packages:
+  FreeBSD:
+    - sudo
+
+  MacOSX: []
+
+  RedHat:
+    - sudo
+
+  Fedora:
+    - sudo
+
+  Debian:
+    - sudo
+
+  Ubuntu:
+    - sudo
+
+  CentOS:
+    - sudo

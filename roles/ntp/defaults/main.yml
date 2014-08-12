@@ -7,3 +7,13 @@ ntp_service:
   MacOSX: ntp
   RedHat: ntpd
   Ubuntu: ntp
+
+ntp_packages:
+  FreeBSD:
+    - ntp
+  RedHat:
+    - ntpdate
+    - ntp
+  Debian:
+    - ntpdate
+    - ntp
