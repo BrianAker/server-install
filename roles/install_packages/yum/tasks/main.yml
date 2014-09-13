@@ -1,7 +1,8 @@
 ---
 - name: install packages with yum
   sudo: yes
-  yum:  name={{ item }}
-        state={{ default_package_state }}
+  yum:
+    name: "{{ item }}"
+    state: "{{ default_package_state }}"
   with_items: packages[ansible_distribution] | default([])
   tags: package_install

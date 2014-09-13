@@ -1,10 +1,12 @@
 ---
-- set_fact: userpassword_dir="~/.credentials/{{ inventory_hostname }}"
-- set_fact: userpassword_command="{{ userpassword_dir}}/{{ User.name }} encrypt=sha256_crypt"
+- set_fact:
+    userpassword_dir: "~/.credentials/{{ inventory_hostname }}"
+- set_fact:
+    userpassword_command: "{{ userpassword_dir}}/{{ User.name }} encrypt=sha256_crypt"
 
 - name: mkdir credentials hostname username
   file: 
-    path: "{{ userpassword_dir  }}"
+    path: "{{ userpassword_dir }}"
     state: directory
     mode: 0700
   delegate_to: localhost

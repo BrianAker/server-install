@@ -1,7 +1,8 @@
 ---
 - name: add jenkins user to mock group
   sudo: yes
-  user: name=jenkins
-        state=present 
-        groups=mock
+  user: 
+    name: jenkins
+    state: present 
+    groups:  mock
   when: ansible_distribution == 'Fedora'

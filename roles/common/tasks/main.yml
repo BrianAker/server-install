@@ -27,7 +27,7 @@
   yum: 
     name: "{{ item }}"
     state: present
-  with_items: "{{ common_packages[ansible_distribution] }}"
+  with_items: common_packages.ansible_distribution
   when: "ansible_pkg_mgr == 'yum'"
 
 - name: "apt-get install {{ common_packages[ansible_distribution] }}"
@@ -37,7 +37,7 @@
     update_cache: yes
     cache_valid_time: 3600 
     state: present
-  with_items: "{{ common_packages[ansible_distribution] }}"
+  with_items: common_packages.ansible_distribution
   when: "ansible_pkg_mgr == 'apt'"
 
 - name: "pkgng install {{ common_packages[ansible_distribution] }}"
@@ -45,5 +45,5 @@
   pkgng:
     name: "{{ item }}"
     state: present
-  with_items: "{{ common_packages[ansible_distribution] }}"
+  with_items: common_packages.ansible_distribution
   when: "ansible_pkg_mgr == 'pkgng'"

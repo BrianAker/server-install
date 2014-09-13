@@ -1,6 +1,7 @@
 ---
-- file: state=directory
-        path="{{ user_homedir }}/.bazaar/plugins"
+- file:
+    state: directory
+    path: "{{ user_homedir }}/.bazaar/plugins"
   sudo: yes
   sudo_user: "{{ User.name }}"
 
@@ -12,29 +13,33 @@
 - name: setup authorized_key
   sudo: yes
   ignore_errors: yes
-  authorized_key: user="{{ User.name }}"
-                  key="{{ lookup('file', srcdir + '/public_keys/' + User.name) }}"
+  authorized_key:
+    user: "{{ User.name }}"
+    key: "{{ lookup('file', srcdir + '/public_keys/' + User.name) }}"
 
 - name: reset mode for authorized_keys
-  file: path="{{ user_homedir }}/.ssh/authorized_keys"
-        mode=0600
+  file: 
+    path: "{{ user_homedir }}/.ssh/authorized_keys"
+    mode: 0600
   sudo: yes
   sudo_user: "{{ User.name }}"
-  when: "'{{ inventory_hostname }}' != 'localhost'"
+  when: "inventory_hostname != 'localhost'"
 
-- file: path="{{ profile_d }}"
-        mode=0750
-        state=directory
+- file: 
+    path: "{{ profile_d }}"
+    mode: 0750
+    state: directory
   sudo: yes
   sudo_user: "{{ User.name }}"
   tags:
     - shellconf
 
 - name: copy in customrc
-  template: src="{{ item }}.j2"
-            dest="{{ user_homedir }}/.{{ item }}"
-            mode=0600
-            validate='bash -n %s'
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ user_homedir }}/.{{ item }}"
+    mode: 0600
+    validate: 'bash -n %s'
   with_items:
     - customrc
   sudo: yes
@@ -43,10 +48,11 @@
     - shellconf
 
 - name: copy in specific
-  template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}.sh"
-            mode=0600
-            validate='bash -n %s'
+  template: 
+    src: "{{ item }}.j2"
+    dest: "{{ profile_d }}/{{ item }}.sh"
+    mode: 0600
+    validate: 'bash -n %s'
   with_items:
     - pythonrc
     - perlrc
@@ -57,10 +63,11 @@
     - shellconf
 
 - name: copy in specific
-  template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}.sh"
-            mode=0600
-            validate='bash -n %s'
+  template: 
+    src: "{{ item }}.j2"
+    dest: "{{ profile_d }}/{{ item }}.sh"
+    mode: 0600
+    validate: 'bash -n %s'
   with_items:
     - pkgngrc
   when: ansible_distribution in ('FreeBSD')
@@ -70,10 +77,11 @@
     - shellconf
 
 - name: copy in specific
-  template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}.sh"
-            mode=0600
-            validate='bash -n %s'
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ profile_d }}/{{ item }}.sh"
+    mode: 0600
+    validate: 'bash -n %s'
   with_items:
     - sbinrc
   when: ansible_distribution in ('Debian')
@@ -83,10 +91,11 @@
     - shellconf
 
 - name: copy in OSX specific
-  template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}.sh"
-            mode=0600
-            validate='bash -n %s'
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ profile_d }}/{{ item }}.sh"
+    mode: 0600
+    validate: 'bash -n %s'
   with_items:
     - brewrc
     - localrc
@@ -99,10 +108,11 @@
     - shellconf
 
 - name: copy in specific
-  template: src="{{ item }}.j2"
-            dest="{{ profile_d }}/{{ item }}.sh"
-            mode=0600
-            validate='bash -n %s'
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ profile_d }}/{{ item }}.sh"
+    mode: 0600
+    validate: 'bash -n %s'
   with_items:
     - keychainrc
   when: keychain == True
@@ -111,8 +121,9 @@
   tags:
     - shellconf
 
-- file: path="{{ user_homedir }}/.bash_profile"
-        state=touch
+- file:
+    path: "{{ user_homedir }}/.bash_profile"
+    state: touch
   sudo: yes
   sudo_user: "{{ User.name }}"
   tags:
