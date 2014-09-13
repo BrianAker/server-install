@@ -30,6 +30,7 @@
   roles:
   - role: jnv.unattended-upgrades
     unattended_allowed_origins: [security, updates]
+    sudo: yes
 
 - hosts: RedHat
   roles:

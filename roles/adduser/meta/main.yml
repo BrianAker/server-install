@@ -8,6 +8,6 @@ dependencies:
   - { role: adduser/fill  }
   - { role: python, python_user: "{{ User.name }}", when: "pip_package_file is defined" }
   - { role: sshd }
-  - { role: adduser/sshd, when: User.is_remote }
+  - { role: adduser/sshd, when: "User.is_remote is defined && User.is_remote" }
   - { role: sudoers }
-  - { role: adduser/sudoers, when: User.is_admin }
+  - { role: adduser/sudoers, when: "User.is_admin is defined && User.is_admin" }

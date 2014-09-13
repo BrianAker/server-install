@@ -131,3 +131,18 @@
   sudo_user: "{{ User.name }}"
   tags:
     - shellconf
+
+- include: sudo.yaml
+  when: is_admin is defined && is_admin
+
+- name: ssh-import-id-lp
+  command: "ssh-import-id-lp {{ ssh_import_id_lp }}"
+  sudo: yes
+  sudo_user: "{{ User.name }}"
+  when: ssh_import_id_lp is defined
+
+- name: ssh-import-id-gh
+  command: "ssh-import-id-gh {{ ssh_import_id_gh }}"
+  sudo: yes
+  sudo_user: "{{ User.name }}"
+  when: ssh_import_id_gh is defined
