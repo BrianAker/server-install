@@ -20,7 +20,14 @@
     comment: "{{ User.name }}"
     state: present
     shell: "{{ default_shell }}"
-    generate_ssh_key: "yes"
     password: "{{ item }}"
     update_password: "on_create"
   with_password: userpassword_command
+
+- name: add user to group wheel
+  sudo: yes
+  sudo_user: root
+  user: 
+    name: "{{ User.name }}"
+    groups: "wheel"
+  when: User.is_wheel is defined

@@ -9,9 +9,10 @@
      - "vars/Defaults"
 
   roles:
+    - role: build
     - role: developer
       User:
-        name: brian
+        name: "{{ developer_name }}"
         shell: "{{ default_shell }}"
         keychain: True
         is_admin: True

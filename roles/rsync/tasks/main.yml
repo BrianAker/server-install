@@ -1,21 +1,36 @@
 ---
+- template:
+    src: rsync.plist.j2
+    dest: /Library/LaunchDaemons/rsync.plist
+  when: ansible_distribution == 'MacOSX'
+
+- name: Load OSX plist
+  command: launchctl reload /Library/LaunchDaemons/rsync.plist
+  when: ansible_distribution == 'MacOSX'
+
 - name: create rsync user
   sudo: yes
-  user: name=rsync
-        generate_ssh_key=yes
-        state=present 
-        shell=/bin/bash
+  user:
+    name: rsync
+    generate_ssh_key: yes
+    state: present 
+    shell: /bin/bash
   notify: restart rsyncd
+  when: "ansible_os_family in ('RedHat', 'Debian')"
 
 - name: create rsyncd.conf
   sudo: yes
-  copy: src=rsyncd.conf
-        dest=/etc/rsyncd.conf
+  copy: 
+    src: rsyncd.conf
+    dest: /etc/rsyncd.conf
   notify: restart rsyncd
+  when: "ansible_os_family in ('RedHat', 'Debian')"
 
 - name: enable rsyncd
   sudo: yes
-  service:  name=rsyncd
-            state=started
-            enabled=yes
+  service:
+    name: rsyncd
+    state: started
+    enabled: yes
   notify: restart rsyncd
+  when: "ansible_os_family in ('RedHat', 'Debian')"
