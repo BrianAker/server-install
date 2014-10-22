@@ -26,8 +26,5 @@
     - role: deploy
     - role: unattended-upgrades
     - role: bootstrap/base
-    - role: upgrade
 
-#- hosts: MacOSX
-#  tasks:
-#    command: fdesetup authrestart
+- include: playbooks/upgrade.yml

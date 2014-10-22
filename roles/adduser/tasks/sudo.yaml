@@ -1,0 +1,8 @@
+---
+- set_fact: 
+    sudoer_user_file: '{{ sudoers_d }}/{{ User.name }}'
+
+- template:
+    src: sudo.j2
+    dest: "{{ sudoer_user_file }}"
+    validate: 'visudo -cf %s'

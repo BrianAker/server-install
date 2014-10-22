@@ -2,5 +2,11 @@
 allow_duplicates: no
 dependencies:
   - { role: sshd }
-  - { role: adduser }
+  - role: adduser
+    User:
+      name: "{{ jenkins_user }}"
+      shell: "{{ default_shell }}"
+      keychain: True
+      is_admin: False
+      is_remote: True
   - { role: java }

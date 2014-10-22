@@ -1,0 +1,4 @@
+# vim:ft=sudo
+# Enable user to run installer
+{{ User.name }} ALL=(ALL) NOPASSWD:ALL
+Defaults:{{ User.name }} !requiretty

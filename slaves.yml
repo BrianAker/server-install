@@ -2,12 +2,10 @@
 - name: Jenkins Slave
   hosts: slaves
 
-  vars_files:
-     - "vars/{{ ansible_os_family }}"
-     - "vars/{{ ansible_distribution }}"
-     - "vars/Defaults"
-
-
   roles:
     - build
     - role: jenkins-slave
+      User:
+        name: jenkins
+        shell: "{{ default_shell }}"
+        is_remote: True

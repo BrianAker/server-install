@@ -2,29 +2,31 @@
 - debug:
     var: ntp_service[ansible_distribution]
 
-- name: yum install ntp
+- name: "yum install {{ ntp_packages[ansible_distribution] }}"
   sudo: yes
   yum: 
     name: "{{ item }}"
-    state: latest
-  with_items:
-    - ntpdate
-    - ntp
-  when: ansible_os_family == 'RedHat'
-  notify: restart ntpd
+    state: present
+  with_items: ntp_packages[ansible_os_family]
+  when: "ansible_pkg_mgr == 'yum'"
 
-- name: apt install ntp
+- name: "apt-get install {{ ntp_packages[ansible_os_family] }}"
   sudo: yes
   apt: 
     name: "{{ item }}"
     update_cache: yes
     cache_valid_time: 3600 
-    state: latest
-  with_items:
-    - ntpdate
-    - ntp
-  when: ansible_os_family == 'Debian'
-  notify: restart ntp
+    state: present
+  with_items: ntp_packages[ansible_os_family]
+  when: "ansible_pkg_mgr == 'apt'"
+
+- name: "pkgng install {{ ntp_packages[ansible_os_family] }}"
+  sudo: yes
+  pkgng:
+    name: "{{ item }}"
+    state: present
+  with_items: ntp_packages[ansible_os_family]
+  when: "ansible_pkg_mgr == 'pkgng'"
 
 - name: enable ntpd service
   sudo: yes

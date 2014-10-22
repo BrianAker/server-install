@@ -1,5 +1,9 @@
 ---
-- debug: msg="Adding user {{ User.name }}"
+- name: "Adding user"
+  debug:
+    var: User
+  tags:
+    - debug
 
 - fail: "User was not defined."
   when: User is not defined

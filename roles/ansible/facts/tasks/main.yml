@@ -4,5 +4,6 @@
   failed_when: "which_ansbile_result.rc == 2"
   changed_when: "which_ansbile_result.rc != 2"
 
-- set_fact: using_system_ansible=True
+- set_fact: 
+    using_system_ansible: True
   when: which_ansbile_result.rc == 0

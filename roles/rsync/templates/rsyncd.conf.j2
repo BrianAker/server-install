@@ -1,0 +1,13 @@
+log file = rsync_log
+
+{% if rsync_shares %}
+{% for _share in rsync_shares %}
+[{% _share.name %}]
+   path = {% _share.path %}
+   hosts allow =
+   uid = root
+   gid = wheel
+   read only = true
+   comment = {% _share.comment %}
+{% endfor %}
+{% endif %}

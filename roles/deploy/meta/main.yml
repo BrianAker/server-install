@@ -1,5 +1,5 @@
 ---
-allow_duplicates: no
+allow_duplicates: yes
 dependencies:
   - { role: sshd }
   - role: adduser
@@ -9,4 +9,5 @@ dependencies:
       keychain: True
       is_admin: True
       is_remote: True
+      is_wheel: True
   - { role: python }

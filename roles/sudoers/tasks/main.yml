@@ -1,33 +1,76 @@
 --- # vim:ft=yaml
-- group:  name=wheel
-          state=present
+- name: "yum install sudo_packages"
+  sudo: yes
+  yum: 
+    name: "{{ item }}"
+    state: present
+  with_items: sudo_packages[ansible_distribution]
+  when: "ansible_pkg_mgr == 'yum'"
+
+- name: "apt-get install sudo_packages"
+  sudo: yes
+  apt: 
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600 
+    state: present
+  with_items: sudo_packages[ansible_distribution]
+  when: "ansible_pkg_mgr == 'apt'"
+
+- name: "pkgng install sudo_packages"
+  sudo: yes
+  pkgng:
+    name: "{{ item }}"
+    state: present
+  with_items: sudo_packages[ansible_distribution]
+  when: "ansible_pkg_mgr == 'pkgng'"
+
+- group:  
+    name: wheel
+    state: present
   when: "ansible_distribution != 'MacOSX'"
   sudo: yes
 
 - name: mkdir sudoers.d
-  file: path="{{ sudoers_d }}"
-        state=directory
-        owner=root
-        group="{{ root_group }}"
-        mode=0750
+  file: 
+    path: "{{ sudoers_d }}"
+    state: directory
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0750
   sudo: yes
 
-- file: dest={{ sudoers_conf }}
-        state=touch
-        owner=root
-        group="{{ root_group }}"
-        mode=0440
+- file: 
+    dest: "{{ sudoers_conf }}"
+    state: touch
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0440
   sudo: yes
 
 - name: configure sudoers
-  lineinfile: dest={{ sudoers_conf }}
-              state=present
-              regexp='^{{ item.key }}'
-              line='{{ item.key }} {{ item.value }}'
-              validate='visudo -cf %s'
+  lineinfile: 
+    dest: "{{ sudoers_conf }}"
+    state: present
+    regexp: '^{{ item.key }}'
+    line: '{{ item.value }}'
+    validate: 'visudo -cf %s'
   with_items:
-    - { key: 'root', value: 'ALL=(ALL) ALL'}
-    - { key: '#includedir', value: "{{ sudoers_d }}" }
-    - { key: '%wheel', value: 'ALL=(ALL) NOPASSWD: ALL'}
+    - key: 'root'
+      value: 'root ALL=(ALL) ALL'
+    - key: '#includedir'
+      value: "#includedir {{ sudoers_d }}"
+    - key: '%wheel'
+      value: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    - key: 'Defaults env_keep.*SH_AUTH_SOCK'
+      value: 'Defaults env_keep += "SSH_AUTH_SOCK"'
   tags: config
+  sudo: yes
+
+- file: 
+    dest: /etc/security/authorized_keys
+    state: touch
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0600
   sudo: yes
