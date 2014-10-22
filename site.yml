@@ -45,7 +45,7 @@
 
 - include: remote.yml
 
-- include: haus.yml
+#- include: haus.yml
 
 #- include: downloads.yml
 

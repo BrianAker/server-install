@@ -3,7 +3,13 @@
   command: id -gn root
   register: id_group_result
 
-- set_fact: root_group="{{ id_group_result.stdout }}"
+- name: "Results of id_group_result"
+  debug:
+    var: id_group_result
+  tags: debug
+
+- set_fact: 
+    root_group: "{{ id_group_result.stdout }}"
 
 - command: pwd
   register: srcdir
