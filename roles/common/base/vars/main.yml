@@ -21,6 +21,7 @@ packages:
     - fakeroot
     - keychain
     - lldpad
+    - ladvd
     - make
     - net-tools
     - pkgconfig
