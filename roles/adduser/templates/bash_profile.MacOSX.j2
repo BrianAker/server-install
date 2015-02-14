@@ -1,3 +1,20 @@
+# vim:ft=sh
+
 if [ -f ~/.bashrc ]; then 
     source ~/.bashrc 
+fi
+
+if [ -z "$PS1" ]; then
+  if [ -x "/usr/local/bin/mvim" ]; then
+    alias vi='/usr/local/bin/mvim'
+    VISUAL=/usr/local/bin/mvim
+    EDITOR=/usr/local/bin/mvim
+  elif [ -x "/usr/bin/vim" ]; then
+    alias vi='vim'
+    VISUAL=/usr/bin/vim
+    EDITOR=/usr/bin/vim
+  else
+    VISUAL=vi
+    EDITOR=vi
+  fi
 fi
