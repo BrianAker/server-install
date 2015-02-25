@@ -94,6 +94,8 @@ common_packages:
     - lldpad
     - make
     - pkg-config
+    - powertop
+    - pm-utils
     - python
     - python-dev
     - sudo

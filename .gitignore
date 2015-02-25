@@ -23,6 +23,7 @@ userpassword_command
 .ansible
 aux/ansible
 roles/jnv.unattended-upgrades
+roles/f500.dumpall
 roles/pdellaert.dhcp_server
 roles/yum-cron
 roles/f500.dumpall

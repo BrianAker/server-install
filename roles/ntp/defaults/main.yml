@@ -17,3 +17,14 @@ ntp_packages:
   Debian:
     - ntpdate
     - ntp
+
+  MacOSX:
+    - pkg-config
+    - pwgen
+    - ssh-copy-id
+
+  Fedora: []
+
+  CentOS: []
+
+  Ubuntu: []

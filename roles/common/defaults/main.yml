@@ -8,7 +8,8 @@ common_packages:
     - pwgen
     - ssh-copy-id
 
-  RedHat: []
+  RedHat:
+    - sudo
 
   Fedora:
     - '@minimal-environment'
@@ -26,6 +27,7 @@ common_packages:
     - pkgconfig
     - rsyslog
     - system-config-network
+    - sudo
     - tar
     - traceroute
     - tuned
@@ -46,6 +48,7 @@ common_packages:
     - make
     - pkgconfig
     - rsyslog
+    - sudo
     - tar
     - traceroute
     - vim

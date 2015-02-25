@@ -7,7 +7,7 @@
      - "vars/{{ ansible_distribution }}"
      - "vars/Defaults"
 
-  tasks:
+  pre_tasks:
   - name: create ansible_distribution group
     group_by: key={{ ansible_distribution }}
 
@@ -32,25 +32,61 @@
     unattended_allowed_origins: [security, updates]
     sudo: yes
 
+- hosts: 'apt' 
+  tasks:
+  - name: "apt-get install common_packages"
+    sudo: yes
+    apt: 
+      name: "{{ item }}"
+      update_cache: yes
+      cache_valid_time: 3600 
+      state: present
+    with_items: common_packages[ansible_distribution]
+    tags: package_install
+
+- hosts: 'yum'
+  tasks:
+  - name: install packages with yum
+    yum:
+      name: "{{ item }}"
+      state: present
+    with_items: common_packages[ansible_distribution]
+    sudo: yes
+    tags: package_install
+
+- hosts: 'pkgng'
+  tasks:
+  - name: "pkgng install common_packages"
+    sudo: yes
+    pkgng:
+      name: "{{ item }}"
+      state: present
+    with_items: common_packages[ansible_distribution]
+    tags: package_install
+
 - hosts: RedHat
+  tasks:
+  - name: install open-vm-tools 
+    sudo: yes
+    yum:
+      name: open-vm-tools
+      state: present
+    when: ansible_virtualization_role == 'Guest'
+    tags: package_install
   roles:
   - role: yum-cron
 
 - hosts: Fedora
   tasks:
-  - name: install packages with yum
-    yum:  name={{ item }}
-          state=present
-    with_items: common_packages[ansible_distribution]
-    sudo: yes
-    tags: package_install
   - name: install open-vm-tools 
     sudo: yes
-    yum:  name=open-vm-tools
-          state=present
+    yum:
+      name: open-vm-tools
+      state: present
     when: ansible_virtualization_role == 'Guest'
     tags: package_install
-  - service: >
+  - name: enable tuned
+    service: >
               name=tuned
               state=started
               enabled=yes
@@ -58,15 +94,14 @@
 
 - hosts: Ubuntu
   tasks:
-  - apt:  update_cache=yes
-          cache_valid_time=3600
-          name={{ item }}
-          state=present
-    with_items:
-    - powertop
-    - pm-utils
+  - name: "apt-get install common_packages"
     sudo: yes
+    apt: 
+      name: open-vm-tools
+      update_cache: yes
+      cache_valid_time: 3600 
+      state: present
+    when: ansible_virtualization_role == 'Guest'
     tags: package_install
-
   - command: pm-powersave true
     sudo: yes

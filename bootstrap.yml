@@ -14,7 +14,7 @@
      - "vars/{{ ansible_distribution }}"
      - "vars/Defaults"
 
-  tasks:
+  pre_tasks:
     - group_by: key={{ ansible_distribution }}
 
   roles:

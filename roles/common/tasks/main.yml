@@ -29,6 +29,7 @@
     state: present
   with_items: common_packages[ansible_distribution]
   when: "ansible_pkg_mgr == 'yum'"
+  tags: package_install
 
 - name: "apt-get install common_packages"
   sudo: yes
@@ -39,6 +40,7 @@
     state: present
   with_items: common_packages[ansible_distribution]
   when: "ansible_pkg_mgr == 'apt'"
+  tags: package_install
 
 - name: "pkgng install common_packages"
   sudo: yes
@@ -47,3 +49,4 @@
     state: present
   with_items: common_packages[ansible_distribution]
   when: "ansible_pkg_mgr == 'pkgng'"
+  tags: package_install
