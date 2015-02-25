@@ -1,0 +1,8 @@
+---
+- name: install packages with yum
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: ansible_packages[ansible_distribution]
+  sudo: yes
+  tags: package_install

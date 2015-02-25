@@ -1,6 +1,3 @@
 ---
 allow_duplicates: yes
-dependencies:
-  - { role: install_packages }
-  - { role: ansible/validate }
-  - { role: ansible/adduser, when: User is defined }
+dependencies: []

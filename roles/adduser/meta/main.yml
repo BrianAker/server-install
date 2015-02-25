@@ -2,7 +2,6 @@
 allow_duplicates: yes
 dependencies:
   - role: facts
-  - role: adduser/fill
   - role: pip
   - role: sshd
   - role: sudoers

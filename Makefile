@@ -146,7 +146,7 @@ roles/jnv.unattended-upgrades/README.md:
 
 PREREQ+= roles/dhcp_server/README.md
 roles/dhcp_server/README.md:
-	git clone https://github.com/pdellaert/dhcp_server.git $@
+	git clone https://github.com/pdellaert/dhcp_server.git $(@D)
 
 .PHONY: install
 install: all

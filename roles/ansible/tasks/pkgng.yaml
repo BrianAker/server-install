@@ -1,0 +1,9 @@
+---
+- name: "pkgng install common_packages"
+  sudo: yes
+  pkgng:
+    name: "{{ item }}"
+    state: present
+  with_items: ansible_packages[ansible_distribution]
+  tags: package_install
+  when: "ansible_pkg_mgr == 'pkgng'"
