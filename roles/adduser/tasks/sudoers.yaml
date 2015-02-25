@@ -6,3 +6,21 @@
     src: sudo.j2
     dest: "{{ sudoer_user_file }}"
     validate: 'visudo -cf %s'
+
+- name: add user to wheel
+  user:
+    name: "{{ User.name }}"
+    state: present
+    groups: wheel
+    append: yes
+  sudo: yes
+
+- name: add user to admin group
+  command: "dscl . append /Groups/admin GroupMembership {{ User.name }}"
+  sudo: yes
+  when: "ansible_distribution == 'MacOSX'"
+
+- name: add user to wheel group
+  command: "dscl . append /Groups/wheel GroupMembership {{ User.name }}"
+  sudo: yes
+  when: "ansible_distribution == 'MacOSX'"

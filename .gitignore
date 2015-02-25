@@ -22,8 +22,8 @@ test.yml
 userpassword_command
 .ansible
 aux/ansible
+roles/dhcp_server
+roles/f500.dumpall
+roles/f500.dumpall
 roles/jnv.unattended-upgrades
-roles/f500.dumpall
 roles/pdellaert.dhcp_server
-roles/yum-cron
-roles/f500.dumpall

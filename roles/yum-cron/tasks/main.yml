@@ -1,0 +1,9 @@
+---
+- name: install the needed packages
+  yum: name=yum-cron
+       state=present
+
+- name: start yum-cron
+  service: name=yum-cron
+           state=running
+           enabled=yes

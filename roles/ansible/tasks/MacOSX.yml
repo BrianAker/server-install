@@ -1,5 +1,7 @@
 ---
-- homebrew: name=ansible
-            state=absent
-  when: using_system_ansible is defined
+- homebrew:
+    name: "{{ item }}"
+    state: present
+  with_items: ansible_packages[ansible_distribution]
   ignore_errors: yes
+  tags: package_install

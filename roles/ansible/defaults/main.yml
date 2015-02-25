@@ -1,3 +1,33 @@
-# vim:ft=yaml
----
+--- # vim:ft=yaml
 virtualenv_bin: /usr/bin/virtualenv
+
+ansible_packages:
+  FreeBSD:
+    - libyaml
+
+  MacOSX:
+    - libyaml
+
+  RedHat:
+    - libyaml
+    - libyaml-devel
+
+  Fedora:
+    - libyaml
+    - libyaml-devel
+
+  Debian:
+    - libyaml-dev
+
+  Ubuntu:
+    - libyaml-dev
+    - python-dev
+    - python-jinja2
+    - python-paramiko
+    - python-pip
+    - python-yaml
+    
+
+  CentOS:
+    - libyaml
+    - libyaml-devel

@@ -91,7 +91,7 @@ DIST_MAKEFILES:=
 
 .PHONY: clean
 clean:
-	@rm -rf $(BUILD)
+	@rm -rf $(BUILD) roles/dhcp_server
 	@rm -f roles/adduser/files/public_keys/brian roles/adduser/files/public_keys/jenkins
 	@find roles | grep role.yml | xargs rm
 
@@ -143,6 +143,10 @@ PREREQ+= roles/jnv.unattended-upgrades/README.md
 roles/jnv.unattended-upgrades/README.md:
 	ansible-galaxy install jnv.unattended-upgrades
 	@$(TOUCH) $@
+
+PREREQ+= roles/dhcp_server/README.md
+roles/dhcp_server/README.md:
+	git clone https://github.com/pdellaert/dhcp_server.git $@
 
 .PHONY: install
 install: all

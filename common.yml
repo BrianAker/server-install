@@ -34,7 +34,7 @@
 
 - hosts: 'apt' 
   tasks:
-  - name: "apt-get install common_packages"
+  - name: apt-get install common_packages
     sudo: yes
     apt: 
       name: "{{ item }}"

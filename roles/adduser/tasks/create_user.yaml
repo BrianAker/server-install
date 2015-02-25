@@ -1,0 +1,33 @@
+---
+- set_fact:
+    userpassword_dir: "~/.credentials/{{ inventory_hostname }}"
+- set_fact:
+    userpassword_command: "{{ userpassword_dir}}/{{ User.name }} encrypt=sha256_crypt"
+
+- name: mkdir credentials hostname username
+  file: 
+    path: "{{ userpassword_dir }}"
+    state: directory
+    mode: 0700
+  delegate_to: localhost
+  sudo: no
+
+- name: create user
+  sudo: yes
+  sudo_user: root
+  user: 
+    name: "{{ User.name }}"
+    comment: "{{ User.name }}"
+    state: present
+    shell: "{{ default_shell }}"
+    password: "{{ item }}"
+    update_password: "on_create"
+  with_password: userpassword_command
+
+- name: add user to group wheel
+  sudo: yes
+  sudo_user: root
+  user: 
+    name: "{{ User.name }}"
+    groups: "wheel"
+  when: User.is_wheel is defined
