@@ -1,0 +1,19 @@
+---
+- name: "enable service"
+  sudo: yes
+  firewalld:  service={{ add_service }}
+              permanent=true
+              state=enabled
+  when: add_service is defined
+  notify: restart firewalld
+  tags: config
+
+- name: "enable port"
+  sudo: yes
+  firewalld:  port={{ add_port }}
+              permanent=true
+              state=enabled
+  when: add_port is defined
+  when: add_port is defined
+  notify: restart firewalld
+  tags: config

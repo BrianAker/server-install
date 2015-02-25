@@ -1,4 +1,8 @@
 ---
+- include: 'validate.yaml'
+
+- include: 'set.yaml'
+
 - file:
     state: directory
     path: "{{ user_homedir }}/.bazaar/plugins"
@@ -143,17 +147,8 @@
   tags:
     - shellconf
 
-- include: sudo.yaml
-  when: is_admin is defined && is_admin
+- include: 'sudoers.yaml'
+  when: "User.is_admin is defined && User.is_admin"
 
-- name: ssh-import-id-lp
-  command: "ssh-import-id-lp {{ ssh_import_id_lp }}"
-  sudo: yes
-  sudo_user: "{{ User.name }}"
-  when: ssh_import_id_lp is defined
-
-- name: ssh-import-id-gh
-  command: "ssh-import-id-gh {{ ssh_import_id_gh }}"
-  sudo: yes
-  sudo_user: "{{ User.name }}"
-  when: ssh_import_id_gh is defined
+- include: 'sshd.yaml'
+  when: "User.is_remote is defined && User.is_remote"

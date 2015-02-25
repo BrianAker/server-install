@@ -41,10 +41,14 @@
   - name: install packages with yum
     yum:  name={{ item }}
           state=present
-    with_items:
-    - tuned
-    - tuned-utils
+    with_items: common_packages[ansible_distribution]
     sudo: yes
+    tags: package_install
+  - name: install open-vm-tools 
+    sudo: yes
+    yum:  name=open-vm-tools
+          state=present
+    when: ansible_virtualization_role == 'Guest'
     tags: package_install
   - service: >
               name=tuned

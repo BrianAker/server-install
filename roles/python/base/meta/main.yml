@@ -1,5 +1,0 @@
----
-allow_duplicates: no
-dependencies:
-  - { role: install_packages }
-  - { role: python/base/MacOSX, when: "ansible_os_family in ('MacOSX')" }

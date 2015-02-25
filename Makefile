@@ -126,11 +126,13 @@ public_keys/deploy: public_keys/$(dirstamp)
 
 PREREQ+= public_keys/brian
 public_keys/brian: public_keys/$(dirstamp)
-	@$(SSH_IMPORT_ID) -o $@ brianaker
+	touch $@ 
+	curl https://github.com/brianaker.keys >> $@
 
 PREREQ+= public_keys/jenkins
 public_keys/jenkins: public_keys/$(dirstamp)
-	@$(SSH_IMPORT_ID) -o $@ d-ci
+	touch $@ 
+	curl https://github.com/TangentCI.keys >> $@
 
 PREREQ+= files/pkg-pubkey.cert
 files/pkg-pubkey.cert:

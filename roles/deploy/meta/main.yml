@@ -10,4 +10,4 @@ dependencies:
       is_admin: True
       is_remote: True
       is_wheel: True
-  - { role: python }
+  - { role: pip }

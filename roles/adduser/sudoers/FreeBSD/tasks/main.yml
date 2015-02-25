@@ -1,7 +1,0 @@
----
-- name: add user to wheel
-  user: name="{{ User.name }}"
-        state=present
-        groups=wheel
-        append=yes
-  sudo: yes

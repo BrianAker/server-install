@@ -28,6 +28,8 @@ common_packages:
     - system-config-network
     - tar
     - traceroute
+    - tuned
+    - tuned-utils
     - vim
     - wget
     - yum-cron

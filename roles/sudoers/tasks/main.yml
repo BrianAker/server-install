@@ -1,29 +1,5 @@
 --- # vim:ft=yaml
-- name: "yum install sudo_packages"
-  sudo: yes
-  yum: 
-    name: "{{ item }}"
-    state: present
-  with_items: sudo_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'yum'"
-
-- name: "apt-get install sudo_packages"
-  sudo: yes
-  apt: 
-    name: "{{ item }}"
-    update_cache: yes
-    cache_valid_time: 3600 
-    state: present
-  with_items: sudo_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'apt'"
-
-- name: "pkgng install sudo_packages"
-  sudo: yes
-  pkgng:
-    name: "{{ item }}"
-    state: present
-  with_items: sudo_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'pkgng'"
+- include: validate.yaml
 
 - group:  
     name: wheel

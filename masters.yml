@@ -1,6 +1,6 @@
 # Host rules for Jenkins-ci masters
 - name: Jenkins Master
-  hosts: masters
+  hosts: jenkins
 
   vars_files:
      - "vars/{{ ansible_os_family }}"

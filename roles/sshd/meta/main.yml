@@ -1,6 +1,4 @@
 ---
 allow_duplicates: yes
 dependencies:
-  - { role: sshd/facts }
-  - { role: sshd/base }
   - { role: firewalld, add_service: ssh }

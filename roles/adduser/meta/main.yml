@@ -2,17 +2,7 @@
 allow_duplicates: yes
 dependencies:
   - role: facts
-  - role: adduser/validate
-  - role: adduser/base
-  - role: adduser/create_user
-    when: ansible_distribution != 'MacOSX'
   - role: adduser/fill
-  - role: python
-    python_user: "{{ User.name }}"
-    when: "pip_package_file is defined"
+  - role: pip
   - role: sshd
-  - role: adduser/sshd
-    when: "User.is_remote is defined && User.is_remote"
   - role: sudoers
-  - role: adduser/sudoers
-    when: "User.is_admin is defined && User.is_admin"

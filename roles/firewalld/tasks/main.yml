@@ -1,1 +1,13 @@
 ---
+- name: enable firewalld
+  sudo: yes
+  ignore_errors: yes
+  service:  name=firewalld 
+            enabled=yes
+            state=started
+  when: ansible_distribution == 'Fedora'
+  tags: enable
+  notify: restart firewalld
+
+- include: 'Fedora.yaml'
+  when: ansible_distribution == 'Fedora'

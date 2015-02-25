@@ -31,6 +31,3 @@ check-playbook: $(PLAYBOOKS)
 .PHONY: check-rolebooks
 check-rolebooks: $(ROLEBOOKS)
 	$(foreach rolebook,$(ROLEBOOKS),$(ANSIBLE_CHECK) $(rolebook);)
-
-# Required for my ansible setups
-SSH_IMPORT_ID:= $(PIP_BIN_DIR)/ssh-import-id

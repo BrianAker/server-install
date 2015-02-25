@@ -1,0 +1,19 @@
+---
+- name: update sshd AllowUsers
+  sudo: yes
+  lineinfile:
+    dest: "{{ sshd_config_file }}"
+    regexp: "^AllowUsers {{ User.name }}"
+    line: "AllowUsers {{ User.name }}"
+    state: present
+  notify: restart sshd
+  when: "User.is_remote is defined && User.is_remote"
+
+- name: remove sshd AllowUsers User.name
+  sudo: yes
+  lineinfile: 
+    dest: "{{ sshd_config_file }}"
+    regexp: "AllowUsers User.name"
+    state: absent
+  notify: restart sshd
+  when: "User.is_remote is defined && User.is_remote"

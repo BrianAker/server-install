@@ -40,5 +40,4 @@ requests==2.2.1
 simplejson==3.3.3
 six==1.5.2
 sphinxcontrib-googleanalytics==0.1
-ssh-import-id==3.21
 wsgiref==0.1.2

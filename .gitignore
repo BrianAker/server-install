@@ -25,3 +25,4 @@ aux/ansible
 roles/jnv.unattended-upgrades
 roles/pdellaert.dhcp_server
 roles/yum-cron
+roles/f500.dumpall
