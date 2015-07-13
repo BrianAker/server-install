@@ -1,6 +1,0 @@
----
-# tasks file for roles/freeradius
-- service:  name=freeradius
-            enabled=yes
-            state=started
-  sudo: yes

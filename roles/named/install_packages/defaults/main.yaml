@@ -1,0 +1,17 @@
+---
+named_packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - bind
+    - bind-utils
+
+  CentOS: []
+
+  Debian: []
+
+  Ubuntu: []

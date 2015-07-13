@@ -1,7 +1,7 @@
 ---
 allow_duplicates: no
 dependencies:
-  - { role: install_packages, when: "connection is not defined or connection != local" }
+  - { role: named/install_packages, when: "connection is not defined or connection != local" }
   - { role: named/facts, tags: [ 'makeconf' ], connection: local }
   - { role: named/generate, tags: [ 'makeconf' ], connection: local }
   - { role: named/remove, when: "connection is not defined or connection != local" }
