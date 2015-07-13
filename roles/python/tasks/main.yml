@@ -1,29 +1,8 @@
 ---
-- name: "yum install python_packages"
-  sudo: yes
-  yum: 
-    name: "{{ item }}"
-    state: present
+- name: Install packages
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
   with_items: python_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'yum'"
-
-- name: "apt-get install python_packages"
-  sudo: yes
-  apt: 
-    name: "{{ item }}"
-    update_cache: yes
-    cache_valid_time: 3600 
-    state: present
-  with_items: python_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'apt'"
-
-- name: "pkgng install python_packages"
-  sudo: yes
-  pkgng:
-    name: "{{ item }}"
-    state: present
-  with_items: python_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'pkgng'"
+  sudo: true
 
 - include: MacOSX.yaml
   when: ansible_distribution == 'MacOSX'

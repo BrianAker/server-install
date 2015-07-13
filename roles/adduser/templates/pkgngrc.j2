@@ -1,36 +1,25 @@
+#!/bin/bash
 # vim:ft=sh
 
-if [ -z "$PKGNGRC_INCLUDED" ]
-then
+if [ -z "$PKGNGRC_INCLUDED" ]; then
   PKGNGRC_INCLUDED=yes
-  if [ -f /etc/freebsd-update.conf ]; then
-    if [ -f /usr/local/etc/pkg/repos/FreeBSD.conf ]; then
-      if [ -d /usr/local/bin ]; then
-        for x in "/usr/local/bin"; do
-          case ":$PATH:" in
-            *":$x:"*) :;; # already there
-            *) PATH="$x:$PATH";;
-          esac
-        done
-      fi
+  export PKGNGRC_INCLUDED
 
-      if [ -d /usr/local/sbin ]; then
-        for x in "/usr/local/sbin"; do
-          case ":$PATH:" in
-            *":$x:"*) :;; # already there
-            *) PATH="$x:$PATH";;
-          esac
-        done
-      fi
+  check_freebsd_local ()
+  {
+    if [ -f /etc/freebsd-update.conf ]; then
+      if [ -f /usr/local/etc/pkg/repos/FreeBSD.conf ]; then
 
-      if [ -d /usr/local/share/man ]; then
-        for x in "/usr/local/share/man"; do
-          case ":$MANPATH:" in
-            *":$x:"*) :;; # already there
-            *) MANPATH="$x:$MANPATH";;
-          esac
+        local LOCAL_BINARY_DIRECTORIES=(/usr/local/bin /usr/local/sbin)
+        for x in "${LOCAL_BINARY_DIRECTORIES[@]}"; do
+          prepend_path "$x"
         done
+
+        # For expanding MANPATH 
+        prepend_manpath /usr/local/share/man
       fi
     fi
-  fi
+  }
+
+  check_freebsd_local
 fi

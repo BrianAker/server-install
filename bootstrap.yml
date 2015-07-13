@@ -8,14 +8,48 @@
 #  roles:
 #    - bootstrap/FreeBSD
 #
+
+- include: playbooks/group_by.yaml
+
+- hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+    - name: Check for hostkey
+      shell: "ssh-keygen -F {{ item }}"
+      with_items: inventory_hostname
+      register: ssh_known_host_results
+
+    - debug: var=ssh_known_host_results.results
+
+    - name: Add the public key if not already stored
+      shell: "ssh-keyscan -H -T 10 {{ inventory_hostname }} >> ~/.ssh/known_hosts"
+      when: item.stdout == ""
+      with_items: ssh_known_host_results.results
+
+- hosts: Fedora
+  tasks:
+    - name: Update all packages via dnf
+      dnf: name=* state=latest
+      sudo: true
+
+    - name: Install yum compatibility for Fedora
+      shell: dnf install -y dnf-yum yum-utils
+      sudo: true
+
+- hosts: FreeBSD
+  roles:
+    - role: bootstrap/FreeBSD
+
+- hosts: MacOSX
+  roles:
+    - role: bootstrap/MacOSX
+
 - hosts: all
   vars_files:
-     - "vars/{{ ansible_os_family }}"
      - "vars/{{ ansible_distribution }}"
      - "vars/Defaults"
-
-  pre_tasks:
-    - group_by: key={{ ansible_distribution }}
 
   roles:
     - role: bootstrap

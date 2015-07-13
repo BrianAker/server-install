@@ -10,4 +10,6 @@ dependencies:
       is_admin: True
       is_remote: True
       is_wheel: True
-  - { role: pip }
+  - role: pip
+    User:
+      name: "{{ deploy_username }}"

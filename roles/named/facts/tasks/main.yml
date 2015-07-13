@@ -1,0 +1,37 @@
+---
+- command: pwd
+  register: srcdir
+  connection: local
+  sudo: no
+
+- set_fact: srcdir="{{ srcdir.stdout }}"
+
+- set_fact: named_tmp="{{ srcdir }}/tmp"
+  tags: makeconf
+
+- set_fact: named_template="zone.conf"
+  tags: makeconf
+
+- fail: msg="named_template could not be determined to be slave or master"
+  when: named_template is not defined
+
+- set_fact: named_dir="{{ named_tmp }}/{{ inventory_hostname }}"
+  when: named_dir is not defined
+  tags: makeconf
+
+- name: generate ip address for masters
+  add_host: name={{ item }} groups=iplookup ip={{ lookup('dns', item) }}
+  with_items: groups.masters
+  tags: makeconf
+
+# Go on and cache the isc key
+- get_url:
+    url: http://ftp.isc.org/isc/bind9/keys/9.8/bind.keys.v9_8
+    dest: files/named.iscdlv.key
+  connection: local
+  tags: makeconf
+
+- command:  rndc-confgen -a -c files/rndc.key 
+            creates=files/rndc.key
+  connection: local
+  tags: makeconf

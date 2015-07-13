@@ -1,0 +1,38 @@
+---
+- name: check for cli dependencies
+  stat: 
+    path: "{{ item }}"
+  with_items:
+    - /usr/sbin/named-checkzone
+    - /usr/bin/dig
+  register: stat_register
+
+- file: 
+    path: /var/named
+    state: directory
+    owner: root
+    group: named
+    mode: 0755
+  sudo: yes
+
+- file: 
+    path: "/{{ item }}"
+    state: directory
+    owner: named
+    group: named
+    mode: 0755
+  with_items: directories
+  sudo: yes
+
+- file: 
+    path: "{{ item }}"
+    owner: named
+    group: named
+    mode: 0644
+    state: touch
+  with_items:
+    - /var/named/log/debug
+    - /var/named/log/dnssec
+    - /var/named/log/named
+    - /var/named/log/xfer
+  sudo: yes

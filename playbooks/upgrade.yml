@@ -1,15 +1,4 @@
 --- # Upgrade the fleet
-- name: Upgrade
-  hosts: all
-
-  roles:
-  tasks:
-    - name: Create groups by ansible_pkg_mgr
-      group_by: key={{ ansible_pkg_mgr }}
-
-    - name: Create groups by ansible_distribution
-      group_by: key={{ ansible_distribution }}
-
 - hosts: yum
   tasks:
   - command: /usr/bin/yum -y upgrade

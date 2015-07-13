@@ -6,7 +6,6 @@
 
 - name: pip install ansible
   pip:  name="{{ item }}"
-        virtualenv_command="{{ virtualenv_bin }}"
         virtualenv="{{ ansible_dir }}"
         state=present
   with_file: 

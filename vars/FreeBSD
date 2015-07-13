@@ -3,9 +3,5 @@
 ansible_python_interpreter: /usr/local/bin/python2.7
 
 # FreeBSD specific locations
-apache: httpd
-bind: named
 default_shell: '/bin/bash'
-sudoer_d: /usr/local/etc/sudoers.d
-sudoers_conf: /usr/local/etc/sudoers
 virtualenv_bin: /usr/local/bin/virtualenv

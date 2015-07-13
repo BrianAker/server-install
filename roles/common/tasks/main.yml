@@ -1,52 +1,13 @@
 ---
-- include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
- 
-- include: Fedora.yml
-  when: ansible_distribution == 'Fedora'
- 
-- include: Ubuntu.yml
-  when: ansible_distribution == 'Ubuntu'
- 
-- include: MacOSX.yml
-  when: ansible_distribution == 'MacOSX'
-#
-#- add_host: "name='{{ inventory_hostname }}' groups='haus'"
-#  when: inventory_hostname.find('haus')
-#
-#- add_host: "name='{{ inventory_hostname }}' groups='developer'"
-#  when: inventory_hostname.find('haus')
-#
-#- add_host: "name='{{ inventory_hostname }}' groups='remote'"
-#  when: inventory_hostname.find('cloud')
-#
-#- add_host: "name='{{ inventory_hostname }}' groups='harden'"
-
-- name: "yum install common_packages"
-  sudo: yes
-  yum: 
-    name: "{{ item }}"
-    state: present
+- name: Install packages
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
   with_items: common_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'yum'"
   tags: package_install
+  sudo: true
 
-- name: "apt-get install common_packages"
-  sudo: yes
-  apt: 
-    name: "{{ item }}"
-    update_cache: yes
-    cache_valid_time: 3600 
-    state: present
-  with_items: common_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'apt'"
+- name: Install open-vm-tools if Guest
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
+  with_items: open-vm-tools
+  when: ansible_virtualization_role == 'Guest'
   tags: package_install
-
-- name: "pkgng install common_packages"
-  sudo: yes
-  pkgng:
-    name: "{{ item }}"
-    state: present
-  with_items: common_packages[ansible_distribution]
-  when: "ansible_pkg_mgr == 'pkgng'"
-  tags: package_install
+  sudo: true

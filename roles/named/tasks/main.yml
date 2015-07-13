@@ -1,0 +1,28 @@
+---
+- firewalld:  port={{ item }}
+              permanent=true
+              state=enabled
+              zone=public
+  when: ansible_distribution in [ 'Fedora' ]
+  with_items:
+  - 53/udp
+  - 53/tcp
+  tags: config
+  sudo: yes
+  register: firewall_ret
+
+- name: restart firewalld
+  sudo: yes
+  service:  name=firewalld
+            state=restarted
+  when: firewall_ret|changed
+
+- seboolean: 
+    name: httpd_can_network_connect
+    state: true
+    persistent: true
+
+- name: dig SOA
+  command: "dig @{{ inventory_hostname }} -t SOA +norecurs +noquestion  {{ item.name }}"
+  with_items: zones
+  connection: local

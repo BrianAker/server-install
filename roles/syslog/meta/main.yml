@@ -1,6 +1,5 @@
 ---
 allow_duplicates: no
 dependencies:
-  - { role: install_packages, notify: restart syslog }
   - { role: firewalld, add_port: '514/udp' }
   - { role: firewalld, add_port: '514/tcp' }

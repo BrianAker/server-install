@@ -1,13 +1,5 @@
 ---
-
-- include: osx.yml
-  when: ansible_distribution == 'MacOSX'
-
-- include: rhel.yml
-  when: ansible_os_family == 'RedHat'
-
-- include: debian.yml
-  when: ansible_os_family == 'Debian'
-
-- include: Fedora.yml
-  when: ansible_distribution == 'Fedora'
+- name: Install packages
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
+  with_items: build_packages[ansible_distribution]
+  sudo: true

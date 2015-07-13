@@ -3,16 +3,18 @@
 
 - include: 'set.yaml'
 
-- file:
+- include: 'create_user.yaml'
+
+- name: print user
+  debug:
+    var: User.name
+
+- name: create bzr plugins directory
+  file:
     state: directory
-    path: "{{ user_homedir }}/.bazaar/plugins"
+    path: "~/.bazaar/plugins"
   sudo: yes
   sudo_user: "{{ User.name }}"
-
-- set_fact: 
-    profile_d: "{{ user_homedir }}/.profile.d"
-  tags:
-    - shellconf
 
 - name: setup authorized_key
   sudo: yes
@@ -23,14 +25,15 @@
 
 - name: reset mode for authorized_keys
   file: 
-    path: "{{ user_homedir }}/.ssh/authorized_keys"
+    path: "~/.ssh/authorized_keys"
     mode: 0600
   sudo: yes
   sudo_user: "{{ User.name }}"
   when: "inventory_hostname != 'localhost'"
 
-- file: 
-    path: "{{ profile_d }}"
+- name: create .profile.d 
+  file:
+    path: "~/.profile.d"
     mode: 0750
     state: directory
   sudo: yes
@@ -41,7 +44,7 @@
 - name: copy in customrc
   template:
     src: "{{ item }}.j2"
-    dest: "{{ user_homedir }}/.{{ item }}"
+    dest: "~/.{{ item }}"
     mode: 0600
     validate: 'bash -n %s'
   with_items:
@@ -54,7 +57,7 @@
 - name: copy in specific
   template: 
     src: "{{ item }}.j2"
-    dest: "{{ profile_d }}/{{ item }}.sh"
+    dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
     validate: 'bash -n %s'
   with_items:
@@ -69,7 +72,7 @@
 - name: copy in specific
   template: 
     src: "{{ item }}.j2"
-    dest: "{{ profile_d }}/{{ item }}.sh"
+    dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
     validate: 'bash -n %s'
   with_items:
@@ -83,7 +86,7 @@
 - name: copy in specific
   template:
     src: "{{ item }}.j2"
-    dest: "{{ profile_d }}/{{ item }}.sh"
+    dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
     validate: 'bash -n %s'
   with_items:
@@ -97,12 +100,11 @@
 - name: copy in OSX specific
   template:
     src: "{{ item }}.j2"
-    dest: "{{ profile_d }}/{{ item }}.sh"
+    dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
     validate: 'bash -n %s'
   with_items:
     - brewrc
-    - localrc
     - javarc
     - configurerc
   when: ansible_distribution in ('MacOSX')
@@ -114,7 +116,7 @@
 - name: copy in specific
   template:
     src: "{{ item }}.j2"
-    dest: "{{ profile_d }}/{{ item }}.sh"
+    dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
     validate: 'bash -n %s'
   with_items:
@@ -125,8 +127,9 @@
   tags:
     - shellconf
 
-- file:
-    path: "{{ user_homedir }}/.bash_profile"
+- name: create bash_profile
+  file:
+    path: "~/.bash_profile"
     state: touch
   sudo: yes
   sudo_user: "{{ User.name }}"
@@ -135,7 +138,7 @@
 
 - name: Reconfigure path for user to include customrc
   lineinfile: | 
-              dest="{{ user_homedir }}/.bash_profile"
+              dest="~/.bash_profile"
               regexp="customrc"
               line="if [ -f '.customrc' ]; then . '.customrc'; fi"
               mode=0700
@@ -147,8 +150,8 @@
   tags:
     - shellconf
 
-- include: 'sudoers.yaml'
-  when: "User.is_admin is defined && User.is_admin"
+#- include: 'sudoers.yaml'
+#  when: "User.is_admin is defined && User.is_admin"
 
 - include: 'sshd.yaml'
-  when: "User.is_remote is defined && User.is_remote"
+  when: "User.is_remote is defined"

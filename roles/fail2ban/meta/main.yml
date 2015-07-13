@@ -1,4 +1,3 @@
 ---
 allow_duplicates: no
-dependencies:
-  - { role: install_packages, notify: restart fail2ban }
+dependencies: []

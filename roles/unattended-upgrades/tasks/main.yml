@@ -1,9 +1,20 @@
 ---
+- name: Install packages
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
+  with_items: unattended_upgrades_packages[ansible_distribution]
+  sudo: true
+
 - include: Fedora.yml
   when: ansible_distribution == 'Fedora'
 
 - include: Debian.yml
-  when: ansible_os_family == 'Debian'
+  when: ansible_distribution == 'Debian'
+
+- include: Debian.yml
+  when: ansible_distribution == 'Ubuntu'
 
 - include: RedHat.yml
   when: ansible_distribution == 'Redhat'
+
+- include: RedHat.yml
+  when: ansible_distribution == 'CentOS'

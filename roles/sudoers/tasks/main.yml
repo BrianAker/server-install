@@ -1,4 +1,10 @@
 --- # vim:ft=yaml
+# Load a variable file based on the OS type, or a default if not found.
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "default.yml"
+
 - include: validate.yaml
 
 - group:  

@@ -1,75 +1,25 @@
+#!/bin/bash
 # vim:ft=sh
 
-if [ -z "$BREWRC_INCLUDED" ]
-then
+if [ -z "$BREWRC_INCLUDED" ]; then
   BREWRC_INCLUDED=yes
-  if [ -x /usr/local/bin/brew ]; then
-    if [ -d /usr/local/bin ]; then
-      for x in "/usr/local/bin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
-      done
-    fi
+  export BREWRC_INCLUDED
 
-    if [ -d /usr/local/sbin ]; then
-      for x in "/usr/local/sbin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
-      done
-    fi
+  HOMEBREW_EDITOR=vim
+  export HOMEBREW_EDITOR
 
-    # For OSX brew installs
-    if [ -d /usr/local/opt/bison/bin ]; then
-      for x in "/usr/local/opt/bison/bin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
-      done
-    fi
+  check_brew ()
+  {
+    if [ -x /usr/local/bin/brew ]; then
 
-    # For OSX brew installs
-    if [ -d /usr/local/opt/flex/bin ]; then
-      for x in "/usr/local/opt/flex/bin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
-      done
-    fi
+      append_local
 
-    # For OSX brew installs
-    if [ -d /usr/local/opt/gperf/bin ]; then
-      for x in "/usr/local/opt/gperf/bin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
+      local BREW_DIRECTORIES=(/usr/local/opt/bison/bin /usr/local/opt/flex/bin /usr/local/opt/gperf/bin /usr/local/opt/gettext/bin)
+      for x in "${BREW_DIRECTORIES[@]}"; do
+        prepend_path "$x"
       done
     fi
+  }
 
-    # For OSX brew installs
-    if [ -d /usr/local/opt/gettext/bin ]; then
-      for x in "/usr/local/opt/gettext/bin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
-      done
-    fi
-
-    # For expanding MANPATH 
-    if [ -d /usr/local/share/man ]; then
-      for x in "/usr/local/share/man"; do
-        case ":$MANPATH:" in
-          *":$x:"*) :;; # already there
-          *) MANPATH="$x:$MANPATH";;
-        esac
-      done
-    fi
-  fi
+  check_brew
 fi

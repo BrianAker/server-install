@@ -1,14 +1,9 @@
+#!/bin/bash
 # vim:ft=sh
 
-if [ -z "$SBINRC_INCLUDED" ]
-then
+if [ -z "$SBINRC_INCLUDED" ]; then
   SBINRC_INCLUDED=yes
-  if [ -d /usr/sbin ]; then
-    for x in "/usr/sbin"; do
-      case ":$PATH:" in
-        *":$x:"*) :;; # already there
-        *) PATH="$x:$PATH";;
-      esac
-    done
-  fi
+  export SBINRC_INCLUDED
+
+  prepend_path /usr/sbin
 fi

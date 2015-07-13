@@ -1,9 +1,40 @@
-# Host rules for Jenkins-ci slaves
+---
+- include: playbooks/group_by.yaml
+
+- hosts: Debian 
+  roles:
+  - role: build
+  - role: build/Debian
+
+- hosts: Ubuntu 
+  roles:
+  - role: build
+  - role: build/Ubuntu
+
+- hosts: RedHat 
+  roles:
+  - role: build
+  - role: build/RedHat
+
+- hosts: Fedora 
+  roles:
+  - role: build
+  - role: build/Fedora
+
+- hosts: FreeBSD 
+  roles:
+  - role: build
+  - role: build/FreeBSD
+
+- hosts: MacOSX 
+  roles:
+  - role: build
+  - role: build/MacOSX
+
 - name: Jenkins Slave
   hosts: slaves
 
   roles:
-    - build
     - role: jenkins-slave
       User:
         name: jenkins

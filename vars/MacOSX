@@ -1,6 +1,2 @@
 --- # vim:ft=yaml
-apache: httpd
-bind: named
-service_sshd: ssh
-sshd_config_file: /etc/sshd_config
 virtualenv_bin: /usr/local/bin/virtualenv

@@ -1,0 +1,146 @@
+// vim:ft=htmljinja
+//
+// named.conf
+//
+// Provided by Red Hat bind package to configure the ISC BIND named(8) DNS
+// server as a caching only nameserver (as a localhost DNS resolver only).
+//
+// See /usr/share/doc/bind*/sample/ for example named configuration files.
+//
+
+include "/var/named/acl.conf";
+include "/etc/rndc.key";
+
+options {
+        listen-on port 53 { any; };
+        listen-on-v6 port 53 { ::1; };
+	directory 	"/var/named";
+	dump-file 	"/var/named/data/cache_dump.db";
+        statistics-file "/var/named/data/named_stats.txt";
+        memstatistics-file "/var/named/data/named_mem_stats.txt";
+
+{% if allow_recursion is defined %}
+        recursion yes;
+        allow-recursion {
+{% for address_match_list in allow_recursion %}
+          {{ address_match_list }};
+{% else %}
+          none;
+{%- endfor %}
+        }; // allow-recursion
+{% else %}
+        recursion no;
+        allow-recursion { none; };
+{%- endif %}
+
+        version "[Secured]";
+
+{% if auth_nxdomain is defined %}
+        auth-nxdomain yes;
+{%- endif %}
+
+{% if allow_notify is defined %}
+        allow-notify {
+{% for address_match_list in allow_notify %}
+          {{ address_match_list|resolve_acl }};
+{% else %}
+          none;
+{%- endfor %}
+        }; // allow-notify
+{% else %}
+        allow-notify { none; };
+{%- endif %}
+
+{% if allow_query is defined %}
+        allow-query {
+{% for address_match_list in allow_query %}
+          {{ address_match_list }};
+{% else %}
+          none;
+{%- endfor %}
+        }; // allow-query
+{% else %}
+        allow-query { none; };
+{%- endif %}
+
+{% if allow_query_cache is defined %}
+        allow-query-cache {
+{% for address_match_list in allow_query_cache %}
+          {{ address_match_list }};
+{% else %}
+          none;
+{% endfor %}
+        }; // allow-query-cache
+{% endif %}
+
+        allow-transfer { none; }; // Always specify in domain
+        allow-update { none; }; // Always specify in domain
+
+	dnssec-enable yes;
+	dnssec-validation yes;
+
+{% if bind_bindkeys_file is defined %}
+	dnssec-lookaside auto;
+	/* Path to ISC DLV key */
+        bindkeys-file "{{ bind_bindkeys_file }}";
+{% endif %}
+
+{% if bind_managed_keys_directory is defined %}
+        managed-keys-directory "{{ bind_managed_keys_directory }}";
+{% endif %}
+};
+
+logging {
+        channel xfer-log {
+          file "log/xfer" size 20m;
+          print-category yes;
+          print-severity yes;
+          print-time yes;
+          severity info;
+        };
+        category xfer-in { xfer-log; };
+        category xfer-out { xfer-log; };
+        category notify { xfer-log; };
+
+        channel dnssec_log {
+          file "log/dnssec" size 20m;
+          print-time yes;
+          print-category yes;
+          print-severity yes;
+          severity debug 3;
+        };
+        category dnssec {
+          dnssec_log;
+        };
+
+        channel default_debug {
+          file "log/debug" size 20m;
+          severity dynamic;
+        };
+        channel "_default_log" {
+{% if bind_default_logfile is defined %}
+  file "{{ bind_default_logfile }}" size 20m;
+{% else %}
+          file "log/named" size 20m;
+{%- endif %}
+          severity info;
+          print-time yes;
+        };
+        category "default" {
+          "_default_log";
+        };
+};
+
+zone "." IN {
+	type hint;
+	file "named.ca";
+};
+
+controls {
+  inet 127.0.0.1 port 953
+    allow { 127.0.0.1; } keys { "rndc-key"; };
+};
+
+include "/etc/named.rfc1912.zones";
+
+include "zone.conf";

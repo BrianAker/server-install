@@ -1,0 +1,123 @@
+---
+- name: create rndc
+  command: /usr/sbin/rndc-confgen -a -r /dev/urandom creates=/etc/rndc.key
+  sudo: yes
+
+- name: set file permissions /etc/rndc.key
+  file: 
+    path: "/etc/rndc.key"
+    state: file
+    owner: root
+    group: named
+    mode: 0640
+  sudo: yes
+
+- name: install zone files
+  copy: 
+    src: "{{ named_dir }}/var/named/master/{{ item.name }}"
+    dest: "/var/named/master/{{ item.name }}"
+    owner: named
+    group: named
+    mode: 0440
+    force: yes
+  when: item.type == 'master'
+  with_items: zones
+  sudo: yes
+  register: zones_modified
+
+- name: install zone and acl file
+  copy: 
+    src: "{{ named_dir }}/var/named/{{ item }}"
+    dest: "/var/named/{{ item }}"
+    owner: named
+    group: named
+    mode: 0440
+    force: yes
+  with_items:
+    - zone.conf
+    - acl.conf
+  sudo: yes
+  notify: restart named
+
+- name: install named.conf and friends
+  copy: 
+    src: "{{ named_dir }}/etc/{{ item }}"
+    dest: "/etc/{{ item }}"
+    owner: named
+    group: named
+    mode: 0440
+    force: yes
+  with_items:
+    - named.conf
+    - named.iscdlv.key
+    - named.rfc1912.zones
+  sudo: yes
+  register: zone_conf_modified
+
+- name: thaw zones to prevent failure from previous failure
+  command: /sbin/rndc thaw
+  sudo: yes
+
+- name: rndc freeze zone
+  command: /sbin/rndc freeze {{ item.item.name }}
+  when: item.changed and item.item.allow_update is defined
+  with_items: zones_modified.results
+  sudo: yes
+  ignore_errors: True
+  register: freeze_result
+
+- name: rndc handle freeze failure
+  command: /sbin/rndc thaw {{ item.item.name }}
+  when: item|failed and item.item.allow_update
+  with_items: freeze_result.results
+  sudo: yes
+  ignore_errors: True
+
+- name: rndc sync and clean zone
+  command: /sbin/rndc sync -clean {{ item.item.name }}
+  when: item|changed
+  with_items: zones_modified.results
+  ignore_errors: True
+  sudo: yes
+
+- name: remove jnk jbk signed files
+  file: 
+    path: "/var/named/master/{{ item[0].item.name }}{{ item[1] }}"
+    state: absent
+  when: item[0]|changed
+  with_nested: 
+    - zones_modified.results
+    - [ '.jnl', '.jbk', '.signed' ]
+  when: item[0]|changed
+  sudo: yes
+
+- name: rndc reload zone
+  command: /sbin/rndc reload {{ item.item.name }}
+  when: item|changed
+  with_items: zones_modified.results
+  sudo: yes
+
+- name: rndc thaw zone
+  command: /sbin/rndc thaw {{ item.item.name }}
+  when: item|changed and item.item.allow_update is defined and item.item.allow_update
+  with_items: zones_modified.results
+  sudo: yes
+  ignore_errors: true
+
+- name: dig SOA
+  command: "dig @{{ inventory_hostname }} -t SOA +norecurs +noquestion  {{ item.item.name }}"
+  when: item|changed and item.item.allow_update is defined and item.item.allow_update
+  with_items: zones_modified.results
+  connection: local
+  ignore_errors: true
+
+- name: check conf
+  command: named-checkconf /etc/named.conf
+  sudo: yes
+
+- name: enable named
+  service:
+    name: named 
+    enabled: yes
+  sudo: yes
+  notify: restart named

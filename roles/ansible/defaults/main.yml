@@ -1,6 +1,4 @@
 --- # vim:ft=yaml
-virtualenv_bin: /usr/bin/virtualenv
-
 ansible_packages:
   FreeBSD:
     - libyaml

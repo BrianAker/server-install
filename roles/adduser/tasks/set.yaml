@@ -1,10 +1,16 @@
 ---
-- command: "echo ~{{ User.name }}"
+- name: Current user
+  debug:
+      var: User
+
+- name: "Find {{ User.name }} home directory"
+  command: "echo ~{{ User.name }}"
   register: homedir
   tags:
     - shellconf
 
-- set_fact: 
+- name: "Set user_homedir" 
+  set_fact: 
     user_homedir: "{{ homedir.stdout }}"
   when: homedir.stdout
   tags:

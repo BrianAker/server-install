@@ -1,0 +1,14 @@
+---
+acls: []
+
+directories:
+  - var/named/data
+  - var/named/dynamic
+  - var/named/keys
+  - var/named/log
+  - var/named/master
+  - var/named/slave
+
+recursion: 'yes'
+
+remove_domains: []

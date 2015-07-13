@@ -1,0 +1,15 @@
+---
+- file: 
+    name: "{{ named_dir }}/{{ item }}"
+    state: directory
+  with_items: directories
+  connection: local
+  tags: makeconf
+
+- file: 
+    name: "{{ item }}/etc"
+    state: directory
+  with_items:
+    - "{{ named_dir }}"
+  connection: local
+  tags: makeconf

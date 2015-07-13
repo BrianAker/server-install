@@ -1,18 +1,21 @@
 ---
-- lineinfile: dest=/etc/yum/yum-updatesd.conf
-              regexp="^do_update"
-              line="do_update = yes"
+- lineinfile: dest=/etc/dnf/dnf.conf
+              regexp="^ip_resolve="
+              line="ip_resolve=4"
   sudo: yes
-  notify: restart updatesd
 
-- lineinfile: dest=/etc/yum/yum-updatesd.conf
-              regexp="^do_download"
-              line="do_download = yes"
+- lineinfile: dest=/etc/dnf/automatic.conf
+              regexp="^ip_resolve"
+              line="ip_resolve = 4"
   sudo: yes
-  notify: restart updatesd
 
-- lineinfile: dest=/etc/yum/yum-updatesd.conf
-              regexp="^do_download_deps"
-              line="do_download_deps = yes"
+- lineinfile: dest=/etc/dnf/automatic.conf
+              regexp="^apply_updates"
+              line="apply_updates = no"
   sudo: yes
-  notify: restart updatesd
+
+- service: name=dnf-automatic.timer enabled=yes
+  sudo: yes
+
+- service: name=dnf-automatic.timer started=yes
+  sudo: yes

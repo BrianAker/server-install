@@ -1,7 +1,10 @@
 ---
-- set_fact:
+- name: "Set userpassword_dir"
+  set_fact:
     userpassword_dir: "~/.credentials/{{ inventory_hostname }}"
-- set_fact:
+
+- name: "Set userpassword_command"
+  set_fact:
     userpassword_command: "{{ userpassword_dir}}/{{ User.name }} encrypt=sha256_crypt"
 
 - name: mkdir credentials hostname username
@@ -9,7 +12,7 @@
     path: "{{ userpassword_dir }}"
     state: directory
     mode: 0700
-  delegate_to: localhost
+  connection: local
   sudo: no
 
 - name: create user
@@ -22,7 +25,9 @@
     shell: "{{ default_shell }}"
     password: "{{ item }}"
     update_password: "on_create"
+    createhome: true
   with_password: userpassword_command
+  when: "ansible_distribution != 'MacOSX'"
 
 - name: add user to group wheel
   sudo: yes

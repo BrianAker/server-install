@@ -1,5 +1,1 @@
----
-- name: restart mailman
-  sudo: yes
-  service:  name=mailman
-            state=restarted
+--- # vim:ft=yaml

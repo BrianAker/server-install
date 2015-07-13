@@ -1,7 +1,7 @@
-- fail: "{{ item }} was not defined."
+- fail: validate variables
   when: item is not defined
   with_items:
     - User
+    - User.name
     - pip_user_dir
     - python_user
-    - virtualenv_bin

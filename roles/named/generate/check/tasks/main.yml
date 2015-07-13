@@ -1,0 +1,19 @@
+---
+- set_fact: named_checkzone=/usr/local/sbin/named-checkzone
+
+- name: check zone files
+  command: "{{ named_checkzone }} {{ item.name }} {{ named_dir }}/var/named/{{ item.type }}/{{ item.name }}"
+  when: item.type == 'master'
+  with_items: zones
+  connection: local
+  tags: check
+  tags: makeconf
+
+- name: check conf
+  command: named-checkconf -t {{ item }} etc/named.conf
+  when: ansible_ssh_user == 'root'
+  connection: local
+  with_items:
+    - "{{ named_dir }}"
+  tags: makeconf
+  sudo: True

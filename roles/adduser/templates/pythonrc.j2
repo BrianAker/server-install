@@ -1,17 +1,17 @@
+#!/bin/bash
 # vim:ft=sh
  
-if [ -z "$PYTHONRC_INCLUDED" ]
-then
+if [ -z "$PYTHONRC_INCLUDED" ]; then
   PYTHONRC_INCLUDED=yes
+  export PYTHONRC_INCLUDED
+
   VIRTUAL_ENV_DISABLE_PROMPT=yes
-  if [ -f $HOME/.python/bin/activate ]; then
-    . $HOME/.python/bin/activate
-  elif [ -d $HOME/.python/bin ]; then
-    for x in "$HOME/.python/bin"; do
-      case ":$PATH:" in
-        *":$x:"*) :;; # already there
-        *) PATH="$x:$PATH";;
-      esac
-    done
+  export VIRTUAL_ENV_DISABLE_PROMPT
+    
+  if [ -f "$HOME"/.python/bin/activate ]; then
+    . "$HOME"/.python/bin/activate
+  elif [ "$(command -v virtualenv)" ]; then
+    virtualenv "$HOME"/.python
+    . "$HOME"/.python/bin/activate
   fi
 fi

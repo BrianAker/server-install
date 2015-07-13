@@ -1,6 +1,8 @@
 ---
 - name: restart sshd
   sudo: yes
-  service:  name={{ service_sshd }}
-            state=restarted
+  service:
+      name: "{{ service_sshd[ansible_distribution] }}"
+      state: restarted
+      enabled: yes
   when: ansible_distribution != 'MacOSX'

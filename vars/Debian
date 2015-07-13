@@ -1,4 +1,1 @@
 --- # vim:ft=yaml
-apache: apache2
-bind: named
-service_sshd: ssh

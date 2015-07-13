@@ -1,0 +1,42 @@
+---
+- name: install iscdlv files
+  copy:
+    src: "files/{{ item }}"
+    dest: "{{ named_dir }}/etc/{{ item }}"
+  with_items:
+    - 'named.rfc1912.zones'
+    - 'named.iscdlv.key'
+    - 'rndc.key'
+    - 'rndc.key'
+  connection: local
+  tags: makeconf
+
+- name: install zones files
+  copy:
+    src: "files/{{ item.name }}"
+    dest: "{{ named_dir }}/var/named/{{ item.type }}/"
+  when: item.type == 'master'
+  with_items: zones
+  connection: local
+  tags: makeconf
+
+- debug: var=named_template
+- debug: var=named_dir
+
+- name: install conf files
+  template: 
+    src: "{{ item.key }}.j2"
+    dest: "{{ item.value }}/var/named/{{ item.final }}"
+  with_items:
+    - { key: "{{ named_template }}", value: "{{ named_dir }}", final: 'zone.conf' }
+    - { key: 'acl.conf', value: "{{ named_dir }}", final: 'acl.conf' }
+  connection: local
+  tags: makeconf
+
+- template: 
+    src: "{{ item }}.j2"
+    dest: "{{ named_dir }}/etc/{{ item }}"
+  with_items:
+    - named.conf
+  connection: local
+  tags: makeconf

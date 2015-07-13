@@ -1,5 +1,10 @@
 ---
-- set_fact: 
+- name: sudoers_d exists
+  fail: "sudoers_d was not defined"
+  when: sudoers_d is not defined
+
+- name: Create var sudoer_user_file 
+  set_fact: 
     sudoer_user_file: '{{ sudoers_d }}/{{ User.name }}'
 
 - template:

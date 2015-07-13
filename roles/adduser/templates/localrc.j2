@@ -1,35 +1,9 @@
+#!/bin/bash
 # vim:ft=sh
 
-if [ -z "$LOCALRC_INCLUDED" ]
-then
+if [ -z "$LOCALRC_INCLUDED" ]; then
   LOCALRC_INCLUDED=yes
-  if [ -d /usr/local ]; then
-    if [ -d /usr/local/bin ]; then
-      for x in "/usr/local/bin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
-      done
-    fi
+  export LOCALRC_INCLUDED
 
-    if [ -d /usr/local/sbin ]; then
-      for x in "/usr/local/sbin"; do
-        case ":$PATH:" in
-          *":$x:"*) :;; # already there
-          *) PATH="$x:$PATH";;
-        esac
-      done
-    fi
-
-    # For expanding MANPATH 
-    if [ -d /usr/local/share/man ]; then
-      for x in "/usr/local/share/man"; do
-        case ":$MANPATH:" in
-          *":$x:"*) :;; # already there
-          *) MANPATH="$x:$MANPATH";;
-        esac
-      done
-    fi
-  fi
+  append_local
 fi

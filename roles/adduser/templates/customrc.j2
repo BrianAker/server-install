@@ -1,19 +1,60 @@
+#!/bin/bash
 # vim:ft=sh
 
 if [ -z "$CUSTOMRC_INCLUDED" ]
 then
   CUSTOMRC_INCLUDED=yes
+  export CUSTOMRC_INCLUDED
 
-  if [ -d "$HOME/.profile.d" ]; then
-    PROFILE_D_FILES=(`ls $HOME/.profile.d/*.sh`)
-    for i in "${PROFILE_D_FILES[@]}" ; do
-      if [[ -r "$i" ]]; then
-        if [ "${-#*i}" != "$-" ]; then
-          . "$i"
-        else
-          . "$i" >/dev/null
-        fi
-      fi
+  prepend_path ()
+  {
+    if [ -d "$1" ]; then
+      case ":$PATH:" in
+        *":$1:"*) :;; # already there
+        *) PATH="$1:$PATH";;
+      esac
+    fi
+  }
+
+  prepend_manpath ()
+  {
+    if [ -d "$1" ]; then
+      case ":$PATH:" in
+        *":$1:"*) :;; # already there
+        *) MANPATH="$1:$MANPATH";;
+      esac
+    fi
+  }
+
+  append_local ()
+  {
+    local LOCAL_DIRECTORIES=(/usr/local/bin /usr/local/sbin)
+    for x in "${LOCAL_DIRECTORIES[@]}"; do
+      prepend_path "$x"
     done
-  fi
+
+    # For expanding MANPATH 
+    prepend_manpath /usr/local/share/man
+  }
+
+  source_profile_d ()
+  {
+    local PROFILE_D_DIRECTORY="$HOME"/.profile.d
+
+    if [ -d "$PROFILE_D_DIRECTORY" ]; then
+      local PROFILE_D_FILES=("$PROFILE_D_DIRECTORY"/*.sh)
+
+      for i in "${PROFILE_D_FILES[@]}" ; do
+        if [[ -r "$i" ]]; then
+          if [ "${-#*i}" != "$-" ]; then
+            . "$i"
+          else
+            . "$i" >/dev/null
+          fi
+        fi
+      done
+    fi
+  }
+
+  source_profile_d
 fi

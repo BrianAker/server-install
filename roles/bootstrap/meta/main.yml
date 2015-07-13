@@ -2,7 +2,5 @@
 # We call sudo directly because we need it for some ansible calls.
 allow_duplicates: no
 dependencies:
-  - { role: bootstrap/FreeBSD, when: "ansible_distribution == 'FreeBSD'" }
-  - { role: bootstrap/MacOSX, when: "ansible_distribution == 'MacOSX'" }
   - { role: facts }
   - { role: bootstrap/base }

@@ -2,6 +2,7 @@
 common_packages:
   FreeBSD:
     - bash
+    - sudo
 
   MacOSX:
     - pkg-config
@@ -26,16 +27,14 @@ common_packages:
     - net-tools
     - pkgconfig
     - rsyslog
-    - system-config-network
     - sudo
+    - system-config-network
     - tar
     - traceroute
     - tuned
     - tuned-utils
     - vim
     - wget
-    - yum-cron
-    - yum-plugin-fastestmirror
 
   CentOS:
     - '@minimal-environment'
@@ -44,7 +43,6 @@ common_packages:
     - bzr
     - bind-utils
     - curl
-    - fakeroot
     - make
     - pkgconfig
     - rsyslog
@@ -93,6 +91,8 @@ common_packages:
     - lldpad
     - make
     - pkg-config
+    - powertop
+    - pm-utils
     - python
     - python-dev
     - sudo

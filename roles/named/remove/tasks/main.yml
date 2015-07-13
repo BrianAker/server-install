@@ -1,0 +1,24 @@
+---
+- name: removed zones
+  file:
+    path: "/var/named/master/{{ item[0].name }}{{ item[1] }}"
+    state: absent
+  with_nested: 
+    - remove_domains
+    - ['.jnl', '.jbk', '.signed', ' ' ]
+  when: remove_domains
+  sudo: yes
+  register: remove_domains_result
+
+- name: restart bind if we removed zones
+  service:
+    name: named 
+    state: restarted
+  when: remove_domains_result|changed
+
+- name: check domain removal
+  command: "dig @{{ inventory_hostname }} -t SOA +norecurs +noquestion  {{ item.name }}"
+  with_items: remove_domains
+  when: remove_domains_result|changed
+  register: remove_domains_soa_result
+  failed_when: remove_domains_soa_result.rc == 0

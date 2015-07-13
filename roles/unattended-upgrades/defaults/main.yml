@@ -1,1 +1,19 @@
 ---
+unattended_upgrades_packages:
+  MacOSX: []
+
+  FreeBSD: []
+
+  RedHat:
+    - yum-cron
+
+  Fedora:
+    - dnf-automatic
+
+  Debian:
+    - unattended-upgrades
+
+  Ubuntu:
+    - unattended-upgrades
+
+  CentOS: []

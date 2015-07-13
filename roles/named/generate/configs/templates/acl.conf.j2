@@ -1,0 +1,15 @@
+// vim:ft=htmljinja
+// Ansible Generated
+
+{% for acl in acls %}
+acl "{{ acl }}" {
+{% if acls[acl] is defined %}
+{% for host_ in acls[acl] %}
+  {{ host_|resolve_acl }};
+{% endfor %}
+{% else %}
+  none;
+{% endif %}
+};
+
+{% endfor %}

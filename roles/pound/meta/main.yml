@@ -1,5 +1,4 @@
 ---
 allow_duplicates: no
 dependencies:
-  - { role: install_packages, notify: restart Pound }
   - { role: firewalld, add_service: https }

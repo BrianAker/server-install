@@ -1,13 +1,16 @@
 ---
 - include: validate.yaml
 
+- name: value for User
+  debug:
+      var: User
+
 - name: install virtualenv for user
   sudo: yes
   sudo_user: "{{ User.name }}"
   pip:  
     name: "pip"
-    virtualenv_command: "{{ virtualenv_bin }}"
-    virtualenv: "{{ user_homedir }}/{{ pip_user_dir }}"
+    virtualenv: "~/{{ pip_user_dir }}"
     state: present
 
 - name: install local pip packages for user
@@ -15,8 +18,7 @@
   sudo_user: "{{ User.name }}"
   pip:  
     name: "{{ item }}"
-    virtualenv_command: "{{ virtualenv_bin }}"
-    virtualenv: "{{ user_homedir }}/{{ pip_user_dir }}"
+    virtualenv: "~/{{ pip_user_dir }}"
     state: present
     requirements: "{{ pip_package_file }}"
   with_items: pip_package_file | default([])

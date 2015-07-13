@@ -1,7 +1,0 @@
----
-- name: install packages with brew
-  homebrew: name={{ item }} 
-            state={{ default_package_state }}
-  with_items: packages[ansible_distribution]
-  when: packages is defined and packages[ansible_distribution] is defined
-  tags: package_install

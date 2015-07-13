@@ -1,0 +1,6 @@
+---
+allow_duplicates: yes
+dependencies:
+  - { role: named/generate/provision }
+  - { role: named/generate/configs }
+  - { role: named/generate/check }

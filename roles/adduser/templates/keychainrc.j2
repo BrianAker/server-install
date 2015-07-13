@@ -1,10 +1,11 @@
+#!/bin/bash
 # vim:ft=sh
 
-if [ -z "$BASH_ENV" ]
-then
-  if [ -z "$KEYCHAINRC_INCLUDED" ]
-  then
+if [ -z "$BASH_ENV" ]; then
+  if [ -z "$KEYCHAINRC_INCLUDED" ]; then
     KEYCHAINRC_INCLUDED=yes
+    export KEYCHAINRC_INCLUDED
+
     if [ -x /usr/bin/keychain ]; then
       /usr/bin/keychain --quiet
     fi

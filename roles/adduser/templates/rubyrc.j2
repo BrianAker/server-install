@@ -1,8 +1,10 @@
+#!/bin/bash
 # vim:ft=sh
 
-if [ -z "$RUBYRC_INCLUDED" ]
-then
+if [ -z "$RUBYRC_INCLUDED" ]; then
   RUBYRC_INCLUDED=yes
+  export RUBYRC_INCLUDED
+
   command_exists ()
   {
     type "$1" &> /dev/null ;

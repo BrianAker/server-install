@@ -2,6 +2,6 @@
 allow_duplicates: yes
 dependencies:
   - role: facts
-  - role: pip
   - role: sshd
   - role: sudoers
+  - { role: f500.dumpall, dumpall_host_destination: examine/ }

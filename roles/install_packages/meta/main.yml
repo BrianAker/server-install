@@ -1,9 +1,0 @@
----
-allow_duplicates: yes
-dependencies:
-  - { role: facts }
-  - { role: dump }
-  - { role: install_packages/yum, when: "ansible_pkg_mgr == 'yum'" }
-  - { role: install_packages/apt, when: "ansible_pkg_mgr == 'apt'" }
-  - { role: install_packages/brew, when: "ansible_os_family == 'Darwin'" }
-  - { role: install_packages/pkgng, when: "ansible_os_family == 'FreeBSD'" }
