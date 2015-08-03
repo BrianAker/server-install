@@ -10,6 +10,7 @@ dependencies:
       is_admin: True
       is_remote: True
       is_wheel: True
+      keys: deploy_keys
   - role: pip
     User:
       name: "{{ deploy_username }}"

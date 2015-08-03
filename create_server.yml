@@ -1,5 +1,5 @@
 - name: Build a Cloud Server
-  hosts: all
+  hosts: all:!unmanaged
   gather_facts: False
 
   tasks:

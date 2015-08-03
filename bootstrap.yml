@@ -9,47 +9,61 @@
 #    - bootstrap/FreeBSD
 #
 
-- include: playbooks/group_by.yaml
-
-- hosts: all
+- hosts: disabled
   gather_facts: no
   connection: local
 
   tasks:
+    - name: remove old host key
+      known_hosts: 
+          name: {{ inventory_hostname }}
+          state: absent
+
     - name: Check for hostkey
-      shell: "ssh-keygen -F {{ item }}"
+      command: ssh-keyscan -H -T 10 {{ inventory_hostname }}
       with_items: inventory_hostname
       register: ssh_known_host_results
 
-    - debug: var=ssh_known_host_results.results
+    - name: Results of keyscan
+    - debug: 
+          var: ssh_known_host_results.results
 
-    - name: Add the public key if not already stored
-      shell: "ssh-keyscan -H -T 10 {{ inventory_hostname }} >> ~/.ssh/known_hosts"
-      when: item.stdout == ""
-      with_items: ssh_known_host_results.results
+    - name: remove old host key
+      known_hosts: 
+          name: {{ inventory_hostname }}
+          key: {{ ssh_known_host_results.results }}
+          state: present
+
+- hosts: all:!unmanaged
+  remote_user: "{{ bootstrap_user }}"
+  roles:
+    - { role: f500.dumpall, dumpall_host_destination: examine/ }
+    - group_by 
 
 - hosts: Fedora
+  remote_user: "{{ bootstrap_user }}"
   tasks:
-    - name: Update all packages via dnf
-      dnf: name=* state=latest
-      sudo: true
-
     - name: Install yum compatibility for Fedora
-      shell: dnf install -y dnf-yum yum-utils
+      dnf: 
+          name: "{{ item }}"
+          state: present
+      with_items:
+      - dnf-yum 
+      - yum-utils
       sudo: true
 
 - hosts: FreeBSD
+  remote_user: "{{ bootstrap_user }}"
   roles:
     - role: bootstrap/FreeBSD
 
 - hosts: MacOSX
+  remote_user: "{{ bootstrap_user }}"
   roles:
     - role: bootstrap/MacOSX
 
-- hosts: all
-  vars_files:
-     - "vars/{{ ansible_distribution }}"
-     - "vars/Defaults"
+- hosts: all:!unmanaged
+  remote_user: "{{ bootstrap_user }}"
 
   roles:
     - role: bootstrap
@@ -59,6 +73,5 @@
     - role: sshd
     - role: deploy
     - role: unattended-upgrades
-    - role: bootstrap/base
 
 - include: playbooks/upgrade.yml

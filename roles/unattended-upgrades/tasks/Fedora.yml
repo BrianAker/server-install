@@ -1,21 +1,27 @@
 ---
+- name: Install packages
+  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
+  with_items: 
+    - dnf-automatic
+  tags: package_install
+  notify: restart dnf-automatic
+
 - lineinfile: dest=/etc/dnf/dnf.conf
               regexp="^ip_resolve="
               line="ip_resolve=4"
   sudo: yes
+  notify: restart dnf-automatic
 
-- lineinfile: dest=/etc/dnf/automatic.conf
-              regexp="^ip_resolve"
-              line="ip_resolve = 4"
+- lineinfile: 
+      dest: /etc/dnf/automatic.conf
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+  with_items:
+    - { regexp: '^download_updates', line: 'download_updates = yes' }
+    - { regexp: '^apply_updates', line: 'apply_updates = yes' }
+    - { regexp: '^upgrade_type', line: 'upgrade_type = default' }
   sudo: yes
-
-- lineinfile: dest=/etc/dnf/automatic.conf
-              regexp="^apply_updates"
-              line="apply_updates = no"
-  sudo: yes
+  notify: restart dnf-automatic
 
 - service: name=dnf-automatic.timer enabled=yes
-  sudo: yes
-
-- service: name=dnf-automatic.timer started=yes
   sudo: yes

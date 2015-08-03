@@ -1,10 +1,7 @@
 ---
 - name: Setup Groups
   hosts: all
-
-  vars_files:
-     - "../vars/{{ ansible_distribution }}"
-     - "../vars/Defaults"
+  remote_user: "{{ group_by_user }}"
 
   tasks:
   - name: create ansible_distribution group

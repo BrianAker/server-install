@@ -19,13 +19,13 @@
   sudo: yes
   sudo_user: root
   user: 
-    name: "{{ User.name }}"
-    comment: "{{ User.name }}"
-    state: present
-    shell: "{{ default_shell }}"
-    password: "{{ item }}"
-    update_password: "on_create"
-    createhome: true
+      name: "{{ User.name }}"
+      comment: "{{ User.name }}"
+      state: present
+      shell: "{{ default_shell }}"
+      password: "{{ item }}"
+      update_password: "on_create"
+      createhome: true
   with_password: userpassword_command
   when: "ansible_distribution != 'MacOSX'"
 
@@ -33,6 +33,6 @@
   sudo: yes
   sudo_user: root
   user: 
-    name: "{{ User.name }}"
-    groups: "wheel"
+      name: "{{ User.name }}"
+      groups: "wheel"
   when: User.is_wheel is defined

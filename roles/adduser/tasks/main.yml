@@ -13,15 +13,18 @@
   file:
     state: directory
     path: "~/.bazaar/plugins"
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become_user: "{{ User.name }}"
 
 - name: setup authorized_key
   sudo: yes
   ignore_errors: yes
   authorized_key:
     user: "{{ User.name }}"
-    key: "{{ lookup('file', srcdir + '/public_keys/' + User.name) }}"
+    key: "{{ item }}"
+    manage_dir: True
+    state: present
+  with_items: User.keys
+  when: "User.keys is defined"
 
 - name: reset mode for authorized_keys
   file: 

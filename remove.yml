@@ -1,11 +1,10 @@
 ---
 # Upgrade the fleet
 - name: Remove Packages
-  hosts: all
+  hosts: all:!unmanaged
 
-  tasks:
-    - name: Create groups by distribution
-      group_by: key={{ansible_pkg_mgr}}
+  roles:
+    - role: group_by
 
 - hosts: yum
   sudo: yes

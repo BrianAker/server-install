@@ -2,6 +2,12 @@
 #- include: pkg_install.yml
 #  when: ansible_ssh_user == 'root'
 
+- name: pkg bootstrap
+  command: pkg bootstrap
+
+- name: pkg install compat6x-`uname -m`
+  command: pkg install compat6x-`uname -m`
+
 - raw: pkg update 
 
 - raw: pkg clean -y

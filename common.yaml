@@ -1,10 +1,9 @@
 ---
-- include: playbooks/group_by.yaml
-
 - name: Common Play
-  hosts: all
+  hosts: all:!unmanaged
 
   roles:
+    - role: group_by
     - role: common
     - role: sudoers
     - role: python
@@ -12,5 +11,3 @@
     - role: sshd
     - role: deploy
     - role: unattended-upgrades
-
-- include: playbooks/virtualization.yaml

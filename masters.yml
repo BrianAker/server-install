@@ -2,15 +2,10 @@
 - name: Jenkins Master
   hosts: jenkins
 
-  vars_files:
-     - "vars/{{ ansible_os_family }}"
-     - "vars/{{ ansible_distribution }}"
-     - "vars/Defaults"
-
   roles:
     - bazaar
     - build
-    - jenkins
+    - geerlingguy.jenkins
     - pound
     - sshd
     - tcpwrappers

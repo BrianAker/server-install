@@ -8,3 +8,8 @@
   sudo: yes
   service:  name=yum-cron
             state=restarted
+
+- name: restart dnf-automatic
+  sudo: yes
+  service:  name=dnf-automatic
+            state=restarted

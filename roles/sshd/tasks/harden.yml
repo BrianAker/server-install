@@ -1,18 +1,19 @@
 ---
 - name: harden OpenSSH
   sudo: yes
-  lineinfile: dest={{ sshd_config_file }}
+  lineinfile: >
+              dest="{{ sshd_config_file[ansible_os_family] }}"
               state=present
-              regexp='^#?{{ item.key }}'
-              line='{{ item.key }} {{ item.value }}'
-              validate='/usr/sbin/sshd -T -f %s'
+              regexp='^#?{{ item.argument }}'
+              line="{{ item.argument }} {{ item.new_value }}"
+              validate="/usr/sbin/sshd -T -f %s"
   with_items:
-    - { key: 'MaxAuthTries', value: '1'}
-    - { key: 'PermitRootLogin', value: 'no'}
-    - { key: 'PasswordAuthentication', value: 'no'}
-    - { key: 'AllowAgentForwarding', value: 'yes'}
-    - { key: 'PermitEmptyPasswords', value: 'no'}
-    - { key: 'AuthorizedKeysFile', value: '.ssh/authorized_keys'}
-    - { key: 'Ciphers', value: 'aes128-ctr,aes192-ctr,aes256-ctr'}
+    - { argument: 'MaxAuthTries', new_value: '1' }
+    - { argument: 'PermitRootLogin', new_value: 'no' }
+    - { argument: 'PasswordAuthentication', new_value: 'no' }
+    - { argument: 'AllowAgentForwarding', new_value: 'yes' }
+    - { argument: 'PermitEmptyPasswords', new_value: 'no' }
+    - { argument: 'AuthorizedKeysFile', new_value: '.ssh/authorized_keys' }
+    - { argument: 'Ciphers', new_value: 'aes128-ctr,aes192-ctr,aes256-ctr' }
   notify: restart sshd
   tags: harden

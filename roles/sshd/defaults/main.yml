@@ -18,3 +18,17 @@ sshd_packages:
 
   Ubuntu:
     - openssh-server
+
+sshd_config_file:
+  RedHat:  /etc/ssh/sshd_config
+  FreeBSD:  /etc/ssh/sshd_config
+  Fedora:  /etc/ssh/sshd_config
+  Ubuntu:  /etc/ssh/sshd_config
+  CentOS:  /etc/ssh/sshd_config
+
+service_sshd:
+  RedHat:  ssh
+  FreeBSD: sshd
+  Fedora:  ssh
+  Ubuntu:  sshd
+  CentOS:  ssh

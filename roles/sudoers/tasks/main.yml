@@ -1,17 +1,13 @@
 --- # vim:ft=yaml
-# Load a variable file based on the OS type, or a default if not found.
-- include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_distribution }}.yml"
-    - "default.yml"
 
 - include: validate.yaml
 
-- group:  
+- name: create wheel group
+  group:  
     name: wheel
     state: present
   when: "ansible_distribution != 'MacOSX'"
-  sudo: yes
+  become: true
 
 - name: mkdir sudoers.d
   file: 
@@ -20,15 +16,16 @@
     owner: root
     group: "{{ root_group }}"
     mode: 0750
-  sudo: yes
+  become: true
 
-- file: 
+- name: make sure sudoers file exists 
+  file: 
     dest: "{{ sudoers_conf }}"
     state: touch
     owner: root
     group: "{{ root_group }}"
     mode: 0440
-  sudo: yes
+  become: true
 
 - name: configure sudoers
   lineinfile: 
@@ -47,12 +44,13 @@
     - key: 'Defaults env_keep.*SH_AUTH_SOCK'
       value: 'Defaults env_keep += "SSH_AUTH_SOCK"'
   tags: config
-  sudo: yes
+  become: true
 
-- file: 
+- name: create security authorized keys 
+  file: 
     dest: /etc/security/authorized_keys
     state: touch
     owner: root
     group: "{{ root_group }}"
     mode: 0600
-  sudo: yes
+  become: true

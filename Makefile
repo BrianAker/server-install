@@ -20,6 +20,8 @@ ROLE_FILES+= $(ROLE_DEFAULTS)
 ROLE_FILES+= $(ROLE_TASKS)
 ROLE_FILES+= $(ROLE_HANDLERS)
 
+ROLES_PATH+= roles/
+
 HOSTNAME:= `hostname`
 HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
@@ -43,6 +45,14 @@ ROLE_DEFAULTS:= $(addsuffix /defaults/main.yml, $(ROLES))
 ROLE_TASKS:= $(addsuffix /tasks/main.yml, $(ROLES))
 ROLE_HANDLERS:= $(addsuffix /handlers/main.yml, $(ROLES))
 ROLE_META:= $(addsuffix /meta/main.yml, $(ROLES))
+
+ANSIBLE_GALAXY_ROLES:= 
+ANSIBLE_GALAXY_ROLES+= jnv.unattended-upgrades 
+ANSIBLE_GALAXY_ROLES+= f500.dumpall
+ANSIBLE_GALAXY_ROLES+= geerlingguy.jenkins
+ANSIBLE_GALAXY_ROLES_INSTALL := $(addprefix $(ROLES_PATH), $(addsuffix /$(dirstamp),$(ANSIBLE_GALAXY_ROLES)))
+
+MAINTAINERCLEAN+= $(ANSIBLE_GALAXY_ROLES)
 
 ROLEBOOKS+= $(addsuffix /role.yml, $(ROLES))
 PLAYBOOKS+= $(wildcard *.yml) 
@@ -105,7 +115,9 @@ distclean-am:
 
 .PHONY: maintainer-clean
 maintainer-clean: distclean
+	@rm -rf $(dir $(ANSIBLE_GALAXY_ROLES_INSTALL))
 	@rm -rf $(MAINTAINERCLEAN)
+	@rm -rf $(PIP_DIR)
 
 .PHONY: print_check
 print_check:
@@ -126,43 +138,48 @@ public_keys/deploy: public_keys/$(dirstamp)
 
 PREREQ+= public_keys/brian
 public_keys/brian: public_keys/$(dirstamp)
-	touch $@ 
+	@$(TOUCH) $@ 
 	curl https://github.com/brianaker.keys >> $@
 
 PREREQ+= public_keys/jenkins
 public_keys/jenkins: public_keys/$(dirstamp)
-	touch $@ 
-	curl https://github.com/TangentCI.keys >> $@
+	@$(TOUCH) $@ 
+	@$(CURL) https://github.com/TangentCI.keys >> $@
 
 PREREQ+= files/pkg-pubkey.cert
 files/pkg-pubkey.cert:
 	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
 
-PREREQ+= roles/jnv.unattended-upgrades/README.md
+PREREQ+= $(ANSIBLE_GALAXY_ROLES_INSTALL)
 
-roles/jnv.unattended-upgrades/README.md:
-	ansible-galaxy install jnv.unattended-upgrades
+$(ANSIBLE_GALAXY_ROLES_INSTALL): $(ANSIBLE_GALAXY)
+	@$(RM) -rf $(subst /$(dirstamp),, $@)
+	@$(ANSIBLE_GALAXY) install -p $(ROLES_PATH)  $(subst $(ROLES_PATH),, $(subst /$(dirstamp),, $@))
 	@$(TOUCH) $@
 
-PREREQ+= roles/dhcp_server/README.md
-roles/dhcp_server/README.md:
-	git clone https://github.com/pdellaert/dhcp_server.git $(@D)
+PREREQ+= roles/dhcp_server/$(dirstamp)
+roles/dhcp_server/$(dirstamp):
+	@$(RM) -rf $(@D)
+	@git clone https://github.com/pdellaert/dhcp_server.git $(@D)
+	@$(TOUCH) $@
+
+roles/dhcp_server:
 
 .PHONY: install
 install: all
-	$(ANSIBLE_PLAYBOOK) site.yml -u deploy
+	@$(ANSIBLE_PLAYBOOK) site.yml -u deploy
 
 .PHONY: install-ansible-user
 install-ansible-user: inventory/localhost
-	$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost -s
+	@$(ANSIBLE_PLAYBOOK) site.yml --limit=localhost -s
 
 .PHONY: upgrade
 upgrade: all
-	$(ANSIBLE_PLAYBOOK) maintenance.yml
+	@$(ANSIBLE_PLAYBOOK) maintenance.yml
 
 .PHONY: localhost
 localhost: all inventory/localhost
-	$(ANSIBLE_PLAYBOOK) site.yml -i inventory/localhost
+	@$(ANSIBLE_PLAYBOOK) site.yml -i inventory/localhost
 
 roles/common/files/RPM-GPG-KEY-EPEL-6:
 	@$(CURL) -o $@ https://fedoraproject.org/static/A4D647E9.txt
@@ -171,7 +188,7 @@ roles/common/files/RPM-GPG-KEY-EPEL-6:
 .PHONY: deploy
 deploy: install
 
-all: $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD) roles/common/files/RPM-GPG-KEY-EPEL-6
+all: $(ANSIBLE_PLAYBOOK) $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD) roles/common/files/RPM-GPG-KEY-EPEL-6
 
 .DEFAULT_GOAL:= all
 
