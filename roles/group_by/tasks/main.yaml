@@ -1,0 +1,6 @@
+--- # vim:ft=yaml
+- name: create ansible_distribution group
+  group_by: key={{ ansible_distribution }}
+
+- name: create ansible_pkg_mgr group
+  group_by: key={{ ansible_pkg_mgr }}

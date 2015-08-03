@@ -1,0 +1,14 @@
+---
+- name: Common Play
+  hosts: all:!unmanaged
+
+  tasks:
+    - name: All hosts
+      debug:
+          var: groups.all
+    - name: uname
+      command: uname -a
+      register: results
+    - name: results output
+      debug:
+          var: results.stdout

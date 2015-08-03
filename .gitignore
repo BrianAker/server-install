@@ -27,3 +27,8 @@ roles/f500.dumpall
 roles/jnv.unattended-upgrades
 roles/pdellaert.dhcp_server
 examine
+.vagrant
+roles/geerlingguy.java
+roles/geerlingguy.jenkins
+Vagrantfile
+myconf
