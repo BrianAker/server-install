@@ -23,5 +23,6 @@
   sudo: yes
   notify: restart dnf-automatic
 
-- service: name=dnf-automatic.timer enabled=yes
+- name: dnf-automatic.timer
+  service: name=dnf-automatic.timer enabled=yes
   sudo: yes
