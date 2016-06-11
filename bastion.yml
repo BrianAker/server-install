@@ -1,4 +1,5 @@
 # Host rules for bastion hosts
+---
 - name: Bastion
   hosts: bastion
 

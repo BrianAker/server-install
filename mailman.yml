@@ -1,3 +1,4 @@
+---
 - name: Mailman
   hosts: mailman
 
