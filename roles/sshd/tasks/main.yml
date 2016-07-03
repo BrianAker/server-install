@@ -1,9 +1,13 @@
 ---
 - name: Install packages
-  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
-  with_items: sshd_packages[ansible_distribution]
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ sshd_packages[ansible_distribution] }}"
   tags: package_install
   notify: restart sshd
+  become: true
+  become_user: root
 
 - include: harden.yml
   when: sshd_harden is defined

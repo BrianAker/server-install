@@ -16,7 +16,7 @@
   tasks:
     - name: remove old host key
       known_hosts: 
-          name: {{ inventory_hostname }}
+          name: "{{ inventory_hostname }}"
           state: absent
 
     - name: Check for hostkey
@@ -25,51 +25,46 @@
       register: ssh_known_host_results
 
     - name: Results of keyscan
-    - debug: 
+      debug: 
           var: ssh_known_host_results.results
 
     - name: remove old host key
       known_hosts: 
-          name: {{ inventory_hostname }}
-          key: {{ ssh_known_host_results.results }}
+          name: "{{ inventory_hostname }}"
+          key: "{{ ssh_known_host_results.results }}"
           state: present
 
 - hosts: all:!unmanaged
-  remote_user: "{{ bootstrap_user }}"
+  remote_user: "{{ deploy_username }}"
   roles:
     - { role: f500.dumpall, dumpall_host_destination: examine/ }
     - group_by 
 
 - hosts: Fedora
-  remote_user: "{{ bootstrap_user }}"
+  gather_facts: no
+  remote_user: "{{ deploy_username }}"
   tasks:
-    - name: Install yum compatibility for Fedora
-      dnf: 
-          name: "{{ item }}"
-          state: present
-      with_items:
-      - dnf-yum 
-      - yum-utils
+    - name: make sure python2 is installed
+      raw: dnf -y -e0 -d0 install python python-dnf python-passlib
       sudo: true
 
 - hosts: FreeBSD
-  remote_user: "{{ bootstrap_user }}"
+  remote_user: "{{ deploy_username }}"
   roles:
     - role: bootstrap/FreeBSD
 
 - hosts: MacOSX
-  remote_user: "{{ bootstrap_user }}"
+  remote_user: "{{ deploy_username }}"
   roles:
     - role: bootstrap/MacOSX
 
 - hosts: all:!unmanaged
-  remote_user: "{{ bootstrap_user }}"
+  remote_user: "{{ deploy_username }}"
 
   roles:
     - role: bootstrap
     - role: sudoers
     - role: python
-    - role: ntp
     - role: sshd
     - role: deploy
     - role: unattended-upgrades

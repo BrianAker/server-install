@@ -1,7 +1,7 @@
 ---
 - name: Install packages
   action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
-  with_items: unattended_upgrades_packages[ansible_distribution]
+  with_items: "{{ unattended_upgrades_packages[ansible_distribution] }}"
   sudo: true
 
 - include: Fedora.yml

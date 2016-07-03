@@ -146,10 +146,6 @@ public_keys/jenkins: public_keys/$(dirstamp)
 	@$(TOUCH) $@ 
 	@$(CURL) https://github.com/TangentCI.keys >> $@
 
-PREREQ+= files/pkg-pubkey.cert
-files/pkg-pubkey.cert:
-	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
-
 PREREQ+= $(ANSIBLE_GALAXY_ROLES_INSTALL)
 
 $(ANSIBLE_GALAXY_ROLES_INSTALL): $(ANSIBLE_GALAXY)
@@ -181,14 +177,10 @@ upgrade: all
 localhost: all inventory/localhost
 	@$(ANSIBLE_PLAYBOOK) site.yml -i inventory/localhost
 
-roles/common/files/RPM-GPG-KEY-EPEL-6:
-	@$(CURL) -o $@ https://fedoraproject.org/static/A4D647E9.txt
-	@$(ANSIBLE_PLAYBOOK) site.yml --tags=makeconf
-
 .PHONY: deploy
 deploy: install
 
-all: $(ANSIBLE_PLAYBOOK) $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD) roles/common/files/RPM-GPG-KEY-EPEL-6
+all: $(ANSIBLE_PLAYBOOK) $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD)
 
 .DEFAULT_GOAL:= all
 

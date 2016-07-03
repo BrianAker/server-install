@@ -1,6 +1,8 @@
 --- # vim:ft=yaml
-- fail: "sudoers_d was not defined."
+- fail: 
+    msg: "sudoers_d was not defined."
   when: sudoers_d is not defined
 
-- fail: "sudoers_conf was not defined."
+- fail: 
+    msg: "sudoers_conf was not defined."
   when: sudoers_conf is not defined

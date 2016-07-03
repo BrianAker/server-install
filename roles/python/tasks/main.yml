@@ -1,8 +1,11 @@
 ---
 - name: Install packages
-  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
-  with_items: python_packages[ansible_distribution]
-  sudo: true
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ python_packages[ansible_distribution] }}"
+  become: true
+  become_user: root
 
 - include: MacOSX.yaml
   when: ansible_distribution == 'MacOSX'

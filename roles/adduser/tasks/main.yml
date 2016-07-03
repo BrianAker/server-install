@@ -24,14 +24,14 @@
     manage_dir: True
     state: present
   with_items: User.keys
-  when: "User.keys is defined"
+  when: User.keys is defined
 
 - name: reset mode for authorized_keys
   file: 
     path: "~/.ssh/authorized_keys"
     mode: 0600
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
+  become_user: "{{ User.name }}"
   when: "inventory_hostname != 'localhost'"
 
 - name: create .profile.d 

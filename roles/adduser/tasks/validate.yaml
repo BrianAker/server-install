@@ -1,15 +1,18 @@
----
+--- # vim:ft=yaml
 - name: "Adding user"
   debug:
     var: User
   tags:
     - debug
 
-- fail: "User was not defined."
+- fail:
+    msg: "User was not defined."
   when: User is not defined
 
-- fail: "User.name was not defined."
+- fail:
+    msg: "User.name was not defined."
   when: User.name is not defined
 
-- fail: "default_shell was not defined."
+- fail:
+    msg: "default_shell was not defined."
   when: default_shell is not defined

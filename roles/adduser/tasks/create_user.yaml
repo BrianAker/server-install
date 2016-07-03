@@ -26,7 +26,7 @@
       password: "{{ item }}"
       update_password: "on_create"
       createhome: true
-  with_password: userpassword_command
+  with_password: "{{ userpassword_command }}"
   when: "ansible_distribution != 'MacOSX'"
 
 - name: add user to group wheel

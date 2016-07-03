@@ -1,4 +1,5 @@
-- fail: validate variables
+- fail: 
+    msg: validate variables
   when: item is not defined
   with_items:
     - User
