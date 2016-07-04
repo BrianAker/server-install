@@ -1,6 +1,6 @@
 ---
 - name: enable firewalld service
-  sudo: yes
+  become: yes
   firewalld:  service={{ add_service }}
               permanent=true
               state=enabled
@@ -9,7 +9,7 @@
   tags: config
 
 - name: enable firewalld port
-  sudo: yes
+  become: yes
   firewalld:  port={{ add_port }}
               permanent=true
               state=enabled

@@ -1,6 +1,6 @@
 ---
 - name: harden OpenSSH
-  sudo: yes
+  become: yes
   lineinfile: >
               dest="{{ sshd_config_file[ansible_os_family] }}"
               state=present

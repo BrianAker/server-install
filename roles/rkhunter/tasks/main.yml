@@ -1,6 +1,6 @@
 ---
 - name: set rkhunter options
-  sudo: yes
+  become: yes
   lineinfile: dest={{ rkhunter_conf }}
               state=present
               regexp='^#?{{ item }}'
@@ -12,7 +12,7 @@
   tags: config
 
 - name: set rkhunter keypair
-  sudo: yes
+  become: yes
   lineinfile: dest={{ rkhunter_conf }}
               state=present
               regexp='^#?{{ item.key }}'
@@ -23,9 +23,9 @@
   tags: config
 
 - command:  /usr/bin/rkhunter --config-check
-  sudo: yes
+  become: yes
 
 - command:  /usr/bin/rkhunter --propupd
             creates='/var/lib/rkhunter/db/rkhunter.dat'
-  sudo: yes
+  become: yes
   tags: config

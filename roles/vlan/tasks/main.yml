@@ -11,7 +11,7 @@
             mode=0644
             validate='bash -n %s'
   notify: restart network
-  sudo: yes
+  become: yes
 
 - name: create vlan
   template: src="vlan.j2"
@@ -19,4 +19,4 @@
             mode=0644
             validate='bash -n %s'
   notify: restart network
-  sudo: yes
+  become: yes

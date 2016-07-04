@@ -1,21 +1,21 @@
 ---
 
 - name: yum install mailman
-  sudo: yes
+  become: yes
   yum: name={{ item }} state=present
   with_items:
     - mailman
   when: ansible_distribution == 'Fedora'
 
 - name: Configure Persistent FirewallD for smtp
-  sudo: yes
+  become: yes
   firewalld:  service=smtp
               permanent=true
               state=enabled
   when: ansible_distribution == 'Fedora'
 
 - name: supply mailman DEFAULT_URL_HOST
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="^DEFAULT_URL_HOST"
               line="DEFAULT_URL_HOST = 'lists.tangent.org'"
@@ -23,7 +23,7 @@
   notify: restart mailman
 
 - name: supply mailman DEFAULT_EMAIL_HOST
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="^DEFAULT_EMAIL_HOST"
               line="DEFAULT_EMAIL_HOST = 'lists.tangent.org'"
@@ -31,7 +31,7 @@
   notify: restart mailman
 
 - name: supply mailman add_virtualhost(alohahaus.org)
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="lists.alohahaus.org"
               line="add_virtualhost('lists.alohahaus.org','alohahaus.org')"
@@ -39,7 +39,7 @@
   notify: restart mailman
 
 - name: supply mailman add_virtualhost(libmemcached.org)
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mailman/mm_cfg.py
               regexp="lists.libmemcached.org"
               line="add_virtualhost('lists.libmemcached.org','libmemcached.org')"
@@ -47,19 +47,19 @@
   notify: restart mailman
 
 - name: Add default Servername to webserver
-  sudo: yes
+  become: yes
   copy: src=0.conf
         dest=/etc/httpd/conf.d/0.conf
   notify: restart apache
 
 - name: Add lists.libmemcached.org to webserver
-  sudo: yes
+  become: yes
   copy: src=lists.libmemcached.org.conf
         dest=/etc/httpd/conf.d/lists.libmemcached.org.conf
   notify: restart apache
 
 - name: Add lists.alohahaus.org to webserver
-  sudo: yes
+  become: yes
   copy: src=lists.alohahaus.org.conf
         dest=/etc/httpd/conf.d/lists.alohahaus.org.conf
   notify: restart apache

@@ -1,5 +1,5 @@
 ---
 - name: set hostname
   hostname: name="{{ inventory_hostname }}"
-  sudo: yes
+  become: yes
   when: is_ipaddress|failed

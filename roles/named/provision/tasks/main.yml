@@ -13,7 +13,7 @@
     owner: root
     group: named
     mode: 0755
-  sudo: yes
+  become: yes
 
 - file: 
     path: "/{{ item }}"
@@ -22,7 +22,7 @@
     group: named
     mode: 0755
   with_items: directories
-  sudo: yes
+  become: yes
 
 - file: 
     path: "{{ item }}"
@@ -35,4 +35,4 @@
     - /var/named/log/dnssec
     - /var/named/log/named
     - /var/named/log/xfer
-  sudo: yes
+  become: yes

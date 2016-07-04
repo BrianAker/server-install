@@ -1,11 +1,11 @@
 ---
 - command: "hostname {{ inventory_hostname }}"
-  sudo: yes
+  become: yes
   when: is_ipaddress|failed
   tags: config
 
 - name: set hostname in rc.local
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/rc.local
               state=present
               regexp='^#?{{ item.key }}='

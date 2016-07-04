@@ -32,3 +32,4 @@ roles/geerlingguy.java
 roles/geerlingguy.jenkins
 Vagrantfile
 myconf
+*.retry

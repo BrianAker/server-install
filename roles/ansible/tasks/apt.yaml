@@ -1,6 +1,6 @@
 ---
 - name: apt-get install common_packages
-  sudo: yes
+  become: yes
   apt: 
     name: "{{ item }}"
     update_cache: yes

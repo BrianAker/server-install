@@ -7,7 +7,7 @@
   with_items: ntp_packages[ansible_distribution]
 
 - name: enable ntpd service
-  sudo: yes
+  become: yes
   service:  
     name: "{{ ntp_service[ansible_distribution] }}"
     enabled: yes

@@ -13,34 +13,49 @@
   file:
     state: directory
     path: "~/.bazaar/plugins"
-  become_user: "{{ User.name }}"
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
+  become: yes
 
 - name: setup authorized_key
-  sudo: yes
   ignore_errors: yes
   authorized_key:
     user: "{{ User.name }}"
-    key: "{{ item }}"
+    key: "{{ lookup('file', './' + item ) }}"
     manage_dir: True
     state: present
-  with_items: User.keys
+  with_items: "{{ User['keys'] }}"
   when: User.keys is defined
+  become: yes
+
+- name: reset mode for .ssh
+  file: 
+    name: "~/.ssh"
+    mode: 0700
+    state: directory
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
+  when: "inventory_hostname != 'localhost'"
+  become: yes
 
 - name: reset mode for authorized_keys
   file: 
-    path: "~/.ssh/authorized_keys"
+    name: "~/.ssh/authorized_keys"
     mode: 0600
-  become: yes
-  become_user: "{{ User.name }}"
+    state: touch
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
   when: "inventory_hostname != 'localhost'"
+  become: yes
 
 - name: create .profile.d 
   file:
     path: "~/.profile.d"
     mode: 0750
     state: directory
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -49,11 +64,12 @@
     src: "{{ item }}.j2"
     dest: "~/.{{ item }}"
     mode: 0600
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
     validate: 'bash -n %s'
   with_items:
     - customrc
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -62,13 +78,14 @@
     src: "{{ item }}.j2"
     dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
     validate: 'bash -n %s'
   with_items:
     - pythonrc
     - perlrc
     - rubyrc
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -77,12 +94,13 @@
     src: "{{ item }}.j2"
     dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
     validate: 'bash -n %s'
   with_items:
     - pkgngrc
   when: ansible_distribution in ('FreeBSD')
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -91,12 +109,13 @@
     src: "{{ item }}.j2"
     dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
     validate: 'bash -n %s'
   with_items:
     - sbinrc
   when: ansible_distribution in ('Debian')
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -105,14 +124,15 @@
     src: "{{ item }}.j2"
     dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
     validate: 'bash -n %s'
   with_items:
     - brewrc
     - javarc
     - configurerc
   when: ansible_distribution in ('MacOSX')
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -121,12 +141,13 @@
     src: "{{ item }}.j2"
     dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
     validate: 'bash -n %s'
   with_items:
     - keychainrc
   when: keychain == True
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -134,8 +155,9 @@
   file:
     path: "~/.bash_profile"
     state: touch
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+    owner: "{{ User.name }}"
+    group: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 
@@ -147,9 +169,10 @@
               mode=0700
               state=present
               backrefs=yes
+              owner="{{ User.name }}"
+              group="{{ User.name }}"
               create=yes
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
   tags:
     - shellconf
 

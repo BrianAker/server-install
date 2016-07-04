@@ -1,5 +1,5 @@
 ---
 - name: restart apache
-  sudo:     yes
+  become:     yes
   service:  name={{ apache }}
             state=restarted

@@ -3,12 +3,10 @@
   hosts: yum:dnf
   become: true
   tasks:
-  - name: cleanup metadata
-    command: dnf clean metadata
-    become: true
-    tags: upgrade
   - name: update metadata
-    command: dnf upgrade --assumeyes
+    dnf:
+      name: '*'
+      state: latest
     become: true
     tags: upgrade
   - name: upgrade all packages
@@ -20,19 +18,19 @@
   hosts: apt
   become: true
   tasks:
-  - apt: update_cache=yes
+  - apt:
+      update_cache: yes
     become: true
     tags: upgrade
 
-  - apt: upgrade=dist cache_valid_time=3600
+  - apt:
+      upgrade: dist
+      cache_valid_time: 3600
     become: true
     tags: upgrade
 
-  - command: apt-get autoremove -y
-    become: true
-    tags: upgrade
-
-  - command: apt-get clean
+  - apt:
+      autoremove: yes
     become: true
     tags: upgrade
 
@@ -42,11 +40,13 @@
 - name: MacOSX
   hosts: MacOSX
   tasks:
-  - command: /usr/local/bin/brew update
+  - homebrew:
+      update_homebrew: true
     become: true
     tags: upgrade
 
-  - command: /usr/local/bin/brew upgrade
+  - homebrew:
+      upgrade_all: true
     become: true
     tags: upgrade
 

@@ -10,7 +10,7 @@
   roles:
     - role: dump
     - role: dhcp_server
-      sudo: True
+      become: True
     - role: firewalld
       add_port: 67/udp
     - role: firewalld

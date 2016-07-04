@@ -4,4 +4,3 @@ dependencies:
   - role: facts
   - role: sshd
   - role: sudoers
-  - { role: f500.dumpall, dumpall_host_destination: examine/ }

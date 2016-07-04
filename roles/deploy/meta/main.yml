@@ -4,13 +4,13 @@ dependencies:
   - { role: sshd }
   - role: adduser
     User:
-      name: "{{ deploy_username }}"
-      shell: "{{ default_shell }}"
+      name: "{{ deployment_user }}"
+      shell: "{{ default_shell | default('/bin/bash') }}"
       keychain: True
       is_admin: True
       is_remote: True
       is_wheel: True
-      keys: deploy_keys
+      keys: "{{ deploy_keys }}"
   - role: pip
     User:
-      name: "{{ deploy_username }}"
+      name: "{{ deployment_user }}"

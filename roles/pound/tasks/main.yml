@@ -7,7 +7,7 @@
     state: present
 
 - name: create directory pound.conf.d
-  sudo: yes
+  become: yes
   file: dest="{{ pound_include_directory }}"
         mode=750
         owner=root
@@ -15,7 +15,7 @@
         state=directory
 
 - name: create socket file
-  sudo: yes
+  become: yes
   file: dest="{{ pound_control_file }}"
         mode=640
         owner="{{ pound_user }}"
@@ -23,7 +23,7 @@
         state=touch
 
 - name: create pound.cfg
-  sudo: yes
+  become: yes
   template: src=pound.cfg.j2
             dest=/etc/pound.cfg
             owner=root
@@ -32,7 +32,7 @@
   notify: restart Pound
 
 - name: enable Pound
-  sudo: yes
+  become: yes
   service:  
     name: pound
     enabled: yes

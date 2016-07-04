@@ -35,31 +35,31 @@
           state: present
 
 - hosts: all:!unmanaged
-  remote_user: "{{ deploy_username }}"
+  remote_user: "{{ deployment_user }}"
   roles:
-    - { role: f500.dumpall, dumpall_host_destination: examine/ }
     - group_by 
+#   - { role: f500.dumpall, dumpall_host_destination: examine/ }
 
 - hosts: Fedora
   gather_facts: no
-  remote_user: "{{ deploy_username }}"
+  remote_user: "{{ deployment_user }}"
   tasks:
     - name: make sure python2 is installed
       raw: dnf -y -e0 -d0 install python python-dnf python-passlib
-      sudo: true
+      become: true
 
 - hosts: FreeBSD
-  remote_user: "{{ deploy_username }}"
+  remote_user: "{{ deployment_user }}"
   roles:
     - role: bootstrap/FreeBSD
 
 - hosts: MacOSX
-  remote_user: "{{ deploy_username }}"
+  remote_user: "{{ deployment_user }}"
   roles:
     - role: bootstrap/MacOSX
 
 - hosts: all:!unmanaged
-  remote_user: "{{ deploy_username }}"
+  remote_user: "{{ deployment_user }}"
 
   roles:
     - role: bootstrap

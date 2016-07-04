@@ -33,16 +33,21 @@
     state: present
     regexp: '^{{ item.key }}'
     line: '{{ item.value }}'
+    insertafter: '{{ item.after }}'
     validate: 'visudo -cf %s'
   with_items:
     - key: 'root'
       value: 'root ALL=(ALL) ALL'
+      after: '#root'
     - key: '#includedir'
       value: "#includedir {{ sudoers_d }}"
+      after: EOF
     - key: '%wheel'
       value: '%wheel ALL=(ALL) NOPASSWD: ALL'
+      after: '#%wheel'
     - key: 'Defaults env_keep.*SH_AUTH_SOCK'
       value: 'Defaults env_keep += "SSH_AUTH_SOCK"'
+      after: '^Defaults.*env_keep'
   tags: config
   become: true
 

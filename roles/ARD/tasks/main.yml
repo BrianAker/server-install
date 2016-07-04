@@ -1,9 +1,9 @@
 # More can be found here http://support.apple.com/kb/ht2370
 ---
 - name: stop ARD
-  sudo: yes
+  become: yes
   raw: /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -stop
 
 - name: start ARD
-  sudo: yes
+  become: yes
   raw:  /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -activate -configure -access -on -privs -all -restart -agent

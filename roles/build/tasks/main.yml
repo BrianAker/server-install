@@ -2,4 +2,4 @@
 - name: Install packages
   action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
   with_items: build_packages[ansible_distribution]
-  sudo: true
+  become: true

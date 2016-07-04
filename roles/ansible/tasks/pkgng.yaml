@@ -1,6 +1,6 @@
 ---
 - name: "pkgng install common_packages"
-  sudo: yes
+  become: yes
   pkgng:
     name: "{{ item }}"
     state: present

@@ -16,4 +16,4 @@
   with_items:
     - "{{ named_dir }}"
   tags: makeconf
-  sudo: True
+  become: True

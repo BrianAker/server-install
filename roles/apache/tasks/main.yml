@@ -1,6 +1,6 @@
 ---
 - name: setup servername
-  sudo: yes
+  become: yes
   template: src=etc/httpd/conf.d/0.conf.j2
             dest=/etc/httpd/conf.d/0.conf
             owner=root 
@@ -9,7 +9,7 @@
   notify: restart apache
 
 - name: enable apache service
-  sudo: yes
+  become: yes
   ignore_errors: yes
   service:  name={{ httpd_service }}
             enabled=yes

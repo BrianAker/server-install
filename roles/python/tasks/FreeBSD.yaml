@@ -10,4 +10,4 @@
     - bin/python2.7
     - bin/python
   when: python_result|failed
-  sudo: yes
+  become: yes

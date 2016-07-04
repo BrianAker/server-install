@@ -2,9 +2,9 @@
 ---
 - name: reload autofs
   command: reload autofs
-  sudo: yes
+  become: yes
 
 - name: restart autofs
-  sudo: yes
+  become: yes
   service:  name=autofs
             state=restarted

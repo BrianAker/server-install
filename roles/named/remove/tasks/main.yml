@@ -7,7 +7,7 @@
     - remove_domains
     - ['.jnl', '.jbk', '.signed', ' ' ]
   when: remove_domains
-  sudo: yes
+  become: yes
   register: remove_domains_result
 
 - name: restart bind if we removed zones

@@ -3,11 +3,11 @@
   action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
   with_items: common_packages[ansible_distribution]
   tags: package_install
-  sudo: true
+  become: true
 
 - name: Install open-vm-tools if Guest
   action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
   with_items: open-vm-tools
   when: ansible_virtualization_role == 'Guest'
   tags: package_install
-  sudo: true
+  become: true

@@ -6,21 +6,21 @@
       var: User
 
 - name: install virtualenv for user
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
+  become_user: "{{ User.name }}"
   pip:  
     name: "pip"
     virtualenv: "~/{{ pip_user_dir }}"
     state: present
 
 - name: install local pip packages for user
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
+  become_user: "{{ User.name }}"
   pip:  
     name: "{{ item }}"
     virtualenv: "~/{{ pip_user_dir }}"
     state: present
     requirements: "{{ pip_package_file }}"
-  with_items: pip_package_file | default([])
+  with_items: "{{ pip_package_file | default([]) }}"
   when: pip_package_file is defined
   ignore_errors: yes

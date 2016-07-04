@@ -1,8 +1,8 @@
 ---
 
 - name: mkdir bazaar directory
-  sudo: yes
-  sudo_user: "{{ bzr_username }}"
+  become: yes
+  become_user: "{{ bzr_username }}"
   file: path="{{ user_homedir }}/{{ item }}"
         state=directory
         mode=0750

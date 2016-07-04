@@ -7,13 +7,13 @@
     - role: group_by
 
 - hosts: yum
-  sudo: yes
+  become: yes
   tasks:
     - command: yum erase -y {{ item }}
       with_items: remove
 
 - hosts: apt
-  sudo: yes
+  become: yes
   tasks:
     - command: apt-get purge -y {{ item }}
       with_items: remove

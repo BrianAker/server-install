@@ -1,6 +1,6 @@
 ---
 - name: apt base software
-  sudo: yes
+  become: yes
   apt:  update_cache=yes
         cache_valid_time=3600
         pkg={{ item }}

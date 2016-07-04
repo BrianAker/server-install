@@ -2,4 +2,4 @@
 #- user: name=root
 #        shell=/usr/sbin/nologin
 #  when: "ansible_os_family in ('RedHat', 'Debian')"
-#  sudo: yes
+#  become: yes

@@ -1,8 +1,8 @@
 # vim:ft=yaml
 ---
 - set_fact: ansible_dir="{{ user_homedir }}/.ansible"
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
+  become_user: "{{ User.name }}"
 
 - name: pip install ansible
   pip:  name="{{ item }}"
@@ -12,13 +12,13 @@
     - "../../files/pip/ansible.txt"
 #  with_lines:
 #    - 'cat {{ inventory_dir }}/files/pip/ansible.txt'
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
+  become_user: "{{ User.name }}"
 
 - name: install pyenv
   template: src=pyenv.j2
             dest="{{ ansible_dir }}/bin/pyenv"
             mode=0700
             validate='bash -n %s'
-  sudo: yes
-  sudo_user: "{{ User.name }}"
+  become: yes
+  become_user: "{{ User.name }}"

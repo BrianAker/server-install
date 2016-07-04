@@ -3,7 +3,7 @@
 - file: state=directory
         path="/etc/auto.master.d"
         owner=root
-  sudo: yes
+  become: yes
 
 - name: Add autofs nfs support
   template: src="{{ item }}.j2"
@@ -11,7 +11,7 @@
             mode=0644
   with_items:
     - nfs.autofs
-  sudo: yes
+  become: yes
   notify:
     - reload autofs
     - restart autofs
@@ -23,7 +23,7 @@
             mode=0644
   with_items:
     - auto.nfs
-  sudo: yes
+  become: yes
   notify:
     - reload autofs
     - restart autofs
@@ -36,7 +36,7 @@
   with_items:
     - { key: 'NEED_IDMAPD', value: 'yes'}
     - { key: 'NEED_GSSD', value: 'no'}
-  sudo: yes
+  become: yes
   tags: config
   notify:
     - reload autofs

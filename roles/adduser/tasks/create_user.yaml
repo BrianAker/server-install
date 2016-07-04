@@ -13,11 +13,11 @@
     state: directory
     mode: 0700
   connection: local
-  sudo: no
+  become: no
 
 - name: create user
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   user: 
       name: "{{ User.name }}"
       comment: "{{ User.name }}"
@@ -30,8 +30,8 @@
   when: "ansible_distribution != 'MacOSX'"
 
 - name: add user to group wheel
-  sudo: yes
-  sudo_user: root
+  become: yes
+  become_user: root
   user: 
       name: "{{ User.name }}"
       groups: "wheel"

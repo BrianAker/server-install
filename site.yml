@@ -12,7 +12,7 @@
 #      environment: 'BASH_ENV="~/.python/bin/activate"'
 #
 #    - command: whoami
-#      sudo: yes
+#      become: yes
 #      register: whoami_result
 #      failed_when: whoami_result.stdout != "root"
 #      environment: 'BASH_ENV="~/.python/bin/activate"'
@@ -26,7 +26,7 @@
 #    - debug: var=command_result
 #
 ##    - name: "guard for virtualenv"
-##      sudo: yes
+##      become: yes
 ##      shell: echo $VIRTUAL_ENV
 ##      register: command_result
 ###     failed_when: command_result.stdout == ""

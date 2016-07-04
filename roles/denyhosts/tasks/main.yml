@@ -1,12 +1,12 @@
 ---
 - name: /var/lib/denyhosts/allowed-hosts
-  sudo: yes
+  become: yes
   copy: src=allowed-hosts
         dest=/var/lib/denyhosts/allowed-hosts
   notify: restart denyhosts
 
 - name: allow bastion hosts
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/hosts.allow
               regexp="^{{ item }}"
               line="{{ item }}"
@@ -16,7 +16,7 @@
   with_items: allowed_hosts
 
 - name: Make sure sketch can login
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/denyhosts.conf
               regexp="^ALLOWED_HOSTS_HOSTNAME_LOOKUP="
               line="ALLOWED_HOSTS_HOSTNAME_LOOKUP=YES"
@@ -26,7 +26,7 @@
   notify: restart denyhosts
 
 - name: enable denyhosts
-  sudo: yes
+  become: yes
   service:  name=denyhosts
             state=started
             enabled=yes

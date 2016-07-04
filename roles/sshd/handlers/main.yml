@@ -1,6 +1,6 @@
 ---
 - name: restart sshd
-  sudo: yes
+  become: yes
   service:
       name: "{{ service_sshd[ansible_os_family] }}"
       state: restarted

@@ -18,14 +18,14 @@
     state: present
     groups: wheel
     append: yes
-  sudo: yes
+  become: yes
 
 - name: add user to admin group
   command: "dscl . append /Groups/admin GroupMembership {{ User.name }}"
-  sudo: yes
+  become: yes
   when: "ansible_distribution == 'MacOSX'"
 
 - name: add user to wheel group
   command: "dscl . append /Groups/wheel GroupMembership {{ User.name }}"
-  sudo: yes
+  become: yes
   when: "ansible_distribution == 'MacOSX'"

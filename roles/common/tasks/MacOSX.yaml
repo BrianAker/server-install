@@ -15,7 +15,7 @@
 #    - make
 
 #- name: accept xcode license
-#  sudo: yes
+#  become: yes
 #  command: xcodebuild -license
 - name: check for xcode command line tools
   command: pkgutil --pkg-info=com.apple.pkg.CLTools_Executables

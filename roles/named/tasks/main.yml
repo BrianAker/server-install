@@ -8,11 +8,11 @@
   - 53/udp
   - 53/tcp
   tags: config
-  sudo: yes
+  become: yes
   register: firewall_ret
 
 - name: restart firewalld
-  sudo: yes
+  become: yes
   service:  name=firewalld
             state=restarted
   when: firewall_ret|changed

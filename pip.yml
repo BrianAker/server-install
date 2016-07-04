@@ -4,6 +4,7 @@
 
   roles:
   - role: pip
-    sudo_user: brian
+    become: yes
+    become_user: brian
     pip_packages: [ 'ansible' ]
     virtualenv_command: 'virtualenv'

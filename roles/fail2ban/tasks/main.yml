@@ -1,6 +1,6 @@
 ---
 - name: enable fail2ban
-  sudo: yes
+  become: yes
   service: name=fail2ban
            enabled=yes
            state=started

@@ -1,6 +1,6 @@
 ---
 - name: add jenkins user to mock group
-  sudo: yes
+  become: yes
   user: 
     name: jenkins
     state: present 

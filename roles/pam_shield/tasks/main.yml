@@ -1,13 +1,13 @@
 --- # tasks file for pam_shield
 - name: yum install pam_shield
-  sudo: yes
+  become: yes
   yum: 
     name: pam_shield
     state: present
   when: ansible_pkg_mgr == 'apt'
 
 - name: apt install pam_shield
-  sudo: yes
+  become: yes
   apt: 
     name: pam_shield
     update_cache: yes

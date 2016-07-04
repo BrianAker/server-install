@@ -9,7 +9,7 @@
   when: ansible_distribution == 'MacOSX'
 
 - name: create rsync user
-  sudo: yes
+  become: yes
   user:
     name: rsync
     generate_ssh_key: yes
@@ -19,7 +19,7 @@
   when: "ansible_os_family in ('RedHat', 'Debian')"
 
 - name: create rsyncd.conf
-  sudo: yes
+  become: yes
   copy: 
     src: rsyncd.conf
     dest: /etc/rsyncd.conf
@@ -27,7 +27,7 @@
   when: "ansible_os_family in ('RedHat', 'Debian')"
 
 - name: enable rsyncd
-  sudo: yes
+  become: yes
   service:
     name: rsyncd
     state: started

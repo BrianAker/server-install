@@ -4,12 +4,12 @@
 
   tasks:
   - stat: path=/var/www/download.tangent.org/html
-    sudo: yes
+    become: yes
     register: check_doc_directory
 
   - bzr: name=lp:~data-differential-engineering/+junk/downloads/
          dest=/var/www/download.tangent.org/html
-    sudo: yes
+    become: yes
     when: check_doc_directory.stat.exists == false
 
   - cron: name="update downloads"
@@ -17,4 +17,4 @@
           job="cd /var/www/download.tangent.org/html && bzr pull >/dev/null 2>&1"
           user=root
           state=present
-    sudo: yes
+    become: yes

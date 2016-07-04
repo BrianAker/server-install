@@ -1,7 +1,7 @@
 ---
 
 - name: yum install sendmail
-  sudo: yes
+  become: yes
   yum: name={{ item }} state=present
   with_items:
     - m4
@@ -11,32 +11,32 @@
   when: ansible_distribution == 'Fedora'
 
 - name: remove sendmail LOCAL_DOMAIN
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mail/sendmail.mc
               regexp="^LOCAL_DOMAIN.*localhost.localdomain"
               state=absent
 
 - name: remove sendmail DAEMON_OPTIONS submission
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mail/sendmail.mc
               regexp="^DAEMON_OPTIONS.*submission"
               state=absent
 
 - name: supply sendmail FEATURE accept_unresolvable_domains
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mail/sendmail.mc
               regexp="FEATURE.*accept_unresolvable_domains"
               line="dnl FEATURE(`accept_unresolvable_domains\')dnl"
               state=present
 
 - name: remove sendmail FEATURE DAEMON_OPTIONS smtp 127.0.0.1
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mail/sendmail.mc
               regexp="DAEMON_OPTIONS.*smtp.*127.0.0.1"
               state=absent
 
 - name: supply sendmail define confMAX_DAEMON_CHILDREN
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mail/sendmail.mc
               regexp="confMAX_DAEMON_CHILDREN"
               line="define(`confMAX_DAEMON_CHILDREN', `10')dnl"
@@ -49,25 +49,24 @@
               state=present
 
 - name: append local-host-names alohahaus.org
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mail/local-host-names
               regexp="^alohahaus.org"
               line="alohahaus.org"
               state=present
 
 - name: append local-host-names libmemcached.org
-  sudo: yes
+  become: yes
   lineinfile: dest=/etc/mail/local-host-names
               regexp="^libmemcached.org"
               line="libmemcached.org"
               state=present
 
 - name: hosts.allow sendmail ALL
-  sudo: yes
+  become: yes
   lineinfile: "dest=/etc/hosts.allow regexp='^sendmail: ALL' line='sendmail: ALL' state=present"
 
 - name: make sendmail.cf
-  sudo: yes
-  sudo: yes
+  become: yes
   raw: (cd /etc/mail; make)
   notify: restart sendmail

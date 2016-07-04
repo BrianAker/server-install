@@ -1,10 +1,10 @@
 ---
 - name:       avahi config
-  sudo:       yes
+  become:       yes
   template:   src=avahi-daemon.conf.j2 dest=/etc/avahi/avahi-daemon.conf owner=root group=root mode=0644
   notify:     [restart avahi]
 
 - name:       avahi services
-  sudo:       yes
+  become:       yes
   template:   src=service.j2 dest=/etc/avahi/services/{{ avahi_service_name }}.service owner=root group=root mode=0644
   notify:     [restart avahi]

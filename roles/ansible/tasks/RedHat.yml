@@ -1,6 +1,6 @@
 ---
 - name: yum remove system ansible
-  sudo: yes
+  become: yes
   yum:  name={{ item }}
         state=absent
   when: using_system_ansible is defined

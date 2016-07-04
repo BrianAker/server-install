@@ -1,15 +1,15 @@
 ---
 - name: restart updatesd
-  sudo: yes
+  become: yes
   service:  name=yum-updatesd
             state=restarted
 
 - name: restart yum-cron
-  sudo: yes
+  become: yes
   service:  name=yum-cron
             state=restarted
 
 - name: restart dnf-automatic
-  sudo: yes
+  become: yes
   service:  name=dnf-automatic
             state=restarted

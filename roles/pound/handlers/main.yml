@@ -1,5 +1,5 @@
 ---
 - name: restart Pound
-  sudo:     yes
+  become:     yes
   service:  name=pound
             state=restarted

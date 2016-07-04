@@ -1,6 +1,6 @@
 ---
 - name: create default hosts allow and deny files
-  sudo: yes
+  become: yes
   template: src="{{ item }}.j2"
             dest="/etc/{{ item }}"
             owner=root

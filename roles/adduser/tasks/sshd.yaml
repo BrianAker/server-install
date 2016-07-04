@@ -4,7 +4,7 @@
     var: sshd_config_file
 
 - name: update sshd AllowUsers
-  sudo: yes
+  become: yes
   lineinfile:
     dest: "{{ sshd_config_file[ansible_distribution] }}"
     regexp: "^AllowUsers {{ User.name }}"
@@ -13,7 +13,7 @@
   notify: restart sshd
 
 - name: remove sshd AllowUsers User.name
-  sudo: yes
+  become: yes
   lineinfile: 
     dest: "{{ sshd_config_file[ansible_distribution] }}"
     regexp: "AllowUsers User.name"

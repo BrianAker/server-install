@@ -1,5 +1,5 @@
 ---
 - name: restart fail2ban
-  sudo: yes
+  become: yes
   service:  name=fail2ban 
             state=restarted
