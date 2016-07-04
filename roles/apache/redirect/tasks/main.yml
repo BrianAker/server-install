@@ -1,3 +1,4 @@
 ---
-- fail: "username was not defined."
+- fail:
+    msg: "username was not defined."
   when: username is not defined

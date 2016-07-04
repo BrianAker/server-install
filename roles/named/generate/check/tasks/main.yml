@@ -6,8 +6,9 @@
   when: item.type == 'master'
   with_items: zones
   connection: local
-  tags: check
-  tags: makeconf
+  tags:
+    - check
+    - makeconf
 
 - name: check conf
   command: named-checkconf -t {{ item }} etc/named.conf
@@ -15,5 +16,6 @@
   connection: local
   with_items:
     - "{{ named_dir }}"
-  tags: makeconf
-  become: True
+  tags:
+    - makeconf
+  become: yes

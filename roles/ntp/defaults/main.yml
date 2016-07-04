@@ -26,8 +26,6 @@ ntp_packages:
     - pwgen
     - ssh-copy-id
 
-  Fedora: []
-
   CentOS: []
 
   Ubuntu: []
