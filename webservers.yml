@@ -1,4 +1,5 @@
 # Host rules for HTTP servers
+---
 - name: Webserver
   hosts: webservers
 

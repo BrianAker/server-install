@@ -1,3 +1,4 @@
+---
 - name: Build a Cloud Server
   hosts: all:!unmanaged
   gather_facts: False

@@ -1,4 +1,5 @@
 # Machine in haus
+---
 - name: Haus
   hosts: haus
 

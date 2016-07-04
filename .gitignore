@@ -33,3 +33,4 @@ roles/geerlingguy.jenkins
 Vagrantfile
 myconf
 *.retry
+roles/gpsd
