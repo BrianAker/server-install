@@ -84,7 +84,6 @@
   file: 
     path: "/var/named/master/{{ item[0].item.name }}{{ item[1] }}"
     state: absent
-  when: item[0]|changed
   with_nested: 
     - zones_modified.results
     - [ '.jnl', '.jbk', '.signed' ]
