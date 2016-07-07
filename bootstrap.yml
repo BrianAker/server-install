@@ -68,5 +68,6 @@
     - role: sshd
     - role: deploy
     - role: unattended-upgrades
+    - role: bootstrap_completed
 
 - include: playbooks/upgrade.yml

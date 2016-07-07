@@ -1,0 +1,6 @@
+---
+# vars file for bootstrap_completed
+org:
+  tangent:
+    bootstrap:
+      completed: true

@@ -6,7 +6,7 @@
 - name: update sshd AllowUsers
   become: yes
   lineinfile:
-    dest: "{{ sshd_config_file[ansible_distribution] }}"
+    dest: "{{ sshd_config_file[ansible_distribution]|default('/etc/ssh/sshd_config') }}"
     regexp: "^AllowUsers {{ User.name }}"
     line: "AllowUsers {{ User.name }}"
     state: present
@@ -15,7 +15,7 @@
 - name: remove sshd AllowUsers User.name
   become: yes
   lineinfile: 
-    dest: "{{ sshd_config_file[ansible_distribution] }}"
+    dest: "{{ sshd_config_file[ansible_distribution]|default('/etc/ssh/sshd_config') }}"
     regexp: "AllowUsers User.name"
     state: absent
   notify: restart sshd
