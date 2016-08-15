@@ -38,15 +38,22 @@
   remote_user: "{{ deployment_user }}"
   roles:
     - group_by 
-#   - { role: f500.dumpall, dumpall_host_destination: examine/ }
-
+    - { role: f500.dumpall, dumpall_host_destination: examine/, tags: ['has_bootstrap_run'] }
+#
+# python python-dnf python-passlib libselinux-python python-firewall
 - hosts: Fedora
   gather_facts: no
   remote_user: "{{ deployment_user }}"
   tasks:
     - name: make sure python2 is installed
-      raw: dnf -y -e0 -d0 install python python-dnf python-passlib
+      raw: "dnf -y -e0 -d0 install {{ item }}"
       become: true
+      with_items:
+        - python
+        - python-dnf
+        - python-passlib
+        - libselinux-python
+        - python-firewall
 
 - hosts: FreeBSD
   remote_user: "{{ deployment_user }}"
@@ -71,3 +78,8 @@
     - role: bootstrap_completed
 
 - include: playbooks/upgrade.yml
+
+- hosts: all:!unmanaged
+  remote_user: "{{ deployment_user }}"
+  roles:
+    - { role: f500.dumpall, dumpall_flat_mode: yes, dumpall_host_destination: examine/ }
