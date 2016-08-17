@@ -4,6 +4,7 @@ sshd_config_file:
   FreeBSD:  /etc/ssh/sshd_config
   Fedora:  /etc/ssh/sshd_config
   Ubuntu:  /etc/ssh/sshd_config
+  Debian:  /etc/ssh/sshd_config
   CentOS:  /etc/ssh/sshd_config
 
 service_sshd:
@@ -11,4 +12,5 @@ service_sshd:
   FreeBSD: sshd
   Fedora:  ssh
   Ubuntu:  sshd
+  Debian:  sshd
   CentOS:  ssh

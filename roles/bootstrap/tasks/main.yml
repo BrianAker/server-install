@@ -1,20 +1,15 @@
 ---
 - name: Debug bootstrap
   debug:
-    var: ansible_local
-  tags:
-    - has_bootstrap_run
-- name: Debug bootstrap
-  debug:
-    var: "ansible_local.{{ item }}.bootstrap.completed is undefined"
+    var: "{{ item }} is undefined"
   with_items:
-    - "{{ inventory_namespace }}"
+    - "ansible_local.{{ inventory_namespace }}.bootstrap.completed"
   tags:
     - has_bootstrap_run
 - name: Has bootstrap already completed
   assert:
-    that: "ansible_local.{{ item }}.bootstrap.completed is undefined"
+    that: "{{ item }} is undefined"
   with_items:
-    - "{{ inventory_namespace }}"
+    - "ansible_local.{{ inventory_namespace }}.bootstrap.completed"
   tags:
     - has_bootstrap_run

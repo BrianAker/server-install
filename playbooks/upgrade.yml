@@ -10,26 +10,26 @@
     become: true
     tags: upgrade
   - name: upgrade all packages
-    dnf: name=* state=latest
+    dnf:
+      name: '*'
+      state: latest
     become: true
     tags: upgrade
 
-- name: apt hosts
+- name: Upgrade apt based hosts
   hosts: apt
   become: true
   tasks:
-  - apt:
+  - name: Update apt cache
+    apt:
       update_cache: yes
     become: true
     tags: upgrade
 
-  - apt:
+  - name: Upgrade apt dist
+    apt:
       upgrade: dist
       cache_valid_time: 3600
-    become: true
-    tags: upgrade
-
-  - apt:
       autoremove: yes
     become: true
     tags: upgrade
@@ -40,16 +40,19 @@
 - name: MacOSX
   hosts: MacOSX
   tasks:
-  - homebrew:
+  - name: Update homebrew
+    homebrew:
       update_homebrew: true
     become: true
     tags: upgrade
 
-  - homebrew:
+  - name: Upgrade homebrew
+    homebrew:
       upgrade_all: true
     become: true
     tags: upgrade
 
-- hosts: FreeBSD
+- name: Upgrade FreeBSD
+  hosts: FreeBSD
   tasks:
   - raw: pkg upgrade -y

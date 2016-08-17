@@ -7,11 +7,11 @@
 - include: Fedora.yml
   when: ansible_distribution == 'Fedora'
 
-- include: Debian.yml
-  when: ansible_distribution == 'Debian'
-
-- include: Debian.yml
-  when: ansible_distribution == 'Ubuntu'
+#- include: Debian.yml
+#  when: ansible_distribution == 'Debian'
+#
+#- include: Debian.yml
+#  when: ansible_distribution == 'Ubuntu'
 
 - include: RedHat.yml
   when: ansible_distribution == 'Redhat'

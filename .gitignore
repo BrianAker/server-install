@@ -34,3 +34,5 @@ Vagrantfile
 myconf
 *.retry
 roles/gpsd
+.ansible_cache/
+roles/jenkins/

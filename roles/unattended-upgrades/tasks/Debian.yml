@@ -1,20 +1,30 @@
 ---
 - name: Adjust APT update intervals
   become: yes
-  copy: src=apt_periodic
-        dest=/etc/apt/apt.conf.d/10periodic
-        owner=root
-        group={{ root_group }}
-        mode=0644
+  copy: 
+    src: apt_periodic
+    dest: /etc/apt/apt.conf.d/10periodic
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
 
 - name: Make sure unattended-security-upgrades work
   become: yes
-  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
-              regexp="-security"
-              line='"${distro_id}:${distro_codename}-security";'
+  lineinfile: 
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: '//.*"o=Debian,a=stable-updates,label=Debian-Security";'
+    line: '        "o=Debian,a=stable-updates";'
 
 - name: Make sure unattended-updates work
   become: yes
-  lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades
-              regexp="-updates"
-              line='"${distro_id}:${distro_codename}-updates";'
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    line: '"${distro_id}:${distro_codename}-updates";'
+    insertafter: "stable-updates"
+
+- name: Make sure unattended-updates work
+  become: yes
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: "-updates"
+    line: '"${distro_id}:${distro_codename}-updates";'
