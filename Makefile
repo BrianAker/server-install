@@ -49,6 +49,8 @@ ROLE_META:= $(addsuffix /meta/main.yml, $(ROLES))
 ANSIBLE_GALAXY_ROLES:= 
 ANSIBLE_GALAXY_ROLES+= jnv.unattended-upgrades 
 ANSIBLE_GALAXY_ROLES+= f500.dumpall
+ANSIBLE_GALAXY_ROLES+= dhcp_server
+ANSIBLE_GALAXY_ROLES+= unifi_controller
 ANSIBLE_GALAXY_ROLES+= geerlingguy.jenkins
 ANSIBLE_GALAXY_ROLES_INSTALL := $(addprefix $(ROLES_PATH), $(addsuffix /$(dirstamp),$(ANSIBLE_GALAXY_ROLES)))
 
@@ -150,13 +152,7 @@ PREREQ+= $(ANSIBLE_GALAXY_ROLES_INSTALL)
 
 $(ANSIBLE_GALAXY_ROLES_INSTALL): $(ANSIBLE_GALAXY)
 	@$(RM) -rf $(subst /$(dirstamp),, $@)
-	@$(ANSIBLE_GALAXY) install -p $(ROLES_PATH)  $(subst $(ROLES_PATH),, $(subst /$(dirstamp),, $@))
-	@$(TOUCH) $@
-
-PREREQ+= roles/dhcp_server/$(dirstamp)
-roles/dhcp_server/$(dirstamp):
-	@$(RM) -rf $(@D)
-	@git clone https://github.com/pdellaert/dhcp_server.git $(@D)
+	@$(ANSIBLE_GALAXY) install -r requirements.yml
 	@$(TOUCH) $@
 
 roles/dhcp_server:

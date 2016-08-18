@@ -35,4 +35,4 @@ myconf
 *.retry
 roles/gpsd
 .ansible_cache/
-roles/jenkins/
+roles/unifi_controller/

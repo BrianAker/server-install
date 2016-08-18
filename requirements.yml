@@ -8,5 +8,15 @@
   scm: git
   version: master
 
-- name: jenkins
+- name: geerlingguy.jenkins
   src: geerlingguy.jenkins
+
+- name: unifi_controller
+  src: https://github.com/BrianAker/unifi_controller
+  scm: git
+  version: master
+
+- name: dhcp_server
+  src: https://github.com/pdellaert/dhcp_server.git
+  scm: git
+  version: master
