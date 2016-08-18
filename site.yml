@@ -53,4 +53,14 @@
  
 - include: harden.yml
 
+
 - include: developer.yml
+
+- name: Install Unifi Controller
+  hosts: unifi
+
+  roles:
+    - role: unifi_controller
+      tags:
+        - unifi
+

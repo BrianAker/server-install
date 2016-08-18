@@ -1,6 +1,5 @@
 ---
 - name: harden OpenSSH
-  become: yes
   lineinfile: >
               dest="{{ sshd_config_file[ansible_os_family] }}"
               state=present
@@ -16,4 +15,6 @@
     - { argument: 'AuthorizedKeysFile', new_value: '.ssh/authorized_keys' }
     - { argument: 'Ciphers', new_value: 'aes128-ctr,aes192-ctr,aes256-ctr' }
   notify: restart sshd
+  become: true
+  become_user: root
   tags: harden

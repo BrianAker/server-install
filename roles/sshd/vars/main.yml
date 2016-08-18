@@ -1,4 +1,24 @@
 --- # vim:ft=yaml
+sshd_packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat:
+    - openssh-server
+
+  Fedora:
+    - openssh-server
+
+  CentOS:
+    - openssh-server
+
+  Debian:
+    - openssh-server
+
+  Ubuntu:
+    - openssh-server
+
 sshd_config_file:
   RedHat:  /etc/ssh/sshd_config
   FreeBSD:  /etc/ssh/sshd_config
@@ -10,7 +30,7 @@ sshd_config_file:
 service_sshd:
   RedHat:  ssh
   FreeBSD: sshd
-  Fedora:  ssh
+  Fedora:  sshd
   Ubuntu:  sshd
   Debian:  sshd
   CentOS:  ssh

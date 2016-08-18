@@ -73,7 +73,6 @@ common_packages:
     - python-dev
     - sudo
     - tar
-    - update-manager-core
     - wget
 
   Ubuntu:
@@ -97,6 +96,5 @@ common_packages:
     - python-dev
     - sudo
     - tar
-    - update-manager-core
     - wget
 

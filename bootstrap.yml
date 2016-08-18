@@ -1,3 +1,5 @@
+#!/usr/bin/env -v -S ansible-playbook --flush-cache
+# vim:ft=yaml
 ---
 # Rulebook used for bootstrapping a system.
 #- name: Bootstrap
@@ -35,10 +37,14 @@
           state: present
 
 - hosts: all:!unmanaged
-  remote_user: "{{ deployment_user }}"
-  roles:
-    - group_by 
-    - { role: f500.dumpall, dumpall_host_destination: examine/, tags: ['has_bootstrap_run'] }
+  gather_facts: no
+  tasks:
+    - name: Gather host type
+      setup:
+        gather_subset: '!all'
+    - name: create ansible_distribution group
+      group_by: key={{ ansible_distribution }}
+
 #
 # python python-dnf python-passlib libselinux-python python-firewall
 - hosts: Fedora
@@ -64,6 +70,13 @@
   remote_user: "{{ deployment_user }}"
   roles:
     - role: bootstrap/MacOSX
+
+- hosts: all:!unmanaged
+  remote_user: "{{ deployment_user }}"
+  tasks:
+    - name: Gather host type
+      setup:
+        gather_subset: 'all'
 
 - hosts: all:!unmanaged
   remote_user: "{{ deployment_user }}"

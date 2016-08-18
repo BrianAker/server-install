@@ -1,10 +1,11 @@
 ---
 - debug:
-    var: ntp_packages[ansible_distribution]
+    var: "{{ ntp_packages[ansible_distribution] }}"
 
 - name: Install packages
+  become: true
   action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
-  with_items: ntp_packages[ansible_distribution]
+  with_items: "{{ ntp_packages[ansible_distribution] }}"
 
 - name: enable ntpd service
   become: yes

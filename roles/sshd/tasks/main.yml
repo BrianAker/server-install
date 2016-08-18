@@ -12,3 +12,16 @@
 - include: harden.yml
   when: sshd_harden is defined
   notify: restart sshd
+
+- name: ssh daemon named
+  debug:
+    msg: "{{ service_sshd[ansible_distribution] }}"
+
+- name: enable sshd
+  service:
+      name: "{{ service_sshd[ansible_distribution] }}"
+      enabled: true
+  when: ansible_distribution != 'MacOSX'
+  notify: restart sshd
+  become: true
+  become_user: root

@@ -48,6 +48,9 @@
     - key: 'Defaults env_keep.*SH_AUTH_SOCK'
       value: 'Defaults env_keep += "SSH_AUTH_SOCK"'
       after: '^Defaults.*env_keep'
+    - key: '^Defaults:username.*requiretty'
+      value: 'Defaults:username !requiretty'
+      after: '^Defaults'
   tags: config
   become: true
 
