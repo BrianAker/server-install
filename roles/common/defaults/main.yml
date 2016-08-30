@@ -13,8 +13,8 @@ common_packages:
     - sudo
 
   Fedora:
-    - '@minimal-environment'
-    - '@system-tools'
+#   - '@minimal-environment'
+#   - '@system-tools'
     - bash
     - bind-utils
     - bzr
@@ -97,4 +97,3 @@ common_packages:
     - sudo
     - tar
     - wget
-

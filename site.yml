@@ -1,3 +1,5 @@
+#!/usr/bin/env -v -S ansible-playbook
+# vim:ft=yaml
 ---
 - include: common.yml
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env -v -S ansible-playbook
+# vim:ft=yaml
 ---
 - name: Common Play
   hosts: all:!unmanaged
