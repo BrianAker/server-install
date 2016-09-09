@@ -47,6 +47,8 @@
 
 - include: remote.yml
 
+- include: openhab.yml
+
 #- include: haus.yml
 
 #- include: downloads.yml

@@ -2,6 +2,8 @@
 - name: f500.dumpall
   src: f500.dumpall
 
+- name: mikolak.raspi-config
+
 - name: jnv.unattended-upgrades
   #- src: jnv.unattended-upgrades
   src: https://github.com/jnv/ansible-role-unattended-upgrades

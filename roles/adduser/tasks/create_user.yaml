@@ -8,7 +8,7 @@
     userpassword_command: "{{ userpassword_dir}}/{{ User.name }} encrypt=sha256_crypt"
 
 - name: mkdir credentials hostname username
-  file: 
+  file:
     path: "{{ userpassword_dir }}"
     state: directory
     mode: 0700
@@ -18,7 +18,7 @@
 - name: create user
   become: yes
   become_user: root
-  user: 
+  user:
       name: "{{ User.name }}"
       comment: "{{ User.name }}"
       state: present
@@ -32,7 +32,7 @@
 - name: add user to group wheel
   become: yes
   become_user: root
-  user: 
+  user:
       name: "{{ User.name }}"
       groups: "wheel"
   when: User.is_wheel is defined

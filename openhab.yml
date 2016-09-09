@@ -1,0 +1,17 @@
+#!/usr/bin/env -v -S ansible-playbook
+# Host rules for Openhab
+- name: Openhab install
+  hosts: openhab
+
+  tasks:
+    - name: Install openhab user
+      user:
+        name: openhab
+        shell: /sbin/nologin
+        state: present
+      become: yes
+      become_user: root
+    - name: Allow openhab user open z-wave device
+      command: usermod -a -G dialout openhab
+      become: yes
+      become_user: root

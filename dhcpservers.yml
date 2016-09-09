@@ -9,14 +9,9 @@
      - "vars/Defaults"
 
   roles:
-    - role: dump
     - role: dhcp_server
       become: True
     - role: firewalld
       add_port: 67/udp
     - role: firewalld
       add_port: 68/udp
-    - role: firewalld
-      add_service: http
-    - role: firewalld
-      add_service: https

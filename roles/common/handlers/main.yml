@@ -2,3 +2,9 @@
 - name: stop FreeBSD sendmail
   command:  sh /etc/rc.sendmail stop
             removes=/var/run/sendmail.pid
+
+- name: restart haveged
+  service:
+    name: haveged
+    state: restarted
+  become: true

@@ -6,7 +6,13 @@ packages:
 
   RedHat: []
 
-  Fedora: []
+  Fedora:
+    - NetworkManager-glib
+    - libnm-qt-devel
+    - nm-connection-editor
+    - libsemanage-python
+    - policycoreutils-python
+    - haveged
 
   Debian: []
 

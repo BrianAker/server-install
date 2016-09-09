@@ -11,8 +11,16 @@
   package:
     name: "{{ item }}"
     state: installed
-    with_items: 
+    with_items:
       - open-vm-tools
-  when: ansible_virtualization_role == 'Guest'
+  when: "ansible_virtualization_role in ('Guest')"
   tags: package_install
   become: true
+
+- name: enabled haveged
+  service:
+    name: haveged
+    state: enabled
+  become: true
+  when: "ansible_distribution in ('Fedora')"
+  notify: restart haveged

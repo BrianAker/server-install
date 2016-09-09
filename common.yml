@@ -1,6 +1,18 @@
-#!/usr/bin/env -v -S ansible-playbook
+#!/usr/bin/env -v -S ansible-playbook --flush-cache
 # vim:ft=yaml
 ---
+- hosts: all:!unmanaged
+  tasks:
+    - name: Gather host type
+      setup:
+    - name: create ansible_distribution group
+      group_by: key={{ ansible_distribution }}
+
+- hosts: all:!unmanaged
+  remote_user: "{{ deployment_user }}"
+  roles:
+    - { role: f500.dumpall, dumpall_flat_mode: yes, dumpall_host_destination: examine/ }
+
 - name: Common Play
   hosts: all:!unmanaged
 
@@ -12,4 +24,10 @@
     - role: ntp
     - role: sshd
     - role: deploy
+    - { role: 'hostname', when: set_hostname is defined }
     - role: unattended-upgrades
+
+#- hosts: Raspbian
+#  remote_user: '{{ deployment_user }}'
+#  roles:
+#    - role: mikolak.raspi-config

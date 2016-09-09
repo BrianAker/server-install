@@ -4,3 +4,11 @@
 
 - name: create ansible_pkg_mgr group
   group_by: key={{ ansible_pkg_mgr }}
+
+- name: create ansible_lsb.id
+  group_by: 
+    key: "{{ ansible_lsb.id }}"
+
+- name: create ansible_virtualization_role group
+  group_by: 
+    key: "{{ ansible_virtualization_role }}"
