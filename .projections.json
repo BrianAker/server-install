@@ -1,0 +1,4 @@
+{
+  "roles/*/tasks/main.yaml": {"type": "tasks"},
+  "roles/*/handlers/main.yaml": {"type": "handlers"},
+}

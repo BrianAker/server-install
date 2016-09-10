@@ -71,6 +71,15 @@
   roles:
     - role: bootstrap/MacOSX
 
+- hosts: Debian
+  remote_user: "{{ bootstrap_user }}"
+  tasks:
+    - name: set vim as default editor
+      alternatives:
+        name: editor
+        path: /usr/bin/vim.basic
+      become: true
+
 - hosts: all:!unmanaged
   remote_user: "{{ deployment_user }}"
   tasks:
