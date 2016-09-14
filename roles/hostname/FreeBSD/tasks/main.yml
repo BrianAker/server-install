@@ -1,16 +1,19 @@
+# vim: set filetype=ansible:
 ---
-- command: "hostname {{ inventory_hostname }}"
+- name: check hostname
+  command: "hostname {{ inventory_hostname }}"
   become: yes
   when: is_ipaddress|failed
   tags: config
 
 - name: set hostname in rc.local
-  become: yes
-  lineinfile: dest=/etc/rc.local
-              state=present
-              regexp='^#?{{ item.key }}='
-              line='{{ item.key }}="{{ item.value }}"'
+  lineinfile:
+    dest: /etc/rc.local
+    state: present
+    regexp: '^#?{{ item.key }}='
+    line: '{{ item.key }}="{{ item.value }}"'
   with_items:
     - { key: 'hostname', value: inventory_hostname }
   when: is_ipaddress|failed
+  become: yes
   tags: config

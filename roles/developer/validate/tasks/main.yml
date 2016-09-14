@@ -1,4 +1,6 @@
+# vim: set filetype=ansible:
 ---
-- fail: 
+- name: "Check to see if User was not defined."
+  fail:
     msg: "User was not defined."
   when: User is not defined

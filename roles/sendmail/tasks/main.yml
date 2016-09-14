@@ -1,72 +1,89 @@
+# vim: set filetype=ansible:
 ---
-
 - name: yum install sendmail
   become: yes
-  yum: name={{ item }} state=present
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
     - m4
     - sendmail
     - sendmail-cf
     - sendmail-devel
-  when: ansible_distribution == 'Fedora'
+  when: ansible_distribution in [ 'Fedora' ]
 
 - name: remove sendmail LOCAL_DOMAIN
+  lineinfile:
+    dest: /etc/mail/sendmail.mc
+    regexp: "^LOCAL_DOMAIN.*localhost.localdomain"
+    state: absent
   become: yes
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="^LOCAL_DOMAIN.*localhost.localdomain"
-              state=absent
 
 - name: remove sendmail DAEMON_OPTIONS submission
+  lineinfile:
+    dest: /etc/mail/sendmail.mc
+    regexp: "^DAEMON_OPTIONS.*submission"
+    state: absent
   become: yes
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="^DAEMON_OPTIONS.*submission"
-              state=absent
 
 - name: supply sendmail FEATURE accept_unresolvable_domains
+  lineinfile:
+    dest: /etc/mail/sendmail.mc
+    regexp: "FEATURE.*accept_unresolvable_domains"
+    line: "dnl FEATURE(`accept_unresolvable_domains\\')dnl"
+    state: present
   become: yes
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="FEATURE.*accept_unresolvable_domains"
-              line="dnl FEATURE(`accept_unresolvable_domains\')dnl"
-              state=present
 
 - name: remove sendmail FEATURE DAEMON_OPTIONS smtp 127.0.0.1
+  lineinfile:
+    dest: /etc/mail/sendmail.mc
+    regexp: "DAEMON_OPTIONS.*smtp.*127.0.0.1"
+    state: absent
   become: yes
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="DAEMON_OPTIONS.*smtp.*127.0.0.1"
-              state=absent
 
 - name: supply sendmail define confMAX_DAEMON_CHILDREN
+  lineinfile:
+    dest: /etc/mail/sendmail.mc
+    regexp: "confMAX_DAEMON_CHILDREN"
+    line: "define(`confMAX_DAEMON_CHILDREN', `10')dnl"
+    state: present
   become: yes
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="confMAX_DAEMON_CHILDREN"
-              line="define(`confMAX_DAEMON_CHILDREN', `10')dnl"
-              state=present
 
 - name: supply sendmail define confDOMAIN_NAME
-  lineinfile: dest=/etc/mail/sendmail.mc
-              regexp="confDOMAIN_NAME"
-              line="define(`confDOMAIN_NAME', `truffle.tangent.org')dnl"
-              state=present
+  lineinfile:
+    dest: /etc/mail/sendmail.mc
+    regexp: "confDOMAIN_NAME"
+    line: "define(`confDOMAIN_NAME', `truffle.tangent.org')dnl"
+    state: present
+  become: yes
 
 - name: append local-host-names alohahaus.org
+  lineinfile:
+    dest: /etc/mail/local-host-names
+    regexp: "^alohahaus.org"
+    line: "alohahaus.org"
+    state: present
   become: yes
-  lineinfile: dest=/etc/mail/local-host-names
-              regexp="^alohahaus.org"
-              line="alohahaus.org"
-              state=present
 
 - name: append local-host-names libmemcached.org
+  lineinfile:
+    dest: /etc/mail/local-host-names
+    regexp: "^libmemcached.org"
+    line: "libmemcached.org"
+    state: present
   become: yes
-  lineinfile: dest=/etc/mail/local-host-names
-              regexp="^libmemcached.org"
-              line="libmemcached.org"
-              state=present
 
 - name: hosts.allow sendmail ALL
+  lineinfile:
+    dest: /etc/hosts.allow
+    regexp: '^sendmail: ALL'
+    line: 'sendmail: ALL'
+    state: present"
   become: yes
-  lineinfile: "dest=/etc/hosts.allow regexp='^sendmail: ALL' line='sendmail: ALL' state=present"
 
 - name: make sendmail.cf
-  become: yes
   raw: (cd /etc/mail; make)
+  args:
+    creates: /etc/sendmail.cf
+  become: yes
   notify: restart sendmail

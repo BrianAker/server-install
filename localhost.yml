@@ -1,3 +1,5 @@
+#!/usr/bin/env -v -S ansible-playbook
+# vim: set filetype=ansible:
 ---
 - name: Localhost
   hosts: localhost

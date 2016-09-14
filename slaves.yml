@@ -1,3 +1,4 @@
+# vim: set filetype=ansible:
 ---
 - include: playbooks/group_by.yaml
 

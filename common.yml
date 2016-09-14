@@ -1,5 +1,5 @@
 #!/usr/bin/env -v -S ansible-playbook --flush-cache
-# vim:ft=yaml
+# vim: set filetype=ansible:
 ---
 - hosts: all:!unmanaged
   tasks:

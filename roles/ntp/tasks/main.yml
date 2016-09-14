@@ -1,15 +1,19 @@
+# vim: set filetype=ansible:
 ---
-- debug:
-    var: "{{ ntp_packages[ansible_distribution] }}"
+- name: Display packages to install
+  debug:
+    var: ntp_packages[ansible_distribution]
 
 - name: Install packages
-  become: true
-  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
+  package:
+    name: "{{ item }}"
+    state: installed
   with_items: "{{ ntp_packages[ansible_distribution] }}"
+  become: true
 
 - name: enable ntpd service
   become: yes
-  service:  
+  service:
     name: "{{ ntp_service[ansible_distribution] }}"
     enabled: yes
     state: started

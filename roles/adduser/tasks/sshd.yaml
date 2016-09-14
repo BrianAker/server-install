@@ -1,3 +1,4 @@
+# vim: set filetype=ansible:
 ---
 - name: "Check for sshd_config_file value"
   debug:
@@ -14,7 +15,7 @@
 
 - name: remove sshd AllowUsers User.name
   become: yes
-  lineinfile: 
+  lineinfile:
     dest: "{{ sshd_config_file[ansible_distribution]|default('/etc/ssh/sshd_config') }}"
     regexp: "AllowUsers User.name"
     state: absent

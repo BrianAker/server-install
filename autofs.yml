@@ -1,4 +1,5 @@
-# vim:ft=yaml
+#!/usr/bin/env -v -S ansible-playbook
+# vim: set filetype=ansible:
 ---
 - name: Autofs
   hosts: autofs

@@ -1,16 +1,17 @@
---- # vim:ft=yaml
+# vim: set filetype=ansible:
+---
 
 - include: validate.yaml
 
 - name: create wheel group
-  group:  
+  group:
     name: wheel
     state: present
   when: "ansible_distribution != 'MacOSX'"
   become: true
 
 - name: mkdir sudoers.d
-  file: 
+  file:
     path: "{{ sudoers_d }}"
     state: directory
     owner: root
@@ -18,8 +19,8 @@
     mode: 0750
   become: true
 
-- name: make sure sudoers file exists 
-  file: 
+- name: make sure sudoers file exists
+  file:
     dest: "{{ sudoers_conf }}"
     state: touch
     owner: root
@@ -28,7 +29,7 @@
   become: true
 
 - name: configure sudoers
-  lineinfile: 
+  lineinfile:
     dest: "{{ sudoers_conf }}"
     state: present
     regexp: '^{{ item.key }}'
@@ -54,8 +55,8 @@
   tags: config
   become: true
 
-- name: create security authorized keys 
-  file: 
+- name: create security authorized keys
+  file:
     dest: /etc/security/authorized_keys
     state: touch
     owner: root

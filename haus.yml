@@ -1,4 +1,6 @@
+#!/usr/bin/env -v -S ansible-playbook
 # Machine in haus
+# vim: set filetype=ansible:
 ---
 - name: Haus
   hosts: haus

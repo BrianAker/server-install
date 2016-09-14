@@ -1,2 +1,5 @@
+# vim: set filetype=ansible:
 ---
-- set_fact: default_shell="/usr/local/bin/bash"
+- name: Set default shell to be /usr/local/bin/bash
+  set_fact:
+    default_shell: "/usr/local/bin/bash"

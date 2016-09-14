@@ -1,3 +1,4 @@
+# vim: set filetype=ansible:
 ---
 - include: 'validate.yaml'
 
@@ -29,7 +30,7 @@
   become: yes
 
 - name: reset mode for .ssh
-  file: 
+  file:
     name: "~/.ssh"
     mode: 0700
     state: directory
@@ -39,7 +40,7 @@
   become: yes
 
 - name: reset mode for authorized_keys
-  file: 
+  file:
     name: "~/.ssh/authorized_keys"
     mode: 0600
     state: touch
@@ -48,7 +49,7 @@
   when: "inventory_hostname != 'localhost'"
   become: yes
 
-- name: create .profile.d 
+- name: create .profile.d
   file:
     path: "~/.profile.d"
     mode: 0750
@@ -74,7 +75,7 @@
     - shellconf
 
 - name: copy in specific
-  template: 
+  template:
     src: "{{ item }}.j2"
     dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
@@ -90,7 +91,7 @@
     - shellconf
 
 - name: copy in specific
-  template: 
+  template:
     src: "{{ item }}.j2"
     dest: "~/.profile.d/{{ item }}.sh"
     mode: 0600
@@ -162,7 +163,7 @@
     - shellconf
 
 - name: Reconfigure path for user to include customrc
-  lineinfile: | 
+  lineinfile: |
               dest="~/.bash_profile"
               regexp="customrc"
               line="if [ -f '.customrc' ]; then . '.customrc'; fi"

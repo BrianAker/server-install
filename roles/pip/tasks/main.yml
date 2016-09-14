@@ -1,3 +1,4 @@
+# vim: set filetype=ansible:
 ---
 - include: validate.yaml
 
@@ -8,7 +9,7 @@
 - name: install virtualenv for user
   become: yes
   become_user: "{{ User.name }}"
-  pip:  
+  pip:
     name: "pip"
     virtualenv: "~/{{ pip_user_dir }}"
     state: present
@@ -16,7 +17,7 @@
 - name: install local pip packages for user
   become: yes
   become_user: "{{ User.name }}"
-  pip:  
+  pip:
     name: "{{ item }}"
     virtualenv: "~/{{ pip_user_dir }}"
     state: present

@@ -1,3 +1,4 @@
+# vim: set filetype=ansible:
 ---
 - name: create pound user
   user:
@@ -5,34 +6,38 @@
     group: "{{ pound_group }}"
     system: yes
     state: present
+  become: yes
 
 - name: create directory pound.conf.d
+  file:
+    dest: "{{ pound_include_directory }}"
+    mode: 0750
+    owner: root
+    group: root
+    state: directory
   become: yes
-  file: dest="{{ pound_include_directory }}"
-        mode=750
-        owner=root
-        group=root
-        state=directory
 
 - name: create socket file
+  file:
+    dest: "{{ pound_control_file }}"
+    mode: 0640
+    owner: "{{ pound_user }}"
+    group: "{{ pound_group }}"
+    state: touch
   become: yes
-  file: dest="{{ pound_control_file }}"
-        mode=640
-        owner="{{ pound_user }}"
-        group="{{ pound_group }}"
-        state=touch
 
 - name: create pound.cfg
+  template:
+    src: pound.cfg.j2
+    dest: /etc/pound.cfg
+    owner: root
+    group: root
+    mode: 0640
   become: yes
-  template: src=pound.cfg.j2
-            dest=/etc/pound.cfg
-            owner=root
-            group=root
-            mode=640
   notify: restart Pound
 
 - name: enable Pound
-  become: yes
-  service:  
+  service:
     name: pound
     enabled: yes
+  become: yes

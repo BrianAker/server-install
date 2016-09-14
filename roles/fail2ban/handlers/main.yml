@@ -1,5 +1,7 @@
+# vim: set filetype=ansible:
 ---
 - name: restart fail2ban
+  service:
+    name: fail2ban
+    state: restarted
   become: yes
-  service:  name=fail2ban 
-            state=restarted

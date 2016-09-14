@@ -2,7 +2,7 @@
 - name: Install packages
   package:
     name: "{{ item }}"
-    state: latest
+    state: present
   with_items: "{{ sshd_packages[ansible_distribution] }}"
   tags: package_install
   notify: restart sshd

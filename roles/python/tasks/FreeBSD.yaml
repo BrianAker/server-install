@@ -1,11 +1,16 @@
+# vim: set filetype=ansible:
 ---
-- stat: path=/usr/bin/python
+- name: stat /usr/bin/python
+  stat:
+    path: /usr/bin/python
   register: python_result
   ignore_errors: True
 
-- file: src=/usr/local/{{ item }}
-        dest=/{{ item }}
-        state=link
+- name: check for python
+  file:
+    src: "/usr/local/{{ item }}"
+    dest: "/{{ item }}"
+    state: link
   with_items:
     - bin/python2.7
     - bin/python

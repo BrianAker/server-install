@@ -1,4 +1,5 @@
 #!/usr/bin/env -v -S ansible-playbook
+# vim: set filetype=ansible:
 # Host rules for Openhab
 - name: Openhab install
   hosts: openhab
@@ -8,10 +9,22 @@
       user:
         name: openhab
         shell: /sbin/nologin
+        groups: dialout
+        append: true
         state: present
       become: yes
-      become_user: root
-    - name: Allow openhab user open z-wave device
-      command: usermod -a -G dialout openhab
+    - name: Fetch for key for libopenzwave packages
+      apt_key:
+        url: http://mirror.my-ho.st/Downloads/OpenZWave/Debian_8.0/Release.key
+        id: AAA12969
+        state: present
       become: yes
-      become_user: root
+    - name: Add libopenzwave packages
+      apt:
+        deb: "{{ item.url }}"
+        state: present
+      with_items:
+        - { name: 'libopenzwave1.3', url: 'http://mirror.my-ho.st/Downloads/OpenZWave/Debian_8.0/amd64/libopenzwave1.3_1.4.164_amd64.deb' }
+        - { name: 'libopenzwave1.3-dev', url: 'http://mirror.my-ho.st/Downloads/OpenZWave/Debian_8.0/amd64/libopenzwave1.3-dev_1.4.164_amd64.deb' }
+        - { name: 'openzwave_1.4', url: 'http://mirror.my-ho.st/Downloads/OpenZWave/Debian_8.0/amd64/openzwave_1.4.164_amd64.deb' }
+      become: true

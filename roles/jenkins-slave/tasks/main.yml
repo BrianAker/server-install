@@ -1,8 +1,9 @@
+# vim: set filetype=ansible:
 ---
 - name: add jenkins user to mock group
   become: yes
-  user: 
+  user:
     name: jenkins
-    state: present 
+    state: present
     groups:  mock
-  when: ansible_distribution == 'Fedora'
+  when: ansible_distribution in [ 'Fedora' ]

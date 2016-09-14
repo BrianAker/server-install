@@ -1,4 +1,6 @@
+#!/usr/bin/env -v -S ansible-playbook
 # Need to be listed last
+# vim: set filetype=ansible:
 ---
 - name: Harden
   hosts: harden

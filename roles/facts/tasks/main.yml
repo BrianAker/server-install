@@ -1,6 +1,9 @@
+# vim: set filetype=ansible:
 ---
 - name: Obtain the group assigned to the root user.
   command: id -gn root
+  args:
+    creates: /tmp/nothing
   register: id_group_result
 
 - name: "Results of id_group_result"
@@ -8,12 +11,18 @@
     var: id_group_result
   tags: debug
 
-- set_fact: 
+- name: store group root uses
+  set_fact:
     root_group: "{{ id_group_result.stdout }}"
 
-- command: pwd
-  register: srcdir
+- name: Discover src directory
   connection: local
+  command: pwd
+  args:
+    creates: /tmp/lsjdkjsfdljfds
+  register: srcdir
   become: no
 
-- set_fact: srcdir="{{ srcdir.stdout }}"
+- name: Store srcdir
+  set_fact:
+    srcdir: "{{ srcdir.stdout }}"

@@ -1,5 +1,8 @@
+# vim: set filetype=ansible:
 ---
-- name: Install packages
-  action: "{{ ansible_pkg_mgr }} state=installed name={{ item }}"
-  with_items: build_packages[ansible_distribution]
+- name: Install packages required for building software
+  package:
+    state: installed
+    name: "{{ item }}"
+  with_items: "{{ build_packages[ansible_distribution] }}"
   become: true

@@ -1,4 +1,5 @@
 # Host rules for HTTP servers
+# vim: set filetype=ansible:
 ---
 - name: Webserver
   hosts: webservers

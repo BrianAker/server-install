@@ -1,10 +1,12 @@
+# vim: set filetype=ansible:
 ---
 - name: set rkhunter options
   become: yes
-  lineinfile: dest={{ rkhunter_conf }}
-              state=present
-              regexp='^#?{{ item }}'
-              line='{{ item }}'
+  lineinfile:
+    dest: "{{ rkhunter_conf }}"
+    state: present
+    regexp: '^#?{{ item }}'
+    line: '{{ item }}'
 #             validate='/usr/bin/rkhunter --config-check'
   with_items:
     - 'ALLOWDEVFILE="/dev/shm/byobu.*"'
@@ -13,19 +15,25 @@
 
 - name: set rkhunter keypair
   become: yes
-  lineinfile: dest={{ rkhunter_conf }}
-              state=present
-              regexp='^#?{{ item.key }}'
-              line='{{ item.key }}={{ item.value }}'
+  lineinfile:
+    dest: "{{ rkhunter_conf }}"
+    state: present
+    regexp: '^#?{{ item.key }}'
+    line: '{{ item.key }}={{ item.value }}'
 #             validate='/usr/bin/rkhunter --config-check'
   with_items:
     - { key: 'ALLOW_SSH_ROOT_USER', value: 'no'}
   tags: config
 
-- command:  /usr/bin/rkhunter --config-check
+- name: rkhunter --config-check
+  command:  /usr/bin/rkhunter --config-check
+  args:
+    creates: /tmp/nothing
   become: yes
 
-- command:  /usr/bin/rkhunter --propupd
-            creates='/var/lib/rkhunter/db/rkhunter.dat'
+- name: rkhunter --propupd
+  command: /usr/bin/rkhunter --propupd
+  args:
+    creates: /var/lib/rkhunter/db/rkhunter.dat
   become: yes
   tags: config

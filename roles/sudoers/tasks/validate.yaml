@@ -1,8 +1,11 @@
+# vim: set filetype=ansible:
 --- # vim:ft=yaml
-- fail: 
+- name: "Check to see if sudoers_d was not defined."
+  fail:
     msg: "sudoers_d was not defined."
   when: sudoers_d is not defined
 
-- fail: 
+- name: "Check to see if sudoers_conf was not defined."
+  fail:
     msg: "sudoers_conf was not defined."
   when: sudoers_conf is not defined

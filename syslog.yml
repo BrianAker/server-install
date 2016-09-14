@@ -1,3 +1,4 @@
+# vim: set filetype=ansible:
 ---
 # Rules for syslog servers
 - name: Syslog

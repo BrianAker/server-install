@@ -1,13 +1,15 @@
+# vim: set filetype=ansible:
 ---
 - name: enable firewalld
   become: yes
   ignore_errors: yes
-  service:  name=firewalld 
-            enabled=yes
-            state=started
-  when: ansible_distribution == 'Fedora'
+  service:
+    name: firewalld
+    enabled: yes
+    state: started
+  when: ansible_distribution in [ 'Fedora' ]
   tags: enable
   notify: restart firewalld
 
 - include: 'Fedora.yaml'
-  when: ansible_distribution == 'Fedora'
+  when: ansible_distribution in [ 'Fedora' ]

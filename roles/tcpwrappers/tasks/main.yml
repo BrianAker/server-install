@@ -1,12 +1,14 @@
+# vim: set filetype=ansible:
 ---
 - name: create default hosts allow and deny files
-  become: yes
-  template: src="{{ item }}.j2"
-            dest="/etc/{{ item }}"
-            owner=root
-            group="{{ root_group }}"
-            mode=644
-            force=yes
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/{{ item }}"
+    owner: root
+    group: "{{ root_group }}"
+    mode: 0644
+    force: yes
   with_items:
     - hosts.allow
     - hosts.deny
+  become: yes

@@ -1,33 +1,38 @@
+# vim: set filetype=ansible:
 ---
 - name: /var/lib/denyhosts/allowed-hosts
-  become: yes
-  copy: src=allowed-hosts
-        dest=/var/lib/denyhosts/allowed-hosts
+  copy:
+    src: allowed-hosts
+    dest: /var/lib/denyhosts/allowed-hosts
   notify: restart denyhosts
+  become: yes
 
 - name: allow bastion hosts
+  lineinfile:
+    dest: /etc/hosts.allow
+    regexp: "^{{ item }}"
+    line: "{{ item }}"
+    mode: 0700
+    state: present
+    create: yes
+  with_items: "{{ allowed_hosts }}"
   become: yes
-  lineinfile: dest=/etc/hosts.allow
-              regexp="^{{ item }}"
-              line="{{ item }}"
-              mode=0700
-              state=present
-              create=yes
-  with_items: allowed_hosts
 
 - name: Make sure sketch can login
+  lineinfile:
+    dest: /etc/denyhosts.conf
+    regexp: "^ALLOWED_HOSTS_HOSTNAME_LOOKUP="
+    line: "ALLOWED_HOSTS_HOSTNAME_LOOKUP=YES"
+    mode: 0700
+    state: present
+    create: yes
   become: yes
-  lineinfile: dest=/etc/denyhosts.conf
-              regexp="^ALLOWED_HOSTS_HOSTNAME_LOOKUP="
-              line="ALLOWED_HOSTS_HOSTNAME_LOOKUP=YES"
-              mode=0700
-              state=present
-              create=yes
   notify: restart denyhosts
 
 - name: enable denyhosts
+  service:
+    name: denyhosts
+    state: started
+    enabled: yes
   become: yes
-  service:  name=denyhosts
-            state=started
-            enabled=yes
   notify: restart denyhosts

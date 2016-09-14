@@ -1,11 +1,17 @@
+# vim: set filetype=ansible:
 ---
 - name: /etc/xinetd.d/bazaar
+  template:
+    src: bazaar.j2
+    dest: /etc/xinetd.d/bazaar
+    mode: 0644
+    owner: root
   become: yes
-  template: src=bazaar.j2 
-            dest=/etc/xinetd.d/bazaar
-            mode=0644
-            owner=root
 
 - name: hosts.allow bzr ALL
+  lineinfile:
+    dest: /etc/hosts.allow
+    regexp: '^bzr: ALL'
+    line: 'bzr: ALL'
+    state: present"
   become: yes
-  lineinfile: "dest=/etc/hosts.allow regexp='^bzr: ALL' line='bzr: ALL' state=present"

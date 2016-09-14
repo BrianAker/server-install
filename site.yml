@@ -1,10 +1,9 @@
 #!/usr/bin/env -v -S ansible-playbook
-# vim:ft=yaml
+# vim: set filetype=ansible:
 ---
 - include: common.yml
 
 # vars: virtualenv_bin=/usr/bin/virtualenv
-    
 #  tasks:
 #    - debug: var=ansible_env
 #
@@ -42,7 +41,7 @@
 #- include: dnsservers.yml
 
 - include: slaves.yml
- 
+
 - include: masters.yml
 
 - include: remote.yml
@@ -54,7 +53,7 @@
 #- include: downloads.yml
 
 - include: bastion.yml
- 
+
 - include: harden.yml
 
 

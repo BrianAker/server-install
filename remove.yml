@@ -1,3 +1,5 @@
+#!/usr/bin/env -v -S ansible-playbook
+# vim: set filetype=ansible:
 ---
 # Upgrade the fleet
 - name: Remove Packages

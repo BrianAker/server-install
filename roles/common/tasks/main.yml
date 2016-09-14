@@ -11,8 +11,8 @@
   package:
     name: "{{ item }}"
     state: installed
-    with_items:
-      - open-vm-tools
+  with_items:
+    - open-vm-tools
   when: "ansible_virtualization_role in ('Guest')"
   tags: package_install
   become: true
@@ -33,6 +33,10 @@
 
 - name: update en_US.UTF-8
   locale_gen:
-    name: en_US.UTF-8
+    name: "{{ item }}"
     state: present
+  with_items:
+    - 'en_US.UTF-8'
   become: true
+  tags:
+    - configuration

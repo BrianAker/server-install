@@ -1,3 +1,4 @@
+# vim: set filetype=ansible:
 ---
 - name: Current user
   debug:
@@ -5,12 +6,14 @@
 
 - name: "Find {{ User.name }} home directory"
   command: "echo ~{{ User.name }}"
+  args:
+    creates: /tmp/sjlkdjlsjf
   register: homedir
   tags:
     - shellconf
 
-- name: "Set user_homedir" 
-  set_fact: 
+- name: "Set user_homedir"
+  set_fact:
     user_homedir: "{{ homedir.stdout }}"
   when: homedir.stdout
   tags:
