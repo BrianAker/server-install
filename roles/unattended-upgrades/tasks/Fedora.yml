@@ -1,21 +1,24 @@
 ---
 - name: Install packages
-  package:
+  dnf:
     name: "{{ item }}"
     state: present
-  with_items: 
+  with_items:
     - dnf-automatic
   tags: package_install
   become: yes
   notify: restart dnf-automatic
 
-- lineinfile: dest=/etc/dnf/dnf.conf
-              regexp="^ip_resolve="
-              line="ip_resolve=4"
+- name: Update dnf.conf
+  lineinfile:
+    dest: /etc/dnf/dnf.conf
+    regexp: "^ip_resolve="
+    line: "ip_resolve=4"
   become: yes
   notify: restart dnf-automatic
 
-- lineinfile: 
+- name: Update automatic.conf
+  lineinfile:
       dest: /etc/dnf/automatic.conf
       regexp: "{{ item.regexp }}"
       line: "{{ item.line }}"
@@ -27,5 +30,7 @@
   notify: restart dnf-automatic
 
 - name: dnf-automatic.timer
-  service: name=dnf-automatic.timer enabled=yes
+  service:
+    name: dnf-automatic.timer
+    enabled: yes
   become: yes

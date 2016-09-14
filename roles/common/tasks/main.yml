@@ -24,3 +24,15 @@
   become: true
   when: "ansible_distribution in ('Fedora')"
   notify: restart haveged
+
+- name: Make vim default editor
+  alternatives:
+    name: editor
+    path: /usr/bin/vim
+  become: true
+
+- name: update en_US.UTF-8
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+  become: true

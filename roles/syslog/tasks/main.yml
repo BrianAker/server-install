@@ -1,8 +1,16 @@
 ---
-- template: src=remote.conf.j2 dest=/etc/rsyslog.d/remote.conf
-            validate='/sbin/rsyslogd -N1 -f %s'
+- name: add remote.conf to syslog
+  template:
+    src: remote.conf.j2
+    dest: /etc/rsyslog.d/remote.conf
+    validate: '/sbin/rsyslogd -N1 -f %s'
   when: syslog_remote_log is defined
+  become: true
 
-- template: src=logrotate.j2 dest=/etc/logrotate.d/remote_syslog
-            validate='/usr/sbin/logrotate -d %s'
+- name: add log_rotate for remote syslog
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/remote_syslog
+    validate: '/usr/sbin/logrotate -d %s'
   when: syslog_remote_log is defined
+  become: true

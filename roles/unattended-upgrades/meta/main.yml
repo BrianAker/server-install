@@ -1,21 +1,21 @@
 ---
 allow_duplicates: no
-dependencies:
-  - role: jnv.unattended-upgrades
-    unattended_origins_patterns:
-    - 'origin=Debian,archive=stable'
-    - 'origin=Debian,archive=stable,label=Debian-Security' # security updates
-    - 'origin=Debian,archive=stable,label=Debian' # updates including non-security updates
-    unattended_automatic_reboot: true
-    unattended_minimal_steps: true
-    when: "ansible_os_family == 'Debian'"
-    become: true
-  - role: jnv.unattended-upgrades
-    unattended_origins_patterns:
-    - 'origin=Ubuntu,archive=stable'
-    - 'origin=Ubuntu,archive=stable,label=Ubuntu-Security' # security updates
-    - 'origin=Ubuntu,archive=stable,label=Ubuntu' # updates including non-security updates
-    unattended_automatic_reboot: true
-    unattended_minimal_steps: true
-    when: "ansible_os_family == 'Ubuntu'"
-    become: true
+dependencies: []
+#  - role: jnv.unattended-upgrades
+#    unattended_origins_patterns:
+#    - 'origin=Debian,archive=stable'
+#    - 'origin=Debian,archive=stable,label=Debian-Security' # security updates
+#    - 'origin=Debian,archive=stable,label=Debian' # updates including non-security updates
+#    unattended_automatic_reboot: true
+#    unattended_minimal_steps: true
+#    when: "ansible_os_family == 'Debian'"
+#    become: true
+#  - role: jnv.unattended-upgrades
+#    unattended_origins_patterns:
+#    - 'origin=Ubuntu,archive=stable'
+#    - 'origin=Ubuntu,archive=stable,label=Ubuntu-Security' # security updates
+#    - 'origin=Ubuntu,archive=stable,label=Ubuntu' # updates including non-security updates
+#    unattended_automatic_reboot: true
+#    unattended_minimal_steps: true
+#    when: "ansible_os_family == 'Ubuntu'"
+#    become: true

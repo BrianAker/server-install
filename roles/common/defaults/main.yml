@@ -60,6 +60,7 @@ common_packages:
     - bash
     - bzr
     - cron-apt
+    - ctags
     - curl
     - dnsutils
     - etckeeper
@@ -74,12 +75,15 @@ common_packages:
     - python-dev
     - sudo
     - tar
+    - vim-common
+    - vim-runtime
     - wget
 
   Ubuntu:
     - bash
     - bzr
     - cron-apt
+    - ctags
     - curl
     - dnsutils
     - etckeeper
@@ -97,4 +101,6 @@ common_packages:
     - python-dev
     - sudo
     - tar
+    - vim-common
+    - vim-runtime
     - wget

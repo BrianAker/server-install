@@ -5,16 +5,10 @@
   become: true
 
 - include: Fedora.yml
-  when: ansible_distribution == 'Fedora'
+  when: ansible_distribution in [ 'Fedora' ]
 
-#- include: Debian.yml
-#  when: ansible_distribution == 'Debian'
-#
-#- include: Debian.yml
-#  when: ansible_distribution == 'Ubuntu'
+- include: Debian.yml
+  when: ansible_distribution in [ 'Ubuntu', 'Debian' ]
 
 - include: RedHat.yml
-  when: ansible_distribution == 'Redhat'
-
-- include: RedHat.yml
-  when: ansible_distribution == 'CentOS'
+  when: ansible_distribution in [ 'Redhat', 'CentOS' ]
