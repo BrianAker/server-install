@@ -28,3 +28,10 @@
         - { name: 'libopenzwave1.3-dev', url: 'http://mirror.my-ho.st/Downloads/OpenZWave/Debian_8.0/amd64/libopenzwave1.3-dev_1.4.164_amd64.deb' }
         - { name: 'openzwave_1.4', url: 'http://mirror.my-ho.st/Downloads/OpenZWave/Debian_8.0/amd64/openzwave_1.4.164_amd64.deb' }
       become: true
+    - name: Adjust JAVA_ARGS
+      lineinfile:
+        regexp: '^#?JAVA_ARGS='
+        dest: /etc/default/openhab
+        state: present
+        line: "JAVA_ARGS=-Dgnu.io.rxtx.SerialPorts=/dev/ttyACM0"
+      become: true
