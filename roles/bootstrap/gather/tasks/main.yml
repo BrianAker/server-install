@@ -1,0 +1,5 @@
+---
+- name: Gather host type
+  setup:
+    gather_subset: 'all'
+

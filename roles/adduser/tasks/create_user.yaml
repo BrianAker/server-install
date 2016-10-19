@@ -35,4 +35,5 @@
   user:
       name: "{{ User.name }}"
       groups: "wheel"
+      append: true
   when: User.is_wheel is defined

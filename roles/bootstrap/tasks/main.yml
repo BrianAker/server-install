@@ -1,15 +1,3 @@
+# vim: set filetype=ansible:
+# This file should always be empty. Examine meta.yml for operation of bootstrap
 ---
-- name: Debug bootstrap
-  debug:
-    var: "{{ item }} is undefined"
-  with_items:
-    - "ansible_local.{{ inventory_namespace }}.bootstrap.completed"
-  tags:
-    - has_bootstrap_run
-- name: Has bootstrap already completed
-  assert:
-    that: "{{ item }} is undefined"
-  with_items:
-    - "ansible_local.{{ inventory_namespace }}.bootstrap.completed"
-  tags:
-    - has_bootstrap_run

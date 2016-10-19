@@ -1,0 +1,22 @@
+# vim: set filetype=ansible:
+---
+- name: Debug bootstrap
+  debug:
+    var: "{{ item }} is undefined"
+  with_items:
+    - "ansible_local.{{ inventory_namespace }}.bootstrap.completed"
+  tags:
+    - has_bootstrap_run
+
+- name: Has bootstrap already completed
+  assert:
+    that: "{{ item }} is undefined"
+  with_items:
+    - "ansible_local.{{ inventory_namespace }}.bootstrap.completed"
+  tags:
+    - has_bootstrap_run
+
+#- meta: end_play
+#  when: "ansible_local.{{ inventory_namespace }}.bootstrap.completed is undefined"
+#  tags:
+#    - has_bootstrap_run

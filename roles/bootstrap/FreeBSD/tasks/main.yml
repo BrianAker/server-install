@@ -8,7 +8,7 @@
 - name: pkg install compat6x-`uname -m`
   command: pkg install compat6x-`uname -m`
 
-- raw: pkg update 
+- raw: pkg update
 
 - raw: pkg clean -y
 

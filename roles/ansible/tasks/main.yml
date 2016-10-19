@@ -3,22 +3,22 @@
 - include: facts.yaml
 
 - include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
+  when: ansible_distribution in ('RedHat')
 
 - include: Debian.yml
-  when: ansible_os_family == 'Debian'
+  when: ansible_distribution in ('Debian')
 
 - include: MacOSX.yml
-  when: ansible_distribution == 'MacOSX'
+  when: ansible_distribution in ('MacOSX')
 
 - include: adduser.yml
   when: User is defined
 
 - include: 'apt.yaml'
-  when: "ansible_pkg_mgr == 'apt'"
+  when: ansible_pkg_mgr in ('apt')
 
 - include: 'yum.yaml'
-  when: "ansible_pkg_mgr == 'yum'"
+  when: ansible_pkg_mgr in ('yum')
 
 - include: 'pkgng.yaml'
-  when: "ansible_pkg_mgr == 'pkgng'"
+  when: ansible_pkg_mgr in ('pkgng')

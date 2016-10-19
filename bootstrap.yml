@@ -1,23 +1,13 @@
 #!/usr/bin/env -v -S ansible-playbook --flush-cache
 # vim: set filetype=ansible:
 ---
-# Rulebook used for bootstrapping a system.
-#- name: Bootstrap
-#  hosts: FreeBSD
-#  gather_facts: no
-#  remote_user: root
-#
-#  roles:
-#    - bootstrap/FreeBSD
-#
-
 - hosts: disabled
   gather_facts: no
   connection: local
 
   tasks:
     - name: remove old host key
-      known_hosts: 
+      known_hosts:
           name: "{{ inventory_hostname }}"
           state: absent
 
@@ -27,11 +17,11 @@
       register: ssh_known_host_results
 
     - name: Results of keyscan
-      debug: 
+      debug:
           var: ssh_known_host_results.results
 
     - name: remove old host key
-      known_hosts: 
+      known_hosts:
           name: "{{ inventory_hostname }}"
           key: "{{ ssh_known_host_results.results }}"
           state: present
@@ -39,66 +29,17 @@
 - hosts: all:!unmanaged
   gather_facts: no
   tasks:
-    - name: Gather host type
-      setup:
-        gather_subset: '!all'
-    - name: create ansible_distribution group
-      group_by: key={{ ansible_distribution }}
-
-#
-# python python-dnf python-passlib libselinux-python python-firewall
-- hosts: Fedora
-  gather_facts: no
-  remote_user: "{{ deployment_user }}"
-  tasks:
-    - name: make sure python2 is installed
-      raw: "dnf -y -e0 -d0 install {{ item }}"
-      become: true
-      with_items:
-        - python
-        - python-dnf
-        - python-passlib
-        - libselinux-python
-        - python-firewall
-
-- hosts: FreeBSD
-  remote_user: "{{ deployment_user }}"
-  roles:
-    - role: bootstrap/FreeBSD
-
-- hosts: MacOSX
-  remote_user: "{{ deployment_user }}"
-  roles:
-    - role: bootstrap/MacOSX
-
-- hosts: Debian
-  remote_user: "{{ bootstrap_user }}"
-  tasks:
-    - name: set vim as default editor
-      alternatives:
-        name: editor
-        path: /usr/bin/vim.basic
-      become: true
-
-- hosts: all:!unmanaged
-  remote_user: "{{ deployment_user }}"
-  tasks:
-    - name: Gather host type
-      setup:
-        gather_subset: 'all'
+  - name: Gather host type
+    setup:
+      gather_subset: '!all'
+  - name: create ansible_distribution group
+    group_by: key={{ ansible_distribution }}
 
 - hosts: all:!unmanaged
   remote_user: "{{ deployment_user }}"
 
   roles:
     - role: bootstrap
-    - role: sudoers
-    - role: python
-    - role: sshd
-    - role: deploy
-    - role: unattended-upgrades
-    - role: bootstrap_completed
-
 - include: playbooks/upgrade.yml
 
 - hosts: all:!unmanaged

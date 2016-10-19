@@ -14,7 +14,7 @@
     name: "{{ httpd_service }}"
     enabled: yes
     state: started
-  when: "ansible_distribution in ('Fedora')"
+  when: ansible_distribution in ('Fedora')
   become: yes
   ignore_errors: yes
   notify: restart apache
