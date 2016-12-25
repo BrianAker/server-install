@@ -4,25 +4,50 @@
 
 - name: pkg bootstrap
   command: pkg bootstrap
+  tags:
+  - skip_ansible_lint
 
 - name: pkg install compat6x-`uname -m`
   command: pkg install compat6x-`uname -m`
+  tags:
+  - skip_ansible_lint
 
-- raw: pkg update 
+- name: pkg update
+  raw: pkg update
+  tags:
+  - skip_ansible_lint
 
-- raw: pkg clean -y
+- name: pkg clean -y
+  raw: pkg clean -y
+  tags:
+  - skip_ansible_lint
 
-- raw: pkg delete -y -R devel/py-pip python2 python27 py27-setuptool devel/py-setuptools27
+- name: pkg delete old python
+  raw: pkg delete -y -R devel/py-pip python2 python27 py27-setuptool devel/py-setuptools27
   ignore_errors: yes
+  tags:
+  - skip_ansible_lint
 
-- raw: rm -rf /usr/local/lib/python2.7
+- name: rm python in local
+  raw: rm -rf /usr/local/lib/python2.7
+  tags:
+  - skip_ansible_lint
 
-- raw: pkg upgrade -y
+- name: pkg upgrade -y
+  raw: pkg upgrade -y
+  tags:
+  - skip_ansible_lint
 
-- raw: pkg install -y python27
-  tags: package_install
+- name: pkg install -y python27
+  raw: pkg install -y python27
+  tags:
+  - package_install
+  - skip_ansible_lint
 
-- raw: ln -s /usr/local/bin/python2.7 /usr/local/bin/python || true
-  tags: package_install
+- name: compare /usr/local/bin/python2.7 /usr/local/bin/python
+  raw: ln -s /usr/local/bin/python2.7 /usr/local/bin/python || true
+  tags:
+  - package_install
+  - skip_ansible_lint
 
 #- raw: echo "export PYTHONPATH=`/usr/local/bin/python-config --prefix`" >> .profile

@@ -12,10 +12,10 @@
 
   roles:
     - role: build
-    - role: developer
-      User:
-        name: "{{ developer_name }}"
-        shell: "{{ default_shell }}"
-        keychain: True
-        is_admin: True
-        is_remote: True
+#    - role: developer
+#      User:
+#        name: "{{ developer_name }}"
+#        shell: "{{ default_shell }}"
+#        keychain: True
+#        is_admin: True
+#        is_remote: True

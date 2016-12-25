@@ -1,49 +1,61 @@
 #!/usr/bin/env -v -S ansible-playbook --flush-cache
 # vim: set filetype=ansible:
 ---
-# Rulebook used for bootstrapping a system.
-#- name: Bootstrap
-#  hosts: FreeBSD
-#  gather_facts: no
-#  remote_user: root
-#
-#  roles:
-#    - bootstrap/FreeBSD
-#
+- name: Create host inventory file
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: Create host file for inventory
+      file:
+        name: "{{ inventory_dir }}/host_vars/{{ inventory_hostname }}"
+        state: touch
+
+
+- name: Gather group names
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+  - name: Groups
+    debug:
+      var: group_names
 
 - hosts: disabled
   gather_facts: no
   connection: local
 
   tasks:
-    - name: remove old host key
-      known_hosts: 
-          name: "{{ inventory_hostname }}"
-          state: absent
+  - name: remove old host key
+    known_hosts:
+        name: "{{ inventory_hostname }}"
+        state: absent
 
-    - name: Check for hostkey
-      command: ssh-keyscan -H -T 10 {{ inventory_hostname }}
-      with_items: inventory_hostname
-      register: ssh_known_host_results
+  - name: Check for hostkey
+    command: "ssh-keyscan -H -T 10 {{inventory_hostname}}"
+    with_items: "{{ inventory_hostname }}"
+    register: ssh_known_host_results
+    tags:
+      - skip_ansible_lint
 
-    - name: Results of keyscan
-      debug: 
-          var: ssh_known_host_results.results
+  - name: Results of keyscan
+    debug:
+        var: ssh_known_host_results.results
 
-    - name: remove old host key
-      known_hosts: 
-          name: "{{ inventory_hostname }}"
-          key: "{{ ssh_known_host_results.results }}"
-          state: present
+  - name: remove old host key
+    known_hosts:
+        name: "{{ inventory_hostname }}"
+        key: "{{ ssh_known_host_results.results }}"
+        state: present
 
 - hosts: all:!unmanaged
   gather_facts: no
   tasks:
-    - name: Gather host type
-      setup:
-        gather_subset: '!all'
-    - name: create ansible_distribution group
-      group_by: key={{ ansible_distribution }}
+  - name: Gather host type
+    setup:
+      gather_subset: '!all'
+  - name: create ansible_distribution group
+    group_by: key={{ ansible_distribution }}
 
 #
 # python python-dnf python-passlib libselinux-python python-firewall
@@ -55,11 +67,19 @@
       raw: "dnf -y -e0 -d0 install {{ item }}"
       become: true
       with_items:
+        - redhat-lsb-core
         - python
         - python-dnf
         - python-passlib
         - libselinux-python
         - python-firewall
+      tags:
+        - skip_ansible_lint
+
+    - name: Set SELINUX
+      selinux:
+        policy: "{{ selinux_policy }}"
+        state: "{{ selinux_state }}"
 
 - hosts: FreeBSD
   remote_user: "{{ deployment_user }}"
@@ -78,6 +98,22 @@
       alternatives:
         name: editor
         path: /usr/bin/vim.basic
+      become: true
+
+- hosts: Ubuntu
+  remote_user: "{{ bootstrap_user }}"
+  tasks:
+    - name: install vim if it has not been installed
+      apt:
+        name: vim
+        update_cache: yes
+      tags:
+        - skip_ansible_lint
+      become: true
+    - name: set vim as default editor
+      command: hostnamectl set-chassis server
+      tags:
+        - skip_ansible_lint
       become: true
 
 - hosts: all:!unmanaged

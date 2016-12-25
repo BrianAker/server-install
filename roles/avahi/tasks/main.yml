@@ -1,3 +1,23 @@
+# vim: set filetype=ansible:
 ---
-- include: Linux.yml
+- include: "{{ ansible_system }}.yml"
+  static: yes
   when: "ansible_system == 'Linux'"
+
+- name: Modify avahi publishers
+  lineinfile:
+    name: /etc/avahi/avahi-daemon.conf
+    insertafter: "{{ item.insertafter }}"
+    state: present
+    regexp: "{{ item.regex }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { insertafter: '^[publish]', regex: '^publish-a-on-ipv6=', line: 'publish-a-on-ipv6=no' }
+    - { insertafter: '^[publish]', regex: '^publish-workstation=', line: 'publish-workstation=no' }
+    - { insertafter: '^[publish]', regex: '^add-service-cookie=', line: 'add-service-cookie=yes' }
+    - { insertafter: '^[publish]', regex: '^publish-resolv-conf-dns-servers=', line: 'publish-resolv-conf-dns-servers=yes' }
+    - { insertafter: '^[reflector]', regex: '^enable-reflector=', line: 'enable-reflector=no' }
+    - { insertafter: '^[reflector]', regex: '^reflect-ipv=', line: 'reflect-ipv=no' }
+    - { insertafter: '^[wide-area]', regex: '^enable-wide-area=', line: 'enable-wide-area=yes' }
+#    - { insertafter: '^[server]', regex: '^deny-interfaces=', line: 'deny-interfaces=LeafNets' }
+  notify: restart avahi-daemon

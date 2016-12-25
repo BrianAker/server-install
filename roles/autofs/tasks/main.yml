@@ -1,4 +1,4 @@
-# vim:ft=yaml
+# vim: set filetype=ansible:
 ---
 - file: state=directory
         path="/etc/auto.master.d"

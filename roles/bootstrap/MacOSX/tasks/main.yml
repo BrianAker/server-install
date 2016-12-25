@@ -1,20 +1,27 @@
 ---
-- stat: path=/Applications/Xcode.app
+- name: Check for Xcode.app
+  stat: path=/Applications/Xcode.app
   register: found_Xcode
 
 - fail: msg="You need to install Xcode"
   when: found_Xcode.stat.isdir == false
+  tags:
+  - skip_ansible_lint
 
-- stat: path=/Applications/Utilities/XQuartz.app
+- name: Check for /Applications/Utilities/XQuartz.app
+  stat: path=/Applications/Utilities/XQuartz.app
   register: found_XQuartz
 
 - fail: msg="You need to install XQuartz"
   when: found_XQuartz.stat.isdir == false
+  tags:
+  - skip_ansible_lint
 
 - name: install brew
-  command: | 
+  command: |
             'ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"'
             creates=/usr/local/bin/brew
 
-- homebrew_tap: tap=homebrew/dupes state=present
+- name: tap homebrew/dupes
+  homebrew_tap: tap=homebrew/dupes state=present
   ignore_errors: yes

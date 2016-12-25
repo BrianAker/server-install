@@ -8,34 +8,45 @@
       name: '*'
       state: latest
     become: true
-    tags: upgrade
+    tags:
+    - upgrade
+    - skip_ansible_lint
   - name: upgrade all packages
     dnf:
       name: '*'
       state: latest
     become: true
-    tags: upgrade
+    tags:
+    - upgrade
+    - skip_ansible_lint
 
 - name: Upgrade apt based hosts
   hosts: apt
   become: true
   tasks:
-  - name: Update apt cache
-    apt:
-      update_cache: yes
-    become: true
-    tags: upgrade
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: true
+      tags:
+      - upgrade
+      - skip_ansible_lint
 
-  - name: Upgrade apt dist
-    apt:
-      upgrade: yes
-      cache_valid_time: 3600
-      autoremove: yes
-    become: true
-    tags: upgrade
+    - name: Upgrade apt dist
+      apt:
+        upgrade: yes
+        cache_valid_time: 3600
+        autoremove: yes
+      become: true
+      tags:
+      - upgrade
+      - skip_ansible_lint
 
-  - command: shutdown -r now
-    become: true
+    - name: reboot server
+      command: shutdown -r now
+      become: true
+      tags:
+      - skip_ansible_lint
 
 - name: MacOSX
   hosts: MacOSX
@@ -44,15 +55,21 @@
     homebrew:
       update_homebrew: true
     become: true
-    tags: upgrade
+    tags:
+      - upgrade
 
-  - name: Upgrade homebrew
-    homebrew:
-      upgrade_all: true
-    become: true
-    tags: upgrade
+- name: Upgrade homebrew
+  homebrew:
+    upgrade_all: true
+  become: true
+  tags:
+    - upgrade
 
 - name: Upgrade FreeBSD
   hosts: FreeBSD
   tasks:
-  - raw: pkg upgrade -y
+    - name: Upgrade packages
+      raw: pkg upgrade -y
+      tags:
+      - upgrade
+      - skip_ansible_lint

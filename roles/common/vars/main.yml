@@ -1,21 +1,106 @@
 --- # vim:ft=yaml
-packages:
-  FreeBSD: []
+common_packages:
+  FreeBSD:
+    - bash
+    - sudo
 
-  MacOSX: []
+  MacOSX:
+    - pkg-config
+    - pwgen
+    - ssh-copy-id
 
-  RedHat: []
+  RedHat:
+    - sudo
 
   Fedora:
-    - NetworkManager-glib
-    - libnm-qt-devel
-    - nm-connection-editor
-    - libsemanage-python
-    - policycoreutils-python
+#   - '@minimal-environment'
+#   - '@system-tools'
+    - bash
+    - bind-utils
+    - bzr
+    - curl
+    - etckeeper
+    - etckeeper-dnf
+    - fakeroot
     - haveged
+    - keychain
+    - lldpad
+    - make
+    - net-tools
+    - pkgconfig
+    - rsyslog
+    - sudo
+    - tar
+    - traceroute
+    - tuned
+    - tuned-utils
+    - vim
+    - wget
 
-  Debian: []
+  CentOS:
+    - '@minimal-environment'
+    - '@system-tools'
+    - bash
+    - bzr
+    - bind-utils
+    - curl
+    - make
+    - pkgconfig
+    - rsyslog
+    - sudo
+    - tar
+    - traceroute
+    - vim
+    - wget
+    - yum-cron
+    - yum-plugin-fastestmirror
 
-  Ubuntu: []
+  Debian:
+    - software-properties-common
+    - bash
+    - bzr
+    - cron-apt
+    - ctags
+    - curl
+    - dnsutils
+    - etckeeper
+    - fakeroot
+    - git
+    - gnupg-agent
+    - ifmetric
+    - keychain
+    - make
+    - pkg-config
+    - python
+    - python-dev
+    - sudo
+    - tar
+    - vim-common
+    - vim-runtime
+    - wget
 
-  CentOS: []
+  Ubuntu:
+    - bash
+    - bzr
+    - cron-apt
+    - ctags
+    - curl
+    - dnsutils
+    - etckeeper
+    - fakeroot
+    - git
+    - gnupg-agent
+    - ifmetric
+    - keychain
+    - lldpad
+    - make
+    - pkg-config
+    - powertop
+    - pm-utils
+    - python
+    - python-dev
+    - sudo
+    - tar
+    - vim-common
+    - vim-runtime
+    - wget

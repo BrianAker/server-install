@@ -31,3 +31,9 @@
 #  remote_user: '{{ deployment_user }}'
 #  roles:
 #    - role: mikolak.raspi-config
+
+- name: Z-Wave
+  hosts: z-wave
+
+  roles:
+    - role: z-wave

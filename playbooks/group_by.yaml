@@ -1,11 +1,6 @@
 ---
 - name: Setup Groups
   hosts: all
-  remote_user: "{{ group_by_user }}"
 
-  tasks:
-  - name: create ansible_distribution group
-    group_by: key={{ ansible_distribution }}
-
-  - name: create ansible_pkg_mgr group
-    group_by: key={{ ansible_pkg_mgr }}
+  roles:
+    - role: group_by

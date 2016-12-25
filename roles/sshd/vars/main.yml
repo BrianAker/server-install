@@ -32,5 +32,5 @@ service_sshd:
   FreeBSD: sshd
   Fedora:  sshd
   Ubuntu:  sshd
-  Debian:  sshd
+  Debian:  ssh
   CentOS:  ssh

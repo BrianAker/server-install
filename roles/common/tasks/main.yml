@@ -20,7 +20,7 @@
 - name: enabled haveged
   service:
     name: haveged
-    state: enabled
+    enabled: yes
   become: true
   when: "ansible_distribution in ('Fedora')"
   notify: restart haveged
@@ -29,6 +29,7 @@
   alternatives:
     name: editor
     path: /usr/bin/vim
+  when: "ansible_distribution in ('Debian')"
   become: true
 
 - name: update en_US.UTF-8
@@ -37,6 +38,7 @@
     state: present
   with_items:
     - 'en_US.UTF-8'
+  when: "ansible_distribution in ('Debian')"
   become: true
   tags:
     - configuration
