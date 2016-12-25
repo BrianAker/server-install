@@ -58,12 +58,12 @@
     tags:
       - upgrade
 
-- name: Upgrade homebrew
-  homebrew:
-    upgrade_all: true
-  become: true
-  tags:
-    - upgrade
+  - name: Upgrade homebrew
+    homebrew:
+      upgrade_all: true
+    become: true
+    tags:
+      - upgrade
 
 - name: Upgrade FreeBSD
   hosts: FreeBSD
