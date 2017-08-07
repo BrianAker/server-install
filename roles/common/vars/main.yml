@@ -28,6 +28,7 @@ common_packages:
     - make
     - net-tools
     - pkgconfig
+    - pwgen
     - rsyslog
     - sudo
     - tar
