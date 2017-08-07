@@ -1,0 +1,11 @@
+# python python-dnf python-passlib libselinux-python python-firewall
+---
+- name: make sure python2 is installed
+  raw: "dnf -y -e0 -d0 install {{ item }}"
+  become: true
+  with_items:
+    - python
+    - python-dnf
+    - python-passlib
+    - libselinux-python
+    - python-firewall

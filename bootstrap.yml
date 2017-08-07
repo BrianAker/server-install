@@ -1,6 +1,7 @@
 #!/usr/bin/env -v -S ansible-playbook --flush-cache
 # vim: set filetype=ansible:
 ---
+<<<<<<< HEAD
 - name: Create host inventory file
   hosts: all
   connection: local
@@ -21,11 +22,14 @@
     debug:
       var: group_names
 
+=======
+>>>>>>> origin/master
 - hosts: disabled
   gather_facts: no
   connection: local
 
   tasks:
+<<<<<<< HEAD
   - name: remove old host key
     known_hosts:
         name: "{{ inventory_hostname }}"
@@ -47,6 +51,27 @@
         name: "{{ inventory_hostname }}"
         key: "{{ ssh_known_host_results.results }}"
         state: present
+=======
+    - name: remove old host key
+      known_hosts:
+          name: "{{ inventory_hostname }}"
+          state: absent
+
+    - name: Check for hostkey
+      command: ssh-keyscan -H -T 10 {{ inventory_hostname }}
+      with_items: inventory_hostname
+      register: ssh_known_host_results
+
+    - name: Results of keyscan
+      debug:
+          var: ssh_known_host_results.results
+
+    - name: remove old host key
+      known_hosts:
+          name: "{{ inventory_hostname }}"
+          key: "{{ ssh_known_host_results.results }}"
+          state: present
+>>>>>>> origin/master
 
 - hosts: all:!unmanaged
   gather_facts: no
@@ -58,6 +83,7 @@
   gather_facts: no
   remote_user: "{{ deployment_user }}"
   tasks:
+<<<<<<< HEAD
 
 #
 # python python-dnf python-passlib libselinux-python python-firewall
@@ -131,12 +157,20 @@
     - name: Gather host type
       setup:
         gather_subset: 'all'
+=======
+  - name: Gather host type
+    setup:
+      gather_subset: '!all'
+  - name: create ansible_distribution group
+    group_by: key={{ ansible_distribution }}
+>>>>>>> origin/master
 
 - hosts: all:!unmanaged
   remote_user: "{{ deployment_user }}"
 
   roles:
     - role: bootstrap
+<<<<<<< HEAD
     - role: sudoers
     - role: python
     - role: sshd
@@ -145,6 +179,8 @@
     - role: unattended-upgrades
     - role: bootstrap_completed
 
+=======
+>>>>>>> origin/master
 - include: playbooks/upgrade.yml
 
 - hosts: all:!unmanaged

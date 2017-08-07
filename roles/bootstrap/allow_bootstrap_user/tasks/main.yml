@@ -1,0 +1,11 @@
+---
+# tasks file for allow_bootstrap_user
+- name: update sshd AllowUsers
+  become: yes
+  lineinfile:
+    dest: "{{ sshd_config_file[ansible_distribution]|default('/etc/ssh/sshd_config') }}"
+    regexp: "^AllowUsers {{ ansible_user }}"
+    line: "AllowUsers {{ ansible_user }}"
+    insertafter: EOF
+    state: present
+  notify: restart sshd

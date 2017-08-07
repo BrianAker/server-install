@@ -23,9 +23,9 @@
 - name: add user to admin group
   command: "dscl . append /Groups/admin GroupMembership {{ User.name }}"
   become: yes
-  when: "ansible_distribution == 'MacOSX'"
+  when: ansible_distribution in ('MacOSX')
 
 - name: add user to wheel group
   command: "dscl . append /Groups/wheel GroupMembership {{ User.name }}"
   become: yes
-  when: "ansible_distribution == 'MacOSX'"
+  when: ansible_distribution in ('MacOSX')

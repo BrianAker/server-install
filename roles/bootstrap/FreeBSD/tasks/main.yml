@@ -12,10 +12,14 @@
   tags:
   - skip_ansible_lint
 
+<<<<<<< HEAD
 - name: pkg update
   raw: pkg update
   tags:
   - skip_ansible_lint
+=======
+- raw: pkg update
+>>>>>>> origin/master
 
 - name: pkg clean -y
   raw: pkg clean -y

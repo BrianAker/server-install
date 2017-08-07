@@ -20,7 +20,7 @@ ROLE_FILES+= $(ROLE_DEFAULTS)
 ROLE_FILES+= $(ROLE_TASKS)
 ROLE_FILES+= $(ROLE_HANDLERS)
 
-ROLES_PATH+= roles/
+ROLES_PATH= roles/
 
 HOSTNAME:= `hostname`
 HOST_TYPE:= `hostname | cut -d'-' -f1`
@@ -46,13 +46,8 @@ ROLE_TASKS:= $(addsuffix /tasks/main.yml, $(ROLES))
 ROLE_HANDLERS:= $(addsuffix /handlers/main.yml, $(ROLES))
 ROLE_META:= $(addsuffix /meta/main.yml, $(ROLES))
 
-ANSIBLE_GALAXY_ROLES:= 
-ANSIBLE_GALAXY_ROLES+= jnv.unattended-upgrades 
-ANSIBLE_GALAXY_ROLES+= f500.dumpall
-ANSIBLE_GALAXY_ROLES+= dhcp_server
-ANSIBLE_GALAXY_ROLES+= unifi_controller
-# ANSIBLE_GALAXY_ROLES+= geerlingguy.jenkins
-ANSIBLE_GALAXY_ROLES_INSTALL := $(addprefix $(ROLES_PATH), $(addsuffix /$(dirstamp),$(ANSIBLE_GALAXY_ROLES)))
+#ANSIBLE_GALAXY_ROLES := $(shell awk -Froles_path= 'NF > 0 {print $$2}' ansible.cfg)
+ANSIBLE_GALAXY_ROLES := .imported_roles
 
 MAINTAINERCLEAN+= $(ANSIBLE_GALAXY_ROLES)
 
@@ -148,10 +143,9 @@ public_keys/jenkins: public_keys/$(dirstamp)
 	@$(TOUCH) $@ 
 	@$(CURL) https://github.com/TangentCI.keys >> $@
 
-PREREQ+= $(ANSIBLE_GALAXY_ROLES_INSTALL)
-
-$(ANSIBLE_GALAXY_ROLES_INSTALL): $(ANSIBLE_GALAXY)
-	@$(RM) -rf $(subst /$(dirstamp),, $@)
+PREREQ+= $(ANSIBLE_GALAXY_ROLES)/$(dirstamp)
+$(ANSIBLE_GALAXY_ROLES)/$(dirstamp): requirements.yml
+	$(MKDIR_P) $(ANSIBLE_GALAXY_ROLES)
 	@$(ANSIBLE_GALAXY) install -r requirements.yml
 	@$(TOUCH) $@
 

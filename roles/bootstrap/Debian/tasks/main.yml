@@ -1,0 +1,12 @@
+---
+- name: install vim package
+  apt:
+    package: vim
+    state: present
+  become: true
+- name: set vim as default editor
+  alternatives:
+    name: editor
+    path: /usr/bin/vim.basic
+  become: true
+

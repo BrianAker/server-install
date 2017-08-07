@@ -3,3 +3,15 @@
 allow_duplicates: no
 dependencies:
   - { role: facts }
+  - { role: bootstrap/gather }
+  - { role: bootstrap/validate }
+  - { role: bootstrap/Fedora, when: ansible_distribution == 'Fedora' }
+  - { role: bootstrap/FreeBSD, when: ansible_distribution == 'FreeBSD' }
+  - { role: bootstrap/Debian, when: ansible_distribution == 'Debian' }
+  - { role: bootstrap/allow_bootstrap_user }
+  - { role: sudoers }
+  - { role: python }
+  - { role: sshd }
+  - { role: deploy }
+  - { role: unattended-upgrades }
+  - { role: bootstrap/complete }
