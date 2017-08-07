@@ -1,17 +1,16 @@
 # vim: set filetype=ansible:
 ---
-- name: create ansible_distribution group
+- name: create distribution group
   group_by:
     key: "{{ ansible_distribution }}"
+  when: ansible_distribution is defined
 
-- name: create ansible_pkg_mgr group
+- name: create pkg_mgr group
   group_by:
     key: "{{ ansible_pkg_mgr }}"
+  when: ansible_pkg_mgr is defined
 
-- name: create ansible_lsb.id
-  group_by:
-    key: "{{ ansible_lsb.id }}"
-
-- name: create ansible_virtualization_role group
+- name: create virtualization_role group
   group_by:
     key: "{{ ansible_virtualization_role }}"
+  when: ansible_virtualization_role is defined

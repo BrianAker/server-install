@@ -29,8 +29,14 @@
   become: yes
   notify: restart dnf-automatic
 
-- name: dnf-automatic.timer
+- name: dnf-automatic-install.timer enabled
   service:
-    name: dnf-automatic.timer
+    name: dnf-automatic-install.timer
     enabled: yes
+  become: yes
+
+- name: dnf-automatic-install.timer started
+  service:
+    name: dnf-automatic-install.timer
+    state: started
   become: yes

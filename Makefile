@@ -51,7 +51,7 @@ ANSIBLE_GALAXY_ROLES+= jnv.unattended-upgrades
 ANSIBLE_GALAXY_ROLES+= f500.dumpall
 ANSIBLE_GALAXY_ROLES+= dhcp_server
 ANSIBLE_GALAXY_ROLES+= unifi_controller
-ANSIBLE_GALAXY_ROLES+= geerlingguy.jenkins
+# ANSIBLE_GALAXY_ROLES+= geerlingguy.jenkins
 ANSIBLE_GALAXY_ROLES_INSTALL := $(addprefix $(ROLES_PATH), $(addsuffix /$(dirstamp),$(ANSIBLE_GALAXY_ROLES)))
 
 MAINTAINERCLEAN+= $(ANSIBLE_GALAXY_ROLES)

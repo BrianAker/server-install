@@ -24,3 +24,8 @@
   src: https://github.com/pdellaert/dhcp_server.git
   scm: git
   version: master
+
+- name: mosquitto
+  src: https://github.com/BrianAker/mosquitto
+  scm: git
+  version: master

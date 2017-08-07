@@ -1,0 +1,19 @@
+#!/usr/bin/env ansible-playbook
+# vim: set filetype=ansible:expandtab:shiftwidth=2:tabstop=2:smarttab:
+---
+- name: Create host inventory file
+  hosts: all
+  become: true
+  connection: local
+  gather_facts: yes
+  tasks:
+  - name: List devices
+    command: "parted /dev/{{ item.key }} -a optimal --script -- mklabel gpt"
+    with_dict: "{{ ansible_devices }}"
+    when: item.key != "sda"
+  - name: create ZFS pool
+    command: zpool create -o autoexpand=on -o autoreplace=on -o ashift=12 -m none vol0 raidz sdh sdk sdm sdn sdl log mirror sde sdd
+  - name: Enable ZFS compression
+    command: zfs get compression 
+  - name: Add cache to vol0 zpool
+    command: zpool add vol0 cache sdb sdc

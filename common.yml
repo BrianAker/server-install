@@ -6,7 +6,8 @@
     - name: Gather host type
       setup:
     - name: create ansible_distribution group
-      group_by: key={{ ansible_distribution }}
+      group_by:
+        key: "{{ ansible_distribution }}"
 
 - hosts: all:!unmanaged
   remote_user: "{{ deployment_user }}"
@@ -24,16 +25,25 @@
     - role: ntp
     - role: sshd
     - role: deploy
+    - role: avahi
     - { role: 'hostname', when: set_hostname is defined }
     - role: unattended-upgrades
 
-#- hosts: Raspbian
-#  remote_user: '{{ deployment_user }}'
-#  roles:
-#    - role: mikolak.raspi-config
+- hosts: Raspbian
+  remote_user: '{{ deployment_user }}'
+  tasks:
+    - name: install packages for Raspberry Pi
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - libcec3
+        - cec-util
+
+- name: windows servers
+  hosts: windows
 
 - name: Z-Wave
   hosts: z-wave
-
   roles:
     - role: z-wave

@@ -37,3 +37,8 @@ roles/gpsd
 .ansible_cache/
 roles/unifi_controller/
 roles/homebridge/
+.imported_roles/*
+roles/mosquitto
+roles/windows_server
+roles/z-wave
+test.yaml

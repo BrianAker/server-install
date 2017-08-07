@@ -2,6 +2,7 @@
 
 ROLEBOOKS=
 PLAYBOOKS=
+GIST := https://gist.githubusercontent.com/BrianAker/e58417dac282131d2e2a/raw/84372d8b94e33a3dcea0144a2e9943e79922b325/ansible-requirements
 
 ANSIBLE:= $(PIP_BIN_DIR)/ansible
 ANSIBLE_PLAYBOOK:= $(PIP_BIN_DIR)/ansible-playbook
@@ -12,7 +13,7 @@ ANSIBLE_PIP_REQUIREMENTS:= aux/ansible/pip.txt
 
 $(ANSIBLE_PIP_REQUIREMENTS):
 	$(MKDIR_P) $(@D)
-	$(CURL) -o $@ https://gist.githubusercontent.com/BrianAker/e58417dac282131d2e2a/raw/ebec127a4100a8546bdc33f88ddd52c7c46b5670/ansible-requirements
+	$(CURL) -o $@ $(GIST)
 
 $(ANSIBLE_PLAYBOOK): $(ANSIBLE)
 

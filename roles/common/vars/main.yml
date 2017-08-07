@@ -103,4 +103,6 @@ common_packages:
     - tar
     - vim-common
     - vim-runtime
+    - vim-syntastic
+    - vim-syntax-docker
     - wget

@@ -50,12 +50,14 @@
 
 - hosts: all:!unmanaged
   gather_facts: no
+  roles:
+    - role: group_by
+
+# Raspberry Pi
+- hosts: armv7l
+  gather_facts: no
+  remote_user: "{{ deployment_user }}"
   tasks:
-  - name: Gather host type
-    setup:
-      gather_subset: '!all'
-  - name: create ansible_distribution group
-    group_by: key={{ ansible_distribution }}
 
 #
 # python python-dnf python-passlib libselinux-python python-firewall
@@ -73,6 +75,8 @@
         - python-passlib
         - libselinux-python
         - python-firewall
+        - firewalld
+        - dnf-automatic
       tags:
         - skip_ansible_lint
 
@@ -99,6 +103,11 @@
         name: editor
         path: /usr/bin/vim.basic
       become: true
+    - name: set chassis type
+      command: "hostnamectl --static --transient --pretty set-hostname {{ inventory_hostname }}"
+      tags:
+      - skip_ansible_lint
+      become: true
 
 - hosts: Ubuntu
   remote_user: "{{ bootstrap_user }}"
@@ -110,7 +119,7 @@
       tags:
         - skip_ansible_lint
       become: true
-    - name: set vim as default editor
+    - name: set chassis type
       command: hostnamectl set-chassis server
       tags:
         - skip_ansible_lint
@@ -132,6 +141,7 @@
     - role: python
     - role: sshd
     - role: deploy
+    - role: hostname
     - role: unattended-upgrades
     - role: bootstrap_completed
 

@@ -1,7 +1,6 @@
 # vim: set filetype=ansible:
 ---
 - include: "{{ ansible_system }}.yml"
-  static: yes
   when: "ansible_system == 'Linux'"
 
 - name: Modify avahi publishers
