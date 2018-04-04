@@ -1,0 +1,31 @@
+---
+# vars file for nitrokey
+nitrokey_packages:
+  FreeBSD: []
+
+  MacOSX: []
+
+  RedHat: []
+
+  Fedora:
+    - openssh-server
+
+  CentOS:
+    - openssh-server
+
+  Debian:
+    - autoconf
+    - automake
+    - build-essential
+    - docbook-xsl
+    - git
+    - libpcsclite-dev
+    - libreadline-dev
+    - libssl-dev
+    - libtool
+    - pcscd
+    - pkg-config
+    - xsltproc
+
+  Ubuntu:
+    - openssh-server
