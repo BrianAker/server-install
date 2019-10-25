@@ -1,24 +1,24 @@
+#!/usr/bin/env -v -S ansible-playbook --flush-cache
+# vim: set filetype=yaml:
 --- # Upgrade the fleet
+
+- hosts: all:!unmanaged
+  remote_user: "{{ deployment_user }}"
+  tasks:
+  - name: create ansible_pkg_mgr group
+    group_by: key={{ ansible_pkg_mgr }}
+
 - name: yum/dnf hosts
   hosts: yum:dnf
   become: true
   tasks:
-  - name: update metadata
-    dnf:
-      name: '*'
-      state: latest
+  - name: update packages
+    command: dnf upgrade -y --refresh
     become: true
     tags:
     - upgrade
     - skip_ansible_lint
-  - name: upgrade all packages
-    dnf:
-      name: '*'
-      state: latest
-    become: true
-    tags:
-    - upgrade
-    - skip_ansible_lint
+
 
 - name: Upgrade apt based hosts
   hosts: apt
@@ -42,11 +42,11 @@
       - upgrade
       - skip_ansible_lint
 
-    - name: reboot server
-      command: shutdown -r now
-      become: true
-      tags:
-      - skip_ansible_lint
+#    - name: reboot server
+#      command: shutdown -r now
+#      become: true
+#      tags:
+#      - skip_ansible_lint
 
 - name: MacOSX
   hosts: MacOSX
