@@ -161,7 +161,7 @@ install-ansible-user: inventory/localhost
 
 .PHONY: upgrade
 upgrade: all
-	@$(ANSIBLE_PLAYBOOK) maintenance.yml
+	@$(ANSIBLE_PLAYBOOK) update.yml
 
 .PHONY: localhost
 localhost: all inventory/localhost
